@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using System.IO.Ports;
 
 namespace Antumbra
@@ -17,9 +18,15 @@ namespace Antumbra
     {
         private System.Timers.Timer timer;
         bool continuous = false;
+        Size pollingRectSize = new Size(10, 10);
+        int width, height, x, y;
         public Antumbra()
         {
             InitializeComponent();
+            this.width = Screen.PrimaryScreen.Bounds.Width;
+            this.height = Screen.PrimaryScreen.Bounds.Height;
+            this.x = Screen.PrimaryScreen.Bounds.X;
+            this.y = Screen.PrimaryScreen.Bounds.Y;
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -36,17 +43,14 @@ namespace Antumbra
 
         private void setBackToAvg()
         {
-            int size = 10;//size X size rectangles used for pollings
-            Size pollingRectSize = new Size(size, size);
             int avgR = 0, avgG = 0, avgB = 0;
-            var points = getPollingPoints(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, 0);
-            //Bitmap screen = getScreen();
+            var points = getPollingPoints(this.width, this.height, 0);
+            Bitmap screen = getScreenShot();
             foreach (Point point in points)
             {
                 //Console.WriteLine(point.X.ToString() + ',' + point.Y.ToString());
                 //Console.WriteLine((point.X + pollingRectSize.Width).ToString() + ',' + (point.Y + pollingRectSize.Height).ToString());
-                Bitmap currentScreen = getScreenAvgAt(point, pollingRectSize);
-                //int red = 0, green = 0, blue = 0;
+                /*Bitmap currentScreen = getScreenAvgAt(point, pollingRectSize);
                 for (int r = 0; r < currentScreen.Height; r++)//for each pixel
                 {
                     for (int c = 0; c < currentScreen.Width; c++)
@@ -59,28 +63,37 @@ namespace Antumbra
                         //green += color.G;
                         //blue += color.B;
                     }
-                }
+                }*/
                 //red /= 900;
                 //green /= 900;//avg
                 //blue /= 900;
                 //Console.WriteLine("R: " + red + " G: " + green + " B: " + blue);
+
+                Bitmap section = getSectionOf(screen, point, pollingRectSize);
+                Color areaAvg = getAvgFromBitmap(section);
+                avgR += areaAvg.R;
+                avgG += areaAvg.G;
+                avgB += areaAvg.B;
             }
-            int totalPixels = pollingRectSize.Height * pollingRectSize.Width * points.Length;
+            /*int totalPixels = pollingRectSize.Height * pollingRectSize.Width * points.Length;
             avgR /= totalPixels;
             avgG /= totalPixels;
-            avgB /= totalPixels;
+            avgB /= totalPixels;*/
+            int divisor = points.Length;//divsor to avg values (num of colors)
+            avgR /= divisor;
+            avgG /= divisor;
+            avgB /= divisor;
             Color avgColor = Color.FromArgb(avgR, avgG, avgB);
             this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
+            screen.Dispose();//clean up for next screenshot
         }
 
-        private Bitmap getScreen()
+        private Bitmap getScreen()//return bitmap of entire screen
         {
-            int height = Screen.PrimaryScreen.Bounds.Height;
-            int width = Screen.PrimaryScreen.Bounds.Width;
-            Bitmap result = new Bitmap(height, width);
-            Graphics gfxScreenshot = Graphics.FromImage(result);
-            Size s = new Size(height, width);
-            gfxScreenshot.CopyFromScreen(0, 0, 0, 0, s, CopyPixelOperation.SourceCopy);
+            Thread.Sleep(50);
+            Bitmap result = new Bitmap(this.width, this.height);//, PixelFormat.Format16bppRgb555);
+            using (Graphics gfxScreenshot = Graphics.FromImage(result))
+                gfxScreenshot.CopyFromScreen(this.x, this.y, 0, 0, new Size(this.width, this.height));//, CopyPixelOperation.SourceCopy)
             return result;
         }
 
@@ -90,16 +103,16 @@ namespace Antumbra
             return screen.Clone(wanted, PixelFormat.Format16bppRgb555);
         }
 
-        private Point[] getPollingPoints(int width, int height, int pad)//screen width and height
+        private Point[] getPollingPoints(int width, int height, int pad)//screen width and height TODO make padding actually smart
         {
-            Point leftTop = new Point(width / 8 + pad, height / 5 + pad);
-            Point midTop = new Point(width / 2, height / 5 + pad);
-            Point topRight = new Point(7 * width / 8 - pad, height / 5 + pad);
-            Point leftMid = new Point(width / 5 + pad, height / 2);
+            Point leftTop = new Point(width / 8 + pad, height / 4 + pad);
+            Point midTop = new Point(width / 2, height / 4 + pad);
+            Point topRight = new Point(7 * width / 8 - pad, height / 4 + pad);
+            Point leftMid = new Point(width / 8 + pad, height / 2);
             Point rightMid = new Point(7 * width / 8 - pad, height / 2);
-            Point leftBot = new Point(width / 8 + pad, 4 * height / 5 - pad);
-            Point midBot = new Point(width / 2, 4 * height / 5 - pad);
-            Point rightBot = new Point(7 * width / 8 - pad, height / 5 + pad);
+            Point leftBot = new Point(width / 8 + pad, 3 * height / 4 - pad);
+            Point midBot = new Point(width / 2, 3 * height / 4 - pad);
+            Point rightBot = new Point(7 * width / 8 - pad, 3* height / 4 + pad);
             Point[] result = {leftTop, midTop, topRight, leftMid, rightMid, leftBot, midBot, rightBot};
             return result;
         }
@@ -118,7 +131,7 @@ namespace Antumbra
                     green += current.G;
                 }
             }
-            return Color.FromArgb(red / total, blue / total, green / total);
+            return Color.FromArgb(red / total, green / total, blue / total);
         }
 
         private Bitmap getScreenAvgAt(Point point, Size size)
@@ -129,14 +142,7 @@ namespace Antumbra
             int height = Screen.PrimaryScreen.Bounds.Height;
             int width = Screen.PrimaryScreen.Bounds.Width;
             Size s = new Size(width/64, height/64);
-            try
-            {
-                gfxScreenshot.CopyFromScreen(point.X, point.Y, 0, 0, s, CopyPixelOperation.SourceCopy);
-            }
-            catch (System.ArgumentException)
-            {
-                Console.WriteLine(point.X.ToString() + ' ' + point.Y.ToString());
-            }
+            gfxScreenshot.CopyFromScreen(point.X, point.Y, 0, 0, s, CopyPixelOperation.SourceCopy);
             return result;
         }
 
@@ -175,5 +181,42 @@ namespace Antumbra
             serial.WriteLine("test");
             serial.Close();*/
         }
+
+        private Bitmap getScreenShot()
+        {
+            Size sz = Screen.PrimaryScreen.Bounds.Size;
+            IntPtr hDesk = GetDesktopWindow();
+            IntPtr hSrce = GetWindowDC(hDesk);
+            IntPtr hDest = CreateCompatibleDC(hSrce);
+            IntPtr hBmp = CreateCompatibleBitmap(hSrce, sz.Width, sz.Height);
+            IntPtr hOldBmp = SelectObject(hDest, hBmp);
+            bool b = BitBlt(hDest, 0, 0, sz.Width, sz.Height, hSrce, 0, 0, CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
+            Bitmap bmp = Bitmap.FromHbitmap(hBmp);
+            SelectObject(hDest, hOldBmp);
+            DeleteObject(hBmp);
+            DeleteDC(hDest);
+            ReleaseDC(hDesk, hSrce);
+            return bmp;
+        }
+        // P/Invoke declarations
+        [DllImport("gdi32.dll")]
+        static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int
+        wDest, int hDest, IntPtr hdcSource, int xSrc, int ySrc, CopyPixelOperation rop);
+        [DllImport("user32.dll")]
+        static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDc);
+        [DllImport("gdi32.dll")]
+        static extern IntPtr DeleteDC(IntPtr hDc);
+        [DllImport("gdi32.dll")]
+        static extern IntPtr DeleteObject(IntPtr hDc);
+        [DllImport("gdi32.dll")]
+        static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
+        [DllImport("gdi32.dll")]
+        static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        [DllImport("gdi32.dll")]
+        static extern IntPtr SelectObject(IntPtr hdc, IntPtr bmp);
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDesktopWindow();
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowDC(IntPtr ptr);
     }
 }
