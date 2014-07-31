@@ -45,7 +45,7 @@ namespace Antumbra
         {
             int avgR = 0, avgG = 0, avgB = 0;
             var points = getPollingPoints(this.width, this.height, 0);
-            Bitmap screen = getScreenShot();
+            Bitmap screen = getScreen();//Shot();
             foreach (Point point in points)
             {
                 //Console.WriteLine(point.X.ToString() + ',' + point.Y.ToString());
@@ -90,7 +90,6 @@ namespace Antumbra
 
         private Bitmap getScreen()//return bitmap of entire screen
         {
-            Thread.Sleep(50);
             Bitmap result = new Bitmap(this.width, this.height);//, PixelFormat.Format16bppRgb555);
             using (Graphics gfxScreenshot = Graphics.FromImage(result))
                 gfxScreenshot.CopyFromScreen(this.x, this.y, 0, 0, new Size(this.width, this.height));//, CopyPixelOperation.SourceCopy)
@@ -151,7 +150,7 @@ namespace Antumbra
             this.continuous = !this.continuous; 
             if (this.continuous)
             {
-                timer = new System.Timers.Timer(200);
+                timer = new System.Timers.Timer(100);
                 timer.Elapsed += new System.Timers.ElapsedEventHandler(callSetBack);
                 timer.Enabled = true;
             }
