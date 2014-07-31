@@ -18,7 +18,7 @@ namespace Antumbra
     {
         private System.Timers.Timer timer;
         bool continuous = false;
-        Size pollingRectSize = new Size(10, 10);
+        Size pollingRectSize = new Size(50, 30);
         int width, height, x, y;
         public Antumbra()
         {
@@ -150,7 +150,7 @@ namespace Antumbra
             this.continuous = !this.continuous; 
             if (this.continuous)
             {
-                timer = new System.Timers.Timer(100);
+                timer = new System.Timers.Timer(50);
                 timer.Elapsed += new System.Timers.ElapsedEventHandler(callSetBack);
                 timer.Enabled = true;
             }
