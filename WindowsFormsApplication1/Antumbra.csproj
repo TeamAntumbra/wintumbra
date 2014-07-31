@@ -50,8 +50,26 @@
     <Compile Include="Antumbra.Designer.cs">
       <DependentUpon>Antumbra.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CommAPI.cs" />
+    <Compile Include="DCB.cs" />
+    <Compile Include="ISerialStreamCtrl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NetStream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Port.cs" />
+    <Compile Include="PortCapabilities.cs" />
+    <Compile Include="PortSettings.cs" />
+    <Compile Include="Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SerialPort.cs" />
+    <Compile Include="SerialPortEnums.cs" />
+    <Compile Include="SerialPortFixer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinStream.cs" />
     <EmbeddedResource Include="Antumbra.resx">
       <DependentUpon>Antumbra.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,9 +18,12 @@ namespace Antumbra
     public partial class Antumbra : Form
     {
         private System.Timers.Timer timer;
-        bool continuous = false;
+        bool continuous = false, serialEnabled = false;
         Size pollingRectSize = new Size(50, 50);
+        OpenNETCF.IO.Ports.SerialPort serial;
+        //SerialPort serial;
         int width, height, x, y;
+
         public Antumbra()
         {
             InitializeComponent();
@@ -27,6 +31,17 @@ namespace Antumbra
             this.height = Screen.PrimaryScreen.Bounds.Height;
             this.x = Screen.PrimaryScreen.Bounds.X;
             this.y = Screen.PrimaryScreen.Bounds.Y;
+            this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
+            this.serial.Open();
+            /*this.serial = new SerialPort();
+            this.serial.PortName = "COM4";
+            this.serial.BaudRate = 115200;
+            this.serial.Parity = Parity.None;
+            this.serial.DataBits = 8;
+            this.serial.StopBits = StopBits.One;
+            this.serial.Handshake = Handshake.None;
+            this.serial.ReadTimeout = 250;
+            this.serial.WriteTimeout = 250;*/
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -84,6 +99,8 @@ namespace Antumbra
             avgG /= divisor;
             avgB /= divisor;
             Color avgColor = Color.FromArgb(avgR, avgG, avgB);
+            if (this.serialEnabled) 
+                sendColorToSerial(avgColor);
             this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
             screen.Dispose();//clean up for next screenshot
         }
@@ -160,25 +177,85 @@ namespace Antumbra
             }
         }
 
-        private void sendViaSerial_Click(object sender, EventArgs e)
+        private void toggleSerial_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(SerialPort.GetPortNames().Length);
-            foreach (String port in SerialPort.GetPortNames())
+            this.serialEnabled = !this.serialEnabled;
+        }
+
+        private void sendColorToSerial(Color color)
+        {
+            byte[] command = convertColorToSerialCommand(color);
+            byte[] stuffed = readyToSend(command);
+            //SerialPortFixer.Execute("COM4");
+            this.serial.Write(stuffed, 0, stuffed.Length);
+            foreach (byte current in stuffed)
             {
-                Console.WriteLine(port);
+                Console.WriteLine(current);
             }
-            /*SerialPort serial = new SerialPort();
-            serial.PortName = "";//TODO fill in settings here
-            serial.BaudRate = 115200;
-            serial.Parity = Parity.None;
-            serial.DataBits = 8;
-            serial.StopBits = StopBits.One;
-            serial.Handshake = Handshake.None;
-            serial.ReadTimeout = 250;
-            serial.WriteTimeout = 250;
-            serial.Open();
-            serial.WriteLine("test");
-            serial.Close();*/
+        }
+
+        private byte[] readyToSend(byte[] command)
+        {
+            byte escape = 0x7D;
+            byte start = 0x7E;
+            byte end = 0x7F;
+            List<byte> result = new List<byte>();
+            result.Add(start);
+            foreach (byte b in command)
+            {
+                byte current;
+                if (b == escape)
+                {
+                    result.Add(escape);
+                    current = (byte)(b ^ 0x20);
+                }
+                else if (b == start)
+                {
+                    result.Add(escape);
+                    current = (byte)(b ^ 0x20);
+                }
+                else if (b == end)
+                {
+                    result.Add(escape);
+                    current = (byte)(b ^ 0x20);
+                }
+                else//no transformation needed
+                {
+                    current = b;
+                }
+                result.Add(current);
+            }
+            result.Add(end);
+            return result.ToArray<byte>();
+        }
+
+        private byte[] convertColorToSerialCommand(Color color) //needs to follow the protocol in docs repo
+        {
+            //byte start = 0x7E;
+            //byte end = 0x7F;
+            //byte escape = 0x7D;
+            byte command = 0x02;//command code for setting color
+            List<byte> bytes =  new List<byte>();
+            bytes.Add(command);
+            byte red = color.R;
+            bytes.Add(red);
+            byte green = color.G;
+            bytes.Add(green);
+            byte blue = color.B;
+            bytes.Add(blue);
+            byte checkSum = generateChecksum(bytes.ToArray<byte>());
+            bytes.Add(checkSum);
+            return bytes.ToArray<byte>();
+        }
+
+        private byte generateChecksum(byte[] bytes)
+        {
+            uint sum = 0;
+            foreach (byte b in bytes)
+            {
+                sum += b;
+            }
+            return (byte)(sum % 0x100);
         }
 
         private Bitmap getScreenShot()
@@ -218,13 +295,20 @@ namespace Antumbra
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindowDC(IntPtr ptr);
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)//choose color button
         {
             DialogResult result = colorChoose.ShowDialog();
             if (result == DialogResult.OK)
             {
                 this.BackColor = colorChoose.Color;
             }
+        }
+
+        public void Dispose() //clean up
+        {
+            this.serial.Close();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

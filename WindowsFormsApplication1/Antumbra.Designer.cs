@@ -32,7 +32,7 @@
             this.continuousCheckBox = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
-            this.sendViaSerial = new System.Windows.Forms.Button();
+            this.toggleSerial = new System.Windows.Forms.Button();
             this.colorChoose = new System.Windows.Forms.ColorDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -76,15 +76,15 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Antumbra";
             // 
-            // sendViaSerial
+            // toggleSerial
             // 
-            this.sendViaSerial.Location = new System.Drawing.Point(83, 336);
-            this.sendViaSerial.Name = "sendViaSerial";
-            this.sendViaSerial.Size = new System.Drawing.Size(125, 23);
-            this.sendViaSerial.TabIndex = 4;
-            this.sendViaSerial.Text = "Send Via Serial";
-            this.sendViaSerial.UseVisualStyleBackColor = true;
-            this.sendViaSerial.Click += new System.EventHandler(this.sendViaSerial_Click);
+            this.toggleSerial.Location = new System.Drawing.Point(83, 336);
+            this.toggleSerial.Name = "toggleSerial";
+            this.toggleSerial.Size = new System.Drawing.Size(125, 23);
+            this.toggleSerial.TabIndex = 4;
+            this.toggleSerial.Text = "Toggle Serial";
+            this.toggleSerial.UseVisualStyleBackColor = true;
+            this.toggleSerial.Click += new System.EventHandler(this.toggleSerial_Click);
             // 
             // button1
             // 
@@ -100,7 +100,7 @@
             // 
             this.ClientSize = new System.Drawing.Size(298, 368);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.sendViaSerial);
+            this.Controls.Add(this.toggleSerial);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.continuousCheckBox);
@@ -121,7 +121,7 @@
         private System.Windows.Forms.CheckBox continuousCheckBox;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button sendViaSerial;
+        private System.Windows.Forms.Button toggleSerial;
         private System.Windows.Forms.ColorDialog colorChoose;
         private System.Windows.Forms.Button button1;
     }
