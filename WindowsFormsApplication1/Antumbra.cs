@@ -18,7 +18,7 @@ namespace Antumbra
     {
         private System.Timers.Timer timer;
         bool continuous = false;
-        Size pollingRectSize = new Size(50, 30);
+        Size pollingRectSize = new Size(50, 50);
         int width, height, x, y;
         public Antumbra()
         {
@@ -217,5 +217,14 @@ namespace Antumbra
         public static extern IntPtr GetDesktopWindow();
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindowDC(IntPtr ptr);
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = colorChoose.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                this.BackColor = colorChoose.Color;
+            }
+        }
     }
 }

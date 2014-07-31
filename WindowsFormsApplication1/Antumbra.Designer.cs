@@ -33,6 +33,8 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.sendViaSerial = new System.Windows.Forms.Button();
+            this.colorChoose = new System.Windows.Forms.ColorDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // takeScreenshotBtn
@@ -84,9 +86,20 @@
             this.sendViaSerial.UseVisualStyleBackColor = true;
             this.sendViaSerial.Click += new System.EventHandler(this.sendViaSerial_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(83, 178);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(125, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Choose Color";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Antumbra
             // 
             this.ClientSize = new System.Drawing.Size(298, 368);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.sendViaSerial);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.linkLabel1);
@@ -109,6 +122,8 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button sendViaSerial;
+        private System.Windows.Forms.ColorDialog colorChoose;
+        private System.Windows.Forms.Button button1;
     }
 }
 
