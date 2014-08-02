@@ -19,8 +19,11 @@ namespace Antumbra
     {
         private System.Timers.Timer timer;
         bool continuous = false;//, serialEnabled = false;
-        bool on = true;//depends on how the antumbra starts up
+        int lastR, lastG, lastB;
+        int offThreshold; //level at which all (RGB) must be under to turn off
+        int changeThreshold; //difference in colors needed to change
         Size pollingRectSize = new Size(50, 50);
+        bool on;
         //OpenNETCF.IO.Ports.SerialPort serial;
         //SerialPort serial;
         SerialConnector serial;
@@ -34,6 +37,12 @@ namespace Antumbra
             this.x = Screen.PrimaryScreen.Bounds.X;
             this.y = Screen.PrimaryScreen.Bounds.Y;
             this.serial = new SerialConnector("COM4");
+            this.on = true;;//depends on how the Antumbra starts up
+            this.lastR = 0;
+            this.lastG = 0;
+            this.lastB = 0;
+            this.offThreshold = 20;//TODO test how low this should be
+            this.changeThreshold = 0; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
             /*this.serial = new SerialPort();
             this.serial.PortName = "COM4";
@@ -101,16 +110,13 @@ namespace Antumbra
             avgR /= divisor;
             avgG /= divisor;
             avgB /= divisor;
-            if (avgR < 20 && avgG < 20 && avgB < 20) //might as well not even try
-                turnOff();
-            else//keep on and send color
-            {
-                Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-                //if (this.serialEnabled) //TODO get rid of
-                sendColorToSerial(avgColor);
-            }
+            Color avgColor = Color.FromArgb(avgR, avgG, avgB);
+            sendColorToSerial(avgColor);
             //this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
             screen.Dispose();//clean up for next screenshot
+            lastR = avgR;
+            lastG = avgG;
+            lastB = avgB;
         }
 
         private Bitmap getScreen()//return bitmap of entire screen
@@ -139,6 +145,21 @@ namespace Antumbra
             Point rightBot = new Point(7 * width / 8 - pad, 3* height / 4 + pad);
             Point[] result = {leftTop, midTop, topRight, leftMid, rightMid, leftBot, midBot, rightBot};
             return result;
+        }
+
+        private bool shouldChange(Color color, Color other)
+        {
+            byte r1 = color.R;
+            byte g1 = color.G;
+            byte b1 = color.B;
+            byte r2 = other.R;
+            byte g2 = other.G;
+            byte b2 = other.B;
+            int total = 0;//represents the total difference
+            total += Math.Abs(r1.CompareTo(r2));
+            total += Math.Abs(g1.CompareTo(g2));
+            total += Math.Abs(b1.CompareTo(b2));
+            return total > this.changeThreshold;
         }
 
         private Color getAvgFromBitmap(Bitmap bm)
@@ -192,6 +213,8 @@ namespace Antumbra
 
         private void turnOff() 
         {
+            if (!this.on)
+                return;//do nothing
             byte[] command = { 0x04, 0 };
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
@@ -199,6 +222,8 @@ namespace Antumbra
 
         private void turnOn()
         {
+            if (this.on)
+                return; //do nothing
             byte[] command = { 0x04, 15 };
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
@@ -206,6 +231,8 @@ namespace Antumbra
 
         private void sendColorToSerial(Color color)
         {
+            if (!shouldChange(color, Color.FromArgb(this.lastR, this.lastG, this.lastB)))//dont change
+                return;
             byte[] command = convertColorToSerialCommand(color);
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
@@ -330,7 +357,7 @@ namespace Antumbra
             DialogResult result = colorChoose.ShowDialog();
             if (result == DialogResult.OK)
             {
-                this.BackColor = colorChoose.Color;
+                //this.BackColor = colorChoose.Color;
                 sendColorToSerial(colorChoose.Color);
             }
         }
