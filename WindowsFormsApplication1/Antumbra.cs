@@ -17,10 +17,12 @@ namespace Antumbra
 {
     public partial class Antumbra : Form
     {
-        private System.Timers.Timer timer;
-        bool continuous = false;//, serialEnabled = false;
-        int lastR, lastG, lastB;
+        private System.Timers.Timer screenTimer;//timer for screen color averaging
+        bool continuous;//, serialEnabled;
+        bool fadeEnabled;
+        byte lastR, lastG, lastB;
         int offThreshold; //level at which all (RGB) must be under to turn off
+        int fadeThreshold;
         int changeThreshold; //difference in colors needed to change
         Size pollingRectSize = new Size(50, 50);
         bool on;
@@ -38,21 +40,14 @@ namespace Antumbra
             this.y = Screen.PrimaryScreen.Bounds.Y;
             this.serial = new SerialConnector("COM4");
             this.on = true;;//depends on how the Antumbra starts up
-            this.lastR = 0;
-            this.lastG = 0;
-            this.lastB = 0;
+            this.lastR = 255;
+            this.lastG = 255;
+            this.lastB = 255;
             this.offThreshold = 20;//TODO test how low this should be
-            this.changeThreshold = 0; //see shouldChange(Color, Color) (lower is more sensitive)
-            //this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
-            /*this.serial = new SerialPort();
-            this.serial.PortName = "COM4";
-            this.serial.BaudRate = 115200;
-            this.serial.Parity = Parity.None;
-            this.serial.DataBits = 8;
-            this.serial.StopBits = StopBits.One;
-            this.serial.Handshake = Handshake.None;
-            this.serial.ReadTimeout = 250;
-            this.serial.WriteTimeout = 250;*/
+            this.changeThreshold = 6; //see shouldChange(Color, Color) (lower is more sensitive)
+            this.fadeThreshold = 10;//diff before taking smaller steps to destination color
+            this.continuous = false;
+            this.fadeEnabled = false;
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -111,12 +106,13 @@ namespace Antumbra
             avgG /= divisor;
             avgB /= divisor;
             Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-            sendColorToSerial(avgColor);
+            fade(avgColor);
+            //sendColorToSerial(avgColor);
             //this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
             screen.Dispose();//clean up for next screenshot
-            lastR = avgR;
-            lastG = avgG;
-            lastB = avgB;
+            lastR = (byte)avgR;
+            lastG = (byte)avgG;
+            lastB = (byte)avgB;
         }
 
         private Bitmap getScreen()//return bitmap of entire screen
@@ -147,19 +143,24 @@ namespace Antumbra
             return result;
         }
 
+        private int calcDiff(Color color, Color other)
+        {
+            int r1 = color.R;
+            int g1 = color.G;
+            int b1 = color.B;
+            int r2 = other.R;
+            int g2 = other.G;
+            int b2 = other.B;
+            int total = 0;//represents the total difference
+            total += Math.Abs(r1 - r2);
+            total += Math.Abs(g1 - g2);
+            total += Math.Abs(b1 - b2);
+            return total;
+        }
+
         private bool shouldChange(Color color, Color other)
         {
-            byte r1 = color.R;
-            byte g1 = color.G;
-            byte b1 = color.B;
-            byte r2 = other.R;
-            byte g2 = other.G;
-            byte b2 = other.B;
-            int total = 0;//represents the total difference
-            total += Math.Abs(r1.CompareTo(r2));
-            total += Math.Abs(g1.CompareTo(g2));
-            total += Math.Abs(b1.CompareTo(b2));
-            return total > this.changeThreshold;
+            return calcDiff(color, other)  > this.changeThreshold;
         }
 
         private Color getAvgFromBitmap(Bitmap bm)
@@ -196,19 +197,14 @@ namespace Antumbra
             this.continuous = !this.continuous; 
             if (this.continuous)
             {
-                timer = new System.Timers.Timer(100);
-                timer.Elapsed += new System.Timers.ElapsedEventHandler(callSetBack);
-                timer.Enabled = true;
+                screenTimer = new System.Timers.Timer(50);//20 hz
+                screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetBack);
+                screenTimer.Enabled = true;
             }
             else
             {
-                timer.Enabled = false;
+                screenTimer.Enabled = false;
             }
-        }
-
-        private void toggleSerial_Click(object sender, EventArgs e)
-        {
-            //this.serialEnabled = !this.serialEnabled;
         }
 
         private void turnOff() 
@@ -218,6 +214,7 @@ namespace Antumbra
             byte[] command = { 0x04, 0 };
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
+            this.on = false;//update
         }
 
         private void turnOn()
@@ -227,29 +224,79 @@ namespace Antumbra
             byte[] command = { 0x04, 15 };
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
+            this.on = true;//update
         }
 
-        private void sendColorToSerial(Color color)
+        private void sendColorToSerial(Color newColor)
         {
-            if (!shouldChange(color, Color.FromArgb(this.lastR, this.lastG, this.lastB)))//dont change
+            Color color = Color.FromArgb(this.lastR, this.lastG, this.lastB);
+            if (!shouldChange(color, newColor))//dont change leds
                 return;
+            int diff = calcDiff(color, newColor);
+            //Console.WriteLine("diff - " + diff.ToString());
+            fade(newColor);
+        }
+
+        private void fade(Color newColor) //TODO: perfect this
+        {
+            if (!this.serial.isReady())
+            {//not ready
+                Console.WriteLine("Serial not ready");
+                return; //dont bother trying
+            }
+            int r = this.lastR;
+            int g = this.lastG;
+            int b = this.lastB;
+            bool rDone = false, gDone = false, bDone = false;
+            while(true)
+            {
+                Console.WriteLine("r - " + r.ToString() + " g - " + g.ToString() + " b - " + b.ToString());
+                if (newColor.R - r >= this.fadeThreshold)
+                    r += this.fadeThreshold;
+                else if (r - newColor.R >= this.fadeThreshold)
+                    r -= this.fadeThreshold;
+                else
+                    rDone = true;
+                if (newColor.G - g >= this.fadeThreshold)
+                    g += this.fadeThreshold;
+                else if (g - newColor.G >= this.fadeThreshold)
+                    g -= this.fadeThreshold;
+                else
+                    gDone = true;
+                if (newColor.B - b >= this.fadeThreshold)
+                    b += this.fadeThreshold;
+                else if (b - newColor.B >= this.fadeThreshold)
+                    b -= this.fadeThreshold;
+                else
+                    bDone = true;
+                Color step = Color.FromArgb(r, g, b);
+                changeTo(step);//update
+                if (rDone && gDone && bDone)
+                    return;//end this madness
+                if (!shouldChange(newColor, step))//close enough
+                    return;
+            }
+        }
+
+        private void changeTo(Color color)
+        {
+            if (color.R < this.offThreshold && color.G < this.offThreshold && color.B < this.offThreshold)
+            {
+                turnOff();
+                updateLast(color);
+                return;
+            }
             byte[] command = convertColorToSerialCommand(color);
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
-            //SerialPortFixer.Execute("COM4");
-            /*try
-            {
-                this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
-                this.serial.Open();
-                this.serial.Write(stuffed, 0, stuffed.Length);
-                foreach (byte current in stuffed)
-                {
-                    Console.WriteLine(current);
-                }
-                this.serial.Close();
-            }
-            catch (System.UnauthorizedAccessException)//OpenNETCF.IO.Serial.CommPortException) 
-            { }  */              
+            updateLast(color);
+        }
+
+        private void updateLast(Color color)
+        {
+            this.lastR = color.R;
+            this.lastG = color.G;
+            this.lastB = color.B;
         }
 
         private byte[] readyToSend(byte[] command)//will add start, stop, escape, and checksum
@@ -358,8 +405,26 @@ namespace Antumbra
             if (result == DialogResult.OK)
             {
                 //this.BackColor = colorChoose.Color;
-                sendColorToSerial(colorChoose.Color);
+                fade(colorChoose.Color);
             }
+        }
+
+        private void colorFadeButton_Click(object sender, EventArgs e)
+        {
+            fade(Color.Red);
+            fade(Color.Purple);
+            fade(Color.Blue);
+            fade(Color.Green);
+            fade(Color.Yellow);
+            fade(Color.Orange);
+        }
+
+        private void powerToggleBtn_Click(object sender, EventArgs e)
+        {
+            if (this.on)
+                turnOff();
+            else
+                turnOn();
         }
 
         /*public void Dispose() //clean up

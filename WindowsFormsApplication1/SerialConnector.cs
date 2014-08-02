@@ -37,7 +37,7 @@ namespace Antumbra
                 }
                 catch (System.UnauthorizedAccessException)
                 {
-                    Console.WriteLine("not ready");
+                    //Console.WriteLine("not ready");
                     this.ready = false;
                 }
             }
@@ -49,17 +49,17 @@ namespace Antumbra
             if (this.isReady())
             {
                 this.serial.Write(data, 0, data.Length);
-                Console.Write("Sent: ");
+                //Console.Write("Sent: ");
                 foreach (byte current in data)
                 {
-                    Console.Write("{0:X}, ", current);
+                    //Console.Write("{0:X}, ", current);
                 }
-                Console.Write("\nRecieved: ");
+                //Console.Write("\nRecieved: ");
                 foreach (byte current in this.serial.ReadToByte(0x7F))
                 {
-                    Console.Write("{0:X}, ", current);
+                    //Console.Write("{0:X}, ", current);
                 }
-                Console.WriteLine("");
+                //Console.WriteLine("");
                 return true;//success
             }
             return false;//fail

@@ -32,9 +32,10 @@
             this.continuousCheckBox = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
-            this.toggleSerial = new System.Windows.Forms.Button();
             this.colorChoose = new System.Windows.Forms.ColorDialog();
             this.button1 = new System.Windows.Forms.Button();
+            this.colorFadeButton = new System.Windows.Forms.Button();
+            this.powerToggleBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // takeScreenshotBtn
@@ -76,16 +77,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Antumbra";
             // 
-            // toggleSerial
-            // 
-            this.toggleSerial.Location = new System.Drawing.Point(83, 336);
-            this.toggleSerial.Name = "toggleSerial";
-            this.toggleSerial.Size = new System.Drawing.Size(125, 23);
-            this.toggleSerial.TabIndex = 4;
-            this.toggleSerial.Text = "Toggle Serial";
-            this.toggleSerial.UseVisualStyleBackColor = true;
-            this.toggleSerial.Click += new System.EventHandler(this.toggleSerial_Click);
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(83, 178);
@@ -96,11 +87,32 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // colorFadeButton
+            // 
+            this.colorFadeButton.Location = new System.Drawing.Point(83, 130);
+            this.colorFadeButton.Name = "colorFadeButton";
+            this.colorFadeButton.Size = new System.Drawing.Size(125, 23);
+            this.colorFadeButton.TabIndex = 6;
+            this.colorFadeButton.Text = "Color Fade";
+            this.colorFadeButton.UseVisualStyleBackColor = true;
+            this.colorFadeButton.Click += new System.EventHandler(this.colorFadeButton_Click);
+            // 
+            // powerToggleBtn
+            // 
+            this.powerToggleBtn.Location = new System.Drawing.Point(53, 322);
+            this.powerToggleBtn.Name = "powerToggleBtn";
+            this.powerToggleBtn.Size = new System.Drawing.Size(189, 34);
+            this.powerToggleBtn.TabIndex = 7;
+            this.powerToggleBtn.Text = "Toggle Power";
+            this.powerToggleBtn.UseVisualStyleBackColor = true;
+            this.powerToggleBtn.Click += new System.EventHandler(this.powerToggleBtn_Click);
+            // 
             // Antumbra
             // 
             this.ClientSize = new System.Drawing.Size(298, 368);
+            this.Controls.Add(this.powerToggleBtn);
+            this.Controls.Add(this.colorFadeButton);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.toggleSerial);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.continuousCheckBox);
@@ -121,9 +133,10 @@
         private System.Windows.Forms.CheckBox continuousCheckBox;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button toggleSerial;
         private System.Windows.Forms.ColorDialog colorChoose;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button colorFadeButton;
+        private System.Windows.Forms.Button powerToggleBtn;
     }
 }
 
