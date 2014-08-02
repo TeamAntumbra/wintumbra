@@ -10,6 +10,7 @@ using System;
 using System.Text;
 using System.IO;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 using OpenNETCF.IO.Ports.Streams;
 
@@ -297,6 +298,24 @@ namespace OpenNETCF.IO.Ports
 		{
 			throw new NotImplementedException();
 		}
+
+        public byte[] ReadToByte(byte end)
+        {
+            List<byte> read = new List<byte>();
+            int currentInt = this.ReadByte();
+            if (currentInt == -1)
+            {
+                return new byte[0];
+            }
+            byte current = (byte)currentInt;
+            read.Add(current);
+            while (current != end)
+            {
+                current = (byte)this.ReadByte();
+                read.Add(current);
+            }
+            return read.ToArray();
+        }
 
 		/// <summary>
 		/// Writes data to serial port output.

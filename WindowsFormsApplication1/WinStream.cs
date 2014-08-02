@@ -55,7 +55,7 @@ namespace OpenNETCF.IO.Ports.Streams
 			_port.RingChange		+= new OpenNETCF.IO.Serial.Port.CommChangeEvent(_port_RingChange);
 			_port.RLSDChange		+= new OpenNETCF.IO.Serial.Port.CommChangeEvent(_port_RLSDChange);
 
-			if( !_port.Open() )
+			if( !_port.Open() )//port is not availabe
 				throw new UnauthorizedAccessException();
 		}
 

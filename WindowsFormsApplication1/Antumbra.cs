@@ -18,10 +18,11 @@ namespace Antumbra
     public partial class Antumbra : Form
     {
         private System.Timers.Timer timer;
-        bool continuous = false, serialEnabled = false;
+        bool continuous = false;//, serialEnabled = false;
         Size pollingRectSize = new Size(50, 50);
-        OpenNETCF.IO.Ports.SerialPort serial;
+        //OpenNETCF.IO.Ports.SerialPort serial;
         //SerialPort serial;
+        SerialConnector serial;
         int width, height, x, y;
 
         public Antumbra()
@@ -31,8 +32,8 @@ namespace Antumbra
             this.height = Screen.PrimaryScreen.Bounds.Height;
             this.x = Screen.PrimaryScreen.Bounds.X;
             this.y = Screen.PrimaryScreen.Bounds.Y;
-            this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
-            this.serial.Open();
+            this.serial = new SerialConnector("COM4");
+            //this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
             /*this.serial = new SerialPort();
             this.serial.PortName = "COM4";
             this.serial.BaudRate = 115200;
@@ -57,7 +58,7 @@ namespace Antumbra
         }
 
         private void setBackToAvg()
-        {
+        {   
             int avgR = 0, avgG = 0, avgB = 0;
             var points = getPollingPoints(this.width, this.height, 0);
             Bitmap screen = getScreen();//Shot();
@@ -98,10 +99,12 @@ namespace Antumbra
             avgR /= divisor;
             avgG /= divisor;
             avgB /= divisor;
+            /*if (avgR < 20 && avgG < 20 && avgB < 20) //might as well not even try
+                turnOff(this.serial);*/
             Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-            if (this.serialEnabled) 
-                sendColorToSerial(avgColor);
-            this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
+            //if (this.serialEnabled) //TODO get rid of
+            sendColorToSerial(avgColor);
+            //this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
             screen.Dispose();//clean up for next screenshot
         }
 
@@ -167,7 +170,7 @@ namespace Antumbra
             this.continuous = !this.continuous; 
             if (this.continuous)
             {
-                timer = new System.Timers.Timer(50);
+                timer = new System.Timers.Timer(100);
                 timer.Elapsed += new System.Timers.ElapsedEventHandler(callSetBack);
                 timer.Enabled = true;
             }
@@ -179,19 +182,28 @@ namespace Antumbra
 
         private void toggleSerial_Click(object sender, EventArgs e)
         {
-            this.serialEnabled = !this.serialEnabled;
+            //this.serialEnabled = !this.serialEnabled;
         }
 
         private void sendColorToSerial(Color color)
         {
             byte[] command = convertColorToSerialCommand(color);
             byte[] stuffed = readyToSend(command);
+            this.serial.send(stuffed);
             //SerialPortFixer.Execute("COM4");
-            this.serial.Write(stuffed, 0, stuffed.Length);
-            foreach (byte current in stuffed)
+            /*try
             {
-                Console.WriteLine(current);
+                this.serial = new OpenNETCF.IO.Ports.SerialPort("COM4");
+                this.serial.Open();
+                this.serial.Write(stuffed, 0, stuffed.Length);
+                foreach (byte current in stuffed)
+                {
+                    Console.WriteLine(current);
+                }
+                this.serial.Close();
             }
+            catch (System.UnauthorizedAccessException)//OpenNETCF.IO.Serial.CommPortException) 
+            { }  */              
         }
 
         private byte[] readyToSend(byte[] command)
@@ -301,14 +313,15 @@ namespace Antumbra
             if (result == DialogResult.OK)
             {
                 this.BackColor = colorChoose.Color;
+                sendColorToSerial(colorChoose.Color);
             }
         }
 
-        public void Dispose() //clean up
+        /*public void Dispose() //clean up
         {
-            this.serial.Close();
+            this.serial.close();
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
+        }*/
     }
 }

@@ -51,6 +51,7 @@
       <DependentUpon>Antumbra.cs</DependentUpon>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="CommAPI.cs" />
     <Compile Include="DCB.cs" />
     <Compile Include="ISerialStreamCtrl.cs">
