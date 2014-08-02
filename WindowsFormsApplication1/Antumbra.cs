@@ -18,11 +18,13 @@ namespace Antumbra
     public partial class Antumbra : Form
     {
         private System.Timers.Timer screenTimer;//timer for screen color averaging
+        private Thread fadeThread;//thread for color fades
         bool continuous;//, serialEnabled;
         bool fadeEnabled;
         byte lastR, lastG, lastB;
         int offThreshold; //level at which all (RGB) must be under to turn off
         int fadeThreshold;
+        int sleepTime;//default time to sleep between color steps when changing
         int changeThreshold; //difference in colors needed to change
         Size pollingRectSize = new Size(50, 50);
         bool on;
@@ -46,20 +48,16 @@ namespace Antumbra
             this.offThreshold = 20;//TODO test how low this should be
             this.changeThreshold = 6; //see shouldChange(Color, Color) (lower is more sensitive)
             this.fadeThreshold = 10;//diff before taking smaller steps to destination color
+            this.sleepTime = 5;
             this.continuous = false;
             this.fadeEnabled = false;
+            this.fadeThread = new Thread(new ThreadStart(callColorFade));
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
         {
             //this.Hide();
             setBackToAvg();
-        }
-
-        private void callSetBack(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            setBackToAvg();
-            //Console.WriteLine("polling");
         }
 
         private void setBackToAvg()
@@ -106,7 +104,7 @@ namespace Antumbra
             avgG /= divisor;
             avgB /= divisor;
             Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-            fade(avgColor);
+            fade(avgColor, this.sleepTime);
             //sendColorToSerial(avgColor);
             //this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
             screen.Dispose();//clean up for next screenshot
@@ -202,9 +200,37 @@ namespace Antumbra
                 screenTimer.Enabled = true;
             }
             else
-            {
                 screenTimer.Enabled = false;
+        }
+
+        private void callSetBack(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            setBackToAvg();
+            //Console.WriteLine("polling");
+        }
+
+        private void colorFadeButton_Click(object sender, EventArgs e)
+        {
+            this.fadeEnabled = !this.fadeEnabled;
+            if (this.fadeEnabled)
+            {
+                fadeThread.Start();
             }
+            else
+                fadeThread.Abort();
+        }
+
+        private void callColorFade()
+        {
+            while (true)
+                colorFade();
+        }
+
+        private void colorFade()
+        {
+            Color[] colors = { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen, Color.Green, Color.Blue, Color.Purple, };
+            foreach (Color color in colors)
+                fade(color, 50);
         }
 
         private void turnOff() 
@@ -234,10 +260,10 @@ namespace Antumbra
                 return;
             int diff = calcDiff(color, newColor);
             //Console.WriteLine("diff - " + diff.ToString());
-            fade(newColor);
+            fade(newColor, this.sleepTime);
         }
 
-        private void fade(Color newColor) //TODO: perfect this
+        private void fade(Color newColor, int sleepTime) //TODO: perfect this
         {
             if (!this.serial.isReady())
             {//not ready
@@ -275,6 +301,7 @@ namespace Antumbra
                     return;//end this madness
                 if (!shouldChange(newColor, step))//close enough
                     return;
+                Thread.Sleep(sleepTime);
             }
         }
 
@@ -405,18 +432,8 @@ namespace Antumbra
             if (result == DialogResult.OK)
             {
                 //this.BackColor = colorChoose.Color;
-                fade(colorChoose.Color);
+                fade(colorChoose.Color, this.sleepTime);
             }
-        }
-
-        private void colorFadeButton_Click(object sender, EventArgs e)
-        {
-            fade(Color.Red);
-            fade(Color.Purple);
-            fade(Color.Blue);
-            fade(Color.Green);
-            fade(Color.Yellow);
-            fade(Color.Orange);
         }
 
         private void powerToggleBtn_Click(object sender, EventArgs e)
