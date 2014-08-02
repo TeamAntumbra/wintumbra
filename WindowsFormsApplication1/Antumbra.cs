@@ -47,7 +47,7 @@ namespace Antumbra
             this.lastB = 255;
             this.offThreshold = 20;//TODO test how low this should be
             this.changeThreshold = 6; //see shouldChange(Color, Color) (lower is more sensitive)
-            this.fadeThreshold = 10;//diff before taking smaller steps to destination color
+            this.fadeThreshold = 3;//diff before taking smaller steps to destination color
             this.sleepTime = 5;
             this.continuous = false;
             this.fadeEnabled = false;
@@ -214,7 +214,15 @@ namespace Antumbra
             this.fadeEnabled = !this.fadeEnabled;
             if (this.fadeEnabled)
             {
-                fadeThread.Start();
+                try
+                {
+                    fadeThread.Start();
+                }
+                catch (System.Threading.ThreadStateException)
+                {
+                    fadeThread = new Thread(new ThreadStart(callColorFade));
+                    fadeThread.Start();
+                }
             }
             else
                 fadeThread.Abort();
@@ -270,6 +278,8 @@ namespace Antumbra
                 Console.WriteLine("Serial not ready");
                 return; //dont bother trying
             }
+            if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
+                return;//no update needed
             int r = this.lastR;
             int g = this.lastG;
             int b = this.lastB;
@@ -313,6 +323,7 @@ namespace Antumbra
                 updateLast(color);
                 return;
             }
+            turnOn();
             byte[] command = convertColorToSerialCommand(color);
             byte[] stuffed = readyToSend(command);
             this.serial.send(stuffed);
