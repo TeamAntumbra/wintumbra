@@ -192,14 +192,16 @@ namespace Antumbra
 
         private void turnOff() 
         {
-            byte[] command = {0x7D, 0x04, 0x00, 0x7E};
-            this.serial.send(command);
+            byte[] command = { 0x04, 0 };
+            byte[] stuffed = readyToSend(command);
+            this.serial.send(stuffed);
         }
 
         private void turnOn()
         {
-            byte[] command = { 0x7D, 0x04, 0x15, 0x7E };
-            this.serial.send(command);
+            byte[] command = { 0x04, 15 };
+            byte[] stuffed = readyToSend(command);
+            this.serial.send(stuffed);
         }
 
         private void sendColorToSerial(Color color)
@@ -223,13 +225,12 @@ namespace Antumbra
             { }  */              
         }
 
-        private byte[] readyToSend(byte[] command)
+        private byte[] readyToSend(byte[] command)//will add start, stop, escape, and checksum
         {
             byte escape = 0x7D;
             byte start = 0x7E;
             byte end = 0x7F;
             List<byte> result = new List<byte>();
-            result.Add(start);
             foreach (byte b in command)
             {
                 byte current;
@@ -250,10 +251,12 @@ namespace Antumbra
                 }
                 else//no transformation needed
                 {
-                    current = b;
+                    current = (byte)b;
                 }
                 result.Add(current);
             }
+            result.Add(generateChecksum(result.ToArray<byte>()));
+            result.Insert(0, start);
             result.Add(end);
             return result.ToArray<byte>();
         }
@@ -272,8 +275,6 @@ namespace Antumbra
             bytes.Add(green);
             byte blue = color.B;
             bytes.Add(blue);
-            byte checkSum = generateChecksum(bytes.ToArray<byte>());
-            bytes.Add(checkSum);
             return bytes.ToArray<byte>();
         }
 
