@@ -49,14 +49,17 @@ namespace Antumbra
             if (this.isReady())
             {
                 this.serial.Write(data, 0, data.Length);
+                Console.Write("Sent: ");
                 foreach (byte current in data)
                 {
-                    Console.WriteLine("{0:X}", current);
+                    Console.Write("{0:X}, ", current);
                 }
-                foreach (byte current in this.serial.ReadToByte(0x7E))
+                Console.Write("\nRecieved: ");
+                foreach (byte current in this.serial.ReadToByte(0x7F))
                 {
-                    Console.WriteLine("{0:X}", current);
+                    Console.Write("{0:X}, ", current);
                 }
+                Console.WriteLine("");
                 return true;//success
             }
             return false;//fail

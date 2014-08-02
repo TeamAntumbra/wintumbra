@@ -303,13 +303,13 @@ namespace OpenNETCF.IO.Ports
         {
             List<byte> read = new List<byte>();
             int currentInt = this.ReadByte();
-            if (currentInt == -1)
+            if (currentInt.Equals(-1))
             {
                 return new byte[0];
             }
             byte current = (byte)currentInt;
             read.Add(current);
-            while (current != end)
+            while (!current.Equals(end))
             {
                 current = (byte)this.ReadByte();
                 read.Add(current);

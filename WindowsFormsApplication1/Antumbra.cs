@@ -19,6 +19,7 @@ namespace Antumbra
     {
         private System.Timers.Timer timer;
         bool continuous = false;//, serialEnabled = false;
+        bool on = true;//depends on how the antumbra starts up
         Size pollingRectSize = new Size(50, 50);
         //OpenNETCF.IO.Ports.SerialPort serial;
         //SerialPort serial;
@@ -58,7 +59,8 @@ namespace Antumbra
         }
 
         private void setBackToAvg()
-        {   
+        {
+            turnOn();//and reset brightness to full
             int avgR = 0, avgG = 0, avgB = 0;
             var points = getPollingPoints(this.width, this.height, 0);
             Bitmap screen = getScreen();//Shot();
@@ -99,11 +101,14 @@ namespace Antumbra
             avgR /= divisor;
             avgG /= divisor;
             avgB /= divisor;
-            /*if (avgR < 20 && avgG < 20 && avgB < 20) //might as well not even try
-                turnOff(this.serial);*/
-            Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-            //if (this.serialEnabled) //TODO get rid of
-            sendColorToSerial(avgColor);
+            if (avgR < 20 && avgG < 20 && avgB < 20) //might as well not even try
+                turnOff();
+            else//keep on and send color
+            {
+                Color avgColor = Color.FromArgb(avgR, avgG, avgB);
+                //if (this.serialEnabled) //TODO get rid of
+                sendColorToSerial(avgColor);
+            }
             //this.BackColor = avgColor;//this has issues with text fields in the same window (needs thread safety)
             screen.Dispose();//clean up for next screenshot
         }
@@ -183,6 +188,18 @@ namespace Antumbra
         private void toggleSerial_Click(object sender, EventArgs e)
         {
             //this.serialEnabled = !this.serialEnabled;
+        }
+
+        private void turnOff() 
+        {
+            byte[] command = {0x7D, 0x04, 0x00, 0x7E};
+            this.serial.send(command);
+        }
+
+        private void turnOn()
+        {
+            byte[] command = { 0x7D, 0x04, 0x15, 0x7E };
+            this.serial.send(command);
         }
 
         private void sendColorToSerial(Color color)
