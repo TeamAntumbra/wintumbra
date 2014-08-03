@@ -19,6 +19,8 @@ namespace Antumbra
     {
         private System.Timers.Timer screenTimer;//timer for screen color averaging
         private Thread fadeThread;//thread for color fades
+        private Color color;//newest generated color for displaying
+        private Color currentColor;//most recent successfully sent set command color
         bool continuous;//, serialEnabled;
         bool fadeEnabled;
         byte lastR, lastG, lastB;
@@ -45,13 +47,16 @@ namespace Antumbra
             this.lastR = 255;
             this.lastG = 255;
             this.lastB = 255;
-            this.offThreshold = 20;//TODO test how low this should be
+            this.currentColor = Color.White;//depends on how the Antumbra starts up
+            this.color = Color.Black;
+            this.offThreshold = 10;//TODO test how low this should be
             this.changeThreshold = 6; //see shouldChange(Color, Color) (lower is more sensitive)
-            this.fadeThreshold = 3;//diff before taking smaller steps to destination color
+            this.fadeThreshold = 8;//diff before taking smaller steps to destination color
             this.sleepTime = 5;
             this.continuous = false;
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
+            turnOff();
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -62,7 +67,7 @@ namespace Antumbra
 
         private void setBackToAvg()
         {
-            turnOn();//and reset brightness to full
+            //turnOn();//and reset brightness to full
             int avgR = 0, avgG = 0, avgB = 0;
             var points = getPollingPoints(this.width, this.height, 0);
             Bitmap screen = getScreen();//Shot();
@@ -196,14 +201,14 @@ namespace Antumbra
             if (this.continuous)
             {
                 screenTimer = new System.Timers.Timer(50);//20 hz
-                screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetBack);
+                screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
                 screenTimer.Enabled = true;
             }
             else
                 screenTimer.Enabled = false;
         }
 
-        private void callSetBack(object sender, System.Timers.ElapsedEventArgs e)
+        private void callSetAvg(object sender, System.Timers.ElapsedEventArgs e)
         {
             setBackToAvg();
             //Console.WriteLine("polling");
