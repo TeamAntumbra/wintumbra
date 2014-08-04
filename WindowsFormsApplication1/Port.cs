@@ -361,6 +361,7 @@ namespace OpenNETCF.IO.Serial
 
 				// ClearCommError failed!
                 string error = String.Format("CreateFile Failed: {0}", e);
+                Console.WriteLine("create failed");
                 return false;//serial is not available
 				//throw new CommPortException(error);
 			}

@@ -9,11 +9,20 @@ namespace Antumbra
     class SerialConnector
     {
         OpenNETCF.IO.Ports.SerialPort serial;
-        bool ready;
+        private bool ready;
+        private String port;
 
         public SerialConnector(String port)
         {
+            Console.WriteLine("new serial port");
+            this.port = port;
+            this.open();
+        }
+
+        private void open()
+        {
             this.serial = new OpenNETCF.IO.Ports.SerialPort(port);
+            this.serial.ReadTimeout = 250;
             try
             {
                 this.serial.Open();
@@ -32,16 +41,26 @@ namespace Antumbra
             {
                 try//try to make ready
                 {
-                    this.serial.Open();
-                    this.ready = true;
+                    /*this.serial.Close();
+                    this.serial = new OpenNETCF.IO.Ports.SerialPort(this.port);*/
+                    this.open();
                 }
                 catch (System.UnauthorizedAccessException)
                 {
-                    //Console.WriteLine("not ready");
+                    Console.WriteLine("not ready");
+                    this.ready = false;
+                }
+                catch (System.InvalidOperationException)
+                {
                     this.ready = false;
                 }
             }
             return this.ready;
+        }
+
+        public void notReady()
+        {
+            this.ready = false;
         }
 
         public bool send(byte[] data)
@@ -49,26 +68,39 @@ namespace Antumbra
             if (this.isReady())
             {
                 this.serial.Write(data, 0, data.Length);
-                //Console.Write("Sent: ");
+                Console.Write("Sent: ");
                 foreach (byte current in data)
                 {
-                    //Console.Write("{0:X}, ", current);
+                    Console.Write("{0:X}, ", current);
                 }
-                //Console.Write("\nRecieved: ");
-                foreach (byte current in this.serial.ReadToByte(0x7F))
+                Console.Write("\nRecieved: ");
+                byte[] recieved = this.serial.ReadToByte(0x7F);
+                if (recieved.Length == 0)//nothing recieved
                 {
-                    //Console.Write("{0:X}, ", current);
+                    Console.WriteLine("Nothing recieved.");
+                    this.ready = false;
+                    return false;
                 }
-                //Console.WriteLine("");
+                foreach (byte current in recieved)
+                {
+                    Console.Write("{0:X}, ", current);
+                }
+                Console.WriteLine("");
                 return true;//success
             }
             return false;//fail
         }
 
+        public void setBaud(int baud)
+        {
+            this.serial.BaudRate = baud;
+        }
+
         public void close()
         {
-            if(this.isReady())
-                this.serial.Close();
+            this.serial.Close();
+            this.serial.Dispose();
+            this.serial = null;
         }
     }
 }
