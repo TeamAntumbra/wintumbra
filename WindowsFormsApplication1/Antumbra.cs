@@ -32,8 +32,6 @@ namespace Antumbra
         int changeThreshold; //difference in colors needed to change
         Size pollingRectSize = new Size(10, 10);
         //bool on;
-        //OpenNETCF.IO.Ports.SerialPort serial;
-        //SerialPort serial;
         SerialConnector serial;
         int width, height, x, y;
 
@@ -98,6 +96,10 @@ namespace Antumbra
             lastG = (byte)avgG;
             lastB = (byte)avgB;
         }
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+        //BitBlt - used to get screen info in an efficent manner
 
         private Bitmap getScreen()//return bitmap of entire screen
         {
@@ -280,16 +282,7 @@ namespace Antumbra
                 this.on = true;//update
         } */
 
-        private void sendColorToSerial(Color newColor)
-        {
-            Color color = Color.FromArgb(this.lastR, this.lastG, this.lastB);
-            if (!shouldChange(color, newColor))//dont change leds
-                return;
-            int diff = calcDiff(color, newColor);
-            fade(newColor, this.fadeThreshold, this.sleepTime);
-        }
-
-        private void fade(Color newColor, int threshold, int sleepTime) //TODO: perfect this
+        private void fade(Color newColor, int threshold, int sleepTime) //TODO: make this smarter
         {
             /*if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
                 return;//no update needed*/
@@ -348,103 +341,6 @@ namespace Antumbra
             this.lastG = color.G;
             this.lastB = color.B;
         }
-
-        private byte[] readyToSend(byte[] command)//will add start, stop, escape, and checksum
-        {
-            byte escape = 0x7D;
-            byte start = 0x7E;
-            byte end = 0x7F;
-            List<byte> result = new List<byte>();
-            foreach (byte b in command)
-            {
-                byte current;
-                if (b == escape)
-                {
-                    result.Add(escape);
-                    current = (byte)(b ^ 0x20);
-                }
-                else if (b == start)
-                {
-                    result.Add(escape);
-                    current = (byte)(b ^ 0x20);
-                }
-                else if (b == end)
-                {
-                    result.Add(escape);
-                    current = (byte)(b ^ 0x20);
-                }
-                else//no transformation needed
-                {
-                    current = (byte)b;
-                }
-                result.Add(current);
-            }
-            result.Add(generateChecksum(result.ToArray<byte>()));
-            result.Insert(0, start);
-            result.Add(end);
-            return result.ToArray<byte>();
-        }
-
-        private byte[] convertColorToSerialCommand(Color color) //needs to follow the protocol in docs repo
-        {
-            byte command = 0x02;//command code for setting color
-            List<byte> bytes = new List<byte>();
-            bytes.Add(command);
-            byte red = color.R;
-            bytes.Add(red);
-            byte green = color.G;
-            bytes.Add(green);
-            byte blue = color.B;
-            bytes.Add(blue);
-            return bytes.ToArray<byte>();
-        }
-
-        private byte generateChecksum(byte[] bytes)
-        {
-            uint sum = 0;
-            foreach (byte b in bytes)
-            {
-                sum += b;
-            }
-            return (byte)(sum % 0x100);
-        }
-
-        /*private Bitmap getScreenShot()
-        {
-            Size sz = Screen.PrimaryScreen.Bounds.Size;
-            IntPtr hDesk = GetDesktopWindow();
-            IntPtr hSrce = GetWindowDC(hDesk);
-            IntPtr hDest = CreateCompatibleDC(hSrce);
-            IntPtr hBmp = CreateCompatibleBitmap(hSrce, sz.Width, sz.Height);
-            IntPtr hOldBmp = SelectObject(hDest, hBmp);
-            bool b = BitBlt(hDest, 0, 0, sz.Width, sz.Height, hSrce, 0, 0, CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
-            Bitmap bmp = Bitmap.FromHbitmap(hBmp);
-            SelectObject(hDest, hOldBmp);
-            DeleteObject(hBmp);
-            DeleteDC(hDest);
-            ReleaseDC(hDesk, hSrce);
-            return bmp;
-        }
-        // P/Invoke declarations
-        [DllImport("gdi32.dll")]
-        static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int
-        wDest, int hDest, IntPtr hdcSource, int xSrc, int ySrc, CopyPixelOperation rop);
-        [DllImport("user32.dll")]
-        static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDc);
-        [DllImport("gdi32.dll")]
-        static extern IntPtr DeleteDC(IntPtr hDc);
-        [DllImport("gdi32.dll")]
-        static extern IntPtr DeleteObject(IntPtr hDc);
-        [DllImport("gdi32.dll")]
-        static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
-        [DllImport("gdi32.dll")]
-        static extern IntPtr CreateCompatibleDC(IntPtr hdc);
-        [DllImport("gdi32.dll")]
-        static extern IntPtr SelectObject(IntPtr hdc, IntPtr bmp);
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetDesktopWindow();
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowDC(IntPtr ptr);*/
 
         private void powerToggleBtn_Click(object sender, EventArgs e)
         {
