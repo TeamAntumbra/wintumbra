@@ -3,104 +3,89 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace Antumbra
 {
     class SerialConnector
     {
-        OpenNETCF.IO.Ports.SerialPort serial;
-        private bool ready;
-        private String port;
-
-        public SerialConnector(String port)
+        const int DEAD = 0;
+        const int IDLE = 1;
+        const int ALIVE = 2;
+        private int pid, vid, state;
+        private IntPtr ctx, dev;
+        public SerialConnector(int vid, int pid)
         {
-            Console.WriteLine("new serial port");
-            this.port = port;
-            this.open();
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
+            this.pid = pid;
+            this.vid = vid;
+            AnCtx_Init(ptr);
+            this.ctx = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
+            this.dev = IntPtr.Zero;
         }
 
-        private void open()
+        public bool setup() //return true if success, else false
         {
-            this.serial = new OpenNETCF.IO.Ports.SerialPort(port);
-            this.serial.ReadTimeout = 250;
-            try
-            {
-                this.serial.Open();
-                this.ready = true;
+            if (findDevice()) {
+                return true;
             }
-            catch (System.UnauthorizedAccessException)//not available
-            {
-                this.ready = false;
-            }
+            return false;
         }
 
-        public bool isReady()
+        private bool findDevice()//returns true if device is found, else false
         {
-            if (this.ready) { }
-            else//not ready
-            {
-                try//try to make ready
-                {
-                    /*this.serial.Close();
-                    this.serial = new OpenNETCF.IO.Ports.SerialPort(this.port);*/
-                    this.open();
-                }
-                catch (System.UnauthorizedAccessException)
-                {
-                    Console.WriteLine("not ready");
-                    this.ready = false;
-                }
-                catch (System.InvalidOperationException)
-                {
-                    this.ready = false;
+            AnDevice_Populate(this.ctx);
+            for (int i = 0; i < AnDevice_GetCount(this.ctx); i++) {
+                this.dev = AnDevice_Get(this.ctx, i);
+                if (AnDevice_Open(this.ctx, this.dev) == 0) {
+                    return true;
                 }
             }
-            return this.ready;
+            return false;
         }
 
-        public void notReady()
+        private void updateState()
         {
-            this.ready = false;
+            if (this.dev == null)
+                this.state = DEAD;
+            else
+                this.state = AnDevice_State(this.dev);
         }
 
-        public bool send(byte[] data)
+        public bool send(byte r, byte g, byte b)//return true if success, else false
         {
-            if (this.isReady())
-            {
-                this.serial.Write(data, 0, data.Length);
-                Console.Write("Sent: ");
-                foreach (byte current in data)
-                {
-                    Console.Write("{0:X}, ", current);
-                }
-                Console.Write("\nRecieved: ");
-                byte[] recieved = this.serial.ReadToByte(0x7F);
-                if (recieved.Length == 0)//nothing recieved
-                {
-                    Console.WriteLine("Nothing recieved.");
-                    this.ready = false;
-                    return false;
-                }
-                foreach (byte current in recieved)
-                {
-                    Console.Write("{0:X}, ", current);
-                }
-                Console.WriteLine("");
-                return true;//success
-            }
-            return false;//fail
-        }
-
-        public void setBaud(int baud)
-        {
-            this.serial.BaudRate = baud;
+            //if (state == ALIVE) {
+                return AnDevice_SetRGB_S(this.ctx, this.dev, r, g, b) == 0;
+           /* }
+            return false;*/
         }
 
         public void close()
         {
-            this.serial.Close();
-            this.serial.Dispose();
-            this.serial = null;
+             
         }
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnCtx_Init(IntPtr ctx);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnCtx_Deinit(IntPtr ctx);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnDevice_Populate(IntPtr ctx);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnDevice_GetCount(IntPtr ctx);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern IntPtr AnDevice_Get(IntPtr ctx, int i);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern void AnDevice_Info(IntPtr dev, UInt16 vid, UInt16 pid, IntPtr serial);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnDevice_State(IntPtr dev);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnDevice_Open(IntPtr ctx, IntPtr dev);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnDevice_Close(IntPtr ctx, IntPtr dev);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern void AnDevice_Free(IntPtr dev);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
+        public static extern int AnDevice_SetRGB_S(IntPtr ctx, IntPtr dev, byte r, byte g, byte b);
     }
 }
