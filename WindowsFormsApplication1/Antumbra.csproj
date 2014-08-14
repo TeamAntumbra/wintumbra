@@ -62,6 +62,8 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -72,8 +74,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cudafy.NET">
+      <HintPath>..\..\..\..\CUDAfy.NET\Cudafy.NET.dll</HintPath>
+    </Reference>
     <Reference Include="LibUsbDotNet">
       <HintPath>..\..\..\..\..\..\..\Program Files\LibUsbDotNet\LibUsbDotNet.dll</HintPath>
     </Reference>
@@ -96,6 +102,8 @@
     <Compile Include="Antumbra.Designer.cs">
       <DependentUpon>Antumbra.cs</DependentUpon>
     </Compile>
+    <Compile Include="DriverInstaller.cs" />
+    <Compile Include="ScreenGrabber.cs" />
     <Compile Include="SerialConnector.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>

@@ -44,6 +44,7 @@
             "Off",
             "Color Fade",
             "HSV Sweep",
+            "Sin Wave",
             "Screen Responsive",
             "Manual Selection"});
             this.modeComboBox.Location = new System.Drawing.Point(53, 175);

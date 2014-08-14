@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,27 +28,24 @@ namespace Antumbra
         bool fadeEnabled;
         byte lastR, lastG, lastB;
         //int offThreshold; //level at which all (RGB) must be under to turn off
-        int fadeThreshold;
-        int sleepTime;//default time to sleep between color steps when changing
+        //int fadeThreshold;
+        //int sleepTime;//default time to sleep between color steps when changing
         int changeThreshold; //difference in colors needed to change
         Size pollingRectSize = new Size(10, 10);
         //bool on;
-        SerialConnector serial;
-        int width, height, x, y;
+        private SerialConnector serial;
+        private ScreenGrabber screen;
 
         public Antumbra()
         {
             //installDriver();
             this.serial = new SerialConnector(0x03EB, 0x2040);
+            this.screen = new ScreenGrabber();
             Console.WriteLine(this.serial.setup());
             this.icon = new System.Windows.Forms.NotifyIcon();
             this.icon.BalloonTipTitle = "Antumbra|Glow";
             this.icon.BalloonTipText = "Click the icon for a menu\nDouble click for to open";
             InitializeComponent();
-            this.width = Screen.PrimaryScreen.Bounds.Width;
-            this.height = Screen.PrimaryScreen.Bounds.Height;
-            this.x = Screen.PrimaryScreen.Bounds.X;
-            this.y = Screen.PrimaryScreen.Bounds.Y;
             //this.on = true; ;//depends on how the Antumbra starts up
             this.lastR = 0;
             this.lastG = 0;
@@ -55,9 +53,8 @@ namespace Antumbra
             this.currentColor = Color.Black;//depends on how the Antumbra starts up
             this.color = Color.Black;
             //this.offThreshold = 10;//TODO test how low this should be
-            this.changeThreshold = 6; //see shouldChange(Color, Color) (lower is more sensitive)
-            this.fadeThreshold = 6;//diff before taking smaller steps to destination color
-            this.sleepTime = 0;//time to sleep after taking each step
+            this.changeThreshold = 7; //see shouldChange(Color, Color) (lower is more sensitive)
+            //this.fadeThreshold = 3;
             this.continuous = false;
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
@@ -74,13 +71,17 @@ namespace Antumbra
 
         private void setBackToAvg()
         {
-            int avgR = 0, avgG = 0, avgB = 0;
-            var points = getPollingPoints((float)this.width, (float)this.height, 4, 4);
+            fade(this.screen.getScreenAvgColor(), 0, 3);
+            //int avgR = 0, avgG = 0, avgB = 0;
+            /*var points = getPollingPoints((float)this.width, (float)this.height, this.widthDivs, this.heightDivs);
             Bitmap screen = getScreen();//Shot();
+            
             foreach (Point point in points)
             {
-                Bitmap section = getSectionOf(screen, point, pollingRectSize);
-                Color areaAvg = getAvgFromBitmap(section);
+                //Bitmap section = getSectionOf(screen, point, pollingRectSize);
+                //Color areaAvg = getAvgFromBitmap(section);
+                //this.screenPixel = new Bitmap(1, 1, PixelFormat.Format16bppRgb555);
+                Color areaAvg = getColorAt(point.X, point.Y, 30, 30);
                 avgR += areaAvg.R;
                 avgG += areaAvg.G;
                 avgB += areaAvg.B;
@@ -90,47 +91,9 @@ namespace Antumbra
             avgG /= divisor;
             avgB /= divisor;
             Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-            fade(avgColor, this.fadeThreshold, this.sleepTime);
-            screen.Dispose();//clean up for next screenshot
-            lastR = (byte)avgR;
-            lastG = (byte)avgG;
-            lastB = (byte)avgB;
+            fade(avgColor, this.sleepTime, 4);*/
         }
-
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
-        //BitBlt - used to get screen info in an efficent manner
-
-        private Bitmap getScreen()//return bitmap of entire screen
-        {
-            Bitmap result = new Bitmap(this.width, this.height, PixelFormat.Format16bppRgb555);
-            using (Graphics gfxScreenshot = Graphics.FromImage(result))
-                gfxScreenshot.CopyFromScreen(this.x, this.y, 0, 0, new Size(this.width, this.height));//, CopyPixelOperation.SourceCopy)
-            return result;
-        }
-
-        private Bitmap getSectionOf(Bitmap screen, Point topLeft, Size size)
-        {
-            Rectangle wanted = new Rectangle(topLeft, size);
-            return screen.Clone(wanted, PixelFormat.Format16bppRgb555);
-        }
-
-        private Point[] getPollingPoints(float width, float height, int widthDivs, int heightDivs)
-        {
-            List<Point> points = new List<Point>();
-            float hStep = height / heightDivs;
-            float wStep = width / widthDivs;
-            for (float y = hStep; y < height; y += hStep)
-            {
-                for (float x = wStep; x < width; x += wStep)
-                {
-                    //Console.WriteLine(x.ToString() + " " + y.ToString());
-                    points.Add(new Point((int)x, (int)y));
-                }
-            }
-            return points.ToArray();
-        }
-
+        
         private int calcDiff(Color color, Color other)
         {
             int r1 = color.R;
@@ -151,41 +114,12 @@ namespace Antumbra
             return calcDiff(color, other) > this.changeThreshold;
         }
 
-        private Color getAvgFromBitmap(Bitmap bm)
-        {
-            int red = 0, blue = 0, green = 0;
-            int total = bm.Width * bm.Height;
-            for (int r = 0; r < bm.Width; r++)
-            {
-                for (int c = 0; c < bm.Height; c++)
-                {
-                    Color current = bm.GetPixel(r, c);
-                    red += current.R;
-                    blue += current.B;
-                    green += current.G;
-                }
-            }
-            return Color.FromArgb(red / total, green / total, blue / total);
-        }
-
-        private Bitmap getScreenAvgAt(Point point, Size size)
-        {
-            Bitmap result;
-            result = new Bitmap(size.Width, size.Height);
-            Graphics gfxScreenshot = Graphics.FromImage(result);
-            int height = Screen.PrimaryScreen.Bounds.Height;
-            int width = Screen.PrimaryScreen.Bounds.Width;
-            Size s = new Size(width / 64, height / 64);
-            gfxScreenshot.CopyFromScreen(point.X, point.Y, 0, 0, s, CopyPixelOperation.SourceCopy);
-            return result;
-        }
-
         private void continuousCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             this.continuous = !this.continuous;
             if (this.continuous)
             {
-                screenTimer = new System.Timers.Timer(100);//20 hz
+                screenTimer = new System.Timers.Timer(5);//200 hz
                 screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
                 screenTimer.Enabled = true;
             }
@@ -227,7 +161,7 @@ namespace Antumbra
         {
             Color[] colors = { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen, Color.Green, Color.Blue, Color.Purple, };
             foreach (Color color in colors)
-                fade(color, 1, 0);//color, fade percision, sleep time
+                fade(color, 0, 1);//color, step sleep time
         }
 
         private void callSinFade()
@@ -240,8 +174,9 @@ namespace Antumbra
         {
             for (double i = 0; i < Math.PI; i += .01)
             {
-                Color newColor = Color.FromArgb((int)i, (int)i, (int)i);
-                changeTo(newColor);
+                byte byte_i = (byte)(Math.Sin(i) * 255);
+                changeTo(byte_i, byte_i, byte_i);
+                Thread.Sleep(20);
             }
         }
 
@@ -258,7 +193,7 @@ namespace Antumbra
             for (double h = 0; h <= 360; h++)
             {
                 int[] rgb = this.HsvToRgb(h, s, v);
-                fade(Color.FromArgb(rgb[0], rgb[1], rgb[2]), 1, 10);
+                fade(Color.FromArgb(rgb[0], rgb[1], rgb[2]), 10, 1);
             }
         }
 
@@ -282,19 +217,35 @@ namespace Antumbra
                 this.on = true;//update
         } */
 
-        private void fade(Color newColor, int threshold, int sleepTime) //TODO: make this smarter
+        private void fade(Color newColor, int sleepTime, int stepDivider) //TODO: make this smarter 
         {
-            /*if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
+            if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
                 return;//no update needed*/
-            int r = this.lastR;
-            int g = this.lastG;
-            int b = this.lastB;
-            bool rDone = false, gDone = false, bDone = false;
-            while (true)
+            float r = this.lastR;
+            float g = this.lastG;
+            float b = this.lastB;
+            int diff = calcDiff(Color.FromArgb((int)r,(int)g,(int)b), newColor);
+            int steps = diff / 3 / stepDivider;
+            if (steps <= 0)
+                steps = 1;
+            int stepSize = diff / steps;
+            float rStep = (newColor.R - r) / steps;
+            float gStep = (newColor.G - g) / steps;
+            float bStep = (newColor.B - b) / steps;
+            for (int i = 0; i < steps; i++) {
+                r += rStep;
+                g += gStep;
+                b += bStep;
+                //Console.WriteLine(r + " " + g + ' ' + b + ' ' + steps + ' ' + rStep + ' ' + gStep + ' ' + bStep);
+                changeTo((byte)r, (byte)g, (byte)b);
+                Thread.Sleep(sleepTime);
+            }
+            //bool rDone = false, gDone = false, bDone = false;
+            /*while (true) //dumb way
             {
                 if (newColor.R - r >= threshold)
                     r += threshold;
-                else if (r - newColor.R >= threshold)
+                else if (r - newColor.R >= threshold)                    
                     r -= threshold;
                 else
                     rDone = true;
@@ -317,10 +268,10 @@ namespace Antumbra
                 if (!shouldChange(newColor, step))//close enough
                     return;
                 //Thread.Sleep(sleepTime);
-            }
+            }*/
         }
 
-        private void changeTo(Color color)
+        private void changeTo(byte r, byte g, byte b)
         {
             /*if (color.R < this.offThreshold && color.G < this.offThreshold && color.B < this.offThreshold)
             {
@@ -329,17 +280,17 @@ namespace Antumbra
                 return;
             }*/
             //Console.WriteLine(color.R.ToString() + " " + color.G.ToString() + " " + color.B.ToString());
-            if (this.serial.send(color.R, color.G, color.B))
-                updateLast(color);
+            if (this.serial.send(r, g, b))
+                updateLast(r, g, b);
             else { }
                 //Console.WriteLine("this is not working");
         }
 
-        private void updateLast(Color color)
+        private void updateLast(byte r, byte g, byte b)
         {
-            this.lastR = color.R;
-            this.lastG = color.G;
-            this.lastB = color.B;
+            this.lastR = r;
+            this.lastG = g;
+            this.lastB = b;
         }
 
         private void powerToggleBtn_Click(object sender, EventArgs e)
@@ -405,7 +356,7 @@ namespace Antumbra
                 if (this.fadeEnabled)
                     this.fadeThread.Abort();
                 this.fadeEnabled = false;
-                this.screenTimer = new System.Timers.Timer(50);//20 hz
+                this.screenTimer = new System.Timers.Timer(100);//10 hz
                 this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
                 this.screenTimer.Enabled = true;
             }
@@ -419,8 +370,16 @@ namespace Antumbra
                 if (result == DialogResult.OK)
                 {
                     //this.BackColor = colorChoose.Color;
-                    fade(colorChoose.Color, 1, 0);
+                    fade(colorChoose.Color, 0, 1);
                 }
+            }
+            else if (mode.Equals("Sin Wave")) {
+                if (this.fadeEnabled)
+                    this.fadeThread.Abort();
+                this.screenTimer.Enabled = false;
+                this.fadeThread = new Thread(new ThreadStart(callSinFade));
+                this.fadeThread.Start();
+                this.fadeEnabled = true;
             }
             else { Console.WriteLine("This should never happen"); }//invalid choice?
         }

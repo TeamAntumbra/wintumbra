@@ -23,11 +23,13 @@ namespace Antumbra
             AnCtx_Init(ptr);
             this.ctx = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
             this.dev = IntPtr.Zero;
+            this.state = DEAD;
         }
 
         public bool setup() //return true if success, else false
         {
             if (findDevice()) {
+                updateState();
                 return true;
             }
             return false;
@@ -55,10 +57,10 @@ namespace Antumbra
 
         public bool send(byte r, byte g, byte b)//return true if success, else false
         {
-            //if (state == ALIVE) {
+            if (state == ALIVE) {
                 return AnDevice_SetRGB_S(this.ctx, this.dev, r, g, b) == 0;
-           /* }
-            return false;*/
+            }
+            return false;
         }
 
         public void close()
