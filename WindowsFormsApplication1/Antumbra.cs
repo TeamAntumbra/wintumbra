@@ -46,6 +46,7 @@ namespace Antumbra
             this.icon.Icon = Properties.Resources.favicon;
             this.icon.BalloonTipTitle = "Antumbra|Glow";
             this.icon.BalloonTipText = "Click the icon for a menu\nDouble click for to open";
+            this.icon.MouseDoubleClick += notifyIcon_MouseDoubleClick;
             InitializeComponent();
             //this.on = true; ;//depends on how the Antumbra starts up
             this.lastR = 0;
@@ -72,7 +73,10 @@ namespace Antumbra
 
         private void setBackToAvg()
         {
-            fade(this.screen.getScreenAvgColor(), 0, 2);
+            Color newColor = this.screen.getScreenAvgColor();
+            if (newColor.Equals(Color.Empty))//something went wrong
+                return;
+            fade(newColor, 0, 2);//fade using a 2-step (lol)
             //int avgR = 0, avgG = 0, avgB = 0;
             /*var points = getPollingPoints((float)this.width, (float)this.height, this.widthDivs, this.heightDivs);
             Bitmap screen = getScreen();//Shot();
@@ -168,16 +172,18 @@ namespace Antumbra
         private void callSinFade()
         {
             while (true)
-                sinFade();
+                sinFade(20);//TODO make configurable
         }
 
-        private void sinFade()
+        private void sinFade(int sleepTime)
         {
-            for (double i = 0; i < Math.PI; i += .01)
+            for (double i = 0; i < Math.PI*2; i += .01)
             {
-                byte byte_i = (byte)(Math.Sin(i) * 255);
-                changeTo(byte_i, byte_i, byte_i);
-                Thread.Sleep(20);
+                if (i <= Math.PI) {//in positive half
+                    byte byte_i = (byte)(Math.Sin(i) * 255);
+                    changeTo(byte_i, byte_i, byte_i);
+                }
+                Thread.Sleep(sleepTime);
             }
         }
 
@@ -304,7 +310,7 @@ namespace Antumbra
 
         private void Antumbra_Resize(object sender, EventArgs e)
         {
-            if (FormWindowState.Minimized == this.WindowState)
+           /* if (FormWindowState.Minimized == this.WindowState)
             {
                 this.icon.Visible = true;
                 this.icon.ShowBalloonTip(2500);
@@ -313,7 +319,7 @@ namespace Antumbra
             else if (FormWindowState.Normal == this.WindowState)
             {
                 this.icon.Visible = false;
-            }
+            }*/
         }
 
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)

@@ -164,6 +164,8 @@ namespace Antumbra
             }
 
             int count = width * height - dropped;
+            if (count == 0)
+                return Color.Empty;
             int avgR = (int)(totals[2] / count);
             int avgG = (int)(totals[1] / count);
             int avgB = (int)(totals[0] / count);
