@@ -13,7 +13,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO.Ports;
-using System.Management;
 
 namespace Antumbra
 {
@@ -497,65 +496,5 @@ namespace Antumbra
             if (i > 255) return 255;
             return i;
         }//here is taken from StackOverflow @ https://stackoverflow.com/questions/1335426/is-there-a-built-in-c-net-system-api-for-hsv-to-rgb
-        //begin auto install driver junk
-        [DllImport("setupapi.dll")]
-        public static extern bool SetupCopyOEMInf(
-            string SourceInfFileName,
-            string OEMSourceMediaLocation,
-            int OEMSourceMediaType,
-            int CopyStyle,
-            string DestinationInfFileName,
-            int DestinationInfFileNameSize,
-            int RequiredSize,
-            string DestinationInfFileNameComponent
-            );
-
-        [DllImport("newdev.dll")]
-        public static extern bool UpdateDriverForPlugAndPlayDevices(
-            IntPtr hwndParent,
-            string HardwareId,
-            string FullInfPath,
-            uint InstallFlags,
-            bool bRebootRequired
-            );
-
-
-        private void installDriver()
-        {
-            String infPath = "driver.inf";
-            InstallHinfSection(IntPtr.Zero, IntPtr.Zero, infPath, 0); 
-            /*bool setup = SetupCopyOEMInf(infPath, null, 0, 0, null, 0, 0, null);
-            Console.WriteLine("setup: " + setup);
-            if (setup)
-            {
-                foreach (string device in getDevices())
-                {
-                    Console.WriteLine(UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, device, infPath, 0, false));
-                }
-            }*/
-        }
-        private String[] getDevices()
-        {
-            List<String> devices = new List<String>(); ;
-            ManagementObjectCollection collection;
-            using (var searcher = new ManagementObjectSearcher(@"Select * From Win32_USBHub"))
-                collection = searcher.Get();
-
-            foreach (var device in collection)
-            {
-                devices.Add((string)device.GetPropertyValue("DeviceID"));
-            }
-
-            collection.Dispose();
-            return devices.ToArray();
-        }
-
-        [DllImport("Setupapi.dll", EntryPoint="InstallHinfSection", CallingConvention=CallingConvention.StdCall)] 
-        public static extern void InstallHinfSection( 
-            [In] IntPtr hwnd, 
-            [In] IntPtr ModuleHandle, 
-            [In, MarshalAs(UnmanagedType.LPWStr)] string CmdLineBuffer, 
-            int nCmdShow); 
-
     }
 }
