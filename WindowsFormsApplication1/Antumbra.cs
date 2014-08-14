@@ -43,6 +43,7 @@ namespace Antumbra
             this.screen = new ScreenGrabber();
             Console.WriteLine(this.serial.setup());
             this.icon = new System.Windows.Forms.NotifyIcon();
+            this.icon.Icon = Properties.Resources.favicon;
             this.icon.BalloonTipTitle = "Antumbra|Glow";
             this.icon.BalloonTipText = "Click the icon for a menu\nDouble click for to open";
             InitializeComponent();
@@ -71,7 +72,7 @@ namespace Antumbra
 
         private void setBackToAvg()
         {
-            fade(this.screen.getScreenAvgColor(), 0, 3);
+            fade(this.screen.getScreenAvgColor(), 0, 2);
             //int avgR = 0, avgG = 0, avgB = 0;
             /*var points = getPollingPoints((float)this.width, (float)this.height, this.widthDivs, this.heightDivs);
             Bitmap screen = getScreen();//Shot();
