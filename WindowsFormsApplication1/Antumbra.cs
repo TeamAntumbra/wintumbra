@@ -26,9 +26,6 @@ namespace Antumbra
         bool continuous;//, serialEnabled;
         bool fadeEnabled;
         byte lastR, lastG, lastB;
-        //int offThreshold; //level at which all (RGB) must be under to turn off
-        //int fadeThreshold;
-        //int sleepTime;//default time to sleep between color steps when changing
         int changeThreshold; //difference in colors needed to change
         Size pollingRectSize = new Size(10, 10);
         //bool on;
@@ -46,27 +43,23 @@ namespace Antumbra
             this.icon.BalloonTipTitle = "Antumbra|Glow";
             this.icon.BalloonTipText = "Click the icon for a menu\nDouble click for to open";
             this.icon.MouseDoubleClick += notifyIcon_MouseDoubleClick;
+            this.icon.Visible = true;
             InitializeComponent();
-            //this.on = true; ;//depends on how the Antumbra starts up
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
             this.currentColor = Color.Black;//depends on how the Antumbra starts up
             this.color = Color.Black;
-            //this.offThreshold = 10;//TODO test how low this should be
-            this.changeThreshold = 7; //see shouldChange(Color, Color) (lower is more sensitive)
-            //this.fadeThreshold = 3;
+            this.changeThreshold = 5; //see shouldChange(Color, Color) (lower is more sensitive)
             this.continuous = false;
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.screenTimer = new System.Timers.Timer();
-            //turnOff();
             this.modeComboBox.SelectedIndex = 0;
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
         {
-            //this.Hide();
             setBackToAvg();
         }
 
@@ -75,27 +68,8 @@ namespace Antumbra
             Color newColor = this.screen.getScreenAvgColor();
             if (newColor.Equals(Color.Empty))//something went wrong
                 return;
+            //changeTo(newColor.R, newColor.G, newColor.B);
             fade(newColor, 0, 2);//fade using a 2-step (lol)
-            //int avgR = 0, avgG = 0, avgB = 0;
-            /*var points = getPollingPoints((float)this.width, (float)this.height, this.widthDivs, this.heightDivs);
-            Bitmap screen = getScreen();//Shot();
-            
-            foreach (Point point in points)
-            {
-                //Bitmap section = getSectionOf(screen, point, pollingRectSize);
-                //Color areaAvg = getAvgFromBitmap(section);
-                //this.screenPixel = new Bitmap(1, 1, PixelFormat.Format16bppRgb555);
-                Color areaAvg = getColorAt(point.X, point.Y, 30, 30);
-                avgR += areaAvg.R;
-                avgG += areaAvg.G;
-                avgB += areaAvg.B;
-            }
-            int divisor = points.Length;//divsor to avg values (num of colors)
-            avgR /= divisor;
-            avgG /= divisor;
-            avgB /= divisor;
-            Color avgColor = Color.FromArgb(avgR, avgG, avgB);
-            fade(avgColor, this.sleepTime, 4);*/
         }
         
         private int calcDiff(Color color, Color other)
@@ -129,7 +103,7 @@ namespace Antumbra
             }
             else
                 screenTimer.Enabled = false;
-        }
+        }       
 
         private void callSetAvg(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -203,26 +177,6 @@ namespace Antumbra
             }
         }
 
-  /*      private void turnOff()
-        {
-            if (!this.on)
-                return;//do nothing
-            byte[] command = { 0x04, 0 };
-            byte[] stuffed = readyToSend(command);
-            if (this.serial.send(stuffed))
-                this.on = false;//update
-        }
-
-        private void turnOn()
-        {
-            if (this.on)
-                return; //do nothing
-            byte[] command = { 0x04, 15 };
-            byte[] stuffed = readyToSend(command);
-            if (this.serial.send(stuffed))
-                this.on = true;//update
-        } */
-
         private void fade(Color newColor, int sleepTime, int stepDivider) //TODO: make this smarter 
         {
             if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
@@ -246,50 +200,13 @@ namespace Antumbra
                 changeTo((byte)r, (byte)g, (byte)b);
                 Thread.Sleep(sleepTime);
             }
-            //bool rDone = false, gDone = false, bDone = false;
-            /*while (true) //dumb way
-            {
-                if (newColor.R - r >= threshold)
-                    r += threshold;
-                else if (r - newColor.R >= threshold)                    
-                    r -= threshold;
-                else
-                    rDone = true;
-                if (newColor.G - g >= threshold)
-                    g += threshold;
-                else if (g - newColor.G >= threshold)
-                    g -= threshold;
-                else
-                    gDone = true;
-                if (newColor.B - b >= threshold)
-                    b += threshold;
-                else if (b - newColor.B >= threshold)
-                    b -= threshold;
-                else
-                    bDone = true;
-                Color step = Color.FromArgb(r, g, b);
-                changeTo(step);//update
-                if (rDone && gDone && bDone)
-                    return;//end this madness
-                if (!shouldChange(newColor, step))//close enough
-                    return;
-                //Thread.Sleep(sleepTime);
-            }*/
         }
 
         private void changeTo(byte r, byte g, byte b)
         {
-            /*if (color.R < this.offThreshold && color.G < this.offThreshold && color.B < this.offThreshold)
-            {
-                turnOff();
-                updateLast(color);
-                return;
-            }*/
-            //Console.WriteLine(color.R.ToString() + " " + color.G.ToString() + " " + color.B.ToString());
             if (this.serial.send(r, g, b))
                 updateLast(r, g, b);
             else { }
-                //Console.WriteLine("this is not working");
         }
 
         private void updateLast(byte r, byte g, byte b)
@@ -299,45 +216,36 @@ namespace Antumbra
             this.lastB = b;
         }
 
-        private void powerToggleBtn_Click(object sender, EventArgs e)
-        {
-            /*if (this.on)
-                turnOff();
-            else
-                turnOn();*/
-        }
-
         private void Antumbra_Resize(object sender, EventArgs e)
         {
-           /* if (FormWindowState.Minimized == this.WindowState)
+            if (FormWindowState.Minimized == this.WindowState)
             {
                 this.icon.Visible = true;
-                this.icon.ShowBalloonTip(2500);
+                this.icon.ShowBalloonTip(3500);
                 this.Hide();
             }
             else if (FormWindowState.Normal == this.WindowState)
             {
-                this.icon.Visible = false;
-            }*/
+                //this.icon.Visible = false;
+            }
         }
 
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
-            this.icon.Visible = false;
+            //this.icon.Visible = false;
         }
 
         private void modeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             String mode = this.modeComboBox.Items[this.modeComboBox.SelectedIndex].ToString();
-            //Console.WriteLine(mode);
             if (mode.Equals("Off"))
             {
                 this.screenTimer.Enabled = false;
                 this.fadeThread.Abort();
                 this.fadeEnabled = false;
-                //turnOff();
+                changeTo(0, 0, 0);
             }
             else if (mode.Equals("Color Fade"))
             {
@@ -387,15 +295,8 @@ namespace Antumbra
                 this.fadeThread.Start();
                 this.fadeEnabled = true;
             }
-            else { Console.WriteLine("This should never happen"); }//invalid choice?
+            else { Console.WriteLine("This should never happen"); }//invalid choice
         }
-
-        /*public void Dispose() //clean up
-        {
-            this.serial.close();
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }*/
 
         private int[] HsvToRgb(double h, double S, double V)//from here to... \/ \/ \/
         {
