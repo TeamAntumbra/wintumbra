@@ -27,10 +27,10 @@ namespace Antumbra
         bool fadeEnabled;
         byte lastR, lastG, lastB;
         int changeThreshold; //difference in colors needed to change
-        Size pollingRectSize = new Size(10, 10);
         //bool on;
         private SerialConnector serial;
         private ScreenGrabber screen;
+        private int pollingWidth, pollingHeight;
 
         public Antumbra()
         {
@@ -56,20 +56,26 @@ namespace Antumbra
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.screenTimer = new System.Timers.Timer();
             this.modeComboBox.SelectedIndex = 0;
+            this.pollingWidth = this.Width;
+            this.pollingHeight = this.Height;
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
         {
-            setBackToAvg();
+            setToAvg();
         }
 
-        private void setBackToAvg()
+        private void setToAvg()
         {
-            Color newColor = this.screen.getScreenAvgColor();
+            Color newColor = this.screen.getScreenAvgColor(this.pollingWidth, this.pollingHeight);
+            //Color newColor = this.screen.getCenterScreenAvgColor();
+            //Color newColor = this.screen.getScreenDomColor(); //holy shit 95% cpu usage
+            //Color newColor = this.screen.getCenterScreenDomColor();
             if (newColor.Equals(Color.Empty))//something went wrong
                 return;
+            Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
             //changeTo(newColor.R, newColor.G, newColor.B);
-            fade(newColor, 0, 2);//fade using a 2-step (lol)
+            fade(newColor, 0, 3);//fade using a 3-step
         }
         
         private int calcDiff(Color color, Color other)
@@ -107,7 +113,7 @@ namespace Antumbra
 
         private void callSetAvg(object sender, System.Timers.ElapsedEventArgs e)
         {
-            setBackToAvg();
+            setToAvg();
         }
 
         private void colorFadeButton_Click(object sender, EventArgs e)
@@ -270,7 +276,7 @@ namespace Antumbra
                 if (this.fadeEnabled)
                     this.fadeThread.Abort();
                 this.fadeEnabled = false;
-                this.screenTimer = new System.Timers.Timer(100);//10 hz
+                this.screenTimer = new System.Timers.Timer(50);//10 hz
                 this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
                 this.screenTimer.Enabled = true;
             }
