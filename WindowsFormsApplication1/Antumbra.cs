@@ -50,7 +50,7 @@ namespace Antumbra
             this.lastB = 0;
             this.currentColor = Color.Black;//depends on how the Antumbra starts up
             this.color = Color.Black;
-            this.changeThreshold = 5; //see shouldChange(Color, Color) (lower is more sensitive)
+            this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
             this.continuous = false;
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
@@ -75,7 +75,7 @@ namespace Antumbra
                 return;
             Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
             //changeTo(newColor.R, newColor.G, newColor.B);
-            fade(newColor, 0, 3);//fade using a 3-step
+            fade(newColor, 0, 1);//fade using a 1-step
         }
         
         private int calcDiff(Color color, Color other)

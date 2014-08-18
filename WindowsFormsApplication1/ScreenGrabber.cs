@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using System.Windows.Interop;
 
+
 namespace Antumbra
 {
     class ScreenGrabber
@@ -73,14 +74,15 @@ namespace Antumbra
         public System.Drawing.Color getScreenAvgColor(int width, int height)
         {
             Bitmap screen = getPixelBitBlt(width, height);
-            return CalculateReprColor(screen);
+            return SmartCalculateReprColor(screen, 10, 40);
+            //return CalculateReprColor(screen, true);
         }
 
         public System.Drawing.Color getCenterScreenAvgColor()
         {
             //Console.WriteLine(this.points[0].X + " " + this.points[0].Y + " " + this.points[3].X + " " + this.points[3].Y);
             Bitmap screen = getPixelBitBlt(this.points[0], this.points[3]);
-            return CalculateReprColor(screen);
+            return CalculateReprColor(screen, true);
         }
 
         public System.Drawing.Color getScreenDomColor()
@@ -117,7 +119,7 @@ namespace Antumbra
             s.Reset();*/
             s.Start();
             Bitmap screen = getPixelBitBlt(this.width, this.height);
-            System.Drawing.Color result = CalculateReprColor(screen);
+            System.Drawing.Color result = CalculateReprColor(screen, true);
             s.Stop();
             Console.WriteLine(result.R + " " + result.G + " " + result.B);
             Console.WriteLine("process time: " + s.ElapsedMilliseconds);
@@ -240,7 +242,7 @@ namespace Antumbra
             return result;
         }
 
-        private System.Drawing.Color CalculateReprColor(Bitmap bm)
+        private System.Drawing.Color CalculateReprColor(Bitmap bm, bool saturate)
         {
             int width = bm.Width;
             int height = bm.Height;
@@ -265,7 +267,14 @@ namespace Antumbra
                         red = p[idx + 2];
                         green = p[idx + 1];
                         blue = p[idx];
-                        //saturate values
+                        if (saturate) { //saturate values
+                            double[] hsb = RGBtoHSB(red, green, blue);
+                            //update rgb's with full saturation
+                            double[] rgb = HSBtoRGB(hsb[0], 1.0, hsb[2]);
+                            red = (int)rgb[0];
+                            green = (int)rgb[1];
+                            blue = (int)rgb[2];
+                        }
                         /*double[] hsb = rgbToHsb(red, green, blue);
                         //Console.WriteLine(hsb[0] + " " + hsb[1] + " " + hsb[2]);
                         hsb[1] = 1.0;//full saturation
@@ -298,6 +307,124 @@ namespace Antumbra
             return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
         }
 
+        private System.Drawing.Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold)
+        {
+            int width = bm.Width;
+            int height = bm.Height;
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+            //int minDiversion = 15; // drop pixels that do not differ by at least minDiversion between color values (white, gray or black)
+            //int dropped = 0; // keep track of dropped pixels
+            long[] blues = new long[] { 0, 0, 0 };
+            long[] greens = new long[] { 0, 0, 0 };
+            long[] reds = new long[] { 0, 0, 0 };
+            long[] all = new long[] { 0, 0, 0 }; 
+            int bppModifier = bm.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb ? 3 : 4; // cutting corners, will fail on anything else but 32 and 24 bit images
+
+            BitmapData srcData = bm.LockBits(new System.Drawing.Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
+            int stride = srcData.Stride;
+            IntPtr Scan0 = srcData.Scan0;
+            int bluesCount = 0, greensCount = 0, redsCount = 0;
+
+            unsafe {
+                byte* p = (byte*)(void*)Scan0;
+
+                for (int y = 0; y < height; y++) { //for each row
+                    for (int x = 0; x < width; x++) { //for each col
+                        int idx = (y * stride) + x * bppModifier;
+                        red = p[idx + 2];
+                        green = p[idx + 1];
+                        blue = p[idx];
+                        int max = Math.Max(blue, Math.Max(green, red));
+                        if (blue == max) {//blue dominant
+                            blues[2] += red;
+                            blues[1] += green;
+                            blues[0] += blue;
+                            bluesCount += 1;
+                        }
+                        else if (green == max) {//green dominant
+                            greens[2] += red;
+                            greens[1] += green;
+                            greens[0] += blue;
+                            greensCount += 1;
+                        }
+                        else if (red == max) {//red dominant
+                            reds[2] += red;
+                            reds[1] += green;
+                            reds[0] += blue;
+                            redsCount += 1;
+                        }
+                        else {
+                            Console.WriteLine("this should not happen! (in getReprColor)");
+                        }
+                        all[2] += red;
+                        all[1] += green;
+                        all[0] += blue;
+                    }
+                }
+            }
+            long[] totals = new long[] { 0, 0, 0 };
+            int count = Math.Max(bluesCount, Math.Max(greensCount, redsCount));
+            if (Math.Abs(bluesCount - greensCount) < useAllTolerance && Math.Abs(bluesCount - redsCount) < useAllTolerance && Math.Abs(greensCount - redsCount) < useAllTolerance)
+                totals = all;
+            else if (bluesCount >= greensCount && bluesCount >= redsCount) {
+                totals = blues;
+                double mixThreshold = bluesCount * (mixPercThreshold / 100.0);
+                if (redsCount > mixThreshold) { //mix in red
+                    totals[2] += reds[2];
+                    totals[1] += reds[1];
+                    totals[0] += reds[0];
+                    count += redsCount;
+                }
+                if (greensCount > mixThreshold) { //mix in green
+                    totals[2] += greens[2];
+                    totals[1] += greens[1];
+                    totals[0] += greens[0];
+                    count += greensCount;
+                }
+            }
+            else if (greensCount >= bluesCount && greensCount >= redsCount) {
+                totals = greens;
+                double mixThreshold = greensCount * (mixPercThreshold / 100.0);
+                if (redsCount > mixThreshold) { //mix in red
+                    totals[2] += reds[2];
+                    totals[1] += reds[1];
+                    totals[0] += reds[0];
+                    count += redsCount;
+                }
+                if (bluesCount > mixThreshold) { //mix in blue
+                    totals[2] += blues[2];
+                    totals[1] += blues[1];
+                    totals[0] += blues[0];
+                    count += bluesCount;
+                }
+            }
+            else if (redsCount >= bluesCount && redsCount >= greensCount) {
+                totals = reds;
+                double mixThreshold = redsCount * (mixPercThreshold / 100.0);
+                if (bluesCount > mixThreshold) { //mix in blue
+                    totals[2] += blues[2];
+                    totals[1] += blues[1];
+                    totals[0] += blues[0];
+                    count += bluesCount;
+                }
+                if (greensCount > mixThreshold) { //mix in green
+                    totals[2] += greens[2];
+                    totals[1] += greens[1];
+                    totals[0] += greens[0];
+                    count += greensCount;
+                }
+            }
+            else
+                Console.WriteLine("this should not happen! (in getReprColor) #2");
+            //int count = width * height; //total number of pixels in avgs
+            int avgR = (int)(totals[2] / count);
+            int avgG = (int)(totals[1] / count);
+            int avgB = (int)(totals[0] / count);
+            return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
+        }
+
         private Bitmap getPixelBitBlt(int width, int height)
         {
             Bitmap screenPixel = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
@@ -311,6 +438,101 @@ namespace Antumbra
                 }
             }
             return screenPixel;
+        }
+
+        public double[] RGBtoHSB(int red, int green, int blue)
+        {
+            // normalize red, green and blue values
+            double r = ((double)red / 255.0);
+            double g = ((double)green / 255.0);
+            double b = ((double)blue / 255.0);
+
+            // conversion start
+            double max = Math.Max(r, Math.Max(g, b));
+            double min = Math.Min(r, Math.Min(g, b));
+
+            double h = 0.0;
+            if (max == r && g >= b) {
+                h = 60 * (g - b) / (max - min);
+            }
+            else if (max == r && g < b) {
+                h = 60 * (g - b) / (max - min) + 360;
+            }
+            else if (max == g) {
+                h = 60 * (b - r) / (max - min) + 120;
+            }
+            else if (max == b) {
+                h = 60 * (r - g) / (max - min) + 240;
+            }
+
+            double s = (max == 0) ? 0.0 : (1.0 - (min / max));
+
+            return new double[] {h, s, (double)max};
+        }
+
+        public double[] HSBtoRGB(double h, double s, double br)
+        {
+            double r = 0;
+            double g = 0;
+            double b = 0;
+
+            if (s == 0) {
+                r = g = b = br;
+            }
+            else {
+                // the color wheel consists of 6 sectors. Figure out which sector
+                // you're in.
+                double sectorPos = h / 60.0;
+                int sectorNumber = (int)(Math.Floor(sectorPos));
+                // get the fractional part of the sector
+                double fractionalSector = sectorPos - sectorNumber;
+
+                // calculate values for the three axes of the color.
+                double p = b * (1.0 - s);
+                double q = b * (1.0 - (s * fractionalSector));
+                double t = b * (1.0 - (s * (1 - fractionalSector)));
+
+                // assign the fractional colors to r, g, and b based on the sector
+                // the angle is in.
+                switch (sectorNumber) {
+                    case 0:
+                        r = b;
+                        g = t;
+                        b = p;
+                        break;
+                    case 1:
+                        r = q;
+                        g = b;
+                        b = p;
+                        break;
+                    case 2:
+                        r = p;
+                        g = b;
+                        b = t;
+                        break;
+                    case 3:
+                        r = p;
+                        g = q;
+                        b = br;
+                        break;
+                    case 4:
+                        r = t;
+                        g = p;
+                        b = br;
+                        break;
+                    case 5:
+                        r = b;
+                        g = p;
+                        b = q;
+                        break;
+                }
+            }
+
+            return new double[] {
+                Convert.ToInt32(Double.Parse(String.Format("{0:0.00}", r * 255.0))),
+                Convert.ToInt32(Double.Parse(String.Format("{0:0.00}", g * 255.0))),
+                Convert.ToInt32(Double.Parse(String.Format("{0:0.00}", b * 255.0)))
+            };
         }
 
         private Bitmap getPixelBitBlt(System.Drawing.Point topLeft, System.Drawing.Point botRight)
