@@ -35,6 +35,7 @@
             this.AntumbraLabel = new System.Windows.Forms.Label();
             this.colorChoose = new System.Windows.Forms.ColorDialog();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.settingsBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // modeComboBox
@@ -63,14 +64,16 @@
             // 
             // AntumbraLabel
             // 
+            this.AntumbraLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.AntumbraLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AntumbraLabel.Font = new System.Drawing.Font("Times New Roman", 20F, System.Drawing.FontStyle.Bold);
-            this.AntumbraLabel.Location = new System.Drawing.Point(45, 57);
+            this.AntumbraLabel.Location = new System.Drawing.Point(45, 44);
             this.AntumbraLabel.Name = "AntumbraLabel";
             this.AntumbraLabel.Size = new System.Drawing.Size(198, 45);
             this.AntumbraLabel.TabIndex = 2;
             this.AntumbraLabel.Text = "Antumbra";
             this.AntumbraLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.AntumbraLabel.UseMnemonic = false;
             // 
             // notifyIcon
             // 
@@ -78,10 +81,21 @@
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
+            // settingsBtn
+            // 
+            this.settingsBtn.Location = new System.Drawing.Point(53, 261);
+            this.settingsBtn.Name = "settingsBtn";
+            this.settingsBtn.Size = new System.Drawing.Size(189, 23);
+            this.settingsBtn.TabIndex = 9;
+            this.settingsBtn.Text = "Settings";
+            this.settingsBtn.UseVisualStyleBackColor = true;
+            this.settingsBtn.Click += new System.EventHandler(this.settingsBtn_Click);
+            // 
             // Antumbra
             // 
             this.BackColor = System.Drawing.SystemColors.Menu;
             this.ClientSize = new System.Drawing.Size(298, 368);
+            this.Controls.Add(this.settingsBtn);
             this.Controls.Add(this.modeComboBox);
             this.Controls.Add(this.AntumbraLabel);
             this.Controls.Add(this.linkLabel1);
@@ -107,6 +121,7 @@
         private System.Windows.Forms.ColorDialog colorChoose;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ComboBox modeComboBox;
+        private System.Windows.Forms.Button settingsBtn;
     }
 }
 

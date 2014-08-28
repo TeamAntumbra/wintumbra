@@ -44,7 +44,7 @@ namespace Antumbra
         public static extern void ReleaseDC(IntPtr hWnd, IntPtr hDc);
         //End DLL Declarations
 
-        int width, height;//screen width and height
+        public int width, height;//screen width and height
         //int widthDivs, heightDivs;//width and height divisions for screen polling
         int x, y;//x and y bounds of screen
         System.Drawing.Point[] points;//polling points
@@ -73,28 +73,44 @@ namespace Antumbra
 
         public System.Drawing.Color getScreenAvgColor(int width, int height)
         {
+            if (this.width == 0 || this.height == 0)
+                return System.Drawing.Color.Black;
             Bitmap screen = getPixelBitBlt(width, height);
-            return SmartCalculateReprColor(screen, 10, 40);
+            if (screen == null)
+                return System.Drawing.Color.Black;
+            System.Drawing.Color result = SmartCalculateReprColor(screen, 10, 25);//use all tolerance, and percent needed to be mixed in
             //return CalculateReprColor(screen, true);
+            screen.Dispose();
+            return result;
         }
 
         public System.Drawing.Color getCenterScreenAvgColor()
         {
             //Console.WriteLine(this.points[0].X + " " + this.points[0].Y + " " + this.points[3].X + " " + this.points[3].Y);
             Bitmap screen = getPixelBitBlt(this.points[0], this.points[3]);
-            return CalculateReprColor(screen, true);
+            System.Drawing.Color result = CalculateReprColor(screen, true);
+            screen.Dispose();
+            return result;
         }
 
         public System.Drawing.Color getScreenDomColor()
         {
             Bitmap screen = getPixelBitBlt(this.points[0], this.points[3]);
-            return CalculateDominantColor(screen);
+            System.Drawing.Color result = CalculateDominantColor(screen);
+            screen.Dispose();
+            return result;
         }
 
         public System.Drawing.Color getCenterScreenDomColor()
         {
+            if (this.width == 0 || this.height == 0)
+                return System.Drawing.Color.Black;
             Bitmap screen = getPixelBitBlt(this.width, this.height);
-            return CalculateDominantColor(screen);
+            if (screen == null)
+                return System.Drawing.Color.Black;
+            System.Drawing.Color result = CalculateDominantColor(screen);
+            screen.Dispose();
+            return result;
         }
 
         public void bench()
@@ -119,6 +135,8 @@ namespace Antumbra
             s.Reset();*/
             s.Start();
             Bitmap screen = getPixelBitBlt(this.width, this.height);
+            if (screen == null)
+                return;
             System.Drawing.Color result = CalculateReprColor(screen, true);
             s.Stop();
             Console.WriteLine(result.R + " " + result.G + " " + result.B);
@@ -249,8 +267,6 @@ namespace Antumbra
             int red = 0;
             int green = 0;
             int blue = 0;
-            //int minDiversion = 15; // drop pixels that do not differ by at least minDiversion between color values (white, gray or black)
-            int dropped = 0; // keep track of dropped pixels
             long[] totals = new long[] { 0, 0, 0 };
             int bppModifier = bm.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb ? 3 : 4; // cutting corners, will fail on anything else but 32 and 24 bit images
 
@@ -268,39 +284,19 @@ namespace Antumbra
                         green = p[idx + 1];
                         blue = p[idx];
                         if (saturate) { //saturate values
-                            double[] hsb = RGBtoHSB(red, green, blue);
-                            //update rgb's with full saturation
-                            double[] rgb = HSBtoRGB(hsb[0], 1.0, hsb[2]);
-                            red = (int)rgb[0];
-                            green = (int)rgb[1];
-                            blue = (int)rgb[2];
+                            double[] hsv = HSVRGGConverter.RGBToHSV(red, green, blue);
+                            int[] rgb = HSVRGGConverter.HSVToRGB(hsv[0], 100, hsv[2]);
+                            red = rgb[0];
+                            green = rgb[1];
+                            blue = rgb[2];
                         }
-                        /*double[] hsb = rgbToHsb(red, green, blue);
-                        //Console.WriteLine(hsb[0] + " " + hsb[1] + " " + hsb[2]);
-                        hsb[1] = 1.0;//full saturation
-                        double[] rgb = hsbToRgb(hsb[0], hsb[1], hsb[2]);
-                        red = 255;// rgb[0];
-                        green = 255;// rgb[1];
-                        blue = 255;// rgb[2];
-                        Console.WriteLine(rgb[0] + " " + rgb[1] + " " + rgb[2]);*/
-                        /*int rgDiff = Math.Abs(red - green);
-                        int rbDiff = Math.Abs(red - blue);
-                        int gbDiff = Math.Abs(green - blue);
-                        if (rgDiff > minDiversion || rbDiff > minDiversion || gbDiff > minDiversion) { //not a dull color
-                            totals[2] += red;
-                            totals[1] += green;
-                            totals[0] += blue;
-                        }
-                        else {
-                            dropped++;
-                        }*/
                         totals[2] += red;
                         totals[1] += green;
                         totals[0] += blue;
                     }
                 }
             }
-            int count = width * height - dropped;//total number of pixels in avgs
+            int count = width * height;//total number of pixels in avgs
             int avgR = (int)(totals[2] / count);
             int avgG = (int)(totals[1] / count);
             int avgB = (int)(totals[0] / count);
@@ -427,7 +423,7 @@ namespace Antumbra
 
         private Bitmap getPixelBitBlt(int width, int height)
         {
-            Bitmap screenPixel = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+           Bitmap screenPixel = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
             using (Graphics gdest = Graphics.FromImage(screenPixel)) {
                 using (Graphics gsrc = Graphics.FromHwnd(IntPtr.Zero)) {
                     IntPtr hSrcDC = gsrc.GetHdc();
@@ -466,8 +462,7 @@ namespace Antumbra
             }
 
             double s = (max == 0) ? 0.0 : (1.0 - (min / max));
-
-            return new double[] {h, s, (double)max};
+            return new double[] {h, s, max};
         }
 
         public double[] HSBtoRGB(double h, double s, double br)
@@ -540,7 +535,7 @@ namespace Antumbra
             int width = botRight.X - topLeft.X;
             int height = botRight.Y - topLeft.Y;
             //Console.WriteLine(width + " " + height);
-            Bitmap screenPixel = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+            Bitmap screenPixel = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             using (Graphics gdest = Graphics.FromImage(screenPixel)) {
                 using (Graphics gsrc = Graphics.FromHwnd(IntPtr.Zero)) {
                     IntPtr hSrcDC = gsrc.GetHdc();
@@ -556,7 +551,7 @@ namespace Antumbra
         private Bitmap getSectionOf(Bitmap screen, System.Drawing.Point topLeft, System.Drawing.Size size)
         {
             Rectangle wanted = new Rectangle(topLeft, size);
-            return screen.Clone(wanted, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+            return screen.Clone(wanted, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
         }
 
         private System.Drawing.Point[] getPollingRectPoints(float width, float height)

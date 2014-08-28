@@ -23,14 +23,23 @@ namespace Antumbra
         private Thread fadeThread;//thread for color fades
         private Color color;//newest generated color for displaying
         private Color currentColor;//most recent successfully sent set command color
-        bool continuous;//, serialEnabled;
+        //bool continuous;//, serialEnabled;
         bool fadeEnabled;
         byte lastR, lastG, lastB;
         int changeThreshold; //difference in colors needed to change
         //bool on;
         private SerialConnector serial;
         private ScreenGrabber screen;
-        private int pollingWidth, pollingHeight;
+        public int pollingWidth { get; set; }
+        public int pollingHeight { get; set; }
+        public int colorFadeStepSleep { get; set; }
+        public int manualStepSleep { get; set; }
+        public int sinFadeStepSleep { get; set; }
+        public int HSVstepSleep { get; set; }
+        public int HSVstepSize { get; set; }
+        public int colorFadeStepSize { get; set; }
+        public int manualStepSize { get; set; }
+        public int screenPollingWait { get; set; }
 
         public Antumbra()
         {
@@ -50,19 +59,37 @@ namespace Antumbra
             this.lastB = 0;
             this.currentColor = Color.Black;//depends on how the Antumbra starts up
             this.color = Color.Black;
-            this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
-            this.continuous = false;
+            this.changeThreshold = 1; //see shouldChange(Color, Color) (lower is more sensitive)
+            //this.continuous = false;
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.screenTimer = new System.Timers.Timer();
             this.modeComboBox.SelectedIndex = 0;
-            this.pollingWidth = this.Width;
-            this.pollingHeight = this.Height;
+            this.pollingWidth = this.screen.width;
+            this.pollingHeight = this.screen.height;
+            this.HSVstepSleep = 15;
+            this.colorFadeStepSleep = 15;
+            this.manualStepSleep = 1;
+            this.sinFadeStepSleep = 3;
+            this.screenPollingWait = 50;//default is 50ms, 20hz
+            this.HSVstepSize = 1;
+            this.manualStepSize = 1;
+            this.colorFadeStepSize = 1; //default step sizes to 1
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
         {
             setToAvg();
+        }
+
+        public int getPollingWidth()
+        {
+            return this.pollingWidth;
+        }
+
+        public int getPollingHeight()
+        {
+            return this.pollingHeight;
         }
 
         private void setToAvg()
@@ -73,7 +100,7 @@ namespace Antumbra
             //Color newColor = this.screen.getCenterScreenDomColor();
             if (newColor.Equals(Color.Empty))//something went wrong
                 return;
-            Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
+            //Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
             //changeTo(newColor.R, newColor.G, newColor.B);
             fade(newColor, 0, 1);//fade using a 1-step
         }
@@ -98,60 +125,28 @@ namespace Antumbra
             return calcDiff(color, other) > this.changeThreshold;
         }
 
-        private void continuousCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.continuous = !this.continuous;
-            if (this.continuous)
-            {
-                screenTimer = new System.Timers.Timer(5);//200 hz
-                screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
-                screenTimer.Enabled = true;
-            }
-            else
-                screenTimer.Enabled = false;
-        }       
-
         private void callSetAvg(object sender, System.Timers.ElapsedEventArgs e)
         {
             setToAvg();
         }
 
-        private void colorFadeButton_Click(object sender, EventArgs e)
-        {
-            this.fadeEnabled = !this.fadeEnabled;
-            if (this.fadeEnabled)
-            {
-                try
-                {
-                    fadeThread.Start();
-                }
-                catch (System.Threading.ThreadStateException)
-                {
-                    fadeThread = new Thread(new ThreadStart(callColorFade));
-                    fadeThread.Start();
-                }
-            }
-            else
-                fadeThread.Abort();//stop fadeThread
-        }
-
         private void callColorFade()
         {
             while (true)
-                colorFade();
+                colorFade(this.colorFadeStepSleep);
         }
 
-        private void colorFade()
+        private void colorFade(int sleep)
         {
             Color[] colors = { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen, Color.Green, Color.Blue, Color.Purple, };
             foreach (Color color in colors)
-                fade(color, 0, 1);//color, step sleep time
+                fade(color, sleep, this.colorFadeStepSize);
         }
 
         private void callSinFade()
         {
             while (true)
-                sinFade(20);//TODO make configurable
+                sinFade(this.sinFadeStepSleep);
         }
 
         private void sinFade(int sleepTime)
@@ -169,21 +164,21 @@ namespace Antumbra
         private void callHsvFade()
         {
             while (true)
-                hsvFade();
+                hsvFade(this.HSVstepSleep);
         }
 
-        private void hsvFade()
+        private void hsvFade(int stepSleep)
         {
             double s = 100;
             double v = 100;
             for (double h = 0; h <= 360; h++)
             {
-                int[] rgb = this.HsvToRgb(h, s, v);
-                fade(Color.FromArgb(rgb[0], rgb[1], rgb[2]), 10, 1);
+                int[] rgb = HSVRGGConverter.HSVToRGB(h, s, v);
+                fade(Color.FromArgb(rgb[0], rgb[1], rgb[2]), stepSleep, this.HSVstepSize);
             }
         }
 
-        private void fade(Color newColor, int sleepTime, int stepDivider) //TODO: make this smarter 
+        private void fade(Color newColor, int sleepTime, int stepDivider)
         {
             if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
                 return;//no update needed*/
@@ -276,7 +271,7 @@ namespace Antumbra
                 if (this.fadeEnabled)
                     this.fadeThread.Abort();
                 this.fadeEnabled = false;
-                this.screenTimer = new System.Timers.Timer(50);//10 hz
+                this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
                 this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
                 this.screenTimer.Enabled = true;
             }
@@ -290,7 +285,7 @@ namespace Antumbra
                 if (result == DialogResult.OK)
                 {
                     //this.BackColor = colorChoose.Color;
-                    fade(colorChoose.Color, 0, 1);
+                    fade(colorChoose.Color, this.manualStepSleep, this.manualStepSize);
                 }
             }
             else if (mode.Equals("Sin Wave")) {
@@ -304,104 +299,23 @@ namespace Antumbra
             else { Console.WriteLine("This should never happen"); }//invalid choice
         }
 
-        private int[] HsvToRgb(double h, double S, double V)//from here to... \/ \/ \/
+         void settingsBtn_Click(object sender, EventArgs e)
         {
-            int[] result = new int[3];
-            double H = h;
-            while (H < 0) { H += 360; };
-            while (H >= 360) { H -= 360; };
-            double R, G, B;
-            if (V <= 0)
-            { R = G = B = 0; }
-            else if (S <= 0)
-            {
-                R = G = B = V;
-            }
-            else
-            {
-                double hf = H / 60.0;
-                int i = (int)Math.Floor(hf);
-                double f = hf - i;
-                double pv = V * (1 - S);
-                double qv = V * (1 - S * f);
-                double tv = V * (1 - S * (1 - f));
-                switch (i)
-                {
-
-                    // Red is the dominant color
-
-                    case 0:
-                        R = V;
-                        G = tv;
-                        B = pv;
-                        break;
-
-                    // Green is the dominant color
-
-                    case 1:
-                        R = qv;
-                        G = V;
-                        B = pv;
-                        break;
-                    case 2:
-                        R = pv;
-                        G = V;
-                        B = tv;
-                        break;
-
-                    // Blue is the dominant color
-
-                    case 3:
-                        R = pv;
-                        G = qv;
-                        B = V;
-                        break;
-                    case 4:
-                        R = tv;
-                        G = pv;
-                        B = V;
-                        break;
-
-                    // Red is the dominant color
-
-                    case 5:
-                        R = V;
-                        G = pv;
-                        B = qv;
-                        break;
-
-                    // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
-
-                    case 6:
-                        R = V;
-                        G = tv;
-                        B = pv;
-                        break;
-                    case -1:
-                        R = V;
-                        G = pv;
-                        B = qv;
-                        break;
-
-                    // The color is not defined, we should throw an error.
-
-                    default:
-                        //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                        R = G = B = V; // Just pretend its black/white
-                        break;
-                }
-            }
-            result[0] = Clamp((int)(R * 255.0));
-            result[1] = Clamp((int)(G * 255.0));
-            result[2] = Clamp((int)(B * 255.0));
-            return result;
+            Form settings = new SettingsWindow(this);
+            settings.Visible = true;
         }
 
-        private int Clamp(int i)
+        public void updatePollingBounds(int x, int y)
         {
-            if (i < 0) return 0;
-            if (i > 255) return 255;
-            return i;
-        }//here is taken from StackOverflow @ https://stackoverflow.com/questions/1335426/is-there-a-built-in-c-net-system-api-for-hsv-to-rgb
+            if (x <= 0 || y <= 0)
+                return;//invalid
+            this.pollingWidth = x;
+            this.pollingHeight = y;
+        }
+
+        public void updatePollingBoundsToFull()
+        {
+            updatePollingBounds(this.screen.width, this.screen.height);
+        }
     }
 }
