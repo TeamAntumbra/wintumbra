@@ -695,41 +695,5 @@ namespace Antumbra
 
             return result;
         }
-
-       /* private void setupCudafy()
-        {
-            CudafyModule mod = CudafyTranslator.Cudafy();
-            GPGPU gpu = CudafyHost.GetDevice(CudafyModes.Target, CudafyModes.DeviceId);
-            gpu.LoadModule(mod);
-            this.gpu = gpu;
-        }
-
-        private Bitmap getScreenCuda()
-        {
-            this.gpu.Launch().cudaStuff();
-            return new Bitmap(1, 1);
-        }
-
-        [Cudafy]
-        private void cudaStuff()
-        {
-            //cuda stuff
-        }*/
-
-       /* public Color avgWithGL(Bitmap bitmap)
-        {
-            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
-                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-            bitmap.UnlockBits(data);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-            
-            GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(ShaderType.FragmentShader, @"");
-        }*/
     }
 }
