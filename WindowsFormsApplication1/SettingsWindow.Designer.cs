@@ -111,11 +111,11 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Screen Polling Frequency (ms): ";
             // 
-            // screenPollingFq
+            // screenPollingWait
             // 
             this.screenPollingWait.Location = new System.Drawing.Point(187, 86);
             this.screenPollingWait.Margin = new System.Windows.Forms.Padding(2);
-            this.screenPollingWait.Name = "screenPollingFq";
+            this.screenPollingWait.Name = "screenPollingWait";
             this.screenPollingWait.Size = new System.Drawing.Size(42, 20);
             this.screenPollingWait.TabIndex = 6;
             this.screenPollingWait.TextChanged += new System.EventHandler(this.screenPollingFq_TextChanged);
@@ -262,7 +262,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(256, 290);
+            this.ClientSize = new System.Drawing.Size(266, 455);
             this.Controls.Add(this.ManualSleepSize);
             this.Controls.Add(this.ColorFadeSleepSize);
             this.Controls.Add(this.HSVsleepSize);

@@ -18,7 +18,6 @@ namespace Antumbra
 {
     public partial class Antumbra : Form
     {
-        private System.Windows.Forms.NotifyIcon icon;
         private System.Timers.Timer screenTimer;//timer for screen color averaging
         private Thread fadeThread;//thread for color fades
         private Color color;//newest generated color for displaying
@@ -47,12 +46,6 @@ namespace Antumbra
             this.serial = new SerialConnector(0x03EB, 0x2040);
             this.screen = new ScreenGrabber();
             Console.WriteLine(this.serial.setup());
-            this.icon = new System.Windows.Forms.NotifyIcon();
-            this.icon.Icon = Properties.Resources.favicon;
-            this.icon.BalloonTipTitle = "Antumbra|Glow";
-            this.icon.BalloonTipText = "Click the icon for a menu\nDouble click for to open";
-            this.icon.MouseDoubleClick += notifyIcon_MouseDoubleClick;
-            this.icon.Visible = true;
             InitializeComponent();
             this.lastR = 0;
             this.lastG = 0;
@@ -64,7 +57,6 @@ namespace Antumbra
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.screenTimer = new System.Timers.Timer();
-            this.modeComboBox.SelectedIndex = 0;
             this.pollingWidth = this.screen.width;
             this.pollingHeight = this.screen.height;
             this.HSVstepSleep = 15;
@@ -221,88 +213,15 @@ namespace Antumbra
         {
             if (FormWindowState.Minimized == this.WindowState)
             {
-                this.icon.Visible = true;
-                this.icon.ShowBalloonTip(3500);
+                //this.icon.Visible = true;
+                //this.icon.ShowBalloonTip(3500);
+                notifyIcon.ShowBalloonTip(3000);
                 this.Hide();
             }
             else if (FormWindowState.Normal == this.WindowState)
             {
                 //this.icon.Visible = false;
             }
-        }
-
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-            //this.icon.Visible = false;
-        }
-
-        private void modeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            String mode = this.modeComboBox.Items[this.modeComboBox.SelectedIndex].ToString();
-            if (mode.Equals("Off"))
-            {
-                this.screenTimer.Enabled = false;
-                this.fadeThread.Abort();
-                this.fadeEnabled = false;
-                changeTo(0, 0, 0);
-            }
-            else if (mode.Equals("Color Fade"))
-            {
-                this.screenTimer.Enabled = false;
-                if (this.fadeEnabled)
-                    this.fadeThread.Abort();
-                this.fadeThread = new Thread(new ThreadStart(callColorFade));
-                this.fadeThread.Start();
-                this.fadeEnabled = true;
-            }
-            else if (mode.Equals("HSV Sweep"))
-            {
-                this.screenTimer.Enabled = false;
-                if (this.fadeEnabled)
-                    this.fadeThread.Abort();
-                this.fadeThread = new Thread(new ThreadStart(callHsvFade));
-                this.fadeThread.Start();
-                this.fadeEnabled = true;
-            }
-            else if (mode.Equals("Screen Responsive"))
-            {
-                if (this.fadeEnabled)
-                    this.fadeThread.Abort();
-                this.fadeEnabled = false;
-                this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
-                this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
-                this.screenTimer.Enabled = true;
-            }
-            else if (mode.Equals("Manual Selection"))
-            {
-                if (this.fadeEnabled)
-                    this.fadeThread.Abort();
-                this.fadeEnabled = false;
-                this.screenTimer.Enabled = false;
-                DialogResult result = colorChoose.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    //this.BackColor = colorChoose.Color;
-                    fade(colorChoose.Color, this.manualStepSleep, this.manualStepSize);
-                }
-            }
-            else if (mode.Equals("Sin Wave")) {
-                if (this.fadeEnabled)
-                    this.fadeThread.Abort();
-                this.screenTimer.Enabled = false;
-                this.fadeThread = new Thread(new ThreadStart(callSinFade));
-                this.fadeThread.Start();
-                this.fadeEnabled = true;
-            }
-            else { Console.WriteLine("This should never happen"); }//invalid choice
-        }
-
-         void settingsBtn_Click(object sender, EventArgs e)
-        {
-            Form settings = new SettingsWindow(this);
-            settings.Visible = true;
         }
 
         public void updatePollingBounds(int x, int y)
@@ -316,6 +235,93 @@ namespace Antumbra
         public void updatePollingBoundsToFull()
         {
             updatePollingBounds(this.screen.width, this.screen.height);
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            contextMenu.Show(Cursor.Position);
+        }
+
+        private void openMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!this.Visible) {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void settingsMenuItem_Click(object sender, EventArgs e)
+        {
+            Form settings = new SettingsWindow(this);
+            settings.Visible = true;
+        }
+
+        private void HSVMenuItem_Click(object sender, EventArgs e)
+        {
+            this.screenTimer.Enabled = false;
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            this.fadeThread = new Thread(new ThreadStart(callHsvFade));
+            this.fadeThread.Start();
+            this.fadeEnabled = true;
+        }
+
+        private void randomColorFadeMenuItem_Click(object sender, EventArgs e)
+        {
+            this.screenTimer.Enabled = false;
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            this.fadeThread = new Thread(new ThreadStart(callColorFade));
+            this.fadeThread.Start();
+            this.fadeEnabled = true;
+        }
+
+        private void screenResponsiveMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            this.fadeEnabled = false;
+            this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
+            this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
+            this.screenTimer.Enabled = true;
+        }
+
+        private void quitMenuItem_Click(object sender, EventArgs e)
+        {
+            this.notifyIcon.Visible = false;
+            this.contextMenu.Visible = false;
+            Application.Exit();
+        }
+
+        private void sinWaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            this.screenTimer.Enabled = false;
+            this.fadeThread = new Thread(new ThreadStart(callSinFade));
+            this.fadeThread.Start();
+            this.fadeEnabled = true;
+        }
+
+        private void offToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.screenTimer.Enabled = false;
+            this.fadeThread.Abort();
+            this.fadeEnabled = false;
+            changeTo(0, 0, 0);
+        }
+
+        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            this.fadeEnabled = false;
+            this.screenTimer.Enabled = false;
+            DialogResult result = colorChoose.ShowDialog();
+            if (result == DialogResult.OK) {
+                //this.BackColor = colorChoose.Color;
+                fade(colorChoose.Color, this.manualStepSleep, this.manualStepSize);
+            }
         }
     }
 }
