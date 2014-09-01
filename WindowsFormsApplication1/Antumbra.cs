@@ -323,5 +323,10 @@ namespace Antumbra
                 fade(colorChoose.Color, this.manualStepSleep, this.manualStepSize);
             }
         }
+
+        private void contextMenu_MouseLeave(object sender, EventArgs e)
+        {
+            contextMenu.Close();
+        }
     }
 }

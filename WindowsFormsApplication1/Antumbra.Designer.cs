@@ -93,8 +93,9 @@
             this.contextMenu.ShowCheckMargin = true;
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(180, 202);
+            this.contextMenu.Size = new System.Drawing.Size(180, 224);
             this.contextMenu.Text = "Antumbra|Glow";
+            this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
             // openMenuItem
             // 
