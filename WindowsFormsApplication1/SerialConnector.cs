@@ -13,7 +13,8 @@ namespace Antumbra
         const int DEAD = 0;
         const int IDLE = 1;
         const int ALIVE = 2;
-        private int pid, vid, state;
+        private int pid, vid;
+        public int state { private set; get; }
         private IntPtr ctx, dev;
         public SerialConnector(int vid, int pid)
         {
@@ -57,6 +58,7 @@ namespace Antumbra
 
         public bool send(byte r, byte g, byte b)//return true if success, else false
         {
+            updateState();
             if (state == ALIVE) {
                 return AnDevice_SetRGB_S(this.ctx, this.dev, r, g, b) == 0;
             }

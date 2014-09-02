@@ -130,9 +130,9 @@ namespace Antumbra
 
         private void colorFade(int sleep)
         {
-            Color[] colors = { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen, Color.Green, Color.Blue, Color.Purple, };
-            foreach (Color color in colors)
-                fade(color, sleep, this.colorFadeStepSize);
+            Random rnd = new Random();
+            while(true)
+                fade(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), sleep, this.colorFadeStepSize);
         }
 
         private void callSinFade()
@@ -204,6 +204,7 @@ namespace Antumbra
 
         private void updateLast(byte r, byte g, byte b)
         {
+            this.BackColor = Color.FromArgb(r, g, b);
             this.lastR = r;
             this.lastG = g;
             this.lastB = b;
