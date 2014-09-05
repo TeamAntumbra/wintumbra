@@ -31,6 +31,8 @@ namespace Antumbra
             HSVsleepSize.Text = this.antumbra.HSVstepSleep.ToString();
             ColorFadeSleepSize.Text = this.antumbra.colorFadeStepSleep.ToString();
             ManualSleepSize.Text = this.antumbra.manualStepSleep.ToString();
+            screenStepSleep.Text = this.antumbra.screenAvgStepSleep.ToString();
+            screenStepSize.Text = this.antumbra.screenAvgStepSize.ToString();
         }
 
         private void pollingY_TextChanged(object sender, EventArgs e)
