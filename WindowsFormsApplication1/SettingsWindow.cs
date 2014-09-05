@@ -122,7 +122,32 @@ namespace Antumbra
 
         private void ManualSleepSize_TextChanged(object sender, EventArgs e)
         {
+            try {
+                this.antumbra.manualStepSleep = Convert.ToInt32(ManualSleepSize.Text);
+            }
+            catch (System.FormatException) {
+                Console.WriteLine("Format exception in settings");//todo make these specific
+            }
+        }
 
+        private void screenStepSleep_TextChanged(object sender, EventArgs e)
+        {
+            try {
+                this.antumbra.screenAvgStepSleep = Convert.ToInt32(screenStepSleep.Text);
+            }
+            catch (System.FormatException) {
+                Console.WriteLine("Format exception in settings");//todo make these specific
+            }
+        }
+
+        private void screenStepSize_TextChanged(object sender, EventArgs e)
+        {
+            try {
+                this.antumbra.screenAvgStepSize = Convert.ToInt32(screenStepSize.Text);
+            }
+            catch (System.FormatException) {
+                Console.WriteLine("Format exception in settings");//todo make these specific
+            }
         }
     }
 }

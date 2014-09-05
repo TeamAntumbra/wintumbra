@@ -39,6 +39,8 @@ namespace Antumbra
         public int colorFadeStepSize { get; set; }
         public int manualStepSize { get; set; }
         public int screenPollingWait { get; set; }
+        public int screenAvgStepSleep { get; set; }
+        public int screenAvgStepSize { get; set; }
 
         public Antumbra()
         {
@@ -67,6 +69,8 @@ namespace Antumbra
             this.HSVstepSize = 1;
             this.manualStepSize = 1;
             this.colorFadeStepSize = 1; //default step sizes to 1
+            this.screenAvgStepSleep = 0;
+            this.screenAvgStepSize = 1;
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -94,7 +98,7 @@ namespace Antumbra
                 return;
             //Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
             //changeTo(newColor.R, newColor.G, newColor.B);
-            fade(newColor, 0, 1);//fade using a 1-step
+            fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade using a 1-step
         }
         
         private int calcDiff(Color color, Color other)
