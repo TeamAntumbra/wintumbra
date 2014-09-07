@@ -54,6 +54,7 @@ namespace Antumbra
                 this.state = DEAD;
             else
                 this.state = AnDevice_State(this.dev);
+            Console.WriteLine("status - " + this.state.ToString());
         }
 
         public bool send(byte r, byte g, byte b)//return true if success, else false

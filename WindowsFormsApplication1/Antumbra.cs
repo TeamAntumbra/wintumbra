@@ -71,6 +71,7 @@ namespace Antumbra
             this.colorFadeStepSize = 1; //default step sizes to 1
             this.screenAvgStepSleep = 0;
             this.screenAvgStepSize = 1;
+            updateStatus(this.serial.state);
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -201,9 +202,29 @@ namespace Antumbra
 
         private void changeTo(byte r, byte g, byte b)
         {
-            if (this.serial.send(r, g, b))
+            if (this.serial.send(r, g, b))//sucessful send
                 updateLast(r, g, b);
-            else { }
+            else {
+                this.updateStatus(0);//send failed, device is probably dead
+            }
+        }
+
+        private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
+        {
+            switch(status) {
+                case 0:
+                    this.statusBtn.BackColor = Color.Red;
+                    break;
+                case 1:
+                    this.statusBtn.BackColor = Color.Yellow;
+                    break;
+                case 2:
+                    this.statusBtn.BackColor = Color.Green;
+                    break;
+                default:
+                    Console.WriteLine("This should not happen. updateStatus");
+                    break;
+            }
         }
 
         private void updateLast(byte r, byte g, byte b)
