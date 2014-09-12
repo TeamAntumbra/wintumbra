@@ -163,7 +163,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="driver.inf" />
+    <Content Include="driver.inf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="libantumbra.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
