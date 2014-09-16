@@ -16,7 +16,7 @@ using System.Windows.Interop;
 
 namespace Antumbra
 {
-    class ScreenGrabber
+    public class ScreenGrabber
     {
         //Being DLL declarations
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
@@ -43,11 +43,13 @@ namespace Antumbra
         int x, y;//x and y bounds of screen
         System.Drawing.Point[] points;//polling points
         System.Drawing.Size size;//polling size
+        public Screen display { get; set; }//display for avging
         //GPGPU gpu;
 
         public ScreenGrabber()
         {
             this.size = new System.Drawing.Size(50, 30);
+            this.display = Screen.PrimaryScreen;
             updateBounds();
             //this.widthDivs = 4;
             //this.heightDivs = 4;
@@ -56,10 +58,10 @@ namespace Antumbra
 
         public void updateBounds()
         {
-            this.width = Screen.PrimaryScreen.Bounds.Width;
-            this.height = Screen.PrimaryScreen.Bounds.Height;
-            this.x = Screen.PrimaryScreen.Bounds.X;
-            this.y = Screen.PrimaryScreen.Bounds.Y;
+            this.width = this.display.Bounds.Width;
+            this.height = this.display.Bounds.Height;
+            this.x = this.display.Bounds.X;
+            this.y = this.display.Bounds.Y;
             //this.points = getPollingPoints(this.width, this.height, this.widthDivs, this.heightDivs);
             this.points = getPollingRectPoints(this.width, this.height);
 
@@ -80,7 +82,6 @@ namespace Antumbra
 
         public System.Drawing.Color getCenterScreenAvgColor()
         {
-            //Console.WriteLine(this.points[0].X + " " + this.points[0].Y + " " + this.points[3].X + " " + this.points[3].Y);
             Bitmap screen = getPixelBitBlt(this.points[0], this.points[3]);
             System.Drawing.Color result = CalculateReprColor(screen, true);
             screen.Dispose();
@@ -577,8 +578,8 @@ namespace Antumbra
             Bitmap result;
             result = new Bitmap(size.Width, size.Height);
             Graphics gfxScreenshot = Graphics.FromImage(result);
-            int height = Screen.PrimaryScreen.Bounds.Height;
-            int width = Screen.PrimaryScreen.Bounds.Width;
+            int height = this.display.Bounds.Height;
+            int width = this.display.Bounds.Width;
             gfxScreenshot.CopyFromScreen(point.X, point.Y, 0, 0, size, CopyPixelOperation.SourceCopy);
             return result;
         }

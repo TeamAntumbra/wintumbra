@@ -151,5 +151,14 @@ namespace Antumbra
                 Console.WriteLine("Format exception in settings");//todo make these specific
             }
         }
+
+        private void displayIndex_ValueChanged(object sender, EventArgs e)
+        {
+            int value = (int)displayIndex.Value;
+            if (value > Screen.AllScreens.Length-1)//component handles min value so lets handle max
+                displayIndex.Value = Screen.AllScreens.Length-1;//max index allowed
+            else
+                this.antumbra.screen.display = Screen.AllScreens[(int)displayIndex.Value];
+        }
     }
 }

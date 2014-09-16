@@ -53,12 +53,15 @@
             this.screenStepSleep = new System.Windows.Forms.TextBox();
             this.screenStepSize = new System.Windows.Forms.TextBox();
             this.screenStepSizeLabel = new System.Windows.Forms.Label();
+            this.displayLabel = new System.Windows.Forms.Label();
+            this.displayIndex = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 45);
+            this.label1.Location = new System.Drawing.Point(30, 68);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(97, 20);
             this.label1.TabIndex = 0;
@@ -67,7 +70,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(134, 45);
+            this.label2.Location = new System.Drawing.Point(134, 68);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(24, 20);
             this.label2.TabIndex = 1;
@@ -76,7 +79,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(230, 45);
+            this.label3.Location = new System.Drawing.Point(230, 68);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 20);
             this.label3.TabIndex = 2;
@@ -84,7 +87,7 @@
             // 
             // pollingX
             // 
-            this.pollingX.Location = new System.Drawing.Point(164, 45);
+            this.pollingX.Location = new System.Drawing.Point(164, 68);
             this.pollingX.Name = "pollingX";
             this.pollingX.Size = new System.Drawing.Size(60, 26);
             this.pollingX.TabIndex = 3;
@@ -93,7 +96,7 @@
             // 
             // pollingY
             // 
-            this.pollingY.Location = new System.Drawing.Point(260, 45);
+            this.pollingY.Location = new System.Drawing.Point(260, 68);
             this.pollingY.Name = "pollingY";
             this.pollingY.Size = new System.Drawing.Size(70, 26);
             this.pollingY.TabIndex = 4;
@@ -103,7 +106,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(40, 132);
+            this.label4.Location = new System.Drawing.Point(40, 155);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(232, 20);
             this.label4.TabIndex = 5;
@@ -111,7 +114,7 @@
             // 
             // screenPollingWait
             // 
-            this.screenPollingWait.Location = new System.Drawing.Point(280, 132);
+            this.screenPollingWait.Location = new System.Drawing.Point(280, 155);
             this.screenPollingWait.Name = "screenPollingWait";
             this.screenPollingWait.Size = new System.Drawing.Size(61, 26);
             this.screenPollingWait.TabIndex = 6;
@@ -120,7 +123,7 @@
             // stepSizeLabel
             // 
             this.stepSizeLabel.AutoSize = true;
-            this.stepSizeLabel.Location = new System.Drawing.Point(40, 174);
+            this.stepSizeLabel.Location = new System.Drawing.Point(40, 197);
             this.stepSizeLabel.Name = "stepSizeLabel";
             this.stepSizeLabel.Size = new System.Drawing.Size(82, 20);
             this.stepSizeLabel.TabIndex = 7;
@@ -129,7 +132,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(92, 268);
+            this.label6.Location = new System.Drawing.Point(92, 291);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 20);
             this.label6.TabIndex = 9;
@@ -138,7 +141,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(110, 203);
+            this.label7.Location = new System.Drawing.Point(110, 226);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 20);
             this.label7.TabIndex = 10;
@@ -146,7 +149,7 @@
             // 
             // ManualStepSize
             // 
-            this.ManualStepSize.Location = new System.Drawing.Point(189, 262);
+            this.ManualStepSize.Location = new System.Drawing.Point(189, 285);
             this.ManualStepSize.Name = "ManualStepSize";
             this.ManualStepSize.Size = new System.Drawing.Size(100, 26);
             this.ManualStepSize.TabIndex = 12;
@@ -154,7 +157,7 @@
             // 
             // HSVstepSize
             // 
-            this.HSVstepSize.Location = new System.Drawing.Point(189, 197);
+            this.HSVstepSize.Location = new System.Drawing.Point(189, 220);
             this.HSVstepSize.Name = "HSVstepSize";
             this.HSVstepSize.Size = new System.Drawing.Size(100, 26);
             this.HSVstepSize.TabIndex = 13;
@@ -162,7 +165,7 @@
             // 
             // colorFadeStepSize
             // 
-            this.colorFadeStepSize.Location = new System.Drawing.Point(189, 229);
+            this.colorFadeStepSize.Location = new System.Drawing.Point(189, 252);
             this.colorFadeStepSize.Name = "colorFadeStepSize";
             this.colorFadeStepSize.Size = new System.Drawing.Size(100, 26);
             this.colorFadeStepSize.TabIndex = 14;
@@ -171,7 +174,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(66, 235);
+            this.label8.Location = new System.Drawing.Point(66, 258);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(91, 20);
             this.label8.TabIndex = 15;
@@ -179,7 +182,7 @@
             // 
             // fullBtn
             // 
-            this.fullBtn.Location = new System.Drawing.Point(178, 82);
+            this.fullBtn.Location = new System.Drawing.Point(178, 105);
             this.fullBtn.Name = "fullBtn";
             this.fullBtn.Size = new System.Drawing.Size(123, 29);
             this.fullBtn.TabIndex = 16;
@@ -190,7 +193,7 @@
             // stepSleepLabel
             // 
             this.stepSleepLabel.AutoSize = true;
-            this.stepSleepLabel.Location = new System.Drawing.Point(45, 353);
+            this.stepSleepLabel.Location = new System.Drawing.Point(45, 376);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
             this.stepSleepLabel.Size = new System.Drawing.Size(127, 20);
@@ -200,7 +203,7 @@
             // HSVsleepSizeLabel
             // 
             this.HSVsleepSizeLabel.AutoSize = true;
-            this.HSVsleepSizeLabel.Location = new System.Drawing.Point(110, 381);
+            this.HSVsleepSizeLabel.Location = new System.Drawing.Point(110, 404);
             this.HSVsleepSizeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.HSVsleepSizeLabel.Name = "HSVsleepSizeLabel";
             this.HSVsleepSizeLabel.Size = new System.Drawing.Size(47, 20);
@@ -210,7 +213,7 @@
             // ColorFadeSleepSizeLabel
             // 
             this.ColorFadeSleepSizeLabel.AutoSize = true;
-            this.ColorFadeSleepSizeLabel.Location = new System.Drawing.Point(66, 414);
+            this.ColorFadeSleepSizeLabel.Location = new System.Drawing.Point(66, 437);
             this.ColorFadeSleepSizeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ColorFadeSleepSizeLabel.Name = "ColorFadeSleepSizeLabel";
             this.ColorFadeSleepSizeLabel.Size = new System.Drawing.Size(91, 20);
@@ -220,7 +223,7 @@
             // ManualSleepSizeLabel
             // 
             this.ManualSleepSizeLabel.AutoSize = true;
-            this.ManualSleepSizeLabel.Location = new System.Drawing.Point(92, 448);
+            this.ManualSleepSizeLabel.Location = new System.Drawing.Point(92, 471);
             this.ManualSleepSizeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ManualSleepSizeLabel.Name = "ManualSleepSizeLabel";
             this.ManualSleepSizeLabel.Size = new System.Drawing.Size(65, 20);
@@ -229,7 +232,7 @@
             // 
             // HSVsleepSize
             // 
-            this.HSVsleepSize.Location = new System.Drawing.Point(189, 375);
+            this.HSVsleepSize.Location = new System.Drawing.Point(189, 398);
             this.HSVsleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.HSVsleepSize.Name = "HSVsleepSize";
             this.HSVsleepSize.Size = new System.Drawing.Size(100, 26);
@@ -238,7 +241,7 @@
             // 
             // ColorFadeSleepSize
             // 
-            this.ColorFadeSleepSize.Location = new System.Drawing.Point(189, 408);
+            this.ColorFadeSleepSize.Location = new System.Drawing.Point(189, 431);
             this.ColorFadeSleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ColorFadeSleepSize.Name = "ColorFadeSleepSize";
             this.ColorFadeSleepSize.Size = new System.Drawing.Size(100, 26);
@@ -247,7 +250,7 @@
             // 
             // ManualSleepSize
             // 
-            this.ManualSleepSize.Location = new System.Drawing.Point(189, 442);
+            this.ManualSleepSize.Location = new System.Drawing.Point(189, 465);
             this.ManualSleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ManualSleepSize.Name = "ManualSleepSize";
             this.ManualSleepSize.Size = new System.Drawing.Size(100, 26);
@@ -257,7 +260,7 @@
             // screenStepSleepLabel
             // 
             this.screenStepSleepLabel.AutoSize = true;
-            this.screenStepSleepLabel.Location = new System.Drawing.Point(21, 475);
+            this.screenStepSleepLabel.Location = new System.Drawing.Point(21, 498);
             this.screenStepSleepLabel.Name = "screenStepSleepLabel";
             this.screenStepSleepLabel.Size = new System.Drawing.Size(151, 20);
             this.screenStepSleepLabel.TabIndex = 25;
@@ -265,7 +268,7 @@
             // 
             // screenStepSleep
             // 
-            this.screenStepSleep.Location = new System.Drawing.Point(189, 475);
+            this.screenStepSleep.Location = new System.Drawing.Point(189, 498);
             this.screenStepSleep.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.screenStepSleep.Name = "screenStepSleep";
             this.screenStepSleep.Size = new System.Drawing.Size(100, 26);
@@ -274,7 +277,7 @@
             // 
             // screenStepSize
             // 
-            this.screenStepSize.Location = new System.Drawing.Point(189, 297);
+            this.screenStepSize.Location = new System.Drawing.Point(189, 320);
             this.screenStepSize.Name = "screenStepSize";
             this.screenStepSize.Size = new System.Drawing.Size(100, 26);
             this.screenStepSize.TabIndex = 28;
@@ -283,17 +286,41 @@
             // screenStepSizeLabel
             // 
             this.screenStepSizeLabel.AutoSize = true;
-            this.screenStepSizeLabel.Location = new System.Drawing.Point(6, 297);
+            this.screenStepSizeLabel.Location = new System.Drawing.Point(6, 320);
             this.screenStepSizeLabel.Name = "screenStepSizeLabel";
             this.screenStepSizeLabel.Size = new System.Drawing.Size(151, 20);
             this.screenStepSizeLabel.TabIndex = 27;
             this.screenStepSizeLabel.Text = "Screen Responsive:";
+            // 
+            // displayLabel
+            // 
+            this.displayLabel.AutoSize = true;
+            this.displayLabel.Location = new System.Drawing.Point(34, 29);
+            this.displayLabel.Name = "displayLabel";
+            this.displayLabel.Size = new System.Drawing.Size(64, 20);
+            this.displayLabel.TabIndex = 29;
+            this.displayLabel.Text = "Display:";
+            // 
+            // displayIndex
+            // 
+            this.displayIndex.Location = new System.Drawing.Point(138, 29);
+            this.displayIndex.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.displayIndex.Name = "displayIndex";
+            this.displayIndex.Size = new System.Drawing.Size(120, 26);
+            this.displayIndex.TabIndex = 30;
+            this.displayIndex.ValueChanged += new System.EventHandler(this.displayIndex_ValueChanged);
             // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 700);
+            this.Controls.Add(this.displayIndex);
+            this.Controls.Add(this.displayLabel);
             this.Controls.Add(this.screenStepSize);
             this.Controls.Add(this.screenStepSizeLabel);
             this.Controls.Add(this.screenStepSleep);
@@ -324,6 +351,7 @@
             this.ShowIcon = false;
             this.Text = "Settings";
             this.TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -357,5 +385,7 @@
         private System.Windows.Forms.TextBox screenStepSleep;
         private System.Windows.Forms.TextBox screenStepSize;
         private System.Windows.Forms.Label screenStepSizeLabel;
+        private System.Windows.Forms.Label displayLabel;
+        private System.Windows.Forms.NumericUpDown displayIndex;
     }
 }

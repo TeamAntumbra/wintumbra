@@ -28,7 +28,7 @@ namespace Antumbra
         int changeThreshold; //difference in colors needed to change
         //bool on;
         private SerialConnector serial;
-        private ScreenGrabber screen;
+        public ScreenGrabber screen { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
         public int colorFadeStepSleep { get; set; }
