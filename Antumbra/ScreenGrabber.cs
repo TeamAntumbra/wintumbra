@@ -57,7 +57,7 @@ namespace Antumbra
             Bitmap screen = getPixelBitBlt(width, height);
             if (screen == null)
                 return System.Drawing.Color.Black;
-            System.Drawing.Color result = SmartCalculateReprColor(screen, 10, 20);//use all tolerance, and percent needed to be mixed in
+            System.Drawing.Color result = SmartCalculateReprColor(screen, 15, 20);//use all tolerance, and percent needed to be mixed in
             screen.Dispose();
             return result;
         }
