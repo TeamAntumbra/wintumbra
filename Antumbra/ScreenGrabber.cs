@@ -29,7 +29,6 @@ namespace Antumbra
         System.Drawing.Point[] points;//polling points
         System.Drawing.Size size;//polling size
         public Screen display { get; set; }//display for avging
-        //GPGPU gpu;
 
         public ScreenGrabber()
         {
@@ -38,7 +37,6 @@ namespace Antumbra
             updateBounds();
             //this.widthDivs = 4;
             //this.heightDivs = 4;
-            //setupCudafy();
         }
 
         public void updateBounds()
@@ -59,53 +57,9 @@ namespace Antumbra
             Bitmap screen = getPixelBitBlt(width, height);
             if (screen == null)
                 return System.Drawing.Color.Black;
-            System.Drawing.Color result = SmartCalculateReprColor(screen, 10, 25);//use all tolerance, and percent needed to be mixed in
-            //return CalculateReprColor(screen, true);
+            System.Drawing.Color result = SmartCalculateReprColor(screen, 10, 20);//use all tolerance, and percent needed to be mixed in
             screen.Dispose();
             return result;
-        }
-
-        private System.Drawing.Color CalculateReprColor(Bitmap bm, bool saturate)
-        {
-            int width = bm.Width;
-            int height = bm.Height;
-            int red = 0;
-            int green = 0;
-            int blue = 0;
-            long[] totals = new long[] { 0, 0, 0 };
-            int bppModifier = bm.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb ? 3 : 4; // cutting corners, will fail on anything else but 32 and 24 bit images
-
-            BitmapData srcData = bm.LockBits(new System.Drawing.Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
-            int stride = srcData.Stride;
-            IntPtr Scan0 = srcData.Scan0;
-
-            unsafe {
-                byte* p = (byte*)(void*)Scan0;
-
-                for (int y = 0; y < height; y++) { //for each row
-                    for (int x = 0; x < width; x++) { //for each col
-                        int idx = (y * stride) + x * bppModifier;
-                        red = p[idx + 2];
-                        green = p[idx + 1];
-                        blue = p[idx];
-                        if (saturate) { //saturate values
-                            double[] hsv = HSVRGGConverter.RGBToHSV(red, green, blue);
-                            int[] rgb = HSVRGGConverter.HSVToRGB(hsv[0], 100, hsv[2]);
-                            red = rgb[0];
-                            green = rgb[1];
-                            blue = rgb[2];
-                        }
-                        totals[2] += red;
-                        totals[1] += green;
-                        totals[0] += blue;
-                    }
-                }
-            }
-            int count = width * height;//total number of pixels in avgs
-            int avgR = (int)(totals[2] / count);
-            int avgG = (int)(totals[1] / count);
-            int avgB = (int)(totals[0] / count);
-            return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
         }
 
         private System.Drawing.Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold)
@@ -280,6 +234,14 @@ namespace Antumbra
                 }
             }
             return points.ToArray();
+        }
+
+        public System.Drawing.Color intensify(System.Drawing.Color boringColor)
+        {
+            HslColor boringHSL = new HslColor(boringColor);
+            if (boringHSL.S > .2)
+                boringHSL.S = 1.0; //saturate
+            return boringHSL.ToRgbColor();
         }
     }
 }
