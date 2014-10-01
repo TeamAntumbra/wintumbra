@@ -13,9 +13,11 @@ namespace Antumbra
     public partial class SettingsWindow : Form
     {
         Antumbra antumbra;
+        ColorPickerDialog picker;
         public SettingsWindow(Antumbra antumbra)
         {
             this.antumbra = antumbra;
+            this.picker = new ColorPickerDialog();
             InitializeComponent();
             updateValues();
         }
@@ -159,6 +161,18 @@ namespace Antumbra
                 displayIndex.Value = Screen.AllScreens.Length-1;//max index allowed
             else
                 this.antumbra.screen.display = Screen.AllScreens[(int)displayIndex.Value];
+        }
+
+        private void manualColorBtn_Click(object sender, EventArgs e)
+        {
+            this.picker = new ColorPickerDialog();
+            this.picker.Show();
+            picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
+        }
+
+        private void manualListener(object sender, EventArgs e)
+        {
+            this.antumbra.setColorTo(this.picker.previewPanel.BackColor);
         }
     }
 }

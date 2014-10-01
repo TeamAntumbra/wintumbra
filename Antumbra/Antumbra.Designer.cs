@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Antumbra));
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.AntumbraLabel = new System.Windows.Forms.Label();
-            this.colorChoose = new System.Windows.Forms.ColorDialog();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,70 +94,70 @@
             this.contextMenu.ShowCheckMargin = true;
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(244, 274);
+            this.contextMenu.Size = new System.Drawing.Size(180, 224);
             this.contextMenu.Text = "Antumbra|Glow";
             this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
             // openMenuItem
             // 
             this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.openMenuItem.Size = new System.Drawing.Size(179, 22);
             this.openMenuItem.Text = "Open";
             this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
             // settingsMenuItem
             // 
             this.settingsMenuItem.Name = "settingsMenuItem";
-            this.settingsMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.settingsMenuItem.Size = new System.Drawing.Size(179, 22);
             this.settingsMenuItem.Text = "Settings";
             this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
             // 
             // HSVMenuItem
             // 
             this.HSVMenuItem.Name = "HSVMenuItem";
-            this.HSVMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.HSVMenuItem.Size = new System.Drawing.Size(179, 22);
             this.HSVMenuItem.Text = "HSV Sweep";
             this.HSVMenuItem.Click += new System.EventHandler(this.HSVMenuItem_Click);
             // 
             // sinWaveToolStripMenuItem
             // 
             this.sinWaveToolStripMenuItem.Name = "sinWaveToolStripMenuItem";
-            this.sinWaveToolStripMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.sinWaveToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.sinWaveToolStripMenuItem.Text = "Sin Wave";
             this.sinWaveToolStripMenuItem.Click += new System.EventHandler(this.sinWaveToolStripMenuItem_Click);
             // 
             // randomColorFadeMenuItem
             // 
             this.randomColorFadeMenuItem.Name = "randomColorFadeMenuItem";
-            this.randomColorFadeMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.randomColorFadeMenuItem.Size = new System.Drawing.Size(179, 22);
             this.randomColorFadeMenuItem.Text = "Random Color Fade";
             this.randomColorFadeMenuItem.Click += new System.EventHandler(this.randomColorFadeMenuItem_Click);
             // 
             // screenResponsiveMenuItem
             // 
             this.screenResponsiveMenuItem.Name = "screenResponsiveMenuItem";
-            this.screenResponsiveMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.screenResponsiveMenuItem.Size = new System.Drawing.Size(179, 22);
             this.screenResponsiveMenuItem.Text = "Screen Responsive";
             this.screenResponsiveMenuItem.Click += new System.EventHandler(this.screenResponsiveMenuItem_Click);
             // 
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.manualToolStripMenuItem.Text = "Manual";
             this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
             // offToolStripMenuItem
             // 
             this.offToolStripMenuItem.Name = "offToolStripMenuItem";
-            this.offToolStripMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.offToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.offToolStripMenuItem.Text = "Off";
             this.offToolStripMenuItem.Click += new System.EventHandler(this.offToolStripMenuItem_Click);
             // 
             // quitMenuItem
             // 
             this.quitMenuItem.Name = "quitMenuItem";
-            this.quitMenuItem.Size = new System.Drawing.Size(243, 30);
+            this.quitMenuItem.Size = new System.Drawing.Size(179, 22);
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
@@ -168,7 +167,7 @@
             this.statusLabel.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Bold);
             this.statusLabel.Location = new System.Drawing.Point(69, 145);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(62, 20);
+            this.statusLabel.Size = new System.Drawing.Size(45, 15);
             this.statusLabel.TabIndex = 3;
             this.statusLabel.Text = "Status:";
             // 
@@ -211,7 +210,6 @@
 
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label AntumbraLabel;
-        private System.Windows.Forms.ColorDialog colorChoose;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsMenuItem;

@@ -99,7 +99,72 @@
     <Compile Include="Antumbra.Designer.cs">
       <DependentUpon>Antumbra.cs</DependentUpon>
     </Compile>
-    <Compile Include="DriverInstaller.cs" />
+    <Compile Include="ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
+    <Compile Include="ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />
+    <Compile Include="ColorPicker\AdobePhotoShopColorSwatchSerializer.cs" />
+    <Compile Include="ColorPicker\ColorBarStyle.cs" />
+    <Compile Include="ColorPicker\ColorCellBorderStyle.cs" />
+    <Compile Include="ColorPicker\ColorCollection.cs" />
+    <Compile Include="ColorPicker\ColorCollectionEventArgs.cs" />
+    <Compile Include="ColorPicker\ColorCollectionSortOrder.cs" />
+    <Compile Include="ColorPicker\ColorComparer.cs" />
+    <Compile Include="ColorPicker\ColorEditingMode.cs" />
+    <Compile Include="ColorPicker\ColorEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorEditor.Designer.cs" />
+    <Compile Include="ColorPicker\ColorEditorManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorGridSelectedCellStyle.cs" />
+    <Compile Include="ColorPicker\ColorHitTestInfo.cs" />
+    <Compile Include="ColorPicker\ColorPalette.cs" />
+    <Compile Include="ColorPicker\ColorPalettes.cs" />
+    <Compile Include="ColorPicker\ColorPickerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorPickerDialog.Designer.cs" />
+    <Compile Include="ColorPicker\ColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorSliderNubStyle.cs" />
+    <Compile Include="ColorPicker\ColorSource.cs" />
+    <Compile Include="ColorPicker\ColorWheel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\EditColorCancelEventArgs.cs" />
+    <Compile Include="ColorPicker\EditColorEventArgs.cs" />
+    <Compile Include="ColorPicker\GimpPaletteSerializer.cs" />
+    <Compile Include="ColorPicker\HslColor.cs" />
+    <Compile Include="ColorPicker\HsvColor.cs" />
+    <Compile Include="ColorPicker\HueColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\IColorEditor.cs" />
+    <Compile Include="ColorPicker\InterleavedBitmapPaletteSerializer.cs" />
+    <Compile Include="ColorPicker\IPaletteSerializer.cs" />
+    <Compile Include="ColorPicker\JascPaletteSerializer.cs" />
+    <Compile Include="ColorPicker\LightnessColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\NativeMethods.cs" />
+    <Compile Include="ColorPicker\NavigationOrigin.cs" />
+    <Compile Include="ColorPicker\PaintNetPaletteSerializer.cs" />
+    <Compile Include="ColorPicker\PaletteSerializer.cs" />
+    <Compile Include="ColorPicker\RawPaletteSerializer.cs" />
+    <Compile Include="ColorPicker\RgbaChannel.cs" />
+    <Compile Include="ColorPicker\RgbaColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\SaturationColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ScreenColorPicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +180,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Antumbra.resx">
       <DependentUpon>Antumbra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker\ColorPickerDialog.resx">
+      <DependentUpon>ColorPickerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
@@ -169,6 +237,15 @@
     <Content Include="libantumbra.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\cellbackground.png" />
+    <None Include="Resources\Culture.ico" />
+    <Content Include="Resources\eyedropper.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\eyedropper.ico" />
+    <Content Include="Resources\eyedropper.png" />
+    <Content Include="Resources\palette-load.png" />
+    <Content Include="Resources\palette-save.png" />
     <None Include="Resources\favicon.ico" />
   </ItemGroup>
   <ItemGroup />

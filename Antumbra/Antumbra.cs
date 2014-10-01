@@ -22,6 +22,7 @@ namespace Antumbra
         private Thread fadeThread;//thread for color fades
         private Color color;//newest generated color for displaying
         private Color currentColor;//most recent successfully sent set command color
+        private ColorPickerDialog picker;
         //bool continuous;//, serialEnabled;
         bool fadeEnabled;
         byte lastR, lastG, lastB;
@@ -72,6 +73,12 @@ namespace Antumbra
             this.screenAvgStepSleep = 0;
             this.screenAvgStepSize = 1;
             updateStatus(this.serial.state);
+            this.picker = new ColorPickerDialog();
+        }
+
+        public void setColorTo(Color newColor)
+        {
+            fade(newColor, this.manualStepSleep, this.manualStepSize);
         }
 
         private void takeScreenshotBtn_Click(object sender, EventArgs e)
@@ -343,11 +350,14 @@ namespace Antumbra
                 this.fadeThread.Abort();
             this.fadeEnabled = false;
             this.screenTimer.Enabled = false;
-            DialogResult result = colorChoose.ShowDialog();
-            if (result == DialogResult.OK) {
-                //this.BackColor = colorChoose.Color;
-                fade(colorChoose.Color, this.manualStepSleep, this.manualStepSize);
-            }
+            this.picker.Show();
+            this.picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
+            fade(this.picker.previewPanel.BackColor, this.manualStepSleep, this.manualStepSize);
+        }
+
+        private void manualListener(object sender, EventArgs e)
+        {
+            this.setColorTo(this.picker.previewPanel.BackColor);
         }
 
         private void contextMenu_MouseLeave(object sender, EventArgs e)
