@@ -75,11 +75,9 @@
             this.contextMenu.ShowCheckMargin = true;
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(180, 202);
+            this.contextMenu.Size = new System.Drawing.Size(180, 224);
+            this.contextMenu.Style = MetroFramework.MetroColorStyle.Blue;
             this.contextMenu.Text = "Antumbra|Glow";
-            this.contextMenu.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.contextMenu.UseCustomBackColor = true;
-            this.contextMenu.UseCustomForeColor = true;
             this.contextMenu.UseStyleColors = true;
             this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 

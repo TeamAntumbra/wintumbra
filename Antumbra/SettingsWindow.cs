@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Antumbra
 {
-    public partial class SettingsWindow : Form
+    public partial class SettingsWindow : MetroFramework.Forms.MetroForm
     {
         Antumbra antumbra;
         ColorPickerDialog picker;
@@ -173,6 +173,16 @@ namespace Antumbra
         private void manualListener(object sender, EventArgs e)
         {
             this.antumbra.setColorTo(this.picker.previewPanel.BackColor);
+        }
+
+        private void maxBright_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+        }
+
+        private void minBright_Scroll(object sender, ScrollEventArgs e)
+        {
+
         }
     }
 }
