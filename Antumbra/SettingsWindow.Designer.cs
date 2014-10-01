@@ -373,6 +373,7 @@
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SettingsWindow";
+            this.Opacity = 0.9D;
             this.ShowIcon = false;
             this.Text = "Settings";
             this.TopMost = true;

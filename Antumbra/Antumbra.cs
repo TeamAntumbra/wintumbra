@@ -16,7 +16,7 @@ using System.IO.Ports;
 
 namespace Antumbra
 {
-    public partial class Antumbra : Form
+    public partial class Antumbra : MetroFramework.Forms.MetroForm
     {
         private System.Timers.Timer screenTimer;//timer for screen color averaging
         private Thread fadeThread;//thread for color fades
@@ -236,7 +236,7 @@ namespace Antumbra
 
         private void updateLast(byte r, byte g, byte b)
         {
-            this.BackColor = Color.FromArgb(r, g, b);
+            this.antumbraLabel.ForeColor = Color.FromArgb(r, g, b);
             this.lastR = r;
             this.lastG = g;
             this.lastB = b;
@@ -279,7 +279,7 @@ namespace Antumbra
         {
             if (!this.Visible) {
                 this.Show();
-                this.WindowState = FormWindowState.Normal;
+                this.WindowState = MetroFramework.Forms.MetroForm.ActiveForm.WindowState;
             }
         }
 
