@@ -15,7 +15,7 @@ namespace Antumbra
 
   // If you use this code in your applications, donations or attribution are welcome
 
-  public partial class ColorPickerDialog : Form
+  public partial class ColorPickerDialog : MetroFramework.Forms.MetroForm
   {
     #region Public Constructors
 

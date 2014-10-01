@@ -350,6 +350,7 @@ namespace Antumbra
                 this.fadeThread.Abort();
             this.fadeEnabled = false;
             this.screenTimer.Enabled = false;
+            this.picker = new ColorPickerDialog();
             this.picker.Show();
             this.picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
             fade(this.picker.previewPanel.BackColor, this.manualStepSleep, this.manualStepSize);
