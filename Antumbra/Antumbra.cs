@@ -279,7 +279,7 @@ namespace Antumbra
         {
             if (!this.Visible) {
                 this.Show();
-                this.WindowState = MetroFramework.Forms.MetroForm.ActiveForm.WindowState;
+                this.WindowState = FormWindowState.Normal;
             }
         }
 
