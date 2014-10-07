@@ -29,11 +29,15 @@ namespace Antumbra
         System.Drawing.Point[] points;//polling points
         System.Drawing.Size size;//polling size
         public Screen display { get; set; }//display for avging
+        public double saturationAdditive { get; set; }
+        public bool saturationEnabled { get; set; }
 
         public ScreenGrabber()
         {
             this.size = new System.Drawing.Size(50, 30);
             this.display = Screen.PrimaryScreen;
+            this.saturationAdditive = .45;//+45% saturation (caps @ 100%)
+            this.saturationEnabled = true;
             updateBounds();
             //this.widthDivs = 4;
             //this.heightDivs = 4;
@@ -57,7 +61,7 @@ namespace Antumbra
             Bitmap screen = getPixelBitBlt(width, height);
             if (screen == null)
                 return System.Drawing.Color.Black;
-            System.Drawing.Color result = SmartCalculateReprColor(screen, 15, 20);//use all tolerance, and percent needed to be mixed in
+            System.Drawing.Color result = SmartCalculateReprColor(screen, 10, 20);//use all tolerance, and percent needed to be mixed in
             screen.Dispose();
             return result;
         }
@@ -177,7 +181,10 @@ namespace Antumbra
             int avgR = (int)(totals[2] / count);
             int avgG = (int)(totals[1] / count);
             int avgB = (int)(totals[0] / count);
-            return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
+            System.Drawing.Color newColor = System.Drawing.Color.FromArgb(avgR, avgG, avgB);
+            if (this.saturationEnabled)
+                return intensify(newColor);
+            return newColor;
         }
 
         private Bitmap getPixelBitBlt(int width, int height)
@@ -239,8 +246,10 @@ namespace Antumbra
         public System.Drawing.Color intensify(System.Drawing.Color boringColor)
         {
             HslColor boringHSL = new HslColor(boringColor);
-            if (boringHSL.S > .2)
-                boringHSL.S = 1.0; //saturate
+            if (boringHSL.S <= .65)
+                boringHSL.S += this.saturationAdditive; //saturate
+            else
+                boringHSL.S = 1.0;
             return boringHSL.ToRgbColor();
         }
     }

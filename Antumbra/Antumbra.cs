@@ -23,8 +23,10 @@ namespace Antumbra
         private Color color;//newest generated color for displaying
         private Color currentColor;//most recent successfully sent set command color
         private ColorPickerDialog picker;
+        private Thread screenThread;
         //bool continuous;//, serialEnabled;
         bool fadeEnabled;
+        bool screenAvgEnabled;
         byte lastR, lastG, lastB;
         int changeThreshold; //difference in colors needed to change
         //bool on;
@@ -55,7 +57,7 @@ namespace Antumbra
             this.lastB = 0;
             this.currentColor = Color.Black;//depends on how the Antumbra starts up
             this.color = Color.Black;
-            this.changeThreshold = 1; //see shouldChange(Color, Color) (lower is more sensitive)
+            this.changeThreshold = 10; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.continuous = false;
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
@@ -66,14 +68,15 @@ namespace Antumbra
             this.colorFadeStepSleep = 15;
             this.manualStepSleep = 1;
             this.sinFadeStepSleep = 3;
-            this.screenPollingWait = 50;//default is 50ms, 20hz
+            this.screenPollingWait = 33;//default is 33ms, ~30hz
             this.HSVstepSize = 1;
             this.manualStepSize = 1;
             this.colorFadeStepSize = 1; //default step sizes to 1
             this.screenAvgStepSleep = 0;
-            this.screenAvgStepSize = 1;
+            this.screenAvgStepSize = 2;
             updateStatus(this.serial.state);
             this.picker = new ColorPickerDialog();
+            this.screenThread = new Thread(new ThreadStart(setToAvg));
         }
 
         public void setColorTo(Color newColor)
@@ -98,15 +101,14 @@ namespace Antumbra
 
         private void setToAvg()
         {
-            Color newColor = this.screen.getScreenAvgColor(this.pollingWidth, this.pollingHeight);
-            //Color newColor = this.screen.getCenterScreenAvgColor();
-            //Color newColor = this.screen.getScreenDomColor(); //holy shit 95% cpu usage
-            //Color newColor = this.screen.getCenterScreenDomColor();
-            if (newColor.Equals(Color.Empty))//something went wrong
-                return;
-            //Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
-            //changeTo(newColor.R, newColor.G, newColor.B);
-            fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade using a 1-step
+            while (true) {
+                Color newColor = this.screen.getScreenAvgColor(this.pollingWidth, this.pollingHeight);
+                if (newColor.Equals(Color.Empty))//something went wrong
+                    return;
+                //Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
+                //changeTo(newColor.R, newColor.G, newColor.B);
+                fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
+            }
         }
         
         private int calcDiff(Color color, Color other)
@@ -203,7 +205,8 @@ namespace Antumbra
                 b += bStep;
                 //Console.WriteLine(r + " " + g + ' ' + b + ' ' + steps + ' ' + rStep + ' ' + gStep + ' ' + bStep);
                 changeTo((byte)r, (byte)g, (byte)b);
-                Thread.Sleep(sleepTime);
+                if(sleepTime != 0)
+                    Thread.Sleep(sleepTime);
             }
         }
 
@@ -291,7 +294,10 @@ namespace Antumbra
 
         private void HSVMenuItem_Click(object sender, EventArgs e)
         {
-            this.screenTimer.Enabled = false;
+            if (this.screenAvgEnabled)
+                this.screenThread.Abort();
+            this.screenAvgEnabled = false;
+            //this.screenTimer.Enabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             this.fadeThread = new Thread(new ThreadStart(callHsvFade));
@@ -301,7 +307,10 @@ namespace Antumbra
 
         private void randomColorFadeMenuItem_Click(object sender, EventArgs e)
         {
-            this.screenTimer.Enabled = false;
+            if (this.screenAvgEnabled)
+                this.screenThread.Abort();
+            this.screenAvgEnabled = false;
+            //this.screenTimer.Enabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
@@ -314,13 +323,21 @@ namespace Antumbra
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             this.fadeEnabled = false;
-            this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
-            this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
-            this.screenTimer.Enabled = true;
+            //this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
+            //this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
+            //this.screenTimer.Enabled = true;
+            this.screenAvgEnabled = true;
+            this.screenThread = new Thread(new ThreadStart(setToAvg));
+            this.screenThread.Start();
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            if (this.screenAvgEnabled)
+                this.screenThread.Abort();
+            this.screenThread.Abort();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             Application.Exit();
@@ -328,9 +345,12 @@ namespace Antumbra
 
         private void sinWaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (this.screenAvgEnabled)
+                this.screenThread.Abort();
+            this.screenAvgEnabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
-            this.screenTimer.Enabled = false;
+            //this.screenTimer.Enabled = false;
             this.fadeThread = new Thread(new ThreadStart(callSinFade));
             this.fadeThread.Start();
             this.fadeEnabled = true;
@@ -338,7 +358,12 @@ namespace Antumbra
 
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.screenTimer.Enabled = false;
+            if (this.screenAvgEnabled)
+                this.screenThread.Abort();
+            this.screenAvgEnabled = false;
+            if (this.fadeEnabled)
+                this.fadeThread.Abort();
+            //this.screenTimer.Enabled = false;
             this.fadeThread.Abort();
             this.fadeEnabled = false;
             changeTo(0, 0, 0);
@@ -348,8 +373,11 @@ namespace Antumbra
         {
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
+            if (this.screenAvgEnabled)
+                this.screenThread.Abort();
+            this.screenAvgEnabled = false;
             this.fadeEnabled = false;
-            this.screenTimer.Enabled = false;
+            //this.screenTimer.Enabled = false;
             this.picker = new ColorPickerDialog();
             this.picker.Show();
             this.picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
