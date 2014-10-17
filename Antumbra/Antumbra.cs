@@ -31,9 +31,13 @@ namespace Antumbra
         int changeThreshold; //difference in colors needed to change
         //bool on;
         private SerialConnector serial;
-        public ScreenGrabber screen { get; set; }
+        //public ScreenGrabber screen { get; set; }
+        public ScreenGrabberHelper screenGrabber { get; set; }
+        public ScreenProcessor screenProcessor { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
+        public int pollingX { get; set; }
+        public int pollingY { get; set; }
         public int colorFadeStepSleep { get; set; }
         public int manualStepSleep { get; set; }
         public int sinFadeStepSleep { get; set; }
@@ -49,7 +53,7 @@ namespace Antumbra
         {
             //installDriver();
             this.serial = new SerialConnector(0x03EB, 0x2040);
-            this.screen = new ScreenGrabber();
+            //this.screen = new ScreenGrabber();
             Console.WriteLine(this.serial.setup());
             InitializeComponent();
             this.lastR = 0;
@@ -62,8 +66,12 @@ namespace Antumbra
             this.fadeEnabled = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.screenTimer = new System.Timers.Timer();
-            this.pollingWidth = this.screen.width;
-            this.pollingHeight = this.screen.height;
+            //this.pollingWidth = this.screen.width;
+            //this.pollingHeight = this.screen.height;
+            this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
+            this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
+            this.pollingX = 0;
+            this.pollingY = 0;
             this.HSVstepSleep = 15;
             this.colorFadeStepSleep = 15;
             this.manualStepSleep = 1;
@@ -76,6 +84,9 @@ namespace Antumbra
             this.screenAvgStepSize = 2;
             updateStatus(this.serial.state);
             this.picker = new ColorPickerDialog();
+            this.screenGrabber = new ScreenGrabberHelper(this.pollingX, this.pollingY,
+                this.pollingWidth, this.pollingHeight, 0);//todo make timeOut a setting
+            this.screenProcessor = new ScreenProcessor(.45, true, 20, 20);
             this.screenThread = new Thread(new ThreadStart(setToAvg));
         }
 
@@ -102,7 +113,8 @@ namespace Antumbra
         private void setToAvg()
         {
             while (true) {
-                Color newColor = this.screen.getScreenAvgColor(this.pollingWidth, this.pollingHeight);
+                //Color newColor = this.screen.getScreenAvgColor(this.pollingWidth, this.pollingHeight);
+                Color newColor = this.screenProcessor.process(this.screenGrabber.screen);
                 if (newColor.Equals(Color.Empty))//something went wrong
                     return;
                 //Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
@@ -155,7 +167,7 @@ namespace Antumbra
                 sinFade(this.sinFadeStepSleep);
         }
 
-        private void sinFade(int sleepTime)
+        private void sinFade(int sleepTime, double stepSize)
         {
             for (double i = 0; i < Math.PI*2; i += .01)
             {
@@ -268,9 +280,10 @@ namespace Antumbra
             this.pollingHeight = y;
         }
 
-        public void updatePollingBoundsToFull()
+        public void updatePollingBoundsToFull()//assumes primary monitor
         {
-            updatePollingBounds(this.screen.width, this.screen.height);
+            updatePollingBounds(Screen.PrimaryScreen.Bounds.Width, 
+                                Screen.PrimaryScreen.Bounds.Height);
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -327,6 +340,7 @@ namespace Antumbra
             //this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
             //this.screenTimer.Enabled = true;
             this.screenAvgEnabled = true;
+            this.screenGrabber.start();
             this.screenThread = new Thread(new ThreadStart(setToAvg));
             this.screenThread.Start();
         }

@@ -35,8 +35,10 @@ namespace Antumbra
             ManualSleepSize.Text = this.antumbra.manualStepSleep.ToString();
             screenStepSleep.Text = this.antumbra.screenAvgStepSleep.ToString();
             screenStepSize.Text = this.antumbra.screenAvgStepSize.ToString();
-            saturationEnabledCheck.Checked = this.antumbra.screen.saturationEnabled;
-            saturationAdditiveTxt.Text = this.antumbra.screen.saturationAdditive.ToString();
+            saturationEnabledCheck.Checked = this.antumbra.screenProcessor.saturationEnabled;
+            saturationAdditiveTxt.Text = this.antumbra.screenProcessor.saturationAdditive.ToString();
+            //saturationEnabledCheck.Checked = this.antumbra.screen.saturationEnabled;
+            //saturationAdditiveTxt.Text = this.antumbra.screen.saturationAdditive.ToString();
         }
 
         private void pollingY_TextChanged(object sender, EventArgs e)
@@ -159,10 +161,11 @@ namespace Antumbra
         private void displayIndex_ValueChanged(object sender, EventArgs e)
         {
             int value = (int)displayIndex.Value;
-            if (value > Screen.AllScreens.Length-1)//component handles min value so lets handle max
-                displayIndex.Value = Screen.AllScreens.Length-1;//max index allowed
+            if (value > Screen.AllScreens.Length - 1)//component handles min value so lets handle max
+                displayIndex.Value = Screen.AllScreens.Length - 1;//max index allowed
             else
-                this.antumbra.screen.display = Screen.AllScreens[(int)displayIndex.Value];
+                //this.antumbra.screen.display = Screen.AllScreens[(int)displayIndex.Value];
+                Console.WriteLine("TODO");
         }
 
         private void manualColorBtn_Click(object sender, EventArgs e)
@@ -190,7 +193,8 @@ namespace Antumbra
         private void saturationAdditiveTxt_TextChanged(object sender, EventArgs e)
         {
             try {
-                this.antumbra.screen.saturationAdditive = Convert.ToDouble(saturationAdditiveTxt.Text);
+                //this.antumbra.screen.saturationAdditive = Convert.ToDouble(saturationAdditiveTxt.Text);
+                this.antumbra.screenProcessor.saturationAdditive = Convert.ToDouble(saturationAdditiveTxt.Text);
             }
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");//todo make these specific
@@ -200,7 +204,23 @@ namespace Antumbra
 
         private void saturationEnabledCheck_CheckedChanged(object sender, EventArgs e)
         {
-            this.antumbra.screen.saturationEnabled = saturationEnabledCheck.Checked;
+           // this.antumbra.screen.saturationEnabled = saturationEnabledCheck.Checked;
+            this.antumbra.screenProcessor.saturationEnabled = saturationEnabledCheck.Checked;
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sinStepSize_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SettingsWindow_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

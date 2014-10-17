@@ -52,8 +52,14 @@ namespace Antumbra
         {
             if (this.dev == null)
                 this.state = DEAD;
-            else
-                this.state = AnDevice_State(this.dev);
+            else {
+                try {
+                    this.state = AnDevice_State(this.dev);
+                }
+                catch (System.AccessViolationException) {
+                    this.state = 0;
+                }
+            }
             Console.WriteLine("status - " + this.state.ToString());
         }
 

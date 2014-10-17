@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Antumbra")]
+[assembly: AssemblyTitle("Glow")]
 [assembly: AssemblyDescription("Antumbra|Glow controller")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Antumbra")]
+[assembly: AssemblyCompany("Antumbra")]
+[assembly: AssemblyProduct("Glow")]
 [assembly: AssemblyCopyright("Copyright © Antumbra 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
