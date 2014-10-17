@@ -37,6 +37,8 @@ namespace Antumbra
             screenStepSize.Text = this.antumbra.screenAvgStepSize.ToString();
             saturationEnabledCheck.Checked = this.antumbra.screenProcessor.saturationEnabled;
             saturationAdditiveTxt.Text = this.antumbra.screenProcessor.saturationAdditive.ToString();
+            sinSleepSize.Text = this.antumbra.sinFadeStepSleep.ToString();
+            sinStepSize.Text = this.antumbra.sinFadeStepSize.ToString();   
             //saturationEnabledCheck.Checked = this.antumbra.screen.saturationEnabled;
             //saturationAdditiveTxt.Text = this.antumbra.screen.saturationAdditive.ToString();
         }
@@ -208,19 +210,14 @@ namespace Antumbra
             this.antumbra.screenProcessor.saturationEnabled = saturationEnabledCheck.Checked;
         }
 
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void sinStepSize_TextChanged(object sender, EventArgs e)
         {
-
+            this.antumbra.sinFadeStepSize = Convert.ToDouble(sinStepSize.Text);
         }
 
-        private void SettingsWindow_Load(object sender, EventArgs e)
+        private void sinSleepSize_TextChanged(object sender, EventArgs e)
         {
-
+            this.antumbra.sinFadeStepSleep = Convert.ToInt32(sinSleepSize.Text);
         }
     }
 }

@@ -41,6 +41,7 @@ namespace Antumbra
         public int colorFadeStepSleep { get; set; }
         public int manualStepSleep { get; set; }
         public int sinFadeStepSleep { get; set; }
+        public double sinFadeStepSize { get; set; }//out of pi (for half a sin curve with the light on, half off)
         public int HSVstepSleep { get; set; }
         public int HSVstepSize { get; set; }
         public int colorFadeStepSize { get; set; }
@@ -76,6 +77,7 @@ namespace Antumbra
             this.colorFadeStepSleep = 15;
             this.manualStepSleep = 1;
             this.sinFadeStepSleep = 3;
+            this.sinFadeStepSize = .01;
             this.screenPollingWait = 33;//default is 33ms, ~30hz
             this.HSVstepSize = 1;
             this.manualStepSize = 1;
@@ -164,12 +166,12 @@ namespace Antumbra
         private void callSinFade()
         {
             while (true)
-                sinFade(this.sinFadeStepSleep);
+                sinFade(this.sinFadeStepSleep, this.sinFadeStepSize);
         }
 
         private void sinFade(int sleepTime, double stepSize)
         {
-            for (double i = 0; i < Math.PI*2; i += .01)
+            for (double i = 0; i < Math.PI*2; i += stepSize)
             {
                 if (i <= Math.PI) {//in positive half
                     byte byte_i = (byte)(Math.Sin(i) * 255);

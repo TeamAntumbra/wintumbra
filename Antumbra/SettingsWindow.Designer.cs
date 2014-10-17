@@ -577,7 +577,6 @@
             this.sinStepLabel.Size = new System.Drawing.Size(80, 17);
             this.sinStepLabel.TabIndex = 42;
             this.sinStepLabel.Text = "Sine Wave:";
-            this.sinStepLabel.Click += new System.EventHandler(this.label9_Click);
             // 
             // sinSleepSize
             // 
@@ -591,6 +590,7 @@
             this.sinSleepSize.Size = new System.Drawing.Size(91, 25);
             this.sinSleepSize.TabIndex = 43;
             this.sinSleepSize.UseSelectable = true;
+            this.sinSleepSize.TextChanged += new System.EventHandler(this.sinSleepSize_TextChanged);
             // 
             // sinStepSize
             // 
@@ -664,7 +664,6 @@
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.SettingsWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).EndInit();
             this.ResumeLayout(false);
