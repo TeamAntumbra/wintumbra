@@ -51,8 +51,10 @@ namespace Antumbra
             String[] strings = new String[this.processes.Length];
             int index = 0;
             foreach (Process prcss in this.processes) {
+                Console.WriteLine(prcss.ProcessName);
                 strings[index++] = prcss.ProcessName;
             }
+            Console.WriteLine(strings.Length.ToString() + "derp");
             return strings;
         }
 

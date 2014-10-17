@@ -39,7 +39,7 @@ namespace Antumbra
             saturationAdditiveTxt.Text = this.antumbra.screenProcessor.saturationAdditive.ToString();
             sinSleepSize.Text = this.antumbra.sinFadeStepSleep.ToString();
             sinStepSize.Text = this.antumbra.sinFadeStepSize.ToString();
-            processMenu.DataSource = this.antumbra.screenGrabber.getProcesses();
+            processMenu.DataSource = this.antumbra.gameScreenGrabber.getProcesses();
             //saturationEnabledCheck.Checked = this.antumbra.screen.saturationEnabled;
             //saturationAdditiveTxt.Text = this.antumbra.screen.saturationAdditive.ToString();
         }

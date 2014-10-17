@@ -32,8 +32,8 @@ namespace Antumbra
         int changeThreshold; //difference in colors needed to change
         //bool on;
         private SerialConnector serial;
-        //public ScreenGrabber screen { get; set; }
-        public ScreenGrabberHelper screenGrabber { get; set; }
+        public ScreenGrabber screenGrabber { get; set; }
+        public ScreenGrabberHelper gameScreenGrabber { get; set; }
         public ScreenProcessor screenProcessor { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
@@ -53,9 +53,7 @@ namespace Antumbra
 
         public Antumbra()
         {
-            //installDriver();
             this.serial = new SerialConnector(0x03EB, 0x2040);
-            //this.screen = new ScreenGrabber();
             Console.WriteLine(this.serial.setup());
             InitializeComponent();
             this.lastR = 0;
@@ -88,7 +86,8 @@ namespace Antumbra
             this.screenAvgStepSize = 2;
             updateStatus(this.serial.state);
             this.picker = new ColorPickerDialog();
-            this.screenGrabber = new ScreenGrabberHelper(this.pollingX, this.pollingY,
+            this.screenGrabber = new ScreenGrabber();
+            this.gameScreenGrabber = new ScreenGrabberHelper(this.pollingX, this.pollingY,
                 this.pollingWidth, this.pollingHeight, 0);//todo make timeOut a setting
             this.screenProcessor = new ScreenProcessor(.45, true, 20, 20);
             this.screenThread = new Thread(new ThreadStart(setToAvg));
@@ -117,12 +116,21 @@ namespace Antumbra
         private void setToAvg()
         {
             while (true) {
-                //Color newColor = this.screen.getScreenAvgColor(this.pollingWidth, this.pollingHeight);
+                if (this.screenGrabber.screen == null)
+                    continue;
                 Color newColor = this.screenProcessor.process(this.screenGrabber.screen);
                 if (newColor.Equals(Color.Empty))//something went wrong
+                    continue;
+                fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
+            }
+        }
+
+        private void setToGameAvg()
+        {
+            while (true) {
+                Color newColor = this.screenProcessor.process(this.gameScreenGrabber.screen);
+                if (newColor.Equals(Color.Empty))//something went wrong
                     return;
-                //Console.WriteLine("r = " + newColor.R + " g = " + newColor.G + " b = " + newColor.B);
-                //changeTo(newColor.R, newColor.G, newColor.B);
                 fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
             }
         }
@@ -145,11 +153,6 @@ namespace Antumbra
         private bool shouldChange(Color color, Color other)
         {
             return calcDiff(color, other) > this.changeThreshold;
-        }
-
-        private void callSetAvg(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            setToAvg();
         }
 
         private void callColorFade()
@@ -344,9 +347,17 @@ namespace Antumbra
             //this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
             //this.screenTimer.Enabled = true;
             this.screenAvgEnabled = true;
-            this.screenGrabber.start();
-            this.screenThread = new Thread(new ThreadStart(setToAvg));
-            this.screenThread.Start();
+            if (this.screenThread.IsAlive)
+                this.screenThread.Abort();//kill any existing screenThread
+            if (gameMode) {
+                this.screenThread = null;
+                this.gameScreenGrabber.start();
+            }
+            else {
+                this.screenGrabber.start();
+                this.screenThread = new Thread(new ThreadStart(setToAvg));
+                this.screenThread.Start();
+            }
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)

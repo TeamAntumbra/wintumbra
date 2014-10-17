@@ -27,7 +27,7 @@ namespace Antumbra
             return SmartCalculateReprColor(bm, this.useAllTol, this.minMixPerc);
         }
 
-        private System.Drawing.Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold)
+        private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold)
         {
             int width = bm.Width;
             int height = bm.Height;
