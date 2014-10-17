@@ -17,6 +17,7 @@ namespace Antumbra
     {
         CaptureProcess captPrcss;
         Process prcss;
+        Process[] processes;
         int processId;
         int x, y, width, height, timeOut;
         Thread captThread;//thread to make & send screenshot requests
@@ -44,6 +45,17 @@ namespace Antumbra
             getReady();
         }
 
+        public String[] getProcesses()
+        {
+            this.processes = Process.GetProcesses();
+            String[] strings = new String[this.processes.Length];
+            int index = 0;
+            foreach (Process prcss in this.processes) {
+                strings[index++] = prcss.ProcessName;
+            }
+            return strings;
+        }
+
         private void takeScreenie()
         {
             MakeRequest();
@@ -52,13 +64,14 @@ namespace Antumbra
         private void getReady()
         {
             captThread = new Thread(new ThreadStart(takeScreenie));
+            getProcesses();
         }
 
         private void AttachProcess(String exe)
         {
             String exeName = Path.GetFileNameWithoutExtension(exe);
             //Process[] processes = Process.GetProcessesByName(exeName);
-            Process[] processes = Process.GetProcesses();//get all running processes
+            //Process[] processes = Process.GetProcesses();//get all running processes
             foreach (Process process in processes) {
                 // Simply attach to the first one found.
 

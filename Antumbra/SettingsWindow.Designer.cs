@@ -70,6 +70,10 @@
             this.sinStepLabel = new System.Windows.Forms.Label();
             this.sinSleepSize = new MetroFramework.Controls.MetroTextBox();
             this.sinStepSize = new MetroFramework.Controls.MetroTextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.gameModeCheck = new System.Windows.Forms.CheckBox();
+            this.processMenu = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
@@ -606,11 +610,58 @@
             this.sinStepSize.UseSelectable = true;
             this.sinStepSize.TextChanged += new System.EventHandler(this.sinStepSize_TextChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label5.Location = new System.Drawing.Point(68, 578);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 17);
+            this.label5.TabIndex = 45;
+            this.label5.Text = "Game Mode:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label9.Location = new System.Drawing.Point(51, 605);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(105, 17);
+            this.label9.TabIndex = 46;
+            this.label9.Text = "Game Process:";
+            // 
+            // gameModeCheck
+            // 
+            this.gameModeCheck.AutoSize = true;
+            this.gameModeCheck.BackColor = System.Drawing.Color.Transparent;
+            this.gameModeCheck.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.gameModeCheck.FlatAppearance.BorderSize = 0;
+            this.gameModeCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gameModeCheck.Location = new System.Drawing.Point(225, 580);
+            this.gameModeCheck.Margin = new System.Windows.Forms.Padding(0);
+            this.gameModeCheck.Name = "gameModeCheck";
+            this.gameModeCheck.Size = new System.Drawing.Size(14, 13);
+            this.gameModeCheck.TabIndex = 47;
+            this.gameModeCheck.UseVisualStyleBackColor = false;
+            this.gameModeCheck.CheckedChanged += new System.EventHandler(this.gameModeCheck_CheckedChanged);
+            // 
+            // processMenu
+            // 
+            this.processMenu.FormattingEnabled = true;
+            this.processMenu.Location = new System.Drawing.Point(164, 605);
+            this.processMenu.Name = "processMenu";
+            this.processMenu.Size = new System.Drawing.Size(134, 24);
+            this.processMenu.TabIndex = 48;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(358, 914);
+            this.Controls.Add(this.processMenu);
+            this.Controls.Add(this.gameModeCheck);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.sinStepSize);
             this.Controls.Add(this.sinSleepSize);
             this.Controls.Add(this.sinStepLabel);
@@ -715,5 +766,9 @@
         private MetroFramework.Controls.MetroTextBox saturationAdditiveTxt;
         private MetroFramework.Controls.MetroTextBox sinStepSize;
         private MetroFramework.Controls.MetroTextBox sinSleepSize;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox processMenu;
+        private System.Windows.Forms.CheckBox gameModeCheck;
     }
 }

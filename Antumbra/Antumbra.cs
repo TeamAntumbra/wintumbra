@@ -27,6 +27,7 @@ namespace Antumbra
         //bool continuous;//, serialEnabled;
         bool fadeEnabled;
         bool screenAvgEnabled;
+        public bool gameMode { get; set; }
         byte lastR, lastG, lastB;
         int changeThreshold; //difference in colors needed to change
         //bool on;
@@ -65,6 +66,7 @@ namespace Antumbra
             this.changeThreshold = 10; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.continuous = false;
             this.fadeEnabled = false;
+            this.gameMode = false;
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.screenTimer = new System.Timers.Timer();
             //this.pollingWidth = this.screen.width;
