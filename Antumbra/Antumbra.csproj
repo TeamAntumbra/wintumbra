@@ -7,7 +7,7 @@
     <ProjectGuid>{B5887076-F914-4F71-8CB7-CF3CBF663CCF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Antumbra</RootNamespace>
+    <RootNamespace>Antumbra.Glow</RootNamespace>
     <AssemblyName>Antumbra</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -80,7 +80,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>Antumbra.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>FEF6F6E87BDC86BB6EE0AD3C5D0835A09EE0A029</ManifestCertificateThumbprint>
@@ -118,8 +118,10 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -203,17 +205,21 @@
     <Compile Include="ColorPicker\ScreenColorPicker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ExtenionFramework\Decorators\Decorator.cs" />
+    <Compile Include="ExtenionFramework\Drivers\Driver.cs" />
+    <Compile Include="ExtenionFramework\GlowExtension.cs" />
+    <Compile Include="ExtenionFramework\Notifiers\Notifier.cs" />
     <Compile Include="ScreenGrabberHelper.cs" />
     <Compile Include="ScreenProcessor.cs" />
-    <Compile Include="SettingsWindow.cs">
+    <Compile Include="Settings\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsWindow.Designer.cs">
+    <Compile Include="Settings\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="HSVRGGConverter.cs" />
     <Compile Include="ScreenGrabber.cs" />
-    <Compile Include="SerialConnector.cs" />
+    <Compile Include="Connector\SerialConnector.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -224,7 +230,7 @@
     <EmbeddedResource Include="ColorPicker\ColorPickerDialog.resx">
       <DependentUpon>ColorPickerDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsWindow.resx">
+    <EmbeddedResource Include="Settings\SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -276,6 +282,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Antumbra.ico" />
     <Content Include="antumbraglowv3beta.inf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -284,6 +291,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <Content Include="Resources\Antumbra.ico" />
     <Content Include="Resources\cellbackground.png" />
     <None Include="Resources\Culture.ico" />
     <Content Include="Resources\eyedropper.cur">
@@ -293,11 +301,10 @@
     <Content Include="Resources\eyedropper.png" />
     <Content Include="Resources\palette-load.png" />
     <Content Include="Resources\palette-save.png" />
-    <None Include="Resources\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Capture\Capture.csproj">
-      <Project>{23178a3d-2ac0-419a-b1b6-59ca45191270}</Project>
+    <ProjectReference Include="..\..\Direct3DHook\Capture\Capture.csproj">
+      <Project>{99f9ad1c-145b-4fb5-8711-d0898b0c4440}</Project>
       <Name>Capture</Name>
     </ProjectReference>
   </ItemGroup>
