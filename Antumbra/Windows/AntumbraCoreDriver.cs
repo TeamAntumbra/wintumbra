@@ -21,10 +21,11 @@ using Antumbra.Glow.ExtensionFramework.Notifiers;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework.ScreenProcessors;
 using Antumbra.Glow.Utility;
+using Antumbra.Glow.Windows;
 
-namespace Antumbra.Glow.Windows//Main driver for application
+namespace Antumbra.Glow//Main driver for application
 {
-    public partial class Antumbra : MetroFramework.Forms.MetroForm
+    public partial class AntumbraCoreDriver : MetroFramework.Forms.MetroForm
     {
         private System.Timers.Timer screenTimer;//timer for screen color averaging
         private Thread fadeThread;//thread for color fades
@@ -42,7 +43,7 @@ namespace Antumbra.Glow.Windows//Main driver for application
         private SettingsWindow settings;//settings window
         public AntumbraScreenGrabber screenGrabber { get; set; }
         public AntumbraDirectXScreenGrabber gameScreenGrabber { get; set; }
-        public ScreenProcessor screenProcessor { get; set; }
+        public AntumbraScreenProcessor screenProcessor { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
         public int pollingX { get; set; }
@@ -63,7 +64,7 @@ namespace Antumbra.Glow.Windows//Main driver for application
         public int warmth { get; set; }//0-100 scale
 
 
-        public Antumbra()
+        public AntumbraCoreDriver()
         {
             this.serial = new SerialConnector(0x03EB, 0x2040);
             Console.WriteLine(this.serial.setup());
@@ -288,13 +289,13 @@ namespace Antumbra.Glow.Windows//Main driver for application
         {
             switch(status) {
                 case 0:
-                    this.statusBtn.BackColor = Color.Red;
+                    //dead
                     break;
                 case 1:
-                    this.statusBtn.BackColor = Color.Yellow;
+                    //idle
                     break;
                 case 2:
-                    this.statusBtn.BackColor = Color.Green;
+                    //good
                     break;
                 default:
                     Console.WriteLine("This should not happen. updateStatus");
@@ -304,7 +305,7 @@ namespace Antumbra.Glow.Windows//Main driver for application
 
         private void updateLast(byte r, byte g, byte b)
         {
-            this.antumbraLabel.ForeColor = Color.FromArgb(r, g, b);
+            //this.antumbraLabel.ForeColor = Color.FromArgb(r, g, b);
             this.lastR = r;
             this.lastG = g;
             this.lastB = b;
@@ -415,6 +416,8 @@ namespace Antumbra.Glow.Windows//Main driver for application
             this.screenThread.Abort();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
+            this.settings.Close();
+            this.settings.Dispose();
             Application.Exit();
         }
 

@@ -13,8 +13,13 @@ using EasyHook;
 
 namespace Antumbra.Glow.ExtensionFramework.Drivers
 {
-    public class AntumbraDirectXScreenGrabber : Driver //grabs screen when in 'Game Mode'
+    public class AntumbraDirectXScreenGrabber : DriverInterface //grabs screen when in 'Game Mode'
     {
+        public String Name { get { return "Antumbra DirectX Screen Grabber"; } }
+        public String Author { get { return "Team Antumbra"; } }
+        public String Version { get { return "V0.1.0"; } }
+        public String Description { get { return "Using special techniques this extension grabs the screen from DirectX applications."; } }
+        public String Type { get { return "Driver"; } }
         CaptureProcess captPrcss;
         Process prcss;
         Process[] processes;
@@ -31,6 +36,11 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
             this.timeOut = timeOut;
             this.screen = null;//start as null (no screenies taken)
             getReady();
+        }
+
+        public Color GetColor()
+        {
+            return Color.AliceBlue;
         }
 
         public void start(String exeName)//start capturing

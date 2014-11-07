@@ -16,7 +16,7 @@ namespace Antumbra.Glow
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Antumbra());
+            Application.Run(new AntumbraCoreDriver());
         }
     }
 }

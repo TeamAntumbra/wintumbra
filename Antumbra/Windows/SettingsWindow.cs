@@ -12,10 +12,10 @@ namespace Antumbra.Glow.Windows
 {
     public partial class SettingsWindow : MetroFramework.Forms.MetroForm
     {
-        Antumbra antumbra;
+        AntumbraCoreDriver antumbra;
         ColorPickerDialog picker;
         private String selectedExeName;
-        public SettingsWindow(Antumbra antumbra)
+        public SettingsWindow(AntumbraCoreDriver antumbra)
         {
             this.antumbra = antumbra;
             this.picker = new ColorPickerDialog();

@@ -17,8 +17,13 @@ using System.Threading;
 
 namespace Antumbra.Glow.ExtensionFramework.Drivers
 {
-    public class AntumbraScreenGrabber : Driver //used to capture screen information in normal (default) use mode
+    public class AntumbraScreenGrabber : DriverInterface //used to capture screen information in normal (default) use mode
     {
+        public String Name { get { return "Antumbra Screen Grabber (Default)"; } }
+        public String Author { get { return "Team Antumbra"; } }
+        public String Version { get { return "V0.1.0"; } }
+        public String Description { get { return "Default means of grabbing the screen."; } }
+        public String Type { get { return "Driver"; } }
         //Being DLL declarations
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
@@ -45,6 +50,11 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
             updateBounds();
             //this.widthDivs = 4;
             //this.heightDivs = 4;
+        }
+
+        public System.Drawing.Color GetColor()
+        {
+            return System.Drawing.Color.Bisque;
         }
 
         public void start()

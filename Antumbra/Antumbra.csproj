@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Antumbra.Program</StartupObject>
+    <StartupObject>Antumbra.Glow.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -133,104 +133,105 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Antumbra.cs">
+    <Compile Include="ExtensionFramework\Decorators\DecoratorInterface.cs" />
+    <Compile Include="ExtensionFramework\Drivers\DriverInterface.cs" />
+    <Compile Include="ExtensionFramework\Notifiers\NotifierInterface.cs" />
+    <Compile Include="ExtensionFramework\ScreenProcessors\ScreenProcessorInterface.cs" />
+    <Compile Include="Windows\AntumbraCoreDriver.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Antumbra.Designer.cs">
-      <DependentUpon>Antumbra.cs</DependentUpon>
+    <Compile Include="Windows\AntumbraCoreDriver.Designer.cs">
+      <DependentUpon>AntumbraCoreDriver.cs</DependentUpon>
     </Compile>
-    <Compile Include="ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
-    <Compile Include="ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />
-    <Compile Include="ColorPicker\AdobePhotoShopColorSwatchSerializer.cs" />
-    <Compile Include="ColorPicker\ColorBarStyle.cs" />
-    <Compile Include="ColorPicker\ColorCellBorderStyle.cs" />
-    <Compile Include="ColorPicker\ColorCollection.cs" />
-    <Compile Include="ColorPicker\ColorCollectionEventArgs.cs" />
-    <Compile Include="ColorPicker\ColorCollectionSortOrder.cs" />
-    <Compile Include="ColorPicker\ColorComparer.cs" />
-    <Compile Include="ColorPicker\ColorEditingMode.cs" />
-    <Compile Include="ColorPicker\ColorEditor.cs">
+    <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
+    <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />
+    <Compile Include="Windows\ColorPicker\AdobePhotoShopColorSwatchSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\ColorBarStyle.cs" />
+    <Compile Include="Windows\ColorPicker\ColorCellBorderStyle.cs" />
+    <Compile Include="Windows\ColorPicker\ColorCollection.cs" />
+    <Compile Include="Windows\ColorPicker\ColorCollectionEventArgs.cs" />
+    <Compile Include="Windows\ColorPicker\ColorCollectionSortOrder.cs" />
+    <Compile Include="Windows\ColorPicker\ColorComparer.cs" />
+    <Compile Include="Windows\ColorPicker\ColorEditingMode.cs" />
+    <Compile Include="Windows\ColorPicker\ColorEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ColorPicker\ColorEditor.Designer.cs" />
-    <Compile Include="ColorPicker\ColorEditorManager.cs">
+    <Compile Include="Windows\ColorPicker\ColorEditor.Designer.cs" />
+    <Compile Include="Windows\ColorPicker\ColorEditorManager.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\ColorGrid.cs">
+    <Compile Include="Windows\ColorPicker\ColorGrid.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\ColorGridSelectedCellStyle.cs" />
-    <Compile Include="ColorPicker\ColorHitTestInfo.cs" />
-    <Compile Include="ColorPicker\ColorPalette.cs" />
-    <Compile Include="ColorPicker\ColorPalettes.cs" />
-    <Compile Include="ColorPicker\ColorPickerDialog.cs">
+    <Compile Include="Windows\ColorPicker\ColorGridSelectedCellStyle.cs" />
+    <Compile Include="Windows\ColorPicker\ColorHitTestInfo.cs" />
+    <Compile Include="Windows\ColorPicker\ColorPalette.cs" />
+    <Compile Include="Windows\ColorPicker\ColorPalettes.cs" />
+    <Compile Include="Windows\ColorPicker\ColorPickerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorPicker\ColorPickerDialog.Designer.cs" />
-    <Compile Include="ColorPicker\ColorSlider.cs">
+    <Compile Include="Windows\ColorPicker\ColorPickerDialog.Designer.cs" />
+    <Compile Include="Windows\ColorPicker\ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\ColorSliderNubStyle.cs" />
-    <Compile Include="ColorPicker\ColorSource.cs" />
-    <Compile Include="ColorPicker\ColorWheel.cs">
+    <Compile Include="Windows\ColorPicker\ColorSliderNubStyle.cs" />
+    <Compile Include="Windows\ColorPicker\ColorSource.cs" />
+    <Compile Include="Windows\ColorPicker\ColorWheel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\EditColorCancelEventArgs.cs" />
-    <Compile Include="ColorPicker\EditColorEventArgs.cs" />
-    <Compile Include="ColorPicker\GimpPaletteSerializer.cs" />
-    <Compile Include="ColorPicker\HslColor.cs" />
-    <Compile Include="ColorPicker\HsvColor.cs" />
-    <Compile Include="ColorPicker\HueColorSlider.cs">
+    <Compile Include="Windows\ColorPicker\EditColorCancelEventArgs.cs" />
+    <Compile Include="Windows\ColorPicker\EditColorEventArgs.cs" />
+    <Compile Include="Windows\ColorPicker\GimpPaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\HslColor.cs" />
+    <Compile Include="Windows\ColorPicker\HsvColor.cs" />
+    <Compile Include="Windows\ColorPicker\HueColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\IColorEditor.cs" />
-    <Compile Include="ColorPicker\InterleavedBitmapPaletteSerializer.cs" />
-    <Compile Include="ColorPicker\IPaletteSerializer.cs" />
-    <Compile Include="ColorPicker\JascPaletteSerializer.cs" />
-    <Compile Include="ColorPicker\LightnessColorSlider.cs">
+    <Compile Include="Windows\ColorPicker\IColorEditor.cs" />
+    <Compile Include="Windows\ColorPicker\InterleavedBitmapPaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\IPaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\JascPaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\LightnessColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\NativeMethods.cs" />
-    <Compile Include="ColorPicker\NavigationOrigin.cs" />
-    <Compile Include="ColorPicker\PaintNetPaletteSerializer.cs" />
-    <Compile Include="ColorPicker\PaletteSerializer.cs" />
-    <Compile Include="ColorPicker\RawPaletteSerializer.cs" />
-    <Compile Include="ColorPicker\RgbaChannel.cs" />
-    <Compile Include="ColorPicker\RgbaColorSlider.cs">
+    <Compile Include="Windows\ColorPicker\NativeMethods.cs" />
+    <Compile Include="Windows\ColorPicker\NavigationOrigin.cs" />
+    <Compile Include="Windows\ColorPicker\PaintNetPaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\PaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\RawPaletteSerializer.cs" />
+    <Compile Include="Windows\ColorPicker\RgbaChannel.cs" />
+    <Compile Include="Windows\ColorPicker\RgbaColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\SaturationColorSlider.cs">
+    <Compile Include="Windows\ColorPicker\SaturationColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorPicker\ScreenColorPicker.cs">
+    <Compile Include="Windows\ColorPicker\ScreenColorPicker.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ExtenionFramework\Decorators\Decorator.cs" />
-    <Compile Include="ExtenionFramework\Drivers\Driver.cs" />
-    <Compile Include="ExtenionFramework\GlowExtension.cs" />
-    <Compile Include="ExtenionFramework\Notifiers\Notifier.cs" />
-    <Compile Include="ScreenGrabberHelper.cs" />
-    <Compile Include="ScreenProcessor.cs" />
-    <Compile Include="Settings\SettingsWindow.cs">
+    <Compile Include="ExtensionFramework\GlowExtension.cs" />
+    <Compile Include="ExtensionFramework\Drivers\AntumbraDirectXScreenGrabber.cs" />
+    <Compile Include="ExtensionFramework\ScreenProcessors\AntumbraScreenProcessor.cs" />
+    <Compile Include="Windows\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\SettingsWindow.Designer.cs">
+    <Compile Include="Windows\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="HSVRGGConverter.cs" />
-    <Compile Include="ScreenGrabber.cs" />
+    <Compile Include="Utility\HSVRGGConverter.cs" />
+    <Compile Include="ExtensionFramework\Drivers\AntumbraScreenGrabber.cs" />
     <Compile Include="Connector\SerialConnector.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Antumbra.resx">
-      <DependentUpon>Antumbra.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\AntumbraCoreDriver.resx">
+      <DependentUpon>AntumbraCoreDriver.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ColorPicker\ColorPickerDialog.resx">
+    <EmbeddedResource Include="Windows\ColorPicker\ColorPickerDialog.resx">
       <DependentUpon>ColorPickerDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\SettingsWindow.resx">
+    <EmbeddedResource Include="Windows\SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -7,8 +7,13 @@ using System.Drawing.Imaging;
 
 namespace Antumbra.Glow.ExtensionFramework.ScreenProcessors
 {
-    public class AntumbraScreenProcessor : ScreenProcessor
+    public class AntumbraScreenProcessor : ScreenProcessorInterface
     {
+        public String Name { get { return "Antumbra Screen Processor (Default)"; } }
+        public String Author { get { return "Team Antumbra"; } }
+        public String Version { get { return "V0.1.0"; } }
+        public String Description { get { return "Processes the BitMap of the screen to determine Glow's color output."; } }
+        public String Type { get { return "Screen Processor"; } }
         public double saturationAdditive { get; set; } //TODO make settings for these
         public bool saturationEnabled { get; set; }
         public int useAllTol { get; set; }

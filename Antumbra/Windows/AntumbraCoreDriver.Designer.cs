@@ -1,6 +1,6 @@
-﻿namespace Antumbra.Glow.Windows
+﻿namespace Antumbra.Glow
 {
-    partial class Antumbra : MetroFramework.Forms.MetroForm
+    partial class AntumbraCoreDriver : MetroFramework.Forms.MetroForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Antumbra));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntumbraCoreDriver));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,10 +41,7 @@
             this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusLabel = new MetroFramework.Controls.MetroLabel();
-            this.statusBtn = new System.Windows.Forms.Button();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
-            this.antumbraLabel = new System.Windows.Forms.Label();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
@@ -144,65 +141,19 @@
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
-            // statusLabel
-            // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.CausesValidation = false;
-            this.statusLabel.Font = new System.Drawing.Font("Verdana", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.statusLabel.ForeColor = System.Drawing.Color.White;
-            this.statusLabel.Location = new System.Drawing.Point(64, 150);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(52, 20);
-            this.statusLabel.TabIndex = 3;
-            this.statusLabel.Text = "Status:";
-            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.statusLabel.UseCustomBackColor = true;
-            this.statusLabel.UseCustomForeColor = true;
-            this.statusLabel.UseStyleColors = true;
-            // 
-            // statusBtn
-            // 
-            this.statusBtn.BackColor = System.Drawing.Color.Silver;
-            this.statusBtn.CausesValidation = false;
-            this.statusBtn.FlatAppearance.BorderSize = 0;
-            this.statusBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.statusBtn.ForeColor = System.Drawing.Color.Transparent;
-            this.statusBtn.Location = new System.Drawing.Point(138, 150);
-            this.statusBtn.Name = "statusBtn";
-            this.statusBtn.Size = new System.Drawing.Size(25, 18);
-            this.statusBtn.TabIndex = 4;
-            this.statusBtn.UseVisualStyleBackColor = false;
-            // 
             // metroStyleManager1
             // 
             this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // antumbraLabel
-            // 
-            this.antumbraLabel.CausesValidation = false;
-            this.antumbraLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.antumbraLabel.Font = new System.Drawing.Font("Calibri", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.antumbraLabel.ForeColor = System.Drawing.Color.White;
-            this.antumbraLabel.Location = new System.Drawing.Point(1, 34);
-            this.antumbraLabel.Name = "antumbraLabel";
-            this.antumbraLabel.Size = new System.Drawing.Size(273, 70);
-            this.antumbraLabel.TabIndex = 5;
-            this.antumbraLabel.Text = "ANTUMBRA";
-            this.antumbraLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // Antumbra
+            // AntumbraCoreDriver
             // 
             this.ClientSize = new System.Drawing.Size(275, 333);
-            this.Controls.Add(this.antumbraLabel);
-            this.Controls.Add(this.statusBtn);
-            this.Controls.Add(this.statusLabel);
             this.Font = new System.Drawing.Font("Verdana", 56F, System.Drawing.FontStyle.Bold);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Antumbra";
+            this.Name = "AntumbraCoreDriver";
             this.Opacity = 0.85D;
             this.Resizable = false;
             this.ShowIcon = false;
@@ -210,11 +161,11 @@
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.TopMost = true;
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Resize += new System.EventHandler(this.Antumbra_Resize);
             this.contextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -231,10 +182,7 @@
         private System.Windows.Forms.ToolStripMenuItem sinWaveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem offToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualToolStripMenuItem;
-        private MetroFramework.Controls.MetroLabel statusLabel;
-        private System.Windows.Forms.Button statusBtn;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
-        private System.Windows.Forms.Label antumbraLabel;
     }
 }
 
