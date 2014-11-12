@@ -29,7 +29,7 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
     public abstract class GlowDriver : GlowExtension //observed by core
     {
         abstract public Color getColor();//main driver method (called repeatedly to get colors)
-        public sealed override String Type { get { return "Driver"; } }
+        public override String Type { get { return "Driver"; } }
     }
 
     public abstract class GlowScreenDriver : GlowDriver //observed by screen processor
@@ -38,6 +38,7 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
     {
         //abstract public GlowScreenProcessor ScreenProcessor { get; }//return processor for this screen driver
         abstract public void captureTarget();//target method for capture thread (defines thread logic)
+        public sealed override string Type { get { return "Screen Driver"; } }
     }
 
     public abstract class GlowDecorator : GlowExtension

@@ -121,7 +121,7 @@ namespace Antumbra.Glow
             this.minBrightness = 0;
             this.warmth = 0;
             //this.settings = new SettingsWindow(this);
-            this.MainDriverThread = new Thread(new ThreadStart(run));
+            this.DriverThread = new Thread(new ThreadStart(run));
             //this.LoadsPlugins();
      /*       var catalog = new AggregateCatalog(
             new AssemblyCatalog(Assembly.GetExecutingAssembly()),
@@ -130,15 +130,17 @@ namespace Antumbra.Glow
             container.ComposeParts(this);*/
             this.GlowScreenResponsiveEnabled = false;//lets start (really) simple
             this.MEFHelper = new MEFHelper(".");
+            this.GlowDriver = this.MEFHelper.GetDefaultDriver();
         }
 
         public void run()
         {
             while (true) {
-                if (this.GlowScreenResponsiveEnabled)
+                /*if (this.GlowScreenResponsiveEnabled)
                     this.SetColorTo(this.GlowScreenDriver.getColor());
                 else
-                    this.SetColorTo(this.GlowDriver.getColor());
+                    this.SetColorTo(this.GlowDriver.getColor());*/
+                Console.WriteLine(this.GlowDriver.getColor());
             }
         }
 
@@ -429,10 +431,10 @@ namespace Antumbra.Glow
             //this.screenAvgEnabled = true;
             //if (this.driverThread.IsAlive)
             //    this.driverThread.Abort();//kill any existing screenThread
-            if (this.DriverThread != null && this.DriverThread.IsAlive)
+           /* if (this.DriverThread != null && this.DriverThread.IsAlive)
                 this.DriverThread.Abort();
             this.DriverThread = new Thread(new ThreadStart(this.GlowScreenDriver.captureTarget));
-            this.DriverThread.Start();
+            this.DriverThread.Start();*/
             //if (gameMode) {
             //    this.driverThread = null;
             //    this.gameScreenGrabber.start(this.settings.getGameModeProcess());
@@ -442,6 +444,7 @@ namespace Antumbra.Glow
             //    this.driverThread = new Thread(new ThreadStart(setToAvg));
             //    this.driverThread.Start();
             //}
+            this.DriverThread.Start();
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)
