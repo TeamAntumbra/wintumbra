@@ -135,12 +135,13 @@
   <ItemGroup>
     <Compile Include="ExtensionFramework\Decorators\DecoratorInterface.cs" />
     <Compile Include="ExtensionFramework\Drivers\DriverInterface.cs" />
+    <Compile Include="ExtensionFramework\Drivers\ExampleDriver.cs" />
     <Compile Include="ExtensionFramework\Notifiers\NotifierInterface.cs" />
     <Compile Include="ExtensionFramework\ScreenProcessors\ScreenProcessorInterface.cs" />
-    <Compile Include="Windows\AntumbraCoreDriver.cs">
+    <Compile Include="AntumbraCoreDriver.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\AntumbraCoreDriver.Designer.cs">
+    <Compile Include="AntumbraCoreDriver.Designer.cs">
       <DependentUpon>AntumbraCoreDriver.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
@@ -225,7 +226,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Windows\AntumbraCoreDriver.resx">
+    <EmbeddedResource Include="AntumbraCoreDriver.resx">
       <DependentUpon>AntumbraCoreDriver.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ColorPicker\ColorPickerDialog.resx">

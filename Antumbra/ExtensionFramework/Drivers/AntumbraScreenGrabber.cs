@@ -13,11 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using System.Windows.Interop;
 using System.Threading;
+using Antumbra.Glow.ExtensionFramework.ScreenProcessors;
 
 
 namespace Antumbra.Glow.ExtensionFramework.Drivers
 {
-    public class AntumbraScreenGrabber : DriverInterface //used to capture screen information in normal (default) use mode
+    public class AntumbraScreenGrabber : GlowScreenGrabber //used to capture screen information in normal (default) use mode
     {
         public String Name { get { return "Antumbra Screen Grabber (Default)"; } }
         public String Author { get { return "Team Antumbra"; } }
@@ -30,6 +31,7 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
         //BitBlt - used to get screen info in an efficent manner
 
         public int width, height;//screen width and height
+        private AntumbraCoreDriver antumbra;
         //int widthDivs, heightDivs;//width and height divisions for screen polling
         int x, y;//x and y bounds of screen
         //System.Drawing.Point[] points;//polling points
@@ -40,8 +42,9 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
         public bool saturationEnabled { get; set; }
         public Bitmap screen { get; private set; }
 
-        public AntumbraScreenGrabber()
+        public AntumbraScreenGrabber(AntumbraCoreDriver antumbra)
         {
+            this.antumbra = antumbra;
             this.captThread = new Thread(new ThreadStart(capture));
             this.size = new System.Drawing.Size(50, 30);
             this.display = Screen.PrimaryScreen;
@@ -52,9 +55,9 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
             //this.heightDivs = 4;
         }
 
-        public System.Drawing.Color GetColor()
+        public System.Drawing.Color GetColor()//processes screen with selected processor
         {
-            return System.Drawing.Color.Bisque;
+            return antumbra.screenProcessor.Process(this.screen);
         }
 
         public void start()
@@ -81,8 +84,6 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
             this.height = this.display.Bounds.Height;
             this.x = this.display.Bounds.X;
             this.y = this.display.Bounds.Y;
-            //this.points = getPollingPoints(this.width, this.height, this.widthDivs, this.heightDivs);
-            //this.points = getPollingRectPoints(this.width, this.height);
         }
 
         private Bitmap getPixelBitBlt(int width, int height)
@@ -104,29 +105,5 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
                 return null;
             }
         }
-
-        /*private System.Drawing.Point[] getPollingRectPoints(float width, float height)
-        {
-            System.Drawing.Point topLeft = new System.Drawing.Point((int)(width * .125), (int)(height * .125));
-            System.Drawing.Point topRight = new System.Drawing.Point((int)(width * .875), (int)(height * .125));
-            System.Drawing.Point botLeft = new System.Drawing.Point((int)(width * .125), (int)(height * .875));
-            System.Drawing.Point botRight = new System.Drawing.Point((int)(width * .875), (int)(height * .875));
-            System.Drawing.Point[] result = { topLeft, topRight, botLeft, botRight };
-            return result;
-        }
-
-        private System.Drawing.Point[] getPollingPoints(float width, float height, int widthDivs, int heightDivs)
-        {           //TODO make this only called when changed in settings (if we even use this in the future)
-            List<System.Drawing.Point> points = new List<System.Drawing.Point>();
-            float hStep = height / heightDivs;
-            float wStep = width / widthDivs;
-            for (float y = hStep; y < height; y += hStep) {
-                for (float x = wStep; x < width; x += wStep) {
-                    //Console.WriteLine(x.ToString() + " " + y.ToString());//debug print
-                    points.Add(new System.Drawing.Point((int)x, (int)y));
-                }
-            }
-            return points.ToArray();
-        }*/
     }
 }
