@@ -13,26 +13,29 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO.Ports;
+using System.IO;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Antumbra.Glow.ExtensionFramework.Drivers;
-using Antumbra.Glow.ExtensionFramework.Decorators;
-using Antumbra.Glow.ExtensionFramework.Notifiers;
+//using Antumbra.Glow.ExtensionFramework.Decorators;
+//using Antumbra.Glow.ExtensionFramework.Notifiers;
 using Antumbra.Glow.Connector;
+using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.ScreenProcessors;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Windows;
+using System.Reflection;
 
-namespace Antumbra.Glow//Main driver for application
+namespace Antumbra.Glow
 {
-    public partial class AntumbraCoreDriver : MetroFramework.Forms.MetroForm
+    public partial class AntumbraCore : MetroFramework.Forms.MetroForm //Main driver for application
     {
-        private System.Timers.Timer screenTimer;//timer for screen color averaging
-        private Thread fadeThread;//thread for color fades
+        //private System.Timers.Timer screenTimer;//timer for screen color averaging
+        //private Thread fadeThread;//thread for color fades
         private Color color;//newest generated color for displaying
         private Color currentColor;//most recent successfully sent set command color
         private ColorPickerDialog picker;
-        private Thread screenThread;
+        //private Thread driverThread;
         private bool fadeEnabled;
         private bool screenAvgEnabled;
         public bool gameMode { get; set; }
@@ -42,7 +45,7 @@ namespace Antumbra.Glow//Main driver for application
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
         public AntumbraScreenGrabber screenGrabber { get; set; }
-        public AntumbraDirectXScreenGrabber gameScreenGrabber { get; set; }
+        //public AntumbraDirectXScreenGrabber gameScreenGrabber { get; set; }
         public AntumbraScreenProcessor screenProcessor { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
@@ -63,23 +66,33 @@ namespace Antumbra.Glow//Main driver for application
         public int minBrightness { get; set; }//0-100 scale
         public int warmth { get; set; }//0-100 scale
 
+        private MEFHelper MEFHelper;
 
-        public AntumbraCoreDriver()
+        private GlowDriver GlowDriver;//can only be 1
+        private Boolean GlowScreenResponsiveEnabled;//if true the next two are used, else not
+        //determined by if instance of GlowScreenDriver checked on load of GlowDriver
+        private GlowScreenDriver GlowScreenDriver;//can only be 1 at a time
+        private GlowScreenProcessor GlowScreenProcessor;//can only be 1 at a time
+
+        private Thread MainDriverThread;//main driver thread for whole application
+        private Thread DriverThread;//driver thread for driver extensions
+
+        public AntumbraCore()
         {
             this.serial = new SerialConnector(0x03EB, 0x2040);
-            Console.WriteLine(this.serial.setup());
+            Console.WriteLine(this.serial.setup());//sanity check that Glow connects correctly
             InitializeComponent();
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
-            this.currentColor = Color.Black;//depends on how the Antumbra starts up
+            this.currentColor = Color.Black;//depends on how the Glow starts up
             this.color = Color.Black;
             this.changeThreshold = 10; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.continuous = false;
             this.fadeEnabled = false;
             this.gameMode = false;
-            this.fadeThread = new Thread(new ThreadStart(callColorFade));
-            this.screenTimer = new System.Timers.Timer();
+            //this.fadeThread = new Thread(new ThreadStart(callColorFade));
+            //this.screenTimer = new System.Timers.Timer();
             //this.pollingWidth = this.screen.width;
             //this.pollingHeight = this.screen.height;
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -91,27 +104,47 @@ namespace Antumbra.Glow//Main driver for application
             this.manualStepSleep = 1;
             this.sinFadeStepSleep = 3;
             this.sinFadeStepSize = .01;
-            this.screenPollingWait = 33;//default is 33ms, ~30hz
+            this.screenPollingWait = 33;//default is 33ms, ~30hz            TODO remove
             this.HSVstepSize = 1;
             this.manualStepSize = 1;
             this.colorFadeStepSize = 1; //default step sizes to 1
             this.screenAvgStepSleep = 0;
             this.screenAvgStepSize = 2;
             updateStatus(this.serial.state);
-            this.picker = new ColorPickerDialog();
-            this.screenGrabber = new AntumbraScreenGrabber();
-            this.gameScreenGrabber = new AntumbraDirectXScreenGrabber(this.pollingX, this.pollingY,
-                this.pollingWidth, this.pollingHeight, 0);//todo make timeOut a setting
-            this.screenProcessor = new AntumbraScreenProcessor(.45, true, 20, 20);
-            this.screenThread = new Thread(new ThreadStart(setToAvg));
+            //this.picker = new ColorPickerDialog(); //TODO investigate crash with color picker
+            //this.screenGrabber = new AntumbraScreenGrabber(this);
+            //this.gameScreenGrabber = new AntumbraDirectXScreenGrabber(this, this.pollingX, this.pollingY,
+            //    this.pollingWidth, this.pollingHeight, 0);//TODO make timeOut a setting
+            //this.screenProcessor = new AntumbraScreenProcessor(.45, true, 20, 20);
+            //this.driverThread = new Thread(new ThreadStart(setToAvg));
             this.maxBrightness = 100;
             this.minBrightness = 0;
             this.warmth = 0;
-            this.settings = new SettingsWindow(this);
+            //this.settings = new SettingsWindow(this);
+            this.MainDriverThread = new Thread(new ThreadStart(run));
+            //this.LoadsPlugins();
+     /*       var catalog = new AggregateCatalog(
+            new AssemblyCatalog(Assembly.GetExecutingAssembly()),
+            new DirectoryCatalog("."));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);*/
+            this.GlowScreenResponsiveEnabled = false;//lets start (really) simple
+            this.MEFHelper = new MEFHelper(".");
         }
 
-        public void setColorTo(Color newColor)
+        public void run()
         {
+            while (true) {
+                if (this.GlowScreenResponsiveEnabled)
+                    this.SetColorTo(this.GlowScreenDriver.getColor());
+                else
+                    this.SetColorTo(this.GlowDriver.getColor());
+            }
+        }
+
+        public void SetColorTo(Color newColor)
+        {
+            Console.WriteLine(newColor.ToString());
             fade(newColor, this.manualStepSleep, this.manualStepSize);
         }
 
@@ -125,7 +158,7 @@ namespace Antumbra.Glow//Main driver for application
             return this.pollingHeight;
         }
 
-        private void setToAvg()
+        /*private void setToAvg()
         {
             while (true) {
                 if (this.screenGrabber.screen == null)//skip
@@ -146,7 +179,7 @@ namespace Antumbra.Glow//Main driver for application
                     return;
                 fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
             }
-        }
+        }*/
         
         private int calcDiff(Color color, Color other)
         {
@@ -361,59 +394,67 @@ namespace Antumbra.Glow//Main driver for application
 
         private void HSVMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.screenAvgEnabled)
-                this.screenThread.Abort();
+      /*      if (this.screenAvgEnabled)
+                this.driverThread.Abort();
             this.screenAvgEnabled = false;
             //this.screenTimer.Enabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             this.fadeThread = new Thread(new ThreadStart(callHsvFade));
             this.fadeThread.Start();
-            this.fadeEnabled = true;
+            this.fadeEnabled = true;*/
         }
 
         private void randomColorFadeMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.screenAvgEnabled)
-                this.screenThread.Abort();
+  /*          if (this.screenAvgEnabled)
+                this.driverThread.Abort();
             this.screenAvgEnabled = false;
             //this.screenTimer.Enabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             this.fadeThread = new Thread(new ThreadStart(callColorFade));
             this.fadeThread.Start();
-            this.fadeEnabled = true;
+            this.fadeEnabled = true; */
         }
 
         private void screenResponsiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            this.fadeEnabled = false;
+            //if (this.fadeEnabled)
+            //    this.fadeThread.Abort();
+            //this.fadeEnabled = false;
             //this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
             //this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
             //this.screenTimer.Enabled = true;
-            this.screenAvgEnabled = true;
-            if (this.screenThread.IsAlive)
-                this.screenThread.Abort();//kill any existing screenThread
-            if (gameMode) {
-                this.screenThread = null;
-                this.gameScreenGrabber.start(this.settings.getGameModeProcess());
-            }
-            else {
-                this.screenGrabber.start();
-                this.screenThread = new Thread(new ThreadStart(setToAvg));
-                this.screenThread.Start();
-            }
+            //this.screenAvgEnabled = true;
+            //if (this.driverThread.IsAlive)
+            //    this.driverThread.Abort();//kill any existing screenThread
+            if (this.DriverThread != null && this.DriverThread.IsAlive)
+                this.DriverThread.Abort();
+            this.DriverThread = new Thread(new ThreadStart(this.GlowScreenDriver.captureTarget));
+            this.DriverThread.Start();
+            //if (gameMode) {
+            //    this.driverThread = null;
+            //    this.gameScreenGrabber.start(this.settings.getGameModeProcess());
+            //}
+            //else {
+            //    this.screenGrabber.start();
+            //    this.driverThread = new Thread(new ThreadStart(setToAvg));
+            //    this.driverThread.Start();
+            //}
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.fadeEnabled)
+          /*  if (this.fadeEnabled)
                 this.fadeThread.Abort();
             if (this.screenAvgEnabled)
-                this.screenThread.Abort();
-            this.screenThread.Abort();
+                this.driverThread.Abort();
+            this.driverThread.Abort();*/
+            if (this.DriverThread.IsAlive)
+                this.DriverThread.Abort();
+            if (this.MainDriverThread.IsAlive)
+                this.MainDriverThread.Abort();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             this.settings.Close();
@@ -423,48 +464,48 @@ namespace Antumbra.Glow//Main driver for application
 
         private void sinWaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.screenAvgEnabled)
-                this.screenThread.Abort();
+        /*    if (this.screenAvgEnabled)
+                this.driverThread.Abort();
             this.screenAvgEnabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             //this.screenTimer.Enabled = false;
             this.fadeThread = new Thread(new ThreadStart(callSinFade));
             this.fadeThread.Start();
-            this.fadeEnabled = true;
+            this.fadeEnabled = true;*/
         }
 
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.screenAvgEnabled)
-                this.screenThread.Abort();
+   /*         if (this.screenAvgEnabled)
+                this.driverThread.Abort();
             this.screenAvgEnabled = false;
             if (this.fadeEnabled)
                 this.fadeThread.Abort();
             //this.screenTimer.Enabled = false;
             this.fadeThread.Abort();
             this.fadeEnabled = false;
-            changeTo(0, 0, 0);
+            changeTo(0, 0, 0);*/
         }
 
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.fadeEnabled)
+   /*         if (this.fadeEnabled)
                 this.fadeThread.Abort();
             if (this.screenAvgEnabled)
-                this.screenThread.Abort();
+                this.driverThread.Abort();
             this.screenAvgEnabled = false;
             this.fadeEnabled = false;
             //this.screenTimer.Enabled = false;
             this.picker = new ColorPickerDialog();
             this.picker.Show();
             this.picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
-            fade(this.picker.previewPanel.BackColor, this.manualStepSleep, this.manualStepSize);
+            fade(this.picker.previewPanel.BackColor, this.manualStepSleep, this.manualStepSize); */
         }
 
         private void manualListener(object sender, EventArgs e)
         {
-            this.setColorTo(this.picker.previewPanel.BackColor);
+            this.SetColorTo(this.picker.previewPanel.BackColor);
         }
 
         private void contextMenu_MouseLeave(object sender, EventArgs e)

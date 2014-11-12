@@ -7,7 +7,7 @@ using System.Drawing.Imaging;
 
 namespace Antumbra.Glow.ExtensionFramework.ScreenProcessors
 {
-    public class AntumbraScreenProcessor : ScreenProcessorInterface
+    public class AntumbraScreenProcessor// : GlowScreenProcessor
     {
         public String Name { get { return "Antumbra Screen Processor (Default)"; } }
         public String Author { get { return "Team Antumbra"; } }

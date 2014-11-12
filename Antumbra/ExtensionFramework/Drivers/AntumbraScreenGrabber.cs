@@ -18,20 +18,19 @@ using Antumbra.Glow.ExtensionFramework.ScreenProcessors;
 
 namespace Antumbra.Glow.ExtensionFramework.Drivers
 {
-    public class AntumbraScreenGrabber : GlowScreenGrabber //used to capture screen information in normal (default) use mode
+    public class AntumbraScreenGrabber// : GlowScreenDriver //used to capture screen information in normal (default) use mode
     {
         public String Name { get { return "Antumbra Screen Grabber (Default)"; } }
         public String Author { get { return "Team Antumbra"; } }
         public String Version { get { return "V0.1.0"; } }
         public String Description { get { return "Default means of grabbing the screen."; } }
-        public String Type { get { return "Driver"; } }
-        //Being DLL declarations
+        //DLL declaration
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
-        //BitBlt - used to get screen info in an efficent manner
+        //BitBlt - used to get screen info
 
         public int width, height;//screen width and height
-        private AntumbraCoreDriver antumbra;
+        private AntumbraCore antumbra;
         //int widthDivs, heightDivs;//width and height divisions for screen polling
         int x, y;//x and y bounds of screen
         //System.Drawing.Point[] points;//polling points
@@ -42,7 +41,7 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
         public bool saturationEnabled { get; set; }
         public Bitmap screen { get; private set; }
 
-        public AntumbraScreenGrabber(AntumbraCoreDriver antumbra)
+        public AntumbraScreenGrabber(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
             this.captThread = new Thread(new ThreadStart(capture));
@@ -57,7 +56,7 @@ namespace Antumbra.Glow.ExtensionFramework.Drivers
 
         public System.Drawing.Color GetColor()//processes screen with selected processor
         {
-            return antumbra.screenProcessor.Process(this.screen);
+            return System.Drawing.Color.Empty;
         }
 
         public void start()

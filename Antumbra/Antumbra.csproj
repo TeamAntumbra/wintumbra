@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FodyPath>..\packages\Fody.1.14.0</FodyPath>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,8 +29,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <FodyPath>..\packages\Fody.1.14.0</FodyPath>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,11 +58,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -133,17 +133,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionFramework\Decorators\DecoratorInterface.cs" />
-    <Compile Include="ExtensionFramework\Drivers\DriverInterface.cs" />
-    <Compile Include="ExtensionFramework\Drivers\ExampleDriver.cs" />
-    <Compile Include="ExtensionFramework\Notifiers\NotifierInterface.cs" />
-    <Compile Include="ExtensionFramework\ScreenProcessors\ScreenProcessorInterface.cs" />
-    <Compile Include="AntumbraCoreDriver.cs">
+    <Compile Include="AntumbraCore.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AntumbraCoreDriver.Designer.cs">
-      <DependentUpon>AntumbraCoreDriver.cs</DependentUpon>
+    <Compile Include="AntumbraCore.Designer.cs">
+      <DependentUpon>AntumbraCore.cs</DependentUpon>
     </Compile>
+    <Compile Include="MEFHelper.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoShopColorSwatchSerializer.cs" />
@@ -211,7 +207,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <Compile Include="ExtensionFramework\Drivers\AntumbraDirectXScreenGrabber.cs" />
+    <None Include="ExtensionFramework\Drivers\AntumbraDirectXScreenGrabber.cs" />
     <Compile Include="ExtensionFramework\ScreenProcessors\AntumbraScreenProcessor.cs" />
     <Compile Include="Windows\SettingsWindow.cs">
       <SubType>Form</SubType>
@@ -226,8 +222,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AntumbraCoreDriver.resx">
-      <DependentUpon>AntumbraCoreDriver.cs</DependentUpon>
+    <EmbeddedResource Include="AntumbraCore.resx">
+      <DependentUpon>AntumbraCore.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ColorPicker\ColorPickerDialog.resx">
       <DependentUpon>ColorPickerDialog.cs</DependentUpon>
@@ -305,10 +301,8 @@
     <Content Include="Resources\palette-save.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Direct3DHook\Capture\Capture.csproj">
-      <Project>{99f9ad1c-145b-4fb5-8711-d0898b0c4440}</Project>
-      <Name>Capture</Name>
-    </ProjectReference>
+    <Folder Include="ExtensionFramework\Decorators\" />
+    <Folder Include="ExtensionFramework\Notifiers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Fody.targets" />

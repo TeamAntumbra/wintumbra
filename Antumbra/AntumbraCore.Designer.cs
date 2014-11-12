@@ -1,6 +1,6 @@
 ﻿namespace Antumbra.Glow
 {
-    partial class AntumbraCoreDriver : MetroFramework.Forms.MetroForm
+    partial class AntumbraCore : MetroFramework.Forms.MetroForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntumbraCoreDriver));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntumbraCore));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();

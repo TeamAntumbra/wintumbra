@@ -8,59 +8,54 @@ using System.ComponentModel.Composition.Hosting;
 
 namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FILES AND ONLY USE THE STUFF HERE FOR EXTENSIONS!
 {
-    public interface GlowExtension//basis for all Glow Extensions
+  /*  public interface GlowExtension//basis for all Glow Extensions
     {
         String Name { get; }
         String Author { get; }
         String Version { get; }
         String Description { get; }
         String Type { get; }//one of the following: Decorator, Driver, Notifier, ScreenProcessor
+    }*/
+
+    public abstract class GlowExtension
+    {
+        abstract public String Name { get; }
+        abstract public String Author { get; }
+        abstract public String Version { get; }
+        abstract public String Description { get; }
+        abstract public String Type { get; }
     }
 
-    abstract class GlowDriver : GlowExtension
+    public abstract class GlowDriver : GlowExtension //observed by core
     {
         abstract public Color getColor();//main driver method (called repeatedly to get colors)
-        abstract public String Name();
-        abstract public String Author();
-        abstract public String Version();
-        abstract public String Description();
-        public String Type { get { return "Driver"; } }
+        public sealed override String Type { get { return "Driver"; } }
     }
 
-    abstract class GlowScreenGrabber : GlowDriver//needed to know when to also load screen processor extensions
+    public abstract class GlowScreenDriver : GlowDriver //observed by screen processor
+        //special type of driver that deals with bitmaps captured from the screen
+        //uses a GlowScreenProcessor to determine color to return
     {
-        abstract public Bitmap getScreen();
+        //abstract public GlowScreenProcessor ScreenProcessor { get; }//return processor for this screen driver
         abstract public void captureTarget();//target method for capture thread (defines thread logic)
     }
 
-    abstract class GlowDecorator : GlowExtension
+    public abstract class GlowDecorator : GlowExtension
     {
         abstract public Color Decorate(Color origColor);//Returns decorated color
-        abstract public String Name();
-        abstract public String Author();
-        abstract public String Version();
-        abstract public String Description();
-        public String Type { get { return "Decorator"; } }
+        public sealed override String Type { get { return "Decorator"; } }
     }
-    abstract class GlowNotifier : GlowExtension
+    public abstract class GlowNotifier : GlowExtension //observed by core
     {
         abstract public Boolean Update();//returns true if notification exists
-        abstract public Boolean Notify(AntumbraCoreDriver controller);
+        abstract public Boolean Notify(AntumbraCore controller);
         //run color sequence configured for the notification
         //called after an Update() call returns true
-        abstract public String Name();
-        abstract public String Author();
-        abstract public String Version();
-        abstract public String Description();
-        public String Type { get { return "Notifier"; } }
+        public sealed override String Type { get { return "Notifier"; } }
     }
-    abstract class GlowScreenProcessor : GlowExtension
+    public abstract class GlowScreenProcessor : GlowExtension
     {
         abstract public Color Process(Bitmap bm);//returns color based off Bitmap of screen
-        abstract public String Name();
-        abstract public String Author();
-        abstract public String Version();
-        abstract public String Description();
-        public String Type { get { return "Screen Processor"; } }
+        public sealed override String Type { get { return "Screen Processor"; } }
     }
 }
