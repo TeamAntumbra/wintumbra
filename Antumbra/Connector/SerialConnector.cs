@@ -65,7 +65,7 @@ namespace Antumbra.Glow.Connector
 
         public bool send(byte r, byte g, byte b)//return true if success, else false
         {
-            updateState();
+            //updateState();
             if (state == ALIVE) {
                 return AnDevice_SetRGB_S(this.ctx, this.dev, r, g, b) == 0;
             }

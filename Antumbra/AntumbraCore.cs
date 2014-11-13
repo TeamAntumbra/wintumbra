@@ -167,8 +167,12 @@ namespace Antumbra.Glow
 
         public void SetColorTo(Color newColor)
         {
-            Console.WriteLine(newColor.ToString());
-            fade(newColor, this.manualStepSleep, this.manualStepSize);
+            //Console.WriteLine(newColor.ToString());
+            //fade(newColor, 0, 2);
+            byte r = newColor.R;
+            byte g = newColor.G;
+            byte b = newColor.B;
+            changeTo(r, g, b);
         }
 
         public int getPollingWidth()
@@ -324,9 +328,7 @@ namespace Antumbra.Glow
                 r += rStep;
                 g += gStep;
                 b += bStep;
-                Console.WriteLine(r + " " + g + " " + b);
-                updateLast((byte)r, (byte)g, (byte)b);
-                //changeTo((byte)r, (byte)g, (byte)b);
+                changeTo((byte)r, (byte)g, (byte)b);
                 if(sleepTime != 0)
                     Thread.Sleep(sleepTime);
             }
@@ -334,11 +336,11 @@ namespace Antumbra.Glow
 
         private void changeTo(byte r, byte g, byte b)
         {
+            //Console.WriteLine(r + " " + g + " " + b);
             if (this.serial.send(r, g, b))//sucessful send
                 updateLast(r, g, b);
-            else {
+            else
                 this.updateStatus(0);//send failed, device is probably dead
-            }
         }
 
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
