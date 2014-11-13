@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Antumbra.Glow.ExtensionFramework;
 using System.Collections;
+using System.Drawing;
 
 namespace Antumbra.Glow
 {
@@ -15,7 +16,7 @@ namespace Antumbra.Glow
         private String path;
 
         [ImportMany]
-        private IEnumerable<GlowExtension> extensions = null;
+        private IEnumerable<GlowExtension> plugins = null;
 
         //The Extension Bank
         private List<GlowDriver> AvailDrivers = null;
@@ -33,7 +34,7 @@ namespace Antumbra.Glow
             this.AvailDecorators = new List<GlowDecorator>();
             this.AvailNotifiers = new List<GlowNotifier>();
             Compose();
-            foreach (var extension in extensions) {
+            foreach (var extension in plugins) {
                 Console.WriteLine("Extension Found: " + extension.Name);
                 if (extension.Type == null) {
                     Console.WriteLine("Ignoring Extension - null type");
@@ -70,12 +71,23 @@ namespace Antumbra.Glow
             catalog.Catalogs.Add(new DirectoryCatalog(this.path));
             catalog.Catalogs.Add(new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()));
             this.container = new CompositionContainer(catalog);
-            this.container.SatisfyImportsOnce(this);//get rid of later on
+            this.container.ComposeParts(this);
+            //this.container.SatisfyImportsOnce(this);//get rid of later on
         }
 
         public GlowDriver GetDefaultDriver()
         {
             return this.AvailDrivers.First<GlowDriver>();//TODO change this, just for testing
+        }
+
+        public GlowScreenDriver GetDefaultScreenDriver()
+        {
+            return this.AvailScreenDrivers.First<GlowScreenDriver>();
+        }
+
+        public GlowScreenProcessor GetDefaultScreenProcessor()
+        {
+            return this.AvailScreenProcessors.First<GlowScreenProcessor>();
         }
     }
 }

@@ -28,7 +28,8 @@ using System.Reflection;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : MetroFramework.Forms.MetroForm //Main driver for application
+    public partial class AntumbraCore : MetroFramework.Forms.MetroForm, IObserver<Color>, IObserver<Notification>
+        //Main driver for application
     {
         //private System.Timers.Timer screenTimer;//timer for screen color averaging
         //private Thread fadeThread;//thread for color fades
@@ -69,10 +70,8 @@ namespace Antumbra.Glow
         private MEFHelper MEFHelper;
 
         private GlowDriver GlowDriver;//can only be 1
-        private Boolean GlowScreenResponsiveEnabled;//if true the next two are used, else not
-        //determined by if instance of GlowScreenDriver checked on load of GlowDriver
-        private GlowScreenDriver GlowScreenDriver;//can only be 1 at a time
-        private GlowScreenProcessor GlowScreenProcessor;//can only be 1 at a time
+        private List<GlowDecorator> GlowDecorators;
+        private List<GlowNotifier> GlowNotifiers;
 
         private Thread MainDriverThread;//main driver thread for whole application
         private Thread DriverThread;//driver thread for driver extensions
@@ -122,25 +121,47 @@ namespace Antumbra.Glow
             this.warmth = 0;
             //this.settings = new SettingsWindow(this);
             this.DriverThread = new Thread(new ThreadStart(run));
-            //this.LoadsPlugins();
-     /*       var catalog = new AggregateCatalog(
-            new AssemblyCatalog(Assembly.GetExecutingAssembly()),
-            new DirectoryCatalog("."));
-            var container = new CompositionContainer(catalog);
-            container.ComposeParts(this);*/
-            this.GlowScreenResponsiveEnabled = false;//lets start (really) simple
             this.MEFHelper = new MEFHelper(".");
             this.GlowDriver = this.MEFHelper.GetDefaultDriver();
+            this.GlowDriver.Subscribe(this);
+        }
+
+      /*  public void HandleNewColor(object sender, EventArgs args)
+        {
+            if (sender is Color)
+                this.SetColorTo((Color)sender);
+        }
+
+        public void HandleNotification(object sender, EventArgs args)
+        {
+            if (sender is GlowNotifier)
+                ((GlowNotifier)sender).Notify(this);//TODO change this to something less powerful
+        }*/
+
+        public void OnCompleted()//extension has signaled it is done giving output
+        {
+            //do nothing
+        }
+
+        public void OnNext(Notification noti)
+        {
+            Console.WriteLine("Notification Recieved: " + noti.Name);
+        }
+
+        public void OnNext(Color newColor)
+        {
+            this.SetColorTo(newColor);
+        }
+
+        public void OnError(Exception error)
+        {
+            Console.WriteLine("Exception: " + error.ToString());
         }
 
         public void run()
         {
             while (true) {
-                /*if (this.GlowScreenResponsiveEnabled)
-                    this.SetColorTo(this.GlowScreenDriver.getColor());
-                else
-                    this.SetColorTo(this.GlowDriver.getColor());*/
-                Console.WriteLine(this.GlowDriver.getColor());
+                //do stuff
             }
         }
 
@@ -444,7 +465,8 @@ namespace Antumbra.Glow
             //    this.driverThread = new Thread(new ThreadStart(setToAvg));
             //    this.driverThread.Start();
             //}
-            this.DriverThread.Start();
+            //this.DriverThread.Start();
+            this.GlowDriver.start();
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)
