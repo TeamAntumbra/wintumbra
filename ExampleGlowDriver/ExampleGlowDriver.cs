@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace ExampleGlowDriver
 {
-    [Export(typeof(GlowExtension))]
+    [Export(typeof(GlowIndependentDriver))]
     public class ExampleGlowDriver : GlowIndependentDriver
     {
         //public event EventHandler NewColor;//occurs when a new color is available

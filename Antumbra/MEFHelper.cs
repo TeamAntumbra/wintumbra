@@ -20,7 +20,7 @@ namespace Antumbra.Glow
 
         //The Extension Bank
         private List<GlowDriver> AvailDrivers = null;
-        private List<GlowScreenDriver> AvailScreenDrivers = null;
+        private List<GlowScreenGrabber> AvailScreenDrivers = null;
         private List<GlowScreenProcessor> AvailScreenProcessors = null;
         private List<GlowDecorator> AvailDecorators = null;
         private List<GlowNotifier> AvailNotifiers = null;
@@ -29,7 +29,7 @@ namespace Antumbra.Glow
         {
             this.path = pathToExtensions;
             this.AvailDrivers = new List<GlowDriver>();
-            this.AvailScreenDrivers = new List<GlowScreenDriver>();
+            this.AvailScreenDrivers = new List<GlowScreenGrabber>();
             this.AvailScreenProcessors = new List<GlowScreenProcessor>();
             this.AvailDecorators = new List<GlowDecorator>();
             this.AvailNotifiers = new List<GlowNotifier>();
@@ -45,7 +45,7 @@ namespace Antumbra.Glow
                 }
                 else if (extension.Type.Equals("Screen Driver")) {
                     Console.WriteLine("Type: Screen Driver");
-                    this.AvailScreenDrivers.Add((GlowScreenDriver)extension);
+                    this.AvailScreenDrivers.Add((GlowScreenGrabber)extension);
                 }
                 else if (extension.Type.Equals("Screen Processor")) {
                     Console.WriteLine("Type: Screen Processor");
@@ -80,9 +80,9 @@ namespace Antumbra.Glow
             return this.AvailDrivers.First<GlowDriver>();//TODO change this, just for testing
         }
 
-        public GlowScreenDriver GetDefaultScreenDriver()
+        public GlowScreenGrabber GetDefaultScreenDriver()
         {
-            return this.AvailScreenDrivers.First<GlowScreenDriver>();
+            return this.AvailScreenDrivers.First<GlowScreenGrabber>();
         }
 
         public GlowScreenProcessor GetDefaultScreenProcessor()

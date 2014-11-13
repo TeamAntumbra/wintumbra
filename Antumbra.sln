@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antumbra", "Antumbra\Antumbra.csproj", "{B5887076-F914-4F71-8CB7-CF3CBF663CCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenDriver", "AntumbraScreenDriver\AntumbraScreenDriver.csproj", "{FA24A549-5DAF-47A8-892A-B64E8921426D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenGrabber", "AntumbraScreenDriver\AntumbraScreenGrabber.csproj", "{FA24A549-5DAF-47A8-892A-B64E8921426D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraGlowDirectXScreenDriver", "AntumbraGlowDirectXScreenDriver.cs\AntumbraGlowDirectXScreenDriver.csproj", "{158E8C5D-9D76-421D-9673-122500B7BE30}"
 EndProject

@@ -32,7 +32,6 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         public abstract bool start();//start driver
         public override String Type { get { return "Driver"; } }
         public abstract IDisposable Subscribe(IObserver<Color> observer);
-        //public event EventHandler NewColor;//occurs when a new color is available
     }
 
     public abstract class GlowIndependentDriver : GlowDriver
@@ -40,21 +39,83 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         //generates colors on its own
     }
 
-    public abstract class GlowScreenDriverCoupler : GlowDriver
+    public class GlowScreenDriverCoupler : GlowDriver, IObserver<Color>
+        //generates color using a GlowScreenGrabber
+        //and a GlowScreenProcessor
     {
-        //encapsulates a GlowScreenDriver and GlowScreenProcessor and handles both of them
-        //to generate colors for Glow
+        public GlowScreenGrabber grabber { get; set; }
+        public GlowScreenProcessor processor { get; set; }
+        private List<IObserver<Color>> observers;
+        private AntumbraCore core;
+
+        public GlowScreenDriverCoupler(AntumbraCore core)
+        {
+            this.core = core;
+            this.observers = new List<IObserver<Color>>();
+        }
+
+        public sealed override string Name
+        { get { return "Glow Screen Driver Coupler"; } }
+        public sealed override string Author
+        { get { return "Team Antumbra"; } }
+        public sealed override string Description
+        { get { return "A GlowDriver that uses a GlowScreenGrabber and "
+                     + "a GlowScreenProcessor to generate colors"; } }
+        public sealed override string Version
+        { get { return "V0.0.1"; } }
+
+        public override IDisposable Subscribe(IObserver<Color> observer)
+        {
+            if (!this.observers.Contains(observer))
+                this.observers.Add(observer);
+            return new Unsubscriber(this.observers, observer);
+        }
+
+        private class Unsubscriber : IDisposable
+        {
+            private List<IObserver<Color>> _observers;
+            private IObserver<Color> _observer;
+
+            public Unsubscriber(List<IObserver<Color>> observers, IObserver<Color> observer)
+            {
+                this._observers = observers;
+                this._observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                    _observers.Remove(_observer);
+            }
+        }
+
+        public override bool start()
+        {
+            if (this.grabber != null && this.processor != null) {
+                if (this.grabber.ready() && this.processor.ready()) {//grabber & processor started correctly
+                    this.grabber.Subscribe(this.processor);
+                    this.processor.Subscribe(this);
+                }
+            }
+            return false;
+        }
+
+        public void OnCompleted() { }
+        public void OnError(Exception error) { }
+        public void OnNext(Color newColor)
+        {
+
+        }
     }
 
-    public abstract class GlowScreenDriver : GlowDriver, IObservable<Bitmap> //observed by screen processor
+    public abstract class GlowScreenGrabber : GlowExtension, IObservable<Bitmap> //observed by screen processor
         //special type of driver that deals with bitmaps captured from the screen
         //uses a GlowScreenProcessor to determine color to return
     {
         //abstract public GlowScreenProcessor ScreenProcessor { get; }//return processor for this screen driver
-        abstract public void captureTarget();//target method for capture thread (defines thread logic)
-        public sealed override string Type { get { return "Screen Driver"; } }
+        public sealed override string Type { get { return "Screen Grabber"; } }
         public abstract IDisposable Subscribe(IObserver<Bitmap> screenProcessor);//register observer
-        //public event EventHandler NewScreen;//occurs when a new screen capture is available
+        public abstract bool ready();//get ready
     }
 
     public abstract class GlowDecorator : GlowExtension
@@ -91,13 +152,11 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
     }
     public abstract class GlowScreenProcessor : GlowExtension, IObserver<Bitmap>, IObservable<Color>
     {
-        abstract public Color Process(Bitmap bm);//returns color based off Bitmap of screen
         public sealed override String Type { get { return "Screen Processor"; } }
         public abstract IDisposable Subscribe(IObserver<Color> observer);//register observer
-        public event EventHandler NewColor;//occurs when a new color is available
-        public abstract void HandleNewScreen(object sender, EventArgs args);
-        public abstract void OnCompleted();//shut down and clean up
-        public abstract void OnError(Exception e);//Handle exception
-        public abstract void OnNext(Bitmap screen);//Handle new screen
+        public abstract bool ready();//set up
+        public void OnCompleted() { }
+        public void OnError(Exception error) { }
+        public abstract void OnNext(Bitmap screen);
     }
 }
