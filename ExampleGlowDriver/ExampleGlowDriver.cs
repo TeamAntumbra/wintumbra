@@ -62,9 +62,10 @@ namespace ExampleGlowDriver
 
         private void threadLogic()
         {
+            Random rnd = new Random();
             while (true) {
                 //do stuff (logic of driver)
-                Color result = Color.Lavender;
+                Color result = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 //report exceptions with .OnError(Exception)
                 //report new color to observers
                 foreach (var observer in this.observers) {
@@ -103,7 +104,7 @@ namespace ExampleGlowDriver
         {
             get { return "A super simple implementation example " +
                          "of a Glow Driver extension that always " +
-                         "returns Lavender. :)"; }
+                         "returns Random Colors! :)"; }
         }
     }
 }
