@@ -16,12 +16,8 @@ using System.IO.Ports;
 using System.IO;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using Antumbra.Glow.ExtensionFramework.Drivers;
-//using Antumbra.Glow.ExtensionFramework.Decorators;
-//using Antumbra.Glow.ExtensionFramework.Notifiers;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.ExtensionFramework.ScreenProcessors;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Windows;
 using System.Reflection;
@@ -45,9 +41,9 @@ namespace Antumbra.Glow
         //bool on;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
-        public AntumbraScreenGrabber screenGrabber { get; set; }
+        //public AntumbraScreenGrabber screenGrabber { get; set; }
         //public AntumbraDirectXScreenGrabber gameScreenGrabber { get; set; }
-        public AntumbraScreenProcessor screenProcessor { get; set; }
+        //public AntumbraScreenProcessor screenProcessor { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
         public int pollingX { get; set; }
@@ -75,7 +71,7 @@ namespace Antumbra.Glow
         private List<GlowDecorator> GlowDecorators;
         private List<GlowNotifier> GlowNotifiers;
 
-        private Thread MainDriverThread;//main driver thread for whole application
+        //private Thread MainDriverThread;//main driver thread for whole application
         private Thread DriverThread;//driver thread for driver extensions
 
         public AntumbraCore()

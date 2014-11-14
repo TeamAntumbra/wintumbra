@@ -204,8 +204,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <None Include="ExtensionFramework\Drivers\AntumbraDirectXScreenGrabber.cs" />
-    <Compile Include="ExtensionFramework\ScreenProcessors\AntumbraScreenProcessor.cs" />
     <Compile Include="Windows\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,7 +211,6 @@
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HSVRGGConverter.cs" />
-    <Compile Include="ExtensionFramework\Drivers\AntumbraScreenGrabber.cs" />
     <Compile Include="Connector\SerialConnector.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
@@ -297,10 +294,7 @@
     <Content Include="Resources\palette-load.png" />
     <Content Include="Resources\palette-save.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ExtensionFramework\Decorators\" />
-    <Folder Include="ExtensionFramework\Notifiers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Fody.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
