@@ -43,8 +43,8 @@ namespace Antumbra.Glow
                     Console.WriteLine("Type: Driver");
                     this.AvailDrivers.Add((GlowDriver)extension);
                 }
-                else if (extension.Type.Equals("Screen Driver")) {
-                    Console.WriteLine("Type: Screen Driver");
+                else if (extension.Type.Equals("Screen Grabber")) {
+                    Console.WriteLine("Type: Screen Grabber");
                     this.AvailScreenDrivers.Add((GlowScreenGrabber)extension);
                 }
                 else if (extension.Type.Equals("Screen Processor")) {
@@ -75,7 +75,7 @@ namespace Antumbra.Glow
             //this.container.SatisfyImportsOnce(this);//get rid of later on
         }
 
-        public GlowDriver GetDefaultDriver()
+        public GlowDriver GetDefaultGrabber()
         {
             return this.AvailDrivers.First<GlowDriver>();//TODO change this, just for testing
         }

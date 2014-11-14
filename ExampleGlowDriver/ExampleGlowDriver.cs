@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.ExtensionFramework;
 using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;//might not be needed TODO
 using System.Threading;
 
 namespace ExampleGlowDriver
 {
-    [Export(typeof(GlowIndependentDriver))]
+    [Export(typeof(GlowExtension))]
     public class ExampleGlowDriver : GlowIndependentDriver
     {
         //public event EventHandler NewColor;//occurs when a new color is available
@@ -48,6 +47,12 @@ namespace ExampleGlowDriver
             }
         }
 
+        public override bool ready()
+        {
+            this.driver = new Thread(new ThreadStart(threadLogic));
+            return true;
+        }
+
         public override bool start()
         {
         /*    EventHandler handler = NewColor;
@@ -55,7 +60,6 @@ namespace ExampleGlowDriver
                 handler(this, EventArgs.Empty);
             }
             return true;*/
-            this.driver = new Thread(new ThreadStart(threadLogic));
             this.driver.Start();
             return true;
         }

@@ -1,17 +1,17 @@
-﻿namespace AntumbraScreenDriver
-{
-    using System.ComponentModel.Composition;
-    using System.Drawing;
-    using Antumbra.Glow.ExtensionFramework;
-    using System;
-    using Antumbra.Glow;
-    using System.Drawing.Imaging;
-    using System.Runtime.InteropServices;
-    using System.Windows.Forms;
-    using System.Threading;
-    using System.Collections.Generic;
+﻿using System.ComponentModel.Composition;
+using System.Drawing;
+using Antumbra.Glow.ExtensionFramework;
+using System;
+using Antumbra.Glow;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Threading;
+using System.Collections.Generic;
 
-    [Export(typeof(GlowScreenGrabber))]
+namespace AntumbraScreenDriver
+{
+    [Export(typeof(GlowExtension))]
     public class AntumbraScreenGrabber : GlowScreenGrabber //TODO make observable for screen processors (which will be observed by core)
     {
         private int width, height;
@@ -33,7 +33,8 @@
             this.height = Screen.PrimaryScreen.Bounds.Height;
         }
         public override String Name { get { return "Antumbra Screen Grabber (Default)"; } }
-        public override String Description { get { return "Test"; } }
+        public override String Description { get { return "Default means of grabbing the screen. "
+                                                        + "Not DirectX compatible."; } }
         public override String Author { get { return "Team Antumbra"; } }
         public override String Version { get { return "V0.0.1"; } }
 
@@ -44,9 +45,14 @@
             return new Unsubscriber(this.observers, observer);
         }
 
-        public bool start()
+        public override bool ready()
         {
             this.driver = new Thread(new ThreadStart(captureTarget));
+            return true;
+        }
+
+        public override bool start()
+        {
             this.driver.Start();
             return true;
         }

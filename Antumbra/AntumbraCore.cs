@@ -69,7 +69,9 @@ namespace Antumbra.Glow
 
         private MEFHelper MEFHelper;
 
-        private GlowDriver GlowDriver;//can only be 1
+        private GlowDriver GlowDriver;
+        private GlowScreenGrabber ScreenGrabber;
+        private GlowScreenProcessor ScreenProcessor;
         private List<GlowDecorator> GlowDecorators;
         private List<GlowNotifier> GlowNotifiers;
 
@@ -122,7 +124,10 @@ namespace Antumbra.Glow
             //this.settings = new SettingsWindow(this);
             this.DriverThread = new Thread(new ThreadStart(run));
             this.MEFHelper = new MEFHelper(".");
-            this.GlowDriver = this.MEFHelper.GetDefaultDriver();
+            this.ScreenGrabber = this.MEFHelper.GetDefaultScreenDriver();
+            this.ScreenProcessor = this.MEFHelper.GetDefaultScreenProcessor();
+            this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
+            //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
             this.GlowDriver.Subscribe(this);
         }
 
@@ -468,7 +473,8 @@ namespace Antumbra.Glow
             //    this.driverThread.Start();
             //}
             //this.DriverThread.Start();
-            this.GlowDriver.start();
+            if (this.GlowDriver.ready())//ready?
+                this.GlowDriver.start();//lets go!
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)

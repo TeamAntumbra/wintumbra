@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AntumbraScreenGrabber")]
+[assembly: AssemblyTitle("AntumbraScreenProcessor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Antumbra")]
-[assembly: AssemblyProduct("AntumbraScreenGrabber")]
-[assembly: AssemblyCopyright("Copyright © Antumbra Technologies, Inc. 2014")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("AntumbraScreenProcessor")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("daf31eaf-ee0f-4cb0-b190-cc34a48cb95e")]
+[assembly: Guid("8593078e-614e-43f7-b1b5-6962590a0fa5")]
 
 // Version information for an assembly consists of the following four values:
 //

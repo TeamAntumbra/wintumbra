@@ -139,6 +139,7 @@
     <Compile Include="AntumbraCore.Designer.cs">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
     <Compile Include="MEFHelper.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />

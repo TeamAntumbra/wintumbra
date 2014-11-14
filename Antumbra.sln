@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capture", "Direct3DHook-mas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleGlowDriver", "ExampleGlowDriver\ExampleGlowDriver.csproj", "{624EDC37-C70C-45BB-9F98-81D4817EF4ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenProcessor", "AntumbraScreenProcessor\AntumbraScreenProcessor.csproj", "{EBD44C28-BC64-4290-9660-2DE5F542D3AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,16 @@ Global
 		{624EDC37-C70C-45BB-9F98-81D4817EF4ED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{624EDC37-C70C-45BB-9F98-81D4817EF4ED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{624EDC37-C70C-45BB-9F98-81D4817EF4ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
