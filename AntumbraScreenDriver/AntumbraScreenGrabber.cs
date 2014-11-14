@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace AntumbraScreenDriver
 {
     [Export(typeof(GlowExtension))]
-    public class AntumbraScreenGrabber : GlowScreenGrabber //TODO make observable for screen processors (which will be observed by core)
+    public class AntumbraScreenGrabber : GlowScreenGrabber
     {
         private int width, height;
         //private Bitmap screen;
@@ -85,13 +85,9 @@ namespace AntumbraScreenDriver
         private void captureTarget()
         {
             while (true) {
-                using (Bitmap screen = getPixelBitBlt(this.width, this.height)) {
-                    //notify for update here
-                    /*foreach (var observer in this.observers) {
-                        observer.OnNext(screen);
-                    }*/
-                    NewScreenAvailEvent(screen, EventArgs.Empty);
-                }
+                Bitmap screen = getPixelBitBlt(this.width, this.height);
+                NewScreenAvailEvent(screen, EventArgs.Empty);
+                screen.Dispose();//TODO fix out of memory errors that the bitmap probably causes
             }
         }
 

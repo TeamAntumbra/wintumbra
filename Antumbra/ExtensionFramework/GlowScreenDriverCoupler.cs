@@ -49,31 +49,6 @@ namespace Antumbra.Glow.ExtensionFramework
             NewColorAvailEvent(sender, args);//pass it up
         }
 
-        /*public override IDisposable Subscribe(IObserver<Color> observer)
-        {
-            if (!this.observers.Contains(observer))
-                this.observers.Add(observer);
-            return new Unsubscriber(this.observers, observer);
-        }
-
-        private class Unsubscriber : IDisposable
-        {
-            private List<IObserver<Color>> _observers;
-            private IObserver<Color> _observer;
-
-            public Unsubscriber(List<IObserver<Color>> observers, IObserver<Color> observer)
-            {
-                this._observers = observers;
-                this._observer = observer;
-            }
-
-            public void Dispose()
-            {
-                if (_observer != null && _observers.Contains(_observer))
-                    _observers.Remove(_observer);
-            }
-        }
-        */
         public override bool ready()
         {
             if (this.grabber != null && this.processor != null) {
@@ -94,12 +69,5 @@ namespace Antumbra.Glow.ExtensionFramework
             //get ready and start
             return this.grabber.start();
         }
-
-  /*      public void OnCompleted() { }
-        public void OnError(Exception error) { }
-        public void OnNext(Color newColor)
-        {
-            this.core.SetColorTo(newColor);
-        }*/
     }
 }

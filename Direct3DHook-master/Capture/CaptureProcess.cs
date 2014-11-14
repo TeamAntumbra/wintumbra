@@ -68,7 +68,7 @@ namespace Capture
                     process.Id,
                     InjectionOptions.Default,
                     typeof(CaptureInterface).Assembly.Location,//"Capture.dll", // 32-bit version (the same because AnyCPU) could use different assembly that links to 32-bit C++ helper dll
-                    typeof(CaptureInterface).Assembly.Location, //"Capture.dll", // 64-bit version (the same because AnyCPU) could use different assembly that links to 64-bit C++ helper dll
+                    typeof(CaptureInterface).Assembly.Location,// "Capture.dll", // 64-bit version (the same because AnyCPU) could use different assembly that links to 64-bit C++ helper dll
                     // the optional parameter list...
                     _channelName, // The name of the IPC channel for the injected assembly to connect to
                     config

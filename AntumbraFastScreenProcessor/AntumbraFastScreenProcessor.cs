@@ -10,6 +10,7 @@ using Antumbra.Glow.ExtensionFramework;
 
 namespace AntumbraFastScreenProcessor
 {
+    [Export(typeof(GlowExtension))]
     public class AntumbraFastScreenProcessor : GlowScreenProcessor, AntumbraBitmapObserver
         //No fancy algorithms here. Just pure speed through a straight average
     {
@@ -76,7 +77,6 @@ namespace AntumbraFastScreenProcessor
                     }
                 }
             }
-
             int avgB = (int)(totals[0] / (width * height));
             int avgG = (int)(totals[1] / (width * height));
             int avgR = (int)(totals[2] / (width * height));
@@ -90,8 +90,11 @@ namespace AntumbraFastScreenProcessor
 
         void AntumbraBitmapObserver.NewBitmapAvail(object sender, EventArgs args)
         {
-            if (sender is Bitmap)
+            if (sender is Bitmap) {
+                Bitmap bm = (Bitmap)sender;
                 NewColorAvailEvent(Process((Bitmap)sender), EventArgs.Empty);
+                bm.Dispose();
+            }
         }
     }
 }

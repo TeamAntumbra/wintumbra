@@ -7,8 +7,8 @@
     <ProjectGuid>{158E8C5D-9D76-421D-9673-122500B7BE30}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AntumbraGlowDirectXScreenDriver.cs</RootNamespace>
-    <AssemblyName>AntumbraGlowDirectXScreenDriver.cs</AssemblyName>
+    <RootNamespace>AntumbraGlowDirectXScreenDriver</RootNamespace>
+    <AssemblyName>AntumbraGlowDirectXScreenDriver</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,6 +34,7 @@
       <HintPath>..\EasyHook\EasyHook.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
