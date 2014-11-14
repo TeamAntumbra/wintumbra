@@ -7,21 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Antumbra.Glow;
 
 namespace Antumbra.Glow.Windows
 {
     public partial class SettingsWindow : MetroFramework.Forms.MetroForm
     {
-        AntumbraCoreDriver antumbra;
+        AntumbraCore antumbra;
         ColorPickerDialog picker;
         private String selectedExeName;
-        public SettingsWindow(AntumbraCoreDriver antumbra)
+        public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
             this.picker = new ColorPickerDialog();
             this.selectedExeName = null;
             InitializeComponent();
-            updateValues();
+            //updateValues();
         }
 
         public void updateValues()
@@ -37,11 +38,11 @@ namespace Antumbra.Glow.Windows
             ManualSleepSize.Text = this.antumbra.manualStepSleep.ToString();
             screenStepSleep.Text = this.antumbra.screenAvgStepSleep.ToString();
             screenStepSize.Text = this.antumbra.screenAvgStepSize.ToString();
-            saturationEnabledCheck.Checked = this.antumbra.screenProcessor.saturationEnabled;
-            saturationAdditiveTxt.Text = this.antumbra.screenProcessor.saturationAdditive.ToString();
+            //saturationEnabledCheck.Checked = this.antumbra.screenProcessor.saturationEnabled;
+            //saturationAdditiveTxt.Text = this.antumbra.screenProcessor.saturationAdditive.ToString();
             sinSleepSize.Text = this.antumbra.sinFadeStepSleep.ToString();
             sinStepSize.Text = this.antumbra.sinFadeStepSize.ToString();
-            processMenu.DataSource = this.antumbra.gameScreenGrabber.getProcesses();
+            //processMenu.DataSource = this.antumbra.gameScreenGrabber.getProcesses();
             if (this.selectedExeName == null)
                 this.selectedExeName = processMenu.SelectedText;
             else
@@ -193,7 +194,7 @@ namespace Antumbra.Glow.Windows
 
         private void manualListener(object sender, EventArgs e)
         {
-            this.antumbra.setColorTo(this.picker.previewPanel.BackColor);
+            this.antumbra.SetColorTo(this.picker.previewPanel.BackColor);
         }
 
         private void maxBright_Scroll(object sender, ScrollEventArgs e)
@@ -210,7 +211,7 @@ namespace Antumbra.Glow.Windows
         {
             try {
                 //this.antumbra.screen.saturationAdditive = Convert.ToDouble(saturationAdditiveTxt.Text);
-                this.antumbra.screenProcessor.saturationAdditive = Convert.ToDouble(saturationAdditiveTxt.Text);
+                //this.antumbra.screenProcessor.saturationAdditive = Convert.ToDouble(saturationAdditiveTxt.Text);
             }
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");//todo make these specific
@@ -221,7 +222,7 @@ namespace Antumbra.Glow.Windows
         private void saturationEnabledCheck_CheckedChanged(object sender, EventArgs e)
         {
            // this.antumbra.screen.saturationEnabled = saturationEnabledCheck.Checked;
-            this.antumbra.screenProcessor.saturationEnabled = saturationEnabledCheck.Checked;
+            //this.antumbra.screenProcessor.saturationEnabled = saturationEnabledCheck.Checked;
         }
 
         private void sinStepSize_TextChanged(object sender, EventArgs e)
