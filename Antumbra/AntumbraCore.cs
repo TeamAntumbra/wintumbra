@@ -491,8 +491,8 @@ namespace Antumbra.Glow
             this.driverThread.Abort();*/
             if (this.DriverThread.IsAlive)
                 this.DriverThread.Abort();
-            if (this.MainDriverThread.IsAlive)
-                this.MainDriverThread.Abort();
+            //if (this.MainDriverThread.IsAlive)
+            //    this.MainDriverThread.Abort();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             this.settings.Close();
