@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capture", "Direct3DHook-mas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleGlowDriver", "ExampleGlowDriver\ExampleGlowDriver.csproj", "{624EDC37-C70C-45BB-9F98-81D4817EF4ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenProcessor", "AntumbraScreenProcessor\AntumbraScreenProcessor.csproj", "{EBD44C28-BC64-4290-9660-2DE5F542D3AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraSmartScreenProcessor", "AntumbraScreenProcessor\AntumbraSmartScreenProcessor.csproj", "{EBD44C28-BC64-4290-9660-2DE5F542D3AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraFastScreenProcessor", "AntumbraFastScreenProcessor\AntumbraFastScreenProcessor.csproj", "{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,16 @@ Global
 		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,7 +28,7 @@ using System.Reflection;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : MetroFramework.Forms.MetroForm, IObserver<Color>, IObserver<Notification>
+    public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver//, IObserver<Color>, IObserver<Notification>
         //Main driver for application
     {
         //private System.Timers.Timer screenTimer;//timer for screen color averaging
@@ -127,8 +127,9 @@ namespace Antumbra.Glow
             this.ScreenGrabber = this.MEFHelper.GetDefaultScreenDriver();
             this.ScreenProcessor = this.MEFHelper.GetDefaultScreenProcessor();
             this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
+            this.GlowDriver.AttachEvent(this);
             //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
-            this.GlowDriver.Subscribe(this);
+            //this.GlowDriver.Subscribe(this);
         }
 
       /*  public void HandleNewColor(object sender, EventArgs args)
@@ -143,7 +144,7 @@ namespace Antumbra.Glow
                 ((GlowNotifier)sender).Notify(this);//TODO change this to something less powerful
         }*/
 
-        public void OnCompleted()//extension has signaled it is done giving output
+ /*       public void OnCompleted()//extension has signaled it is done giving output
         {
             //do nothing
         }
@@ -155,12 +156,18 @@ namespace Antumbra.Glow
 
         public void OnNext(Color newColor)
         {
-            this.SetColorTo(newColor);
+            this.changeTo(newColor.R, newColor.G, newColor.B);
+            //this.fade(newColor, 0, 2);
         }
 
         public void OnError(Exception error)
         {
             Console.WriteLine("Exception: " + error.ToString());
+        }*/
+
+        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        {
+            SetColorTo((Color)sender);
         }
 
         public void run()
@@ -341,11 +348,13 @@ namespace Antumbra.Glow
 
         private void changeTo(byte r, byte g, byte b)
         {
+            Console.WriteLine(System.DateTime.Now.ToString());
             //Console.WriteLine(r + " " + g + " " + b);
             if (this.serial.send(r, g, b))//sucessful send
                 updateLast(r, g, b);
             else
                 this.updateStatus(0);//send failed, device is probably dead
+            Console.WriteLine(System.DateTime.Now.ToString() + "        after");
         }
 
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive

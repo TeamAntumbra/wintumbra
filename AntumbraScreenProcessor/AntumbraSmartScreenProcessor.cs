@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.ComponentModel.Composition;
@@ -13,12 +12,18 @@ using Antumbra.Glow;//for the hslcolor ref (TODO move these to static util class
 namespace AntumbraScreenProcessor
 {
     [Export(typeof(GlowExtension))]
-    public class AntumbraScreenProcessor : GlowScreenProcessor
+    public class AntumbraSmartScreenProcessor : GlowScreenProcessor, AntumbraBitmapObserver
     {
-        private List<IObserver<Color>> observers;
-        public AntumbraScreenProcessor()
+        public delegate void NewColorAvail(object sender, EventArgs args);
+        public event NewColorAvail NewColorAvailEvent;
+        //private List<IObserver<Color>> observers;
+        public AntumbraSmartScreenProcessor()
         {
-            this.observers = new List<IObserver<Color>>();
+            this.minMixPerc = 20;
+            this.saturationAdditive = .35;
+            this.saturationEnabled = true;
+            this.useAllTol = 20;
+            //this.observers = new List<IObserver<Color>>();
         }
         
         public double saturationAdditive { get; set; } //TODO make settings for these
@@ -47,7 +52,12 @@ namespace AntumbraScreenProcessor
             get { return "V0.0.1"; }
         }
 
-        public override void OnNext(Bitmap screen)
+        public override void AttachEvent(AntumbraColorObserver observer)
+        {
+            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+      /*  public override void OnNext(Bitmap screen)
         {
             Color result = Process(screen);
             foreach (var observer in this.observers) {
@@ -78,11 +88,16 @@ namespace AntumbraScreenProcessor
                 if (_observer != null && _observers.Contains(_observer))
                     _observers.Remove(_observer);
             }
-        }
+        }*/
 
         public override bool ready()
         {
             return true;
+        }
+
+        void AntumbraBitmapObserver.NewBitmapAvail(object sender, EventArgs args)
+        {
+            this.NewColorAvailEvent(Process((Bitmap)sender), EventArgs.Empty);
         }
 
         public Color Process(Bitmap screen)

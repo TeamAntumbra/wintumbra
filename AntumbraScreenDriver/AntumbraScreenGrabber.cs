@@ -17,6 +17,8 @@ namespace AntumbraScreenDriver
         private int width, height;
         //private Bitmap screen;
         private Thread driver;
+        public delegate void NewScreenAvail(object sender, EventArgs args);
+        public event NewScreenAvail NewScreenAvailEvent;
         private List<IObserver<Bitmap>> observers;
 
         //DLL declaration
@@ -38,12 +40,12 @@ namespace AntumbraScreenDriver
         public override String Author { get { return "Team Antumbra"; } }
         public override String Version { get { return "V0.0.1"; } }
 
-        public override IDisposable Subscribe(IObserver<Bitmap> observer)
+    /*    public override IDisposable Subscribe(IObserver<Bitmap> observer)
         {
             if (!this.observers.Contains(observer))
                 this.observers.Add(observer);
             return new Unsubscriber(this.observers, observer);
-        }
+        }*/
 
         public override bool ready()
         {
@@ -75,14 +77,20 @@ namespace AntumbraScreenDriver
             }
         }
 
+        public override void AttachEvent(AntumbraBitmapObserver observer)
+        {
+            this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
+        }
+
         private void captureTarget()
         {
             while (true) {
                 using (Bitmap screen = getPixelBitBlt(this.width, this.height)) {
                     //notify for update here
-                    foreach (var observer in this.observers) {
+                    /*foreach (var observer in this.observers) {
                         observer.OnNext(screen);
-                    }
+                    }*/
+                    NewScreenAvailEvent(screen, EventArgs.Empty);
                 }
             }
         }

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections.Generic;
 using System.Drawing;
 using Antumbra.Glow;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
-    public class GlowScreenDriverCoupler : GlowDriver, IObserver<Color>
+    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver//IObserver<Color>
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
+        public delegate void NewColorAvail(object sender, EventArgs args);
+        public event NewColorAvail NewColorAvailEvent;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
         private List<IObserver<Color>> observers;
@@ -38,7 +39,17 @@ namespace Antumbra.Glow.ExtensionFramework
         public sealed override string Version
         { get { return "V0.0.1"; } }
 
-        public override IDisposable Subscribe(IObserver<Color> observer)
+        public override void AttachEvent(AntumbraColorObserver observer)
+        {
+            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        {
+            NewColorAvailEvent(sender, args);//pass it up
+        }
+
+        /*public override IDisposable Subscribe(IObserver<Color> observer)
         {
             if (!this.observers.Contains(observer))
                 this.observers.Add(observer);
@@ -62,13 +73,16 @@ namespace Antumbra.Glow.ExtensionFramework
                     _observers.Remove(_observer);
             }
         }
-
+        */
         public override bool ready()
         {
             if (this.grabber != null && this.processor != null) {
                 if (this.grabber.ready() && this.processor.ready()) {//grabber & processor started correctly
-                    this.grabber.Subscribe(this.processor);
-                    this.processor.Subscribe(this);
+                    /*this.grabber.Subscribe(this.processor);
+                    this.processor.Subscribe(this);*/
+                    if (this.processor is AntumbraBitmapObserver)
+                        this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
+                    this.processor.AttachEvent(this);
                     return true;
                 }
             }
@@ -78,14 +92,14 @@ namespace Antumbra.Glow.ExtensionFramework
         public override bool start()
         {
             //get ready and start
-            return (this.ready() && this.grabber.start());
+            return this.grabber.start();
         }
 
-        public void OnCompleted() { }
+  /*      public void OnCompleted() { }
         public void OnError(Exception error) { }
         public void OnNext(Color newColor)
         {
             this.core.SetColorTo(newColor);
-        }
+        }*/
     }
 }
