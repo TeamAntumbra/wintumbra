@@ -68,14 +68,14 @@ namespace Antumbra.Glow
         private void Compose()
         {
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new DirectoryCatalog(this.path));
+            catalog.Catalogs.Add(new DirectoryCatalog(this.path, "*.glow.dll"));
             catalog.Catalogs.Add(new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()));
             this.container = new CompositionContainer(catalog);
             this.container.ComposeParts(this);
             //this.container.SatisfyImportsOnce(this);//get rid of later on
         }
 
-        public GlowDriver GetDefaultGrabber()
+        public GlowDriver GetDefaultDriver()
         {
             return this.AvailDrivers.First<GlowDriver>();//TODO change this, just for testing
         }
