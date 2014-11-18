@@ -24,7 +24,7 @@ using System.Reflection;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver//, IObserver<Color>, IObserver<Notification>
+    public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver
         //Main driver for application
     {
         //private System.Timers.Timer screenTimer;//timer for screen color averaging
@@ -125,7 +125,6 @@ namespace Antumbra.Glow
             this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
             //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
             this.GlowDriver.AttachEvent(this);
-            //this.GlowDriver.Subscribe(this);
         }
 
       /*  public void HandleNewColor(object sender, EventArgs args)

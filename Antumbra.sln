@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenGrabber", "AntumbraScreenDriver\AntumbraScreenGrabber.csproj", "{FA24A549-5DAF-47A8-892A-B64E8921426D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraGlowDirectXScreenDriver", "AntumbraGlowDirectXScreenDriver.cs\AntumbraGlowDirectXScreenDriver.csproj", "{158E8C5D-9D76-421D-9673-122500B7BE30}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraSmartScreenProcessor", "AntumbraScreenProcessor\AntumbraSmartScreenProcessor.csproj", "{EBD44C28-BC64-4290-9660-2DE5F542D3AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraFastScreenProcessor", "AntumbraFastScreenProcessor\AntumbraFastScreenProcessor.csproj", "{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}"
 EndProject
@@ -30,16 +26,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Debug|x86.ActiveCfg = Debug|x86
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{FA24A549-5DAF-47A8-892A-B64E8921426D}.Release|x86.ActiveCfg = Release|Any CPU
 		{158E8C5D-9D76-421D-9673-122500B7BE30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{158E8C5D-9D76-421D-9673-122500B7BE30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{158E8C5D-9D76-421D-9673-122500B7BE30}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -50,16 +36,6 @@ Global
 		{158E8C5D-9D76-421D-9673-122500B7BE30}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{158E8C5D-9D76-421D-9673-122500B7BE30}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{158E8C5D-9D76-421D-9673-122500B7BE30}.Release|x86.ActiveCfg = Release|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Debug|x86.ActiveCfg = Debug|x86
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{EBD44C28-BC64-4290-9660-2DE5F542D3AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FDADE75-D654-4DFC-8E59-FABCE2993CA7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
