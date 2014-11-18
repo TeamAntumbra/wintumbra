@@ -119,12 +119,12 @@ namespace Antumbra.Glow
             this.warmth = 0;
             //this.settings = new SettingsWindow(this);
             this.DriverThread = new Thread(new ThreadStart(run));
-            this.MEFHelper = new MEFHelper(".");
+            this.MEFHelper = new MEFHelper("./Extensions/");
             this.ScreenGrabber = this.MEFHelper.GetDefaultScreenDriver();
             this.ScreenProcessor = this.MEFHelper.GetDefaultScreenProcessor();
             this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
-            this.GlowDriver.AttachEvent(this);
             //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
+            this.GlowDriver.AttachEvent(this);
             //this.GlowDriver.Subscribe(this);
         }
 
@@ -344,13 +344,15 @@ namespace Antumbra.Glow
 
         private void changeTo(byte r, byte g, byte b)
         {
-            Console.WriteLine(System.DateTime.Now.ToString());
+            //Console.WriteLine(System.DateTime.Now.ToString());
             //Console.WriteLine(r + " " + g + " " + b);
             if (this.serial.send(r, g, b))//sucessful send
                 updateLast(r, g, b);
-            else
+            else {
                 this.updateStatus(0);//send failed, device is probably dead
-            Console.WriteLine(System.DateTime.Now.ToString() + "        after");
+                Console.WriteLine("color send failed!");
+            }
+            //Console.WriteLine(System.DateTime.Now.ToString() + "        after");
         }
 
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
@@ -495,8 +497,8 @@ namespace Antumbra.Glow
             //    this.MainDriverThread.Abort();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
-            this.settings.Close();
-            this.settings.Dispose();
+            //this.settings.Close();
+            //this.settings.Dispose();
             Application.Exit();
         }
 
