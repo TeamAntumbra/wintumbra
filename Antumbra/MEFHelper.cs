@@ -76,7 +76,7 @@ namespace Antumbra.Glow
 
         private void Compose()
         {
-            DirectoryCatalog catalog = new DirectoryCatalog(this.path);// "*.glow.dll");
+            DirectoryCatalog catalog = new DirectoryCatalog(this.path, "*.glow.dll");
             this.container = new CompositionContainer(catalog);
             try {
                 this.container.ComposeParts(this);
