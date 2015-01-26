@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace Antumbra.Glow
 {
-    class MEFHelper
+    public class MEFHelper
     {
         private bool failed = false;
         private CompositionContainer container;
@@ -98,46 +98,81 @@ namespace Antumbra.Glow
         public string[] GetNamesOfAvailIndependentDrivers()
         {
             List<string> result = new List<string>();
-            foreach(var ext in this.AvailDrivers.ToList<GlowDriver>()) {
+            foreach(var ext in this.AvailDrivers.ToList<GlowDriver>())
                 result.Add(ext.Name);
-            }
             return result.ToArray<string>();
         }
 
         public string[] GetNamesOfAvailScreenGrabbers()
         {
             List<string> result = new List<string>();
-            foreach (var ext in this.AvailScreenDrivers.ToList<GlowScreenGrabber>()) {
+            foreach (var ext in this.AvailScreenDrivers.ToList<GlowScreenGrabber>())
                 result.Add(ext.Name);
-            }
             return result.ToArray<string>();
         }
 
         public string[] GetNamesOfAvailScreenProcessors()
         {
             List<string> result = new List<string>();
-            foreach (var ext in this.AvailScreenProcessors.ToList<GlowScreenProcessor>()) {
+            foreach (var ext in this.AvailScreenProcessors.ToList<GlowScreenProcessor>())
                 result.Add(ext.Name);
-            }
             return result.ToArray<string>();
         }
 
         public string[] GetNamesOfAvailDecorators()
         {
             List<string> result = new List<string>();
-            foreach (var ext in this.AvailDecorators.ToList<GlowDecorator>()) {
+            foreach (var ext in this.AvailDecorators.ToList<GlowDecorator>())
                 result.Add(ext.Name);
-            }
             return result.ToArray<string>();
         }
 
         public string[] GetNamesOfAvailNotifiers()
         {
             List<string> result = new List<string>();
-            foreach (var ext in this.AvailNotifiers.ToList<GlowNotifier>()) {
+            foreach (var ext in this.AvailNotifiers.ToList<GlowNotifier>())
                 result.Add(ext.Name);
-            }
             return result.ToArray<string>();
+        }
+
+        public GlowDriver GetDriver(string name)
+        {
+            foreach (var ext in this.AvailDrivers.ToList<GlowDriver>())
+                if (ext.Name.Equals(name))
+                    return ext;
+            return null;
+        }
+
+        public GlowScreenGrabber GetScreenGrabber(string name)
+        {
+            foreach (var ext in this.AvailScreenDrivers.ToList<GlowScreenGrabber>())
+                if (ext.Name.Equals(name))
+                    return ext;
+            return null;
+        }
+
+        public GlowScreenProcessor GetScreenProcessor(string name)
+        {
+            foreach (var ext in this.AvailScreenProcessors.ToList<GlowScreenProcessor>())
+                if (ext.Name.Equals(name))
+                    return ext;
+            return null;
+        }
+
+        public GlowDecorator GetDecorator(string name)
+        {
+            foreach (var ext in this.AvailDecorators.ToList<GlowDecorator>())
+                if (ext.Name.Equals(name))
+                    return ext;
+            return null;
+        }
+
+        public GlowNotifier GetNotifier(string name)
+        {
+            foreach (var ext in this.AvailNotifiers.ToList<GlowNotifier>())
+                if (ext.Name.Equals(name))
+                    return ext;
+            return null;
         }
 
         public GlowDriver GetDefaultDriver()

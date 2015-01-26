@@ -51,7 +51,7 @@ namespace Antumbra.Glow
         public int stepSleep { get; set; }
         public int stepSize { get; set; }
 
-        private MEFHelper MEFHelper;
+        public MEFHelper MEFHelper;
 
         private GlowDriver GlowDriver;
         private GlowScreenGrabber ScreenGrabber;
@@ -473,31 +473,6 @@ namespace Antumbra.Glow
         {
             this.GlowDriver.Stop();
             //TODO stop everything
-        }
-
-        public string[] GetNamesOfAvailIndependentDrivers()
-        {
-            return MEFHelper.GetNamesOfAvailIndependentDrivers();
-        }
-
-        public string[] GetNamesOfAvailScreenGrabbers()
-        {
-            return MEFHelper.GetNamesOfAvailScreenGrabbers();
-        }
-
-        public string[] GetNamesOfAvailScreenProcessors()
-        {
-            return MEFHelper.GetNamesOfAvailScreenProcessors();
-        }
-
-        public string[] GetNamesOfAvailDecorators()
-        {
-            return MEFHelper.GetNamesOfAvailDecorators();
-        }
-
-        public string[] GetNamesOfAvailNotifiers()
-        {
-            return MEFHelper.GetNamesOfAvailNotifiers();
         }
     }
 }
