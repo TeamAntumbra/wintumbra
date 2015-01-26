@@ -99,6 +99,34 @@ namespace Antumbra.Glow
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
             }
+            else {
+                this.GlowDriver = this.MEFHelper.GetDefaultDriver();
+            }
+        }
+
+        public void setDriver(GlowDriver driver)
+        {
+            this.GlowDriver = driver;
+        }
+
+        public void setScreenGrabber(GlowScreenGrabber screenGrabber)
+        {
+            this.ScreenGrabber = screenGrabber;
+        }
+
+        public void setScreenProcessor(GlowScreenProcessor processor)
+        {
+            this.ScreenProcessor = processor;
+        }
+
+        public void setDecorators(List<GlowDecorator> decorators)
+        {
+            this.GlowDecorators = decorators;
+        }
+
+        public void setNotifiers(List<GlowNotifier> notifiers)
+        {
+            this.GlowNotifiers = notifiers;
         }
 
       /*  public void HandleNewColor(object sender, EventArgs args)
@@ -319,7 +347,7 @@ namespace Antumbra.Glow
         private void changeTo(byte r, byte g, byte b)
         {
             //Console.WriteLine(System.DateTime.Now.ToString());
-            //Console.WriteLine(r + " " + g + " " + b);
+            Console.WriteLine(r + " " + g + " " + b);
             if (this.serial.send(r, g, b))//sucessful send
                 updateLast(r, g, b);
             else {
@@ -422,21 +450,28 @@ namespace Antumbra.Glow
 
         private bool verifyExtensionChoices()
         {
-            this.ScreenGrabber = this.MEFHelper.GetCurrentScreenDriver();
-            this.ScreenProcessor = this.MEFHelper.GetCurrentScreenProcessor();
-            this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
-            this.GlowDriver = this.MEFHelper.GetCurrentDriver();
+            if (null == this.GlowDriver)//sanity check
+                return false;
+            if (this.GlowDriver is GlowScreenDriverCoupler) {//screen based driver selected
+                if (null == this.ScreenGrabber || null == this.ScreenProcessor)
+                    return false;
+                this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
+            }
             this.GlowDriver.AttachEvent(this);
-            return false;
+            return true;
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO start selected things after verifying the selections are valid
+            if (verifyExtensionChoices()) {
+                this.GlowDriver.Start();
+                //TODO start other extensions as well
+            }
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.GlowDriver.Stop();
             //TODO stop everything
         }
 

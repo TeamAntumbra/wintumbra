@@ -26,12 +26,6 @@ namespace Antumbra.Glow
         private List<GlowDecorator> AvailDecorators;
         private List<GlowNotifier> AvailNotifiers;
 
-        private GlowDriver ActiveDriver;
-        private GlowScreenGrabber ActiveScreenGrabber;
-        private GlowScreenProcessor ActiveScreenProcessor;
-        private List<GlowDecorator> ActiveGlowDecorators;
-        private List<GlowNotifier> ActiveGlowNotifiers;
-
         public MEFHelper(String pathToExtensions)
         {
             this.path = pathToExtensions;
@@ -40,8 +34,7 @@ namespace Antumbra.Glow
             this.AvailScreenProcessors = new List<GlowScreenProcessor>();
             this.AvailDecorators = new List<GlowDecorator>();
             this.AvailNotifiers = new List<GlowNotifier>();
-            this.ActiveGlowDecorators = new List<GlowDecorator>();
-            this.ActiveGlowNotifiers = new List<GlowNotifier>();
+
             Compose();
             if (null == plugins) {
                 Console.WriteLine("No extensions loaded, likely an extension loading exception occured.");
@@ -102,33 +95,6 @@ namespace Antumbra.Glow
             return this.failed;
         }
 
-        public GlowDriver GetCurrentDriver()
-        {
-            if (this.AvailDrivers.Count == 0)//none available
-                return null;
-            if (null == this.ActiveDriver)
-                this.ActiveDriver = this.AvailDrivers.First<GlowDriver>();
-            return this.ActiveDriver;
-        }
-
-        public GlowScreenGrabber GetCurrentScreenDriver()
-        {
-            if (this.AvailScreenDrivers.Count == 0)//none available
-                return null;
-            if (null == this.ActiveScreenGrabber)
-                this.ActiveScreenGrabber = this.AvailScreenDrivers.First<GlowScreenGrabber>();
-            return this.ActiveScreenGrabber;
-        }
-
-        public GlowScreenProcessor GetCurrentScreenProcessor()
-        {
-            if (this.AvailScreenProcessors.Count == 0)//none available
-                return null;
-            if (null == this.ActiveScreenProcessor)
-                this.ActiveScreenProcessor = this.AvailScreenProcessors.First<GlowScreenProcessor>();
-            return this.ActiveScreenProcessor;
-        }
-
         public string[] GetNamesOfAvailIndependentDrivers()
         {
             List<string> result = new List<string>();
@@ -172,6 +138,21 @@ namespace Antumbra.Glow
                 result.Add(ext.Name);
             }
             return result.ToArray<string>();
+        }
+
+        public GlowDriver GetDefaultDriver()
+        {
+            return this.AvailDrivers.First<GlowDriver>();
+        }
+
+        public GlowScreenGrabber GetDefaultScreenGrabber()
+        {
+            return this.AvailScreenDrivers.First<GlowScreenGrabber>();
+        }
+
+        public GlowScreenProcessor GetDefaultScreenProcessor()
+        {
+            return this.AvailScreenProcessors.First<GlowScreenProcessor>();
         }
     }
 }

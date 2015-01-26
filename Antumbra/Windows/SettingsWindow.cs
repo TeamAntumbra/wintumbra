@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antumbra.Glow;
+using Antumbra.Glow.ExtensionFramework;
 
 namespace Antumbra.Glow.Windows
 {
@@ -127,17 +128,17 @@ namespace Antumbra.Glow.Windows
 
         private void driverExtensions_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            this.antumbra.setDriver((GlowDriver)driverExtensions.SelectedItem);
         }
 
         private void screenGrabbers_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            this.antumbra.setScreenGrabber((GlowScreenGrabber)screenGrabbers.SelectedItem);
         }
 
         private void screenProcessors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            this.antumbra.setScreenProcessor((GlowScreenProcessor)screenProcessors.SelectedItem);
         }
     }
 }
