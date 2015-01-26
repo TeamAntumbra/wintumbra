@@ -119,12 +119,17 @@ namespace Antumbra.Glow
             this.warmth = 0;
             //this.settings = new SettingsWindow(this);
             this.DriverThread = new Thread(new ThreadStart(run));
-            this.MEFHelper = new MEFHelper("./Extensions/");
-            this.ScreenGrabber = this.MEFHelper.GetDefaultScreenDriver();
-            this.ScreenProcessor = this.MEFHelper.GetDefaultScreenProcessor();
-            this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
-            //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
-            this.GlowDriver.AttachEvent(this);
+            this.MEFHelper = new MEFHelper("./Extensions/");//"/Extensions/");
+            if (this.MEFHelper.didFail()) {
+                Console.WriteLine("loading extensions failed. See output above.");
+            }
+            else {
+                this.ScreenGrabber = this.MEFHelper.GetDefaultScreenDriver();
+                this.ScreenProcessor = this.MEFHelper.GetDefaultScreenProcessor();
+                this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
+                //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
+                this.GlowDriver.AttachEvent(this);
+            }
         }
 
       /*  public void HandleNewColor(object sender, EventArgs args)
@@ -479,8 +484,7 @@ namespace Antumbra.Glow
             //    this.driverThread.Start();
             //}
             //this.DriverThread.Start();
-            if (this.GlowDriver.ready())//ready?
-                this.GlowDriver.start();//lets go!
+            this.GlowDriver.Start();//lets go!
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)

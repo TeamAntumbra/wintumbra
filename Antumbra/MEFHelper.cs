@@ -12,6 +12,7 @@ namespace Antumbra.Glow
 {
     class MEFHelper
     {
+        private bool failed = false;
         private CompositionContainer container;
         private String path;
 
@@ -34,28 +35,30 @@ namespace Antumbra.Glow
             this.AvailDecorators = new List<GlowDecorator>();
             this.AvailNotifiers = new List<GlowNotifier>();
             Compose();
+            if (null == plugins) {
+                Console.WriteLine("No extensions loaded, likely an extension loading exception occured.");
+                failed = true;
+                return;//no plugins loaded
+            }
             foreach (var extension in plugins) {
                 Console.WriteLine("Extension Found: " + extension.Name);
-                if (extension.Type == null) {
-                    Console.WriteLine("Ignoring Extension - null type");
-                }
-                else if (extension.Type.Equals("Driver")) {
+                if (extension is GlowDriver) {
                     Console.WriteLine("Type: Driver");
                     this.AvailDrivers.Add((GlowDriver)extension);
                 }
-                else if (extension.Type.Equals("Screen Grabber")) {
+                else if (extension is GlowScreenGrabber) {
                     Console.WriteLine("Type: Screen Grabber");
                     this.AvailScreenDrivers.Add((GlowScreenGrabber)extension);
                 }
-                else if (extension.Type.Equals("Screen Processor")) {
+                else if (extension is GlowScreenProcessor) {
                     Console.WriteLine("Type: Screen Processor");
                     this.AvailScreenProcessors.Add((GlowScreenProcessor)extension);
                 }
-                else if (extension.Type.Equals("Decorator")) {
+                else if (extension is GlowDecorator) {
                     Console.WriteLine("Type: Decorator");
                     this.AvailDecorators.Add((GlowDecorator)extension);
                 }
-                else if (extension.Type.Equals("Notifier")) {
+                else if (extension is GlowNotifier) {
                     Console.WriteLine("Type: Notifier");
                     this.AvailNotifiers.Add((GlowNotifier)extension);
                 }
@@ -67,12 +70,22 @@ namespace Antumbra.Glow
 
         private void Compose()
         {
-            var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new DirectoryCatalog(this.path, "*.glow.dll"));
-            catalog.Catalogs.Add(new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()));
+            DirectoryCatalog catalog = new DirectoryCatalog(this.path);// "*.glow.dll");
             this.container = new CompositionContainer(catalog);
-            this.container.ComposeParts(this);
-            //this.container.SatisfyImportsOnce(this);//get rid of later on
+            try {
+                this.container.ComposeParts(this);
+            }
+            catch (System.Reflection.ReflectionTypeLoadException reflectionTypeLoadException) {
+                Console.WriteLine("An exception occured while loading extensions. Now printing:");
+                foreach (Exception exception in reflectionTypeLoadException.LoaderExceptions) {
+                    Console.WriteLine('\n' + exception.ToString() + '\n');
+                }
+            }
+        }
+
+        public bool didFail()
+        {
+            return this.failed;
         }
 
         public GlowDriver GetDefaultDriver()
