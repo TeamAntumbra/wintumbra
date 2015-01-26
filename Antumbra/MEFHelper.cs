@@ -96,16 +96,22 @@ namespace Antumbra.Glow
 
         public GlowDriver GetDefaultDriver()
         {
+            if (this.AvailDrivers.Count == 0)
+                return null;
             return this.AvailDrivers.First<GlowDriver>();//TODO change this, just for testing
         }
 
         public GlowScreenGrabber GetDefaultScreenDriver()
         {
+            if (this.AvailScreenDrivers.Count == 0)
+                return null;
             return this.AvailScreenDrivers.First<GlowScreenGrabber>();
         }
 
         public GlowScreenProcessor GetDefaultScreenProcessor()
         {
+            if (this.AvailScreenProcessors.Count == 0)
+                return null;
             return this.AvailScreenProcessors.First<GlowScreenProcessor>();
         }
     }

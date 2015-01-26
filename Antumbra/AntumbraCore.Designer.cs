@@ -32,12 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntumbraCore));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
-            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HSVMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sinWaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.randomColorFadeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.screenResponsiveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,12 +55,8 @@
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openMenuItem,
             this.settingsMenuItem,
             this.HSVMenuItem,
-            this.sinWaveToolStripMenuItem,
-            this.randomColorFadeMenuItem,
-            this.screenResponsiveMenuItem,
             this.manualToolStripMenuItem,
             this.offToolStripMenuItem,
             this.quitMenuItem});
@@ -72,72 +64,44 @@
             this.contextMenu.ShowCheckMargin = true;
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(200, 220);
+            this.contextMenu.Size = new System.Drawing.Size(199, 187);
             this.contextMenu.Style = MetroFramework.MetroColorStyle.Blue;
             this.contextMenu.Text = "Antumbra|Glow";
             this.contextMenu.UseStyleColors = true;
             this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
-            // openMenuItem
-            // 
-            this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(199, 24);
-            this.openMenuItem.Text = "Open";
-            this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
-            // 
             // settingsMenuItem
             // 
             this.settingsMenuItem.Name = "settingsMenuItem";
-            this.settingsMenuItem.Size = new System.Drawing.Size(199, 24);
+            this.settingsMenuItem.Size = new System.Drawing.Size(198, 30);
             this.settingsMenuItem.Text = "Settings";
             this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
             // 
             // HSVMenuItem
             // 
             this.HSVMenuItem.Name = "HSVMenuItem";
-            this.HSVMenuItem.Size = new System.Drawing.Size(199, 24);
-            this.HSVMenuItem.Text = "HSV Sweep";
+            this.HSVMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.HSVMenuItem.Text = "Start";
             this.HSVMenuItem.Click += new System.EventHandler(this.HSVMenuItem_Click);
-            // 
-            // sinWaveToolStripMenuItem
-            // 
-            this.sinWaveToolStripMenuItem.Name = "sinWaveToolStripMenuItem";
-            this.sinWaveToolStripMenuItem.Size = new System.Drawing.Size(199, 24);
-            this.sinWaveToolStripMenuItem.Text = "Sin Wave";
-            this.sinWaveToolStripMenuItem.Click += new System.EventHandler(this.sinWaveToolStripMenuItem_Click);
-            // 
-            // randomColorFadeMenuItem
-            // 
-            this.randomColorFadeMenuItem.Name = "randomColorFadeMenuItem";
-            this.randomColorFadeMenuItem.Size = new System.Drawing.Size(199, 24);
-            this.randomColorFadeMenuItem.Text = "Random Color Fade";
-            this.randomColorFadeMenuItem.Click += new System.EventHandler(this.randomColorFadeMenuItem_Click);
-            // 
-            // screenResponsiveMenuItem
-            // 
-            this.screenResponsiveMenuItem.Name = "screenResponsiveMenuItem";
-            this.screenResponsiveMenuItem.Size = new System.Drawing.Size(199, 24);
-            this.screenResponsiveMenuItem.Text = "Screen Responsive";
-            this.screenResponsiveMenuItem.Click += new System.EventHandler(this.screenResponsiveMenuItem_Click);
             // 
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(199, 24);
-            this.manualToolStripMenuItem.Text = "Manual";
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.manualToolStripMenuItem.Text = "Stop";
             this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
             // offToolStripMenuItem
             // 
             this.offToolStripMenuItem.Name = "offToolStripMenuItem";
-            this.offToolStripMenuItem.Size = new System.Drawing.Size(199, 24);
+            this.offToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
             this.offToolStripMenuItem.Text = "Off";
             this.offToolStripMenuItem.Click += new System.EventHandler(this.offToolStripMenuItem_Click);
             // 
             // quitMenuItem
             // 
             this.quitMenuItem.Name = "quitMenuItem";
-            this.quitMenuItem.Size = new System.Drawing.Size(199, 24);
+            this.quitMenuItem.Size = new System.Drawing.Size(198, 30);
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
@@ -147,13 +111,13 @@
             this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // AntumbraCoreDriver
+            // AntumbraCore
             // 
             this.ClientSize = new System.Drawing.Size(275, 333);
             this.Font = new System.Drawing.Font("Verdana", 56F, System.Drawing.FontStyle.Bold);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "AntumbraCoreDriver";
+            this.Name = "AntumbraCore";
             this.Opacity = 0.85D;
             this.Resizable = false;
             this.ShowIcon = false;
@@ -172,14 +136,10 @@
         #endregion
 
         private System.Windows.Forms.NotifyIcon notifyIcon;
-        private System.Windows.Forms.ToolStripMenuItem openMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem HSVMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem randomColorFadeMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem screenResponsiveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitMenuItem;
         private MetroFramework.Controls.MetroContextMenu contextMenu;
-        private System.Windows.Forms.ToolStripMenuItem sinWaveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem offToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualToolStripMenuItem;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;

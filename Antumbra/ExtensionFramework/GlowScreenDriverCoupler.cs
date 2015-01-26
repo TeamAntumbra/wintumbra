@@ -17,6 +17,7 @@ namespace Antumbra.Glow.ExtensionFramework
         private GlowScreenProcessor processor;
         private List<IObserver<Color>> observers;
         private AntumbraCore core;
+        private Dictionary<string, object> settings;
 
         public GlowScreenDriverCoupler(AntumbraCore core, GlowScreenGrabber grab, GlowScreenProcessor proc)
         {
@@ -24,6 +25,7 @@ namespace Antumbra.Glow.ExtensionFramework
             this.grabber = grab;
             this.processor = proc;
             this.observers = new List<IObserver<Color>>();
+            this.settings = new Dictionary<string, object>();
         }
 
         public sealed override string Name
@@ -42,6 +44,18 @@ namespace Antumbra.Glow.ExtensionFramework
         public sealed override string Website
         {
             get { return "https://antumbra.io/docs/extensions/framework/GlowScreenDriverCoupler"; }//TODO make docs and change this accordingly
+        }
+
+        public sealed override Dictionary<string, object> Settings
+        {
+            get
+            {
+                return this.settings;
+            }
+            set
+            {
+                this.settings = Settings;
+            }
         }
 
         public override void AttachEvent(AntumbraColorObserver observer)

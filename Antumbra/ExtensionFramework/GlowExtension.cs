@@ -55,6 +55,11 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         /// Stop this Plugin
         /// </summary>
         bool Stop();
+
+        /// <summary>
+        /// Get/set settings dict for this Extension
+        /// </summary>
+        Dictionary<string, object> Settings { get; set; }
     }
 
     [DataContract]
@@ -112,6 +117,12 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         /// Stop this Plugin
         /// </summary>
         public abstract bool Stop();
+
+        /// <summary>
+        /// Get settings dictionary
+        /// </summary>
+        [DataMember]
+        public abstract Dictionary<string, object> Settings { get; set; }
     }
 
     /*public abstract class GlowExtension

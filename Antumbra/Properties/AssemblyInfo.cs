@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Antumbra")]
 [assembly: AssemblyProduct("Glow")]
-[assembly: AssemblyCopyright("Copyright © Antumbra 2014")]
+[assembly: AssemblyCopyright("Copyright © Antumbra 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

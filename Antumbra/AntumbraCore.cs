@@ -33,8 +33,8 @@ namespace Antumbra.Glow
         private Color currentColor;//most recent successfully sent set command color
         private ColorPickerDialog picker;
         //private Thread driverThread;
-        private bool fadeEnabled;
-        private bool screenAvgEnabled;
+        //private bool fadeEnabled;
+        //private bool screenAvgEnabled;
         public bool gameMode { get; set; }
         private byte lastR, lastG, lastB;
         private int changeThreshold; //difference in colors needed to change
@@ -86,8 +86,8 @@ namespace Antumbra.Glow
             this.color = Color.Black;
             this.changeThreshold = 10; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.continuous = false;
-            this.fadeEnabled = false;
-            this.gameMode = false;
+            //this.fadeEnabled = false;
+            //this.gameMode = false;
             //this.fadeThread = new Thread(new ThreadStart(callColorFade));
             //this.screenTimer = new System.Timers.Timer();
             //this.pollingWidth = this.screen.width;
