@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Runtime.Serialization;
 
 namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FILES AND ONLY USE THE STUFF HERE FOR EXTENSIONS!
 {
@@ -67,7 +66,6 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         Dictionary<string, object> Settings { get; set; }
     }
 
-    [DataContract]
     public abstract class GlowExtension : IGlowExtension
     {
         public override string ToString()
@@ -79,45 +77,33 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         /// The name of the current plugin
         /// </summary>
         [ReadOnly(true)]
-        [Display(Name = "Name", Order = -600)]
-        [DataMember]
         public abstract string Name { get; }
         /// <summary>
         /// The author of this plugin
         /// </summary>
         [ReadOnly(true)]
-        [Display(Name = "Author", Order = -500)]
-        [DataMember]
         public abstract string Author { get; }
 
         /// <summary>
         /// A description of this plugin
         /// </summary>
         [ReadOnly(true)]
-        [Display(Name = "Description", Order = -400)]
-        [DataMember]
         public abstract string Description { get; }
         /// <summary>
         /// A website for further information
         /// </summary>
         [ReadOnly(true)]
-        [Display(Name = "Website", Order = -300)]
-        [DataType(DataType.Url)]
-        [DataMember]
         public abstract string Website { get; }
         /// <summary>
         /// The version of this plugin
         /// </summary>
         [ReadOnly(true)]
-        [Display(Name = "Version", Order = -200)]
-        [DataMember]
         public abstract Version Version { get; }
 
         /// <summary>
         /// The running status of this plugin
         /// </summary>
         [ReadOnly(true)]
-        [DataMember]
         public abstract bool IsRunning { get; }
 
         /// <summary>
@@ -133,7 +119,6 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         /// <summary>
         /// Get settings dictionary
         /// </summary>
-        [DataMember]
         public abstract Dictionary<string, object> Settings { get; set; }
     }
 
