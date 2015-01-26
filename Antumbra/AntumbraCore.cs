@@ -48,20 +48,8 @@ namespace Antumbra.Glow
         public int pollingHeight { get; set; }
         public int pollingX { get; set; }
         public int pollingY { get; set; }
-        public int colorFadeStepSleep { get; set; }
-        public int manualStepSleep { get; set; }
-        public int sinFadeStepSleep { get; set; }
-        public double sinFadeStepSize { get; set; }//out of pi (for half a sin curve with the light on, half off)
-        public int HSVstepSleep { get; set; }
-        public int HSVstepSize { get; set; }
-        public int colorFadeStepSize { get; set; }
-        public int manualStepSize { get; set; }
-        public int screenPollingWait { get; set; }
-        public int screenAvgStepSleep { get; set; }
-        public int screenAvgStepSize { get; set; }
-        public int maxBrightness { get; set; }//0-100 scale
-        public int minBrightness { get; set; }//0-100 scale
-        public int warmth { get; set; }//0-100 scale
+        public int stepSleep { get; set; }
+        public int stepSize { get; set; }
 
         private MEFHelper MEFHelper;
 
@@ -96,17 +84,8 @@ namespace Antumbra.Glow
             this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
             this.pollingX = 0;
             this.pollingY = 0;
-            this.HSVstepSleep = 15;
-            this.colorFadeStepSleep = 15;
-            this.manualStepSleep = 1;
-            this.sinFadeStepSleep = 3;
-            this.sinFadeStepSize = .01;
-            this.screenPollingWait = 33;//default is 33ms, ~30hz            TODO remove
-            this.HSVstepSize = 1;
-            this.manualStepSize = 1;
-            this.colorFadeStepSize = 1; //default step sizes to 1
-            this.screenAvgStepSleep = 0;
-            this.screenAvgStepSize = 2;
+            this.stepSleep = 15;
+            this.stepSize = 1;
             updateStatus(this.serial.state);
             //this.picker = new ColorPickerDialog(); //TODO investigate crash with color picker
             //this.screenGrabber = new AntumbraScreenGrabber(this);
@@ -114,18 +93,15 @@ namespace Antumbra.Glow
             //    this.pollingWidth, this.pollingHeight, 0);//TODO make timeOut a setting
             //this.screenProcessor = new AntumbraScreenProcessor(.45, true, 20, 20);
             //this.driverThread = new Thread(new ThreadStart(setToAvg));
-            this.maxBrightness = 100;
-            this.minBrightness = 0;
-            this.warmth = 0;
-            //this.settings = new SettingsWindow(this);
-            this.DriverThread = new Thread(new ThreadStart(run));
+            this.settings = new SettingsWindow(this);
+            //this.DriverThread = new Thread(new ThreadStart(run));
             this.MEFHelper = new MEFHelper("./Extensions/");//"/Extensions/");
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
             }
             else {
-                this.ScreenGrabber = this.MEFHelper.GetDefaultScreenDriver();
-                this.ScreenProcessor = this.MEFHelper.GetDefaultScreenProcessor();
+                this.ScreenGrabber = this.MEFHelper.GetCurrentScreenDriver();
+                this.ScreenProcessor = this.MEFHelper.GetCurrentScreenProcessor();
                 this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
                 //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
                 this.GlowDriver.AttachEvent(this);
@@ -169,13 +145,13 @@ namespace Antumbra.Glow
         {
             SetColorTo((Color)sender);
         }
-
+/*
         public void run()
         {
             while (true) {
                 //do stuff
             }
-        }
+        }*/
 
         public void SetColorTo(Color newColor)
         {
@@ -187,7 +163,7 @@ namespace Antumbra.Glow
             changeTo(r, g, b);
         }
 
-        public int getPollingWidth()
+        public int getPollingWidth()//TODO offload to drivers settings
         {
             return this.pollingWidth;
         }
@@ -218,8 +194,8 @@ namespace Antumbra.Glow
                     return;
                 fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
             }
-        }*/
-        
+        }
+        */
         private int calcDiff(Color color, Color other)
         {
             int r1 = color.R;
@@ -234,12 +210,13 @@ namespace Antumbra.Glow
             total += Math.Abs(b1 - b2);
             return total;
         }
-
+        
         private bool shouldChange(Color color, Color other)
         {
             return calcDiff(color, other) > this.changeThreshold;
         }
 
+        /*
         private void callColorFade()
         {
             while (true)
@@ -319,7 +296,7 @@ namespace Antumbra.Glow
             g = ((100 - warmth) * g + warmth * gWarm) / (100);
             b = ((100 - warmth) * b + warmth * bWarm) / (100);
             return Color.FromArgb(r, g, b);
-        }
+        }*/
 
         private void fade(Color newColor, int sleepTime, int stepDivider)
         {
@@ -419,72 +396,10 @@ namespace Antumbra.Glow
             contextMenu.Show(Cursor.Position);
         }
 
-        private void openMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!this.Visible) {
-                this.Show();
-                this.WindowState = FormWindowState.Normal;
-            }
-        }
-
         private void settingsMenuItem_Click(object sender, EventArgs e)
         {
             this.settings.updateValues();
             this.settings.Visible = true;
-        }
-
-        private void HSVMenuItem_Click(object sender, EventArgs e)
-        {
-      /*      if (this.screenAvgEnabled)
-                this.driverThread.Abort();
-            this.screenAvgEnabled = false;
-            //this.screenTimer.Enabled = false;
-            if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            this.fadeThread = new Thread(new ThreadStart(callHsvFade));
-            this.fadeThread.Start();
-            this.fadeEnabled = true;*/
-        }
-
-        private void randomColorFadeMenuItem_Click(object sender, EventArgs e)
-        {
-  /*          if (this.screenAvgEnabled)
-                this.driverThread.Abort();
-            this.screenAvgEnabled = false;
-            //this.screenTimer.Enabled = false;
-            if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            this.fadeThread = new Thread(new ThreadStart(callColorFade));
-            this.fadeThread.Start();
-            this.fadeEnabled = true; */
-        }
-
-        private void screenResponsiveMenuItem_Click(object sender, EventArgs e)
-        {
-            //if (this.fadeEnabled)
-            //    this.fadeThread.Abort();
-            //this.fadeEnabled = false;
-            //this.screenTimer = new System.Timers.Timer(this.screenPollingWait);//10 hz
-            //this.screenTimer.Elapsed += new System.Timers.ElapsedEventHandler(callSetAvg);
-            //this.screenTimer.Enabled = true;
-            //this.screenAvgEnabled = true;
-            //if (this.driverThread.IsAlive)
-            //    this.driverThread.Abort();//kill any existing screenThread
-           /* if (this.DriverThread != null && this.DriverThread.IsAlive)
-                this.DriverThread.Abort();
-            this.DriverThread = new Thread(new ThreadStart(this.GlowScreenDriver.captureTarget));
-            this.DriverThread.Start();*/
-            //if (gameMode) {
-            //    this.driverThread = null;
-            //    this.gameScreenGrabber.start(this.settings.getGameModeProcess());
-            //}
-            //else {
-            //    this.screenGrabber.start();
-            //    this.driverThread = new Thread(new ThreadStart(setToAvg));
-            //    this.driverThread.Start();
-            //}
-            //this.DriverThread.Start();
-            this.GlowDriver.Start();//lets go!
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)
@@ -505,45 +420,9 @@ namespace Antumbra.Glow
             Application.Exit();
         }
 
-        private void sinWaveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        /*    if (this.screenAvgEnabled)
-                this.driverThread.Abort();
-            this.screenAvgEnabled = false;
-            if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            //this.screenTimer.Enabled = false;
-            this.fadeThread = new Thread(new ThreadStart(callSinFade));
-            this.fadeThread.Start();
-            this.fadeEnabled = true;*/
-        }
-
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
-   /*         if (this.screenAvgEnabled)
-                this.driverThread.Abort();
-            this.screenAvgEnabled = false;
-            if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            //this.screenTimer.Enabled = false;
-            this.fadeThread.Abort();
-            this.fadeEnabled = false;
-            changeTo(0, 0, 0);*/
-        }
-
-        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-   /*         if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            if (this.screenAvgEnabled)
-                this.driverThread.Abort();
-            this.screenAvgEnabled = false;
-            this.fadeEnabled = false;
-            //this.screenTimer.Enabled = false;
-            this.picker = new ColorPickerDialog();
-            this.picker.Show();
-            this.picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
-            fade(this.picker.previewPanel.BackColor, this.manualStepSleep, this.manualStepSize); */
+            //TODO stop and turn off (black)
         }
 
         private void manualListener(object sender, EventArgs e)
@@ -554,6 +433,31 @@ namespace Antumbra.Glow
         private void contextMenu_MouseLeave(object sender, EventArgs e)
         {
             contextMenu.Close();
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO start selected things after verifying the selections are valid
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO stop everything
+        }
+
+        public string[] GetNamesOfAvailIndependentDrivers()
+        {
+            return MEFHelper.GetNamesOfAvailIndependentDrivers();
+        }
+
+        public string[] GetNamesOfAvailScreenGrabbers()
+        {
+            return MEFHelper.GetNamesOfAvailScreenGrabbers();
+        }
+
+        public string[] GetNamesOfAvailScreenProcessors()
+        {
+            return MEFHelper.GetNamesOfAvailScreenProcessors();
         }
     }
 }

@@ -33,11 +33,11 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HSVMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
@@ -56,10 +56,10 @@
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsMenuItem,
-            this.HSVMenuItem,
-            this.manualToolStripMenuItem,
             this.offToolStripMenuItem,
-            this.quitMenuItem});
+            this.quitMenuItem,
+            this.startToolStripMenuItem,
+            this.stopToolStripMenuItem});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.ShowCheckMargin = true;
             this.contextMenu.ShowImageMargin = false;
@@ -76,20 +76,6 @@
             this.settingsMenuItem.Size = new System.Drawing.Size(198, 30);
             this.settingsMenuItem.Text = "Settings";
             this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
-            // 
-            // HSVMenuItem
-            // 
-            this.HSVMenuItem.Name = "HSVMenuItem";
-            this.HSVMenuItem.Size = new System.Drawing.Size(198, 30);
-            this.HSVMenuItem.Text = "Start";
-            this.HSVMenuItem.Click += new System.EventHandler(this.HSVMenuItem_Click);
-            // 
-            // manualToolStripMenuItem
-            // 
-            this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
-            this.manualToolStripMenuItem.Text = "Stop";
-            this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
             // offToolStripMenuItem
             // 
@@ -110,6 +96,20 @@
             this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // startToolStripMenuItem
+            // 
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // AntumbraCore
             // 
@@ -137,12 +137,12 @@
 
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ToolStripMenuItem settingsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem HSVMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitMenuItem;
         private MetroFramework.Controls.MetroContextMenu contextMenu;
         private System.Windows.Forms.ToolStripMenuItem offToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem manualToolStripMenuItem;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
     }
 }
 

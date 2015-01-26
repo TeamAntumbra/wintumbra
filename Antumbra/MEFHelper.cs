@@ -94,25 +94,52 @@ namespace Antumbra.Glow
             return this.failed;
         }
 
-        public GlowDriver GetDefaultDriver()
+        public GlowDriver GetCurrentDriver()
         {
             if (this.AvailDrivers.Count == 0)
                 return null;
             return this.AvailDrivers.First<GlowDriver>();//TODO change this, just for testing
         }
 
-        public GlowScreenGrabber GetDefaultScreenDriver()
+        public GlowScreenGrabber GetCurrentScreenDriver()
         {
             if (this.AvailScreenDrivers.Count == 0)
                 return null;
             return this.AvailScreenDrivers.First<GlowScreenGrabber>();
         }
 
-        public GlowScreenProcessor GetDefaultScreenProcessor()
+        public GlowScreenProcessor GetCurrentScreenProcessor()
         {
             if (this.AvailScreenProcessors.Count == 0)
                 return null;
             return this.AvailScreenProcessors.First<GlowScreenProcessor>();
+        }
+
+        public string[] GetNamesOfAvailIndependentDrivers()
+        {
+            List<string> result = new List<string>();
+            foreach(var ext in this.AvailDrivers.ToList<GlowDriver>()) {
+                result.Add(ext.Name);
+            }
+            return result.ToArray<string>();
+        }
+
+        public string[] GetNamesOfAvailScreenGrabbers()
+        {
+            List<string> result = new List<string>();
+            foreach (var ext in this.AvailScreenDrivers.ToList<GlowScreenGrabber>()) {
+                result.Add(ext.Name);
+            }
+            return result.ToArray<string>();
+        }
+
+        public string[] GetNamesOfAvailScreenProcessors()
+        {
+            List<string> result = new List<string>();
+            foreach (var ext in this.AvailScreenProcessors.ToList<GlowScreenProcessor>()) {
+                result.Add(ext.Name);
+            }
+            return result.ToArray<string>();
         }
     }
 }
