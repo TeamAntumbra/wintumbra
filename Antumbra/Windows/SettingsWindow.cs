@@ -78,7 +78,12 @@ namespace Antumbra.Glow.Windows
 
         private void stepSize_TextChanged(object sender, EventArgs e)
         {
-           //TODO
+            try {
+                this.antumbra.stepSize = Convert.ToInt32(stepSize.Text);
+            }
+            catch (System.FormatException) {
+                Console.WriteLine("Format exception in settings");
+            }
         }
 
         private void fullBtn_Click(object sender, EventArgs e)

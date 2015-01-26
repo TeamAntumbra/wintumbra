@@ -435,7 +435,8 @@ namespace Antumbra.Glow
 
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO stop and turn off (black)
+            this.Stop();
+            this.SetColorTo(Color.Black);
         }
 
         private void manualListener(object sender, EventArgs e)
@@ -469,10 +470,16 @@ namespace Antumbra.Glow
             }
         }
 
+        private void Stop()
+        {
+            if (this.GlowDriver.IsRunning)
+                this.GlowDriver.Stop();
+            //TODO stop everything
+        }
+
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.GlowDriver.Stop();
-            //TODO stop everything
+            this.Stop();
         }
     }
 }

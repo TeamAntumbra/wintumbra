@@ -47,6 +47,11 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         Version Version { get; }
 
         /// <summary>
+        /// The running status of the plugin.
+        /// </summary>
+        bool IsRunning { get; }
+
+        /// <summary>
         /// Start this Plugin
         /// </summary>
         bool Start();
@@ -107,6 +112,13 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         [Display(Name = "Version", Order = -200)]
         [DataMember]
         public abstract Version Version { get; }
+
+        /// <summary>
+        /// The running status of this plugin
+        /// </summary>
+        [ReadOnly(true)]
+        [DataMember]
+        public abstract bool IsRunning { get; }
 
         /// <summary>
         /// Start this Plugin
