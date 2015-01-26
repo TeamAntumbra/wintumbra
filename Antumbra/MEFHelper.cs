@@ -40,7 +40,9 @@ namespace Antumbra.Glow
                 failed = true;
                 return;//no plugins loaded
             }
+            int numExt = 0;
             foreach (var extension in plugins) {
+                numExt += 1;
                 Console.WriteLine("Extension Found: " + extension.Name);
                 if (extension is GlowDriver) {
                     Console.WriteLine("Type: Driver");
@@ -65,6 +67,10 @@ namespace Antumbra.Glow
                 else {
                     Console.WriteLine("Ignoring Extension - invalid type");
                 }
+            }
+            if (numExt == 0) {
+                Console.WriteLine("No extensions found.");
+                this.failed = true;
             }
         }
 
