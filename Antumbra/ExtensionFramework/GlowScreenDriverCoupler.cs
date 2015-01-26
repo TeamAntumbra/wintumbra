@@ -36,8 +36,13 @@ namespace Antumbra.Glow.ExtensionFramework
                  + "a GlowScreenProcessor to generate colors";
             }
         }
-        public sealed override string Version
-        { get { return "V0.0.1"; } }
+        public sealed override Version Version
+        { get { return new Version("0.0.1"); } }
+
+        public sealed override string Website
+        {
+            get { return "https://antumbra.io/docs/extensions/framework/GlowScreenDriverCoupler"; }//TODO make docs and change this accordingly
+        }
 
         public override void AttachEvent(AntumbraColorObserver observer)
         {
@@ -49,25 +54,26 @@ namespace Antumbra.Glow.ExtensionFramework
             NewColorAvailEvent(sender, args);//pass it up
         }
 
-        public override bool ready()
+        public override bool Start()
         {
+            bool ready = false;
             if (this.grabber != null && this.processor != null) {
-                if (this.grabber.ready() && this.processor.ready()) {//grabber & processor started correctly
-                    /*this.grabber.Subscribe(this.processor);
-                    this.processor.Subscribe(this);*/
-                    if (this.processor is AntumbraBitmapObserver)
-                        this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
-                    this.processor.AttachEvent(this);
-                    return true;
-                }
+                /*this.grabber.Subscribe(this.processor);
+                this.processor.Subscribe(this);*/
+                if (this.processor is AntumbraBitmapObserver)
+                    this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
+                this.processor.AttachEvent(this);
+                ready = true;
             }
-            return false;
+            if (!ready)
+                return false;
+            //get ready and start
+            return this.grabber.Start();
         }
 
-        public override bool start()
+        public override bool Stop()
         {
-            //get ready and start
-            return this.grabber.start();
+            return false;//TODO clean up
         }
     }
 }
