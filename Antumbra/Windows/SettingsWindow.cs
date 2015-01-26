@@ -13,14 +13,13 @@ namespace Antumbra.Glow.Windows
 {
     public partial class SettingsWindow : MetroFramework.Forms.MetroForm
     {
-        AntumbraCore antumbra;
-        ColorPickerDialog picker;
+        private AntumbraCore antumbra;
+        private ColorPickerDialog picker;
         public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
             this.picker = new ColorPickerDialog();
             InitializeComponent();
-            //updateValues();
         }
 
         public void updateValues()
@@ -32,12 +31,18 @@ namespace Antumbra.Glow.Windows
             foreach (var str in this.antumbra.GetNamesOfAvailIndependentDrivers()) {
                 driverExtensions.Items.Add(str);
             }
+            if (driverExtensions.Items.Count > 0)
+                driverExtensions.SelectedIndex = 0;
             foreach (var str in this.antumbra.GetNamesOfAvailScreenGrabbers()) {
                 screenGrabbers.Items.Add(str);
             }
+            if (screenGrabbers.Items.Count > 0)
+                screenGrabbers.SelectedIndex = 0;
             foreach (var str in this.antumbra.GetNamesOfAvailScreenProcessors()) {
                 screenProcessors.Items.Add(str);
             }
+            if (screenProcessors.Items.Count > 0)
+                screenProcessors.SelectedIndex = 0;
         }
 
         private void pollingY_TextChanged(object sender, EventArgs e)

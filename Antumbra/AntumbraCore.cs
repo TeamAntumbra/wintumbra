@@ -60,7 +60,7 @@ namespace Antumbra.Glow
         private List<GlowNotifier> GlowNotifiers;
 
         //private Thread MainDriverThread;//main driver thread for whole application
-        private Thread DriverThread;//driver thread for driver extensions
+        //private Thread DriverThread;//driver thread for driver extensions
 
         public AntumbraCore()
         {
@@ -98,13 +98,6 @@ namespace Antumbra.Glow
             this.MEFHelper = new MEFHelper("./Extensions/");//"/Extensions/");
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
-            }
-            else {
-                this.ScreenGrabber = this.MEFHelper.GetCurrentScreenDriver();
-                this.ScreenProcessor = this.MEFHelper.GetCurrentScreenProcessor();
-                this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
-                //this.GlowDriver = this.MEFHelper.GetDefaultDriver();
-                this.GlowDriver.AttachEvent(this);
             }
         }
 
@@ -404,19 +397,11 @@ namespace Antumbra.Glow
 
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
-          /*  if (this.fadeEnabled)
-                this.fadeThread.Abort();
-            if (this.screenAvgEnabled)
-                this.driverThread.Abort();
-            this.driverThread.Abort();*/
-            if (this.DriverThread.IsAlive)
-                this.DriverThread.Abort();
-            //if (this.MainDriverThread.IsAlive)
-            //    this.MainDriverThread.Abort();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
-            //this.settings.Close();
-            //this.settings.Dispose();
+            if (this.settings.Visible)
+                this.settings.Close();
+            this.settings.Dispose();
             Application.Exit();
         }
 
@@ -433,6 +418,16 @@ namespace Antumbra.Glow
         private void contextMenu_MouseLeave(object sender, EventArgs e)
         {
             contextMenu.Close();
+        }
+
+        private bool verifyExtensionChoices()
+        {
+            this.ScreenGrabber = this.MEFHelper.GetCurrentScreenDriver();
+            this.ScreenProcessor = this.MEFHelper.GetCurrentScreenProcessor();
+            this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
+            this.GlowDriver = this.MEFHelper.GetCurrentDriver();
+            this.GlowDriver.AttachEvent(this);
+            return false;
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)

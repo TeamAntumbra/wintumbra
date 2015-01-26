@@ -250,6 +250,7 @@
             // 
             // driverExtensions
             // 
+            this.driverExtensions.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.driverExtensions.FormattingEnabled = true;
             this.driverExtensions.Location = new System.Drawing.Point(186, 225);
             this.driverExtensions.Name = "driverExtensions";
