@@ -155,5 +155,23 @@ namespace Antumbra.Glow
             }
             return result.ToArray<string>();
         }
+
+        public string[] GetNamesOfAvailDecorators()
+        {
+            List<string> result = new List<string>();
+            foreach (var ext in this.AvailDecorators.ToList<GlowDecorator>()) {
+                result.Add(ext.Name);
+            }
+            return result.ToArray<string>();
+        }
+
+        public string[] GetNamesOfAvailNotifiers()
+        {
+            List<string> result = new List<string>();
+            foreach (var ext in this.AvailNotifiers.ToList<GlowNotifier>()) {
+                result.Add(ext.Name);
+            }
+            return result.ToArray<string>();
+        }
     }
 }

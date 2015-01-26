@@ -454,5 +454,15 @@ namespace Antumbra.Glow
         {
             return MEFHelper.GetNamesOfAvailScreenProcessors();
         }
+
+        public string[] GetNamesOfAvailDecorators()
+        {
+            return MEFHelper.GetNamesOfAvailDecorators();
+        }
+
+        public string[] GetNamesOfAvailNotifiers()
+        {
+            return MEFHelper.GetNamesOfAvailNotifiers();
+        }
     }
 }

@@ -43,6 +43,16 @@ namespace Antumbra.Glow.Windows
             }
             if (screenProcessors.Items.Count > 0)
                 screenProcessors.SelectedIndex = 0;
+            foreach (var str in this.antumbra.GetNamesOfAvailDecorators()) {
+                decorators.Items.Add(str);
+            }
+            if (decorators.Items.Count > 0)
+                decorators.SelectedIndex = 0;
+            foreach (var str in this.antumbra.GetNamesOfAvailNotifiers()) {
+                notifiers.Items.Add(str);
+            }
+            if (notifiers.Items.Count > 0)
+                notifiers.SelectedIndex = 0;
         }
 
         private void pollingY_TextChanged(object sender, EventArgs e)
