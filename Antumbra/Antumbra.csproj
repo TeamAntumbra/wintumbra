@@ -300,8 +300,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(ProjectDir)MetroFramework.dll" "$(TargetDir)MetroFramework.dll"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>copy /Y "$(ProjectDir)MetroFramework.dll" "$(TargetDir)MetroFramework.dll"</PreBuildEvent>
