@@ -52,6 +52,9 @@
             this.decorators = new System.Windows.Forms.ListBox();
             this.notifiers = new System.Windows.Forms.ListBox();
             this.apply = new MetroFramework.Controls.MetroButton();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.speedLabel = new System.Windows.Forms.Label();
+            this.speed = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
@@ -328,11 +331,43 @@
             this.apply.UseVisualStyleBackColor = true;
             this.apply.Click += new System.EventHandler(this.apply_Click);
             // 
+            // metroLabel1
+            // 
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.metroLabel1.Location = new System.Drawing.Point(96, 363);
+            this.metroLabel1.Name = "notifiersLabel";
+            this.metroLabel1.Size = new System.Drawing.Size(61, 19);
+            this.metroLabel1.TabIndex = 40;
+            this.metroLabel1.Text = "Notifiers:";
+            // 
+            // speedLabel
+            // 
+            this.speedLabel.AutoSize = true;
+            this.speedLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.speedLabel.Location = new System.Drawing.Point(370, 151);
+            this.speedLabel.Name = "speedLabel";
+            this.speedLabel.Size = new System.Drawing.Size(75, 13);
+            this.speedLabel.TabIndex = 44;
+            this.speedLabel.Text = "Polling Speed:";
+            // 
+            // speed
+            // 
+            this.speed.AutoSize = true;
+            this.speed.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.speed.Location = new System.Drawing.Point(452, 151);
+            this.speed.Name = "speed";
+            this.speed.Size = new System.Drawing.Size(13, 13);
+            this.speed.TabIndex = 45;
+            this.speed.Text = "0";
+            // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.speed);
+            this.Controls.Add(this.speedLabel);
             this.Controls.Add(this.apply);
             this.Controls.Add(this.notifiers);
             this.Controls.Add(this.decorators);
@@ -401,5 +436,8 @@
         private MetroFramework.Controls.MetroLabel notifiersLabel;
         private MetroFramework.Controls.MetroLabel decoratorsLabel;
         private MetroFramework.Controls.MetroButton apply;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private System.Windows.Forms.Label speedLabel;
+        public System.Windows.Forms.Label speed;
     }
 }

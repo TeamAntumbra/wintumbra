@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using Antumbra.Glow;
 using Antumbra.Glow.ExtensionFramework;
 using System.Threading;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Antumbra.Glow.Windows
 {

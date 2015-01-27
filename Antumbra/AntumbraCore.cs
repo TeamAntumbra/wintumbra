@@ -141,7 +141,13 @@ namespace Antumbra.Glow
 
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
-            Console.WriteLine(DateTime.Now.Subtract(this.last).ToString());
+            //Console.WriteLine();
+            double time = DateTime.Now.Subtract(this.last).TotalSeconds;
+            string newText = (1.0/time).ToString() + " hz";
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.settings.speed.Text = newText;
+            });
             this.last = DateTime.Now;
             SetColorTo((Color)sender);
         }
@@ -415,14 +421,18 @@ namespace Antumbra.Glow
 
         private bool verifyExtensionChoices()
         {
-            if (null == this.GlowDriver)//sanity check
+            this.notifyIcon.ShowBalloonTip(3000, "Verifying Extensions", "Verifying the chosen extensions.", ToolTipIcon.Info);
+            if (null == this.GlowDriver) {//sanity check
+                this.notifyIcon.ShowBalloonTip(3000, "Info", "Glow Driver not selected.", ToolTipIcon.Info);
                 return false;
+            }
             if (this.GlowDriver is GlowScreenDriverCoupler) {//screen based driver selected
                 if (null == this.ScreenGrabber || null == this.ScreenProcessor)
                     return false;
+                this.notifyIcon.ShowBalloonTip(3000, "Screen Based Driver Found", "A screen based driver was found that uses "
+                    + this.ScreenGrabber.Name + " & " + this.ScreenProcessor.Name + ".", ToolTipIcon.Info);
                 this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
             }
-            this.GlowDriver.AttachEvent(this);
             return true;
         }
 
@@ -430,7 +440,14 @@ namespace Antumbra.Glow
         {
             if (verifyExtensionChoices()) {
                 this.last = DateTime.Now;
-                this.GlowDriver.Start();
+                if (this.GlowDriver.Start()) {
+                    this.notifyIcon.ShowBalloonTip(3000, "Driver Started", this.GlowDriver.Name + " was started successfully.", ToolTipIcon.Info);
+                    this.GlowDriver.AttachEvent(this);
+                }
+                else {
+                    this.notifyIcon.ShowBalloonTip(3000, "Driver Issue", this.GlowDriver.Name + " reported that it did not start successfully.",
+                        ToolTipIcon.Error);
+                }
                 //TODO start other extensions as well
             }
         }
@@ -439,6 +456,8 @@ namespace Antumbra.Glow
         {
             if (this.GlowDriver.IsRunning)
                 this.GlowDriver.Stop();
+            if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
+                this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
             //TODO stop everything
         }
 

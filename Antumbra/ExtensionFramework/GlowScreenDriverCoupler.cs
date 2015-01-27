@@ -36,7 +36,7 @@ namespace Antumbra.Glow.ExtensionFramework
             }
         }
         public sealed override string Name
-        { get { return "Glow Screen Driver Coupler"; } }
+        { get { return "Glow Screen Driver Coupler (" + this.grabber.Name + " & " + this.processor.Name + ")"; } }
         public sealed override string Author
         { get { return "Team Antumbra"; } }
         public sealed override string Description
@@ -81,21 +81,29 @@ namespace Antumbra.Glow.ExtensionFramework
             if (this.grabber != null && this.processor != null) {
                 /*this.grabber.Subscribe(this.processor);
                 this.processor.Subscribe(this);*/
-                if (this.processor.Start())
-                    if (this.processor is AntumbraBitmapObserver)
-                        this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
-                    this.processor.AttachEvent(this);
-                    ready = true;
+                     if (this.processor.Start()) {
+                         if (this.processor is AntumbraBitmapObserver)
+                             this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
+                         this.processor.AttachEvent(this);
+                         ready = true;
+                 }
+                 //get ready and start
+                 if (ready && this.grabber.Start()) {
+                     return true;
+                 }
+                
+                
+                /*this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
+                this.processor.Start();
+                this.grabber.Start();
+                return true;*/
             }
-            //get ready and start
-            if (ready && this.grabber.Start()) {
-                return true;
-            }
-            return false;
+            return ready;
         }
 
         public override bool Stop()
         {
+            this.observers = new List<IObserver<Color>>();//reset observers
             this.processor.Stop();
             this.grabber.Stop();
             return true;
