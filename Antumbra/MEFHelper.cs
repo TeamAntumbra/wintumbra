@@ -95,11 +95,12 @@ namespace Antumbra.Glow
             return this.failed;
         }
 
-        public string[] GetNamesOfAvailIndependentDrivers()
+        public string[] GetNamesOfAvailDrivers()
         {
             List<string> result = new List<string>();
             foreach(var ext in this.AvailDrivers.ToList<GlowDriver>())
                 result.Add(ext.Name);
+            result.Add("Screen Driver Coupler");
             return result.ToArray<string>();
         }
 
@@ -137,6 +138,8 @@ namespace Antumbra.Glow
 
         public GlowDriver GetDriver(string name)
         {
+            if (name.Equals("Screen Driver Coupler"))
+                return new GlowScreenDriverCoupler(null, null, null);
             foreach (var ext in this.AvailDrivers.ToList<GlowDriver>())
                 if (ext.Name.Equals(name))
                     return ext;

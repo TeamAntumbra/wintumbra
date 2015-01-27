@@ -30,7 +30,7 @@ namespace Antumbra.Glow.Windows
             stepSize.Text = this.antumbra.stepSize.ToString();
             sleepSize.Text = this.antumbra.stepSleep.ToString();
             driverExtensions.Items.Clear();
-            foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailIndependentDrivers()) {
+            foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailDrivers()) {
                 driverExtensions.Items.Add(str);
             }
             if (driverExtensions.Items.Count > 0)
