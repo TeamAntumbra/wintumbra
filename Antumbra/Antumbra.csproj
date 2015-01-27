@@ -235,9 +235,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Antumbra_TemporaryKey.pfx" />
-    <EmbeddedResource Include="lib\MetroFramework.dll">
+    <Resource Include="lib\MetroFramework.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Resource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
