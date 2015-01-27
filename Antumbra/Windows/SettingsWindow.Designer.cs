@@ -27,15 +27,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F); // for design in 96 DPI
-            this.FontHeight = 14;
             this.components = new System.ComponentModel.Container();
             this.label1 = new MetroFramework.Controls.MetroLabel();
             this.label2 = new MetroFramework.Controls.MetroLabel();
             this.label3 = new MetroFramework.Controls.MetroLabel();
             this.pollingX = new MetroFramework.Controls.MetroTextBox();
             this.pollingY = new MetroFramework.Controls.MetroTextBox();
-            this.label4 = new MetroFramework.Controls.MetroLabel();
             this.stepSizeLabel = new MetroFramework.Controls.MetroLabel();
             this.stepSize = new MetroFramework.Controls.MetroTextBox();
             this.fullBtn = new MetroFramework.Controls.MetroButton();
@@ -44,7 +41,6 @@
             this.displayLabel = new MetroFramework.Controls.MetroLabel();
             this.displayIndex = new System.Windows.Forms.NumericUpDown();
             this.settingsStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
-            this.ms = new MetroFramework.Controls.MetroLabel();
             this.DriverLabel = new MetroFramework.Controls.MetroLabel();
             this.driverExtensions = new MetroFramework.Controls.MetroComboBox();
             this.screenGrabbers = new MetroFramework.Controls.MetroComboBox();
@@ -55,6 +51,7 @@
             this.decoratorsLabel = new MetroFramework.Controls.MetroLabel();
             this.decorators = new System.Windows.Forms.ListBox();
             this.notifiers = new System.Windows.Forms.ListBox();
+            this.apply = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
@@ -65,7 +62,7 @@
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label1.Location = new System.Drawing.Point(51, 148);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 20);
+            this.label1.Size = new System.Drawing.Size(84, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "Polling Area:";
             // 
@@ -75,7 +72,7 @@
             this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label2.Location = new System.Drawing.Point(154, 148);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(24, 20);
+            this.label2.Size = new System.Drawing.Size(20, 19);
             this.label2.TabIndex = 1;
             this.label2.Text = "X:";
             // 
@@ -85,7 +82,7 @@
             this.label3.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label3.Location = new System.Drawing.Point(250, 148);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(24, 20);
+            this.label3.Size = new System.Drawing.Size(20, 19);
             this.label3.TabIndex = 2;
             this.label3.Text = "Y:";
             // 
@@ -125,23 +122,13 @@
             this.pollingY.UseSelectable = true;
             this.pollingY.TextChanged += new System.EventHandler(this.pollingY_TextChanged);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(46, 394);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(239, 20);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Time Since Last Update (ms): ";
-            // 
             // stepSizeLabel
             // 
             this.stepSizeLabel.AutoSize = true;
             this.stepSizeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.stepSizeLabel.Location = new System.Drawing.Point(77, 433);
             this.stepSizeLabel.Name = "stepSizeLabel";
-            this.stepSizeLabel.Size = new System.Drawing.Size(86, 20);
+            this.stepSizeLabel.Size = new System.Drawing.Size(65, 19);
             this.stepSizeLabel.TabIndex = 7;
             this.stepSizeLabel.Text = "Step Size:";
             // 
@@ -180,7 +167,7 @@
             this.stepSleepLabel.Location = new System.Drawing.Point(55, 482);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
-            this.stepSleepLabel.Size = new System.Drawing.Size(135, 20);
+            this.stepSleepLabel.Size = new System.Drawing.Size(103, 19);
             this.stepSleepLabel.TabIndex = 17;
             this.stepSleepLabel.Text = "Step Sleep: (ms)";
             // 
@@ -206,7 +193,7 @@
             this.displayLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.displayLabel.Location = new System.Drawing.Point(56, 109);
             this.displayLabel.Name = "displayLabel";
-            this.displayLabel.Size = new System.Drawing.Size(70, 20);
+            this.displayLabel.Size = new System.Drawing.Size(53, 19);
             this.displayLabel.TabIndex = 29;
             this.displayLabel.Text = "Display:";
             // 
@@ -221,7 +208,7 @@
             0,
             0});
             this.displayIndex.Name = "displayIndex";
-            this.displayIndex.Size = new System.Drawing.Size(120, 26);
+            this.displayIndex.Size = new System.Drawing.Size(120, 20);
             this.displayIndex.TabIndex = 30;
             this.displayIndex.ValueChanged += new System.EventHandler(this.displayIndex_ValueChanged);
             // 
@@ -229,16 +216,6 @@
             // 
             this.settingsStyleManager.Owner = this;
             this.settingsStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.settingsStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
-            // 
-            // ms
-            // 
-            this.ms.AutoSize = true;
-            this.ms.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.ms.Location = new System.Drawing.Point(292, 397);
-            this.ms.Name = "ms";
-            this.ms.Size = new System.Drawing.Size(0, 20);
-            this.ms.TabIndex = 31;
             // 
             // DriverLabel
             // 
@@ -246,27 +223,29 @@
             this.DriverLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.DriverLabel.Location = new System.Drawing.Point(51, 228);
             this.DriverLabel.Name = "DriverLabel";
-            this.DriverLabel.Size = new System.Drawing.Size(128, 20);
+            this.DriverLabel.Size = new System.Drawing.Size(105, 19);
             this.DriverLabel.TabIndex = 32;
             this.DriverLabel.Text = "Driver Extension:";
             // 
             // driverExtensions
             // 
             this.driverExtensions.FormattingEnabled = true;
+            this.driverExtensions.ItemHeight = 23;
             this.driverExtensions.Location = new System.Drawing.Point(186, 225);
             this.driverExtensions.Name = "driverExtensions";
-            this.driverExtensions.Size = new System.Drawing.Size(166, 28);
+            this.driverExtensions.Size = new System.Drawing.Size(348, 29);
             this.driverExtensions.TabIndex = 33;
-            this.driverExtensions.SelectedIndexChanged += new System.EventHandler(this.driverExtensions_SelectedIndexChanged);
+            this.driverExtensions.UseSelectable = true;
             // 
             // screenGrabbers
             // 
             this.screenGrabbers.FormattingEnabled = true;
+            this.screenGrabbers.ItemHeight = 23;
             this.screenGrabbers.Location = new System.Drawing.Point(186, 259);
             this.screenGrabbers.Name = "screenGrabbers";
-            this.screenGrabbers.Size = new System.Drawing.Size(166, 28);
+            this.screenGrabbers.Size = new System.Drawing.Size(348, 29);
             this.screenGrabbers.TabIndex = 35;
-            this.screenGrabbers.SelectedIndexChanged += new System.EventHandler(this.screenGrabbers_SelectedIndexChanged);
+            this.screenGrabbers.UseSelectable = true;
             // 
             // screenGrabberLabel
             // 
@@ -274,26 +253,27 @@
             this.screenGrabberLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.screenGrabberLabel.Location = new System.Drawing.Point(51, 262);
             this.screenGrabberLabel.Name = "screenGrabberLabel";
-            this.screenGrabberLabel.Size = new System.Drawing.Size(127, 20);
+            this.screenGrabberLabel.Size = new System.Drawing.Size(104, 19);
             this.screenGrabberLabel.TabIndex = 34;
             this.screenGrabberLabel.Text = "Screen Grabber:";
             // 
             // screenProcessors
             // 
             this.screenProcessors.FormattingEnabled = true;
+            this.screenProcessors.ItemHeight = 23;
             this.screenProcessors.Location = new System.Drawing.Point(186, 293);
             this.screenProcessors.Name = "screenProcessors";
-            this.screenProcessors.Size = new System.Drawing.Size(166, 28);
+            this.screenProcessors.Size = new System.Drawing.Size(348, 29);
             this.screenProcessors.TabIndex = 37;
-            this.screenProcessors.SelectedIndexChanged += new System.EventHandler(this.screenProcessors_SelectedIndexChanged);
+            this.screenProcessors.UseSelectable = true;
             // 
             // screenProcessorLabel
             // 
             this.screenProcessorLabel.AutoSize = true;
             this.screenProcessorLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.screenProcessorLabel.Location = new System.Drawing.Point(39, 296);
+            this.screenProcessorLabel.Location = new System.Drawing.Point(43, 296);
             this.screenProcessorLabel.Name = "screenProcessorLabel";
-            this.screenProcessorLabel.Size = new System.Drawing.Size(139, 20);
+            this.screenProcessorLabel.Size = new System.Drawing.Size(112, 19);
             this.screenProcessorLabel.TabIndex = 36;
             this.screenProcessorLabel.Text = "Screen Processor:";
             // 
@@ -301,9 +281,9 @@
             // 
             this.notifiersLabel.AutoSize = true;
             this.notifiersLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.notifiersLabel.Location = new System.Drawing.Point(107, 363);
+            this.notifiersLabel.Location = new System.Drawing.Point(96, 363);
             this.notifiersLabel.Name = "notifiersLabel";
-            this.notifiersLabel.Size = new System.Drawing.Size(71, 20);
+            this.notifiersLabel.Size = new System.Drawing.Size(61, 19);
             this.notifiersLabel.TabIndex = 40;
             this.notifiersLabel.Text = "Notifiers:";
             // 
@@ -311,39 +291,49 @@
             // 
             this.decoratorsLabel.AutoSize = true;
             this.decoratorsLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.decoratorsLabel.Location = new System.Drawing.Point(86, 329);
+            this.decoratorsLabel.Location = new System.Drawing.Point(80, 329);
             this.decoratorsLabel.Name = "decoratorsLabel";
-            this.decoratorsLabel.Size = new System.Drawing.Size(92, 20);
+            this.decoratorsLabel.Size = new System.Drawing.Size(76, 19);
             this.decoratorsLabel.TabIndex = 38;
             this.decoratorsLabel.Text = "Decorators:";
             // 
             // decorators
             // 
             this.decorators.FormattingEnabled = true;
-            this.decorators.ItemHeight = 20;
             this.decorators.Location = new System.Drawing.Point(186, 329);
             this.decorators.Name = "decorators";
             this.decorators.ScrollAlwaysVisible = true;
             this.decorators.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.decorators.Size = new System.Drawing.Size(167, 24);
+            this.decorators.Size = new System.Drawing.Size(348, 17);
             this.decorators.TabIndex = 41;
             // 
             // notifiers
             // 
             this.notifiers.FormattingEnabled = true;
-            this.notifiers.ItemHeight = 20;
             this.notifiers.Location = new System.Drawing.Point(186, 359);
             this.notifiers.Name = "notifiers";
             this.notifiers.ScrollAlwaysVisible = true;
             this.notifiers.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.notifiers.Size = new System.Drawing.Size(167, 24);
+            this.notifiers.Size = new System.Drawing.Size(348, 17);
             this.notifiers.TabIndex = 42;
+            // 
+            // apply
+            // 
+            this.apply.Location = new System.Drawing.Point(375, 392);
+            this.apply.Name = "apply";
+            this.apply.Size = new System.Drawing.Size(159, 23);
+            this.apply.TabIndex = 43;
+            this.apply.Text = "Apply Extension Changes";
+            this.apply.UseSelectable = true;
+            this.apply.UseVisualStyleBackColor = true;
+            this.apply.Click += new System.EventHandler(this.apply_Click);
             // 
             // SettingsWindow
             // 
-            //this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(403, 520);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.apply);
             this.Controls.Add(this.notifiers);
             this.Controls.Add(this.decorators);
             this.Controls.Add(this.notifiersLabel);
@@ -354,7 +344,6 @@
             this.Controls.Add(this.screenGrabberLabel);
             this.Controls.Add(this.driverExtensions);
             this.Controls.Add(this.DriverLabel);
-            this.Controls.Add(this.ms);
             this.Controls.Add(this.displayIndex);
             this.Controls.Add(this.displayLabel);
             this.Controls.Add(this.sleepSize);
@@ -362,7 +351,6 @@
             this.Controls.Add(this.fullBtn);
             this.Controls.Add(this.stepSize);
             this.Controls.Add(this.stepSizeLabel);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.pollingY);
             this.Controls.Add(this.pollingX);
             this.Controls.Add(this.label3);
@@ -389,13 +377,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label stepSizeLabel;
-        private System.Windows.Forms.Label stepSleepLabel;
-        private System.Windows.Forms.Label displayLabel;
         private System.Windows.Forms.NumericUpDown displayIndex;
         private MetroFramework.Controls.MetroTextBox pollingX;
         private MetroFramework.Controls.MetroTextBox pollingY;
@@ -403,16 +384,22 @@
         private MetroFramework.Controls.MetroButton fullBtn;
         private MetroFramework.Controls.MetroTextBox sleepSize;
         private MetroFramework.Components.MetroStyleManager settingsStyleManager;
-        private System.Windows.Forms.Label ms;
-        private System.Windows.Forms.ComboBox driverExtensions;
-        private System.Windows.Forms.Label DriverLabel;
-        private System.Windows.Forms.ComboBox screenProcessors;
-        private System.Windows.Forms.Label screenProcessorLabel;
-        private System.Windows.Forms.ComboBox screenGrabbers;
-        private System.Windows.Forms.Label screenGrabberLabel;
-        private System.Windows.Forms.Label notifiersLabel;
-        private System.Windows.Forms.Label decoratorsLabel;
         private System.Windows.Forms.ListBox notifiers;
         private System.Windows.Forms.ListBox decorators;
+        private MetroFramework.Controls.MetroLabel label1;
+        private MetroFramework.Controls.MetroLabel label2;
+        private MetroFramework.Controls.MetroLabel label3;
+        private MetroFramework.Controls.MetroLabel stepSizeLabel;
+        private MetroFramework.Controls.MetroLabel stepSleepLabel;
+        private MetroFramework.Controls.MetroLabel displayLabel;
+        private MetroFramework.Controls.MetroComboBox driverExtensions;
+        private MetroFramework.Controls.MetroLabel DriverLabel;
+        private MetroFramework.Controls.MetroComboBox screenProcessors;
+        private MetroFramework.Controls.MetroLabel screenProcessorLabel;
+        private MetroFramework.Controls.MetroComboBox screenGrabbers;
+        private MetroFramework.Controls.MetroLabel screenGrabberLabel;
+        private MetroFramework.Controls.MetroLabel notifiersLabel;
+        private MetroFramework.Controls.MetroLabel decoratorsLabel;
+        private MetroFramework.Controls.MetroButton apply;
     }
 }

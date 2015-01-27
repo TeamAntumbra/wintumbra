@@ -59,6 +59,8 @@ namespace Antumbra.Glow
         private List<GlowDecorator> GlowDecorators;
         private List<GlowNotifier> GlowNotifiers;
 
+        private DateTime last;
+
         //private Thread MainDriverThread;//main driver thread for whole application
         //private Thread DriverThread;//driver thread for driver extensions
 
@@ -137,41 +139,10 @@ namespace Antumbra.Glow
             this.GlowNotifiers = notifiers;
         }
 
-      /*  public void HandleNewColor(object sender, EventArgs args)
-        {
-            if (sender is Color)
-                this.SetColorTo((Color)sender);
-        }
-
-        public void HandleNotification(object sender, EventArgs args)
-        {
-            if (sender is GlowNotifier)
-                ((GlowNotifier)sender).Notify(this);//TODO change this to something less powerful
-        }*/
-
- /*       public void OnCompleted()//extension has signaled it is done giving output
-        {
-            //do nothing
-        }
-
-        public void OnNext(Notification noti)
-        {
-            Console.WriteLine("Notification Recieved: " + noti.Name);
-        }
-
-        public void OnNext(Color newColor)
-        {
-            this.changeTo(newColor.R, newColor.G, newColor.B);
-            //this.fade(newColor, 0, 2);
-        }
-
-        public void OnError(Exception error)
-        {
-            Console.WriteLine("Exception: " + error.ToString());
-        }*/
-
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
+            Console.WriteLine(DateTime.Now.Subtract(this.last).ToString());
+            this.last = DateTime.Now;
             SetColorTo((Color)sender);
         }
 /*
@@ -458,6 +429,7 @@ namespace Antumbra.Glow
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (verifyExtensionChoices()) {
+                this.last = DateTime.Now;
                 this.GlowDriver.Start();
                 //TODO start other extensions as well
             }

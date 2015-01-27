@@ -18,7 +18,6 @@ namespace Antumbra.Glow.ExtensionFramework
         private List<IObserver<Color>> observers;
         private AntumbraCore core;
         private Dictionary<string, object> settings;
-        private bool running;
 
         public GlowScreenDriverCoupler(AntumbraCore core, GlowScreenGrabber grab, GlowScreenProcessor proc)
         {
@@ -27,12 +26,14 @@ namespace Antumbra.Glow.ExtensionFramework
             this.processor = proc;
             this.observers = new List<IObserver<Color>>();
             this.settings = new Dictionary<string, object>();
-            this.running = false;
         }
 
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { if (null != this.grabber && null != this.processor)
+                    return this.grabber.IsRunning && this.processor.IsRunning;
+                return false;
+            }
         }
         public sealed override string Name
         { get { return "Glow Screen Driver Coupler"; } }
@@ -88,7 +89,6 @@ namespace Antumbra.Glow.ExtensionFramework
             }
             //get ready and start
             if (ready && this.grabber.Start()) {
-                this.running = true;
                 return true;
             }
             return false;

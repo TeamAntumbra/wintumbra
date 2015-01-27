@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antumbra.Glow;
 using Antumbra.Glow.ExtensionFramework;
+using System.Threading;
 
 namespace Antumbra.Glow.Windows
 {
@@ -136,18 +137,10 @@ namespace Antumbra.Glow.Windows
             e.Cancel = true;
         }
 
-        private void driverExtensions_SelectedIndexChanged(object sender, EventArgs e)
+        private void apply_Click(object sender, EventArgs e)
         {
             this.antumbra.setDriver(this.antumbra.MEFHelper.GetDriver(driverExtensions.SelectedItem.ToString()));
-        }
-
-        private void screenGrabbers_SelectedIndexChanged(object sender, EventArgs e)
-        {
             this.antumbra.setScreenGrabber(this.antumbra.MEFHelper.GetScreenGrabber(screenGrabbers.SelectedItem.ToString()));
-        }
-
-        private void screenProcessors_SelectedIndexChanged(object sender, EventArgs e)
-        {
             this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
         }
     }
