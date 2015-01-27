@@ -27,30 +27,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F); // for design in 96 DPI
+            this.FontHeight = 14;
             this.components = new System.ComponentModel.Container();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new MetroFramework.Controls.MetroLabel();
+            this.label2 = new MetroFramework.Controls.MetroLabel();
+            this.label3 = new MetroFramework.Controls.MetroLabel();
             this.pollingX = new MetroFramework.Controls.MetroTextBox();
             this.pollingY = new MetroFramework.Controls.MetroTextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.stepSizeLabel = new System.Windows.Forms.Label();
+            this.label4 = new MetroFramework.Controls.MetroLabel();
+            this.stepSizeLabel = new MetroFramework.Controls.MetroLabel();
             this.stepSize = new MetroFramework.Controls.MetroTextBox();
             this.fullBtn = new MetroFramework.Controls.MetroButton();
-            this.stepSleepLabel = new System.Windows.Forms.Label();
+            this.stepSleepLabel = new MetroFramework.Controls.MetroLabel();
             this.sleepSize = new MetroFramework.Controls.MetroTextBox();
-            this.displayLabel = new System.Windows.Forms.Label();
+            this.displayLabel = new MetroFramework.Controls.MetroLabel();
             this.displayIndex = new System.Windows.Forms.NumericUpDown();
             this.settingsStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
-            this.ms = new System.Windows.Forms.Label();
-            this.DriverLabel = new System.Windows.Forms.Label();
-            this.driverExtensions = new System.Windows.Forms.ComboBox();
-            this.screenGrabbers = new System.Windows.Forms.ComboBox();
-            this.screenGrabberLabel = new System.Windows.Forms.Label();
-            this.screenProcessors = new System.Windows.Forms.ComboBox();
-            this.screenProcessorLabel = new System.Windows.Forms.Label();
-            this.notifiersLabel = new System.Windows.Forms.Label();
-            this.decoratorsLabel = new System.Windows.Forms.Label();
+            this.ms = new MetroFramework.Controls.MetroLabel();
+            this.DriverLabel = new MetroFramework.Controls.MetroLabel();
+            this.driverExtensions = new MetroFramework.Controls.MetroComboBox();
+            this.screenGrabbers = new MetroFramework.Controls.MetroComboBox();
+            this.screenGrabberLabel = new MetroFramework.Controls.MetroLabel();
+            this.screenProcessors = new MetroFramework.Controls.MetroComboBox();
+            this.screenProcessorLabel = new MetroFramework.Controls.MetroLabel();
+            this.notifiersLabel = new MetroFramework.Controls.MetroLabel();
+            this.decoratorsLabel = new MetroFramework.Controls.MetroLabel();
             this.decorators = new System.Windows.Forms.ListBox();
             this.notifiers = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
@@ -60,7 +62,6 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label1.Location = new System.Drawing.Point(51, 148);
             this.label1.Name = "label1";
@@ -127,7 +128,6 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label4.Location = new System.Drawing.Point(46, 394);
             this.label4.Name = "label4";
@@ -138,7 +138,6 @@
             // stepSizeLabel
             // 
             this.stepSizeLabel.AutoSize = true;
-            this.stepSizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stepSizeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.stepSizeLabel.Location = new System.Drawing.Point(77, 433);
             this.stepSizeLabel.Name = "stepSizeLabel";
@@ -177,7 +176,6 @@
             // stepSleepLabel
             // 
             this.stepSleepLabel.AutoSize = true;
-            this.stepSleepLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stepSleepLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.stepSleepLabel.Location = new System.Drawing.Point(55, 482);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -205,7 +203,6 @@
             // displayLabel
             // 
             this.displayLabel.AutoSize = true;
-            this.displayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.displayLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.displayLabel.Location = new System.Drawing.Point(56, 109);
             this.displayLabel.Name = "displayLabel";
@@ -232,6 +229,7 @@
             // 
             this.settingsStyleManager.Owner = this;
             this.settingsStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.settingsStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
             // 
             // ms
             // 
@@ -254,7 +252,6 @@
             // 
             // driverExtensions
             // 
-            this.driverExtensions.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.driverExtensions.FormattingEnabled = true;
             this.driverExtensions.Location = new System.Drawing.Point(186, 225);
             this.driverExtensions.Name = "driverExtensions";
@@ -344,8 +341,8 @@
             // 
             // SettingsWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(403, 520);
             this.Controls.Add(this.notifiers);
             this.Controls.Add(this.decorators);
@@ -373,7 +370,6 @@
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SettingsWindow";
-            this.Opacity = 0.9D;
             this.Padding = new System.Windows.Forms.Padding(30, 92, 30, 31);
             this.Resizable = false;
             this.ShowIcon = false;

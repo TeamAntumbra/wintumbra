@@ -67,6 +67,11 @@ namespace Antumbra.Glow
             this.serial = new SerialConnector(0x03EB, 0x2040);
             Console.WriteLine(this.serial.setup());//sanity check that Glow connects correctly
             InitializeComponent();
+            this.WindowState = FormWindowState.Minimized;
+            this.Hide();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
@@ -384,21 +389,6 @@ namespace Antumbra.Glow
             this.lastR = r;
             this.lastG = g;
             this.lastB = b;
-        }
-
-        private void Antumbra_Resize(object sender, EventArgs e)
-        {
-            if (FormWindowState.Minimized == this.WindowState)
-            {
-                //this.icon.Visible = true;
-                //this.icon.ShowBalloonTip(3500);
-                notifyIcon.ShowBalloonTip(3000);
-                this.Hide();
-            }
-            else if (FormWindowState.Normal == this.WindowState)
-            {
-                //this.icon.Visible = false;
-            }
         }
 
         public void updatePollingBounds(int x, int y)
