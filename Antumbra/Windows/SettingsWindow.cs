@@ -29,26 +29,31 @@ namespace Antumbra.Glow.Windows
             pollingY.Text = this.antumbra.getPollingHeight().ToString();
             stepSize.Text = this.antumbra.stepSize.ToString();
             sleepSize.Text = this.antumbra.stepSleep.ToString();
+            driverExtensions.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailIndependentDrivers()) {
                 driverExtensions.Items.Add(str);
             }
             if (driverExtensions.Items.Count > 0)
                 driverExtensions.SelectedIndex = 0;
+            screenGrabbers.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailScreenGrabbers()) {
                 screenGrabbers.Items.Add(str);
             }
             if (screenGrabbers.Items.Count > 0)
                 screenGrabbers.SelectedIndex = 0;
+            screenProcessors.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailScreenProcessors()) {
                 screenProcessors.Items.Add(str);
             }
             if (screenProcessors.Items.Count > 0)
                 screenProcessors.SelectedIndex = 0;
+            decorators.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailDecorators()) {
                 decorators.Items.Add(str);
             }
             if (decorators.Items.Count > 0)
                 decorators.SelectedIndex = 0;
+            notifiers.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailNotifiers()) {
                 notifiers.Items.Add(str);
             }
@@ -133,7 +138,8 @@ namespace Antumbra.Glow.Windows
 
         private void driverExtensions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.antumbra.setDriver(this.antumbra.MEFHelper.GetDriver(driverExtensions.SelectedText));
+            Console.WriteLine(driverExtensions.SelectedItem);
+            this.antumbra.setDriver(this.antumbra.MEFHelper.GetDriver(driverExtensions.SelectedItem.ToString()));
         }
 
         private void screenGrabbers_SelectedIndexChanged(object sender, EventArgs e)
