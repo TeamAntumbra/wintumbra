@@ -106,16 +106,19 @@ namespace Antumbra.Glow
 
         public void setDriver(GlowDriver driver)
         {
+            this.Stop();
             this.GlowDriver = driver;
         }
 
         public void setScreenGrabber(GlowScreenGrabber screenGrabber)
         {
+            this.Stop();
             this.ScreenGrabber = screenGrabber;
         }
 
         public void setScreenProcessor(GlowScreenProcessor processor)
         {
+            this.Stop();
             this.ScreenProcessor = processor;
         }
 

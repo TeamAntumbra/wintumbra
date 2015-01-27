@@ -138,7 +138,6 @@ namespace Antumbra.Glow.Windows
 
         private void driverExtensions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(driverExtensions.SelectedItem);
             this.antumbra.setDriver(this.antumbra.MEFHelper.GetDriver(driverExtensions.SelectedItem.ToString()));
         }
 
