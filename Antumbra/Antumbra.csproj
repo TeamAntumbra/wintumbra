@@ -276,6 +276,9 @@
     <Content Include="libantumbra.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="MetroFramework.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Antumbra.ico" />
     <Content Include="Resources\cellbackground.png" />
     <None Include="Resources\Culture.ico" />
