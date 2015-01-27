@@ -143,6 +143,7 @@ namespace Antumbra.Glow
         {
             //Console.WriteLine();
             double time = DateTime.Now.Subtract(this.last).TotalSeconds;
+            Console.WriteLine(time);
             string newText = (1.0/time).ToString() + " hz";
             this.Invoke((MethodInvoker)delegate
             {
@@ -422,6 +423,7 @@ namespace Antumbra.Glow
         private bool verifyExtensionChoices()
         {
             this.notifyIcon.ShowBalloonTip(3000, "Verifying Extensions", "Verifying the chosen extensions.", ToolTipIcon.Info);
+            this.settings.UpdateSelections();
             if (null == this.GlowDriver) {//sanity check
                 this.notifyIcon.ShowBalloonTip(3000, "Info", "Glow Driver not selected.", ToolTipIcon.Info);
                 return false;
@@ -454,10 +456,14 @@ namespace Antumbra.Glow
 
         private void Stop()
         {
-            if (this.GlowDriver.IsRunning)
-                this.GlowDriver.Stop();
-            if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
-                this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
+            if (null != this.GlowDriver) {
+                if (this.GlowDriver.IsRunning)
+                    this.GlowDriver.Stop();
+                if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
+                    this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
+                else
+                    this.GlowDriver = null;
+            }
             //TODO stop everything
         }
 

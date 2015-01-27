@@ -139,11 +139,25 @@ namespace Antumbra.Glow.Windows
             e.Cancel = true;
         }
 
+        public void UpdateSelections()
+        {
+            if (null == driverExtensions.SelectedItem)
+                this.antumbra.setDriver(null);
+            else
+                this.antumbra.setDriver(this.antumbra.MEFHelper.GetDriver(driverExtensions.SelectedItem.ToString()));
+            if (null == screenGrabbers.SelectedItem)
+                this.antumbra.setScreenGrabber(null);
+            else
+                this.antumbra.setScreenGrabber(this.antumbra.MEFHelper.GetScreenGrabber(screenGrabbers.SelectedItem.ToString()));
+            if (null == screenProcessors.SelectedItem)
+                this.antumbra.setScreenProcessor(null);
+            else
+                this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
+        }
+
         private void apply_Click(object sender, EventArgs e)
         {
-            this.antumbra.setDriver(this.antumbra.MEFHelper.GetDriver(driverExtensions.SelectedItem.ToString()));
-            this.antumbra.setScreenGrabber(this.antumbra.MEFHelper.GetScreenGrabber(screenGrabbers.SelectedItem.ToString()));
-            this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
+            UpdateSelections();
         }
     }
 }
