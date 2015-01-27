@@ -96,7 +96,9 @@ namespace Antumbra.Glow.ExtensionFramework
 
         public override bool Stop()
         {
-            return false;//TODO clean up
+            this.processor.Stop();
+            this.grabber.Stop();
+            return true;
         }
     }
 }
