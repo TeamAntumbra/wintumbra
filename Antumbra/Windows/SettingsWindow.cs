@@ -143,12 +143,12 @@ namespace Antumbra.Glow.Windows
 
         private void screenGrabbers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.antumbra.setScreenGrabber((GlowScreenGrabber)screenGrabbers.SelectedItem);
+            this.antumbra.setScreenGrabber(this.antumbra.MEFHelper.GetScreenGrabber(screenGrabbers.SelectedItem.ToString()));
         }
 
         private void screenProcessors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.antumbra.setScreenProcessor((GlowScreenProcessor)screenProcessors.SelectedItem);
+            this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
         }
     }
 }
