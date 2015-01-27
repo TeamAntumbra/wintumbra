@@ -91,16 +91,6 @@ namespace Antumbra.Glow.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] MetroFramework {
-            get {
-                object obj = ResourceManager.GetObject("MetroFramework", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap SavePalette {
