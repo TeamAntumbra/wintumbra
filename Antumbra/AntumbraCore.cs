@@ -151,15 +151,19 @@ namespace Antumbra.Glow
                 this.settings.speed.Text = newText;
             });
             this.last = DateTime.Now;
-            SetColorTo((Color)sender);
+            Color newColor = (Color)sender;
+            foreach (var decorator in this.GlowDecorators) {
+                Console.WriteLine(newColor.ToString());
+                newColor = decorator.Decorate(newColor);
+            }
+            Console.WriteLine(newColor.ToString());
+            SetColorTo(newColor);
         }
 
         public void SetColorTo(Color newColor)
         {
             //Console.WriteLine(newColor.ToString());
             //fade(newColor, 0, 2);
-            foreach (var decorator in this.GlowDecorators)
-                newColor = decorator.Decorate(newColor);
             fade(newColor, this.stepSleep, this.stepSize);
             /*byte r = newColor.R;
             byte g = newColor.G;
@@ -215,7 +219,7 @@ namespace Antumbra.Glow
         private void changeTo(byte r, byte g, byte b)
         {
             //Console.WriteLine(System.DateTime.Now.ToString());
-            Console.WriteLine(r + " " + g + " " + b);
+            //Console.WriteLine(r + " " + g + " " + b);
             if (this.serial.send(r, g, b))//sucessful send
                 updateLast(r, g, b);
             else {
@@ -309,11 +313,11 @@ namespace Antumbra.Glow
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Started", this.GlowDriver.Name + " was started successfully.", ToolTipIcon.Info);
                     this.GlowDriver.AttachEvent(this);
                     foreach (var decorator in this.GlowDecorators) {
-                        this.notifyIcon.ShowBalloonTip(3000, "Decorator Found", decorator.Name + " was found.", ToolTipIcon.Info);
+                        //this.notifyIcon.ShowBalloonTip(3000, "Decorator Found", decorator.Name + " was found.", ToolTipIcon.Info);
                         decorator.Start();
                     }
                     foreach (var notifier in this.GlowNotifiers) {
-                        this.notifyIcon.ShowBalloonTip(3000, "Notifier Found", notifier.Name + " was found.", ToolTipIcon.Info);
+                        //this.notifyIcon.ShowBalloonTip(3000, "Notifier Found", notifier.Name + " was found.", ToolTipIcon.Info);
                         notifier.Start();
                     }
                 }

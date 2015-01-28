@@ -43,24 +43,24 @@
             this.decoratorsLabel = new MetroFramework.Controls.MetroLabel();
             this.apply = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.speedLabel = new System.Windows.Forms.Label();
-            this.speed = new System.Windows.Forms.Label();
+            this.speedLabel = new MetroFramework.Controls.MetroLabel();
+            this.speed = new MetroFramework.Controls.MetroLabel();
             this.notifiers = new MetroFramework.Controls.MetroComboBox();
             this.decoratorToggle = new MetroFramework.Controls.MetroButton();
             this.notifierToggle = new MetroFramework.Controls.MetroButton();
             this.pollingArea = new MetroFramework.Controls.MetroButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pollingXLabel = new System.Windows.Forms.Label();
-            this.pollingX = new System.Windows.Forms.Label();
-            this.pollingYLabel = new System.Windows.Forms.Label();
-            this.pollingY = new System.Windows.Forms.Label();
-            this.pollingWidthLabel = new System.Windows.Forms.Label();
-            this.pollingHeightLabel = new System.Windows.Forms.Label();
-            this.pollingHeight = new System.Windows.Forms.Label();
+            this.label1 = new MetroFramework.Controls.MetroLabel();
+            this.pollingXLabel = new MetroFramework.Controls.MetroLabel();
+            this.pollingX = new MetroFramework.Controls.MetroLabel();
+            this.pollingYLabel = new MetroFramework.Controls.MetroLabel();
+            this.pollingY = new MetroFramework.Controls.MetroLabel();
+            this.pollingWidthLabel = new MetroFramework.Controls.MetroLabel();
+            this.pollingHeightLabel = new MetroFramework.Controls.MetroLabel();
+            this.pollingHeight = new MetroFramework.Controls.MetroLabel();
             this.decorators = new MetroFramework.Controls.MetroComboBox();
-            this.pollingWidth = new System.Windows.Forms.Label();
-            this.shouldChangeLabel = new System.Windows.Forms.Label();
-            this.changeSensitivity = new System.Windows.Forms.TextBox();
+            this.pollingWidth = new MetroFramework.Controls.MetroLabel();
+            this.shouldChangeLabel = new MetroFramework.Controls.MetroLabel();
+            this.changeSensitivity = new MetroFramework.Controls.MetroTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -229,7 +229,7 @@
             this.speedLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.speedLabel.Location = new System.Drawing.Point(281, 114);
             this.speedLabel.Name = "speedLabel";
-            this.speedLabel.Size = new System.Drawing.Size(75, 13);
+            this.speedLabel.Size = new System.Drawing.Size(93, 19);
             this.speedLabel.TabIndex = 44;
             this.speedLabel.Text = "Polling Speed:";
             // 
@@ -239,7 +239,7 @@
             this.speed.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.speed.Location = new System.Drawing.Point(380, 114);
             this.speed.Name = "speed";
-            this.speed.Size = new System.Drawing.Size(13, 13);
+            this.speed.Size = new System.Drawing.Size(16, 19);
             this.speed.TabIndex = 45;
             this.speed.Text = "0";
             // 
@@ -277,7 +277,7 @@
             // 
             // pollingArea
             // 
-            this.pollingArea.Location = new System.Drawing.Point(284, 173);
+            this.pollingArea.Location = new System.Drawing.Point(280, 149);
             this.pollingArea.Name = "pollingArea";
             this.pollingArea.Size = new System.Drawing.Size(138, 35);
             this.pollingArea.TabIndex = 51;
@@ -293,7 +293,7 @@
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label1.Location = new System.Drawing.Point(101, 71);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 17);
+            this.label1.Size = new System.Drawing.Size(105, 19);
             this.label1.TabIndex = 52;
             this.label1.Text = "Polling Location:";
             // 
@@ -303,7 +303,7 @@
             this.pollingXLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingXLabel.Location = new System.Drawing.Point(33, 114);
             this.pollingXLabel.Name = "pollingXLabel";
-            this.pollingXLabel.Size = new System.Drawing.Size(17, 13);
+            this.pollingXLabel.Size = new System.Drawing.Size(20, 19);
             this.pollingXLabel.TabIndex = 53;
             this.pollingXLabel.Text = "X:";
             // 
@@ -313,7 +313,7 @@
             this.pollingX.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingX.Location = new System.Drawing.Point(56, 114);
             this.pollingX.Name = "pollingX";
-            this.pollingX.Size = new System.Drawing.Size(0, 13);
+            this.pollingX.Size = new System.Drawing.Size(0, 0);
             this.pollingX.TabIndex = 54;
             // 
             // pollingYLabel
@@ -322,7 +322,7 @@
             this.pollingYLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingYLabel.Location = new System.Drawing.Point(33, 146);
             this.pollingYLabel.Name = "pollingYLabel";
-            this.pollingYLabel.Size = new System.Drawing.Size(17, 13);
+            this.pollingYLabel.Size = new System.Drawing.Size(20, 19);
             this.pollingYLabel.TabIndex = 55;
             this.pollingYLabel.Text = "Y:";
             // 
@@ -332,7 +332,7 @@
             this.pollingY.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingY.Location = new System.Drawing.Point(56, 146);
             this.pollingY.Name = "pollingY";
-            this.pollingY.Size = new System.Drawing.Size(0, 13);
+            this.pollingY.Size = new System.Drawing.Size(0, 0);
             this.pollingY.TabIndex = 56;
             // 
             // pollingWidthLabel
@@ -341,7 +341,7 @@
             this.pollingWidthLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingWidthLabel.Location = new System.Drawing.Point(122, 114);
             this.pollingWidthLabel.Name = "pollingWidthLabel";
-            this.pollingWidthLabel.Size = new System.Drawing.Size(38, 13);
+            this.pollingWidthLabel.Size = new System.Drawing.Size(47, 19);
             this.pollingWidthLabel.TabIndex = 57;
             this.pollingWidthLabel.Text = "Width:";
             // 
@@ -351,7 +351,7 @@
             this.pollingHeightLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingHeightLabel.Location = new System.Drawing.Point(122, 146);
             this.pollingHeightLabel.Name = "pollingHeightLabel";
-            this.pollingHeightLabel.Size = new System.Drawing.Size(41, 13);
+            this.pollingHeightLabel.Size = new System.Drawing.Size(50, 19);
             this.pollingHeightLabel.TabIndex = 58;
             this.pollingHeightLabel.Text = "Height:";
             // 
@@ -361,7 +361,7 @@
             this.pollingHeight.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingHeight.Location = new System.Drawing.Point(169, 146);
             this.pollingHeight.Name = "pollingHeight";
-            this.pollingHeight.Size = new System.Drawing.Size(0, 13);
+            this.pollingHeight.Size = new System.Drawing.Size(0, 0);
             this.pollingHeight.TabIndex = 60;
             // 
             // decorators
@@ -380,7 +380,7 @@
             this.pollingWidth.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingWidth.Location = new System.Drawing.Point(166, 114);
             this.pollingWidth.Name = "pollingWidth";
-            this.pollingWidth.Size = new System.Drawing.Size(0, 13);
+            this.pollingWidth.Size = new System.Drawing.Size(0, 0);
             this.pollingWidth.TabIndex = 61;
             // 
             // shouldChangeLabel
@@ -389,16 +389,22 @@
             this.shouldChangeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.shouldChangeLabel.Location = new System.Drawing.Point(33, 541);
             this.shouldChangeLabel.Name = "shouldChangeLabel";
-            this.shouldChangeLabel.Size = new System.Drawing.Size(124, 13);
+            this.shouldChangeLabel.Size = new System.Drawing.Size(153, 19);
             this.shouldChangeLabel.TabIndex = 62;
             this.shouldChangeLabel.Text = "Color Change Sensitivity:";
             // 
             // changeSensitivity
             // 
-            this.changeSensitivity.Location = new System.Drawing.Point(201, 538);
+            this.changeSensitivity.Lines = new string[0];
+            this.changeSensitivity.Location = new System.Drawing.Point(204, 538);
+            this.changeSensitivity.MaxLength = 32767;
             this.changeSensitivity.Name = "changeSensitivity";
-            this.changeSensitivity.Size = new System.Drawing.Size(106, 20);
+            this.changeSensitivity.PasswordChar = '\0';
+            this.changeSensitivity.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.changeSensitivity.SelectedText = "";
+            this.changeSensitivity.Size = new System.Drawing.Size(102, 31);
             this.changeSensitivity.TabIndex = 63;
+            this.changeSensitivity.UseSelectable = true;
             this.changeSensitivity.TextChanged += new System.EventHandler(this.changeSensitivity_TextChanged);
             // 
             // SettingsWindow
@@ -473,23 +479,23 @@
         private MetroFramework.Controls.MetroLabel decoratorsLabel;
         private MetroFramework.Controls.MetroButton apply;
         private MetroFramework.Controls.MetroLabel metroLabel1;
-        private System.Windows.Forms.Label speedLabel;
-        public System.Windows.Forms.Label speed;
+        private MetroFramework.Controls.MetroLabel speedLabel;
         private MetroFramework.Controls.MetroButton notifierToggle;
         private MetroFramework.Controls.MetroButton decoratorToggle;
         private MetroFramework.Controls.MetroComboBox notifiers;
         private MetroFramework.Controls.MetroButton pollingArea;
-        private System.Windows.Forms.Label pollingWidth;
-        private System.Windows.Forms.Label pollingHeight;
-        private System.Windows.Forms.Label pollingHeightLabel;
-        private System.Windows.Forms.Label pollingWidthLabel;
-        private System.Windows.Forms.Label pollingY;
-        private System.Windows.Forms.Label pollingYLabel;
-        private System.Windows.Forms.Label pollingX;
-        private System.Windows.Forms.Label pollingXLabel;
-        private System.Windows.Forms.Label label1;
+        private MetroFramework.Controls.MetroLabel pollingWidth;
+        private MetroFramework.Controls.MetroLabel pollingHeight;
+        private MetroFramework.Controls.MetroLabel pollingHeightLabel;
+        private MetroFramework.Controls.MetroLabel pollingWidthLabel;
+        private MetroFramework.Controls.MetroLabel pollingY;
+        private MetroFramework.Controls.MetroLabel pollingYLabel;
+        private MetroFramework.Controls.MetroLabel pollingX;
+        private MetroFramework.Controls.MetroLabel pollingXLabel;
+        private MetroFramework.Controls.MetroLabel label1;
         private MetroFramework.Controls.MetroComboBox decorators;
-        private System.Windows.Forms.TextBox changeSensitivity;
-        private System.Windows.Forms.Label shouldChangeLabel;
+        private MetroFramework.Controls.MetroTextBox changeSensitivity;
+        private MetroFramework.Controls.MetroLabel shouldChangeLabel;
+        public MetroFramework.Controls.MetroLabel speed;
     }
 }
