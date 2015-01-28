@@ -376,10 +376,10 @@ namespace Antumbra.Glow
                 if (this.GlowDriver.IsRunning)
                     if (this.GlowDriver.Stop())
                         this.notifyIcon.ShowBalloonTip(3000, "Driver Stopped", this.GlowDriver.Name + " was stopped successfully.", ToolTipIcon.Info);
-                if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
-                    this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
-                else
-                    this.GlowDriver = null;
+              //  if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
+              //      this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
+             //   else
+             //  this.GlowDriver = null;
             }
             foreach (var decorator in this.GlowDecorators)
                 decorator.Stop();

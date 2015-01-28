@@ -81,16 +81,20 @@ namespace Antumbra.Glow.ExtensionFramework
             if (this.grabber != null && this.processor != null) {
                 /*this.grabber.Subscribe(this.processor);
                 this.processor.Subscribe(this);*/
-                     if (this.processor.Start()) {
-                         if (this.processor is AntumbraBitmapObserver)
-                             this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
-                         this.processor.AttachEvent(this);
-                         ready = true;
-                 }
-                 //get ready and start
-                 if (ready && this.grabber.Start()) {
-                     return true;
-                 }
+                if (this.processor.Start()) {
+                    if (this.processor is AntumbraBitmapObserver)
+                        this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
+                    this.processor.AttachEvent(this);
+                    this.grabber.x = this.core.pollingX;
+                    this.grabber.y = this.core.pollingY;
+                    this.grabber.width = this.core.pollingWidth;
+                    this.grabber.height = this.core.pollingHeight;
+                    ready = true;
+                }
+                //get ready and start
+                if (ready && this.grabber.Start()) {
+                    return true;
+                }
                 
                 
                 /*this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);

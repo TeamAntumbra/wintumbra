@@ -155,6 +155,10 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
         //abstract public GlowScreenProcessor ScreenProcessor { get; }//return processor for this screen driver
         //public abstract IDisposable Subscribe(IObserver<Bitmap> screenProcessor);//register observer
         public abstract void AttachEvent(AntumbraBitmapObserver observer);
+        public int x { get; set; }
+        public int y { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
     }
 
     public abstract class GlowDecorator : GlowExtension
