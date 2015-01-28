@@ -45,30 +45,42 @@ namespace Antumbra.Glow.Windows
             }
             if (driverExtensions.Items.Count > 0)
                 driverExtensions.SelectedIndex = 0;
-            screenGrabbers.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailScreenGrabbers()) {
-                screenGrabbers.Items.Add(str);
+                if (!screenGrabbers.Items.Contains(str))
+                    screenGrabbers.Items.Add(str);
             }
             if (screenGrabbers.Items.Count > 0)
                 screenGrabbers.SelectedIndex = 0;
-            screenProcessors.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailScreenProcessors()) {
-                screenProcessors.Items.Add(str);
+                if (!screenProcessors.Items.Contains(str))
+                    screenProcessors.Items.Add(str);
             }
             if (screenProcessors.Items.Count > 0)
                 screenProcessors.SelectedIndex = 0;
-            /*decorators.Items.Clear();
+            decorators.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailDecorators()) {
-                decorators.Items.Add(str);
+                if (!decorators.Items.Contains(str)) {
+                    if (enabledDecorators.Contains(str)) {
+                        decorators.Items.Add(str + " - Active");
+                    }
+                    else
+                        decorators.Items.Add(str);
+                }  
             }
             if (decorators.Items.Count > 0)
                 decorators.SelectedIndex = 0;
             notifiers.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailNotifiers()) {
-                notifiers.Items.Add(str);
+                if (!notifiers.Items.Contains(str)) {
+                    if (enabledNotifiers.Contains(str)) {
+                        notifiers.Items.Add(str + " - Active");
+                    }
+                    else
+                        notifiers.Items.Add(str);
+                }
             }
             if (notifiers.Items.Count > 0)
-                notifiers.SelectedIndex = 0;*/
+                notifiers.SelectedIndex = 0;
         }
 
         /*private void pollingY_TextChanged(object sender, EventArgs e)
@@ -171,14 +183,30 @@ namespace Antumbra.Glow.Windows
 
         private void decoratorToggle_Click(object sender, EventArgs e)
         {
-            if (null != decorators.SelectedItem)
-                enabledDecorators.Add(decorators.SelectedItem.ToString());
+            if (null != decorators.SelectedItem) {
+                var value = decorators.SelectedItem.ToString();
+                if (value.EndsWith(" - Active")) {
+                    value = value.Substring(0, value.Length - 9);
+                    enabledDecorators.Remove(value);
+                }
+                else
+                    enabledDecorators.Add(value);
+            }
+            this.updateValues();
         }
 
         private void notifierToggle_Click(object sender, EventArgs e)
         {
-            if (null != notifiers.SelectedItem)
-                enabledNotifiers.Add(notifiers.SelectedItem.ToString());
+            if (null != notifiers.SelectedItem) {
+                var value = notifiers.SelectedItem.ToString();
+                if (value.EndsWith(" - Active")) {
+                    value = value.Substring(0, value.Length - 9);
+                    enabledDecorators.Remove(value);
+                }
+                else
+                    enabledNotifiers.Add(notifiers.SelectedItem.ToString());
+            }
+            this.updateValues();
         }
 
         private void SettingsWindow_MouseEnter(object sender, EventArgs e)

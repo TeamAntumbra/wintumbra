@@ -48,7 +48,7 @@
             this.notifiers = new MetroFramework.Controls.MetroComboBox();
             this.decoratorToggle = new MetroFramework.Controls.MetroButton();
             this.notifierToggle = new MetroFramework.Controls.MetroButton();
-            this.pollingArea = new System.Windows.Forms.Button();
+            this.pollingArea = new MetroFramework.Controls.MetroButton();
             this.label1 = new System.Windows.Forms.Label();
             this.pollingXLabel = new System.Windows.Forms.Label();
             this.pollingX = new System.Windows.Forms.Label();
@@ -280,6 +280,7 @@
             this.pollingArea.Size = new System.Drawing.Size(138, 35);
             this.pollingArea.TabIndex = 51;
             this.pollingArea.Text = "Set Screen Grabber Area";
+            this.pollingArea.UseSelectable = true;
             this.pollingArea.UseVisualStyleBackColor = true;
             this.pollingArea.Click += new System.EventHandler(this.pollingArea_Click);
             // 
@@ -455,7 +456,7 @@
         private MetroFramework.Controls.MetroButton notifierToggle;
         private MetroFramework.Controls.MetroButton decoratorToggle;
         private MetroFramework.Controls.MetroComboBox notifiers;
-        private System.Windows.Forms.Button pollingArea;
+        private MetroFramework.Controls.MetroButton pollingArea;
         private System.Windows.Forms.Label pollingWidth;
         private System.Windows.Forms.Label pollingHeight;
         private System.Windows.Forms.Label pollingHeightLabel;
