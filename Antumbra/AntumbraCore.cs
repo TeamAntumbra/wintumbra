@@ -56,7 +56,7 @@ namespace Antumbra.Glow
         private GlowDriver GlowDriver;
         private GlowScreenGrabber ScreenGrabber;
         private GlowScreenProcessor ScreenProcessor;
-        private List<GlowDecorator> GlowDecorators;
+        private List<GlowDecorator> GlowDecorators;//todo convert the system for handeling extensions to ID based determined on startup
         private List<GlowNotifier> GlowNotifiers;
 
         private DateTime last;
@@ -73,6 +73,7 @@ namespace Antumbra.Glow
             this.Hide();
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Visible = false;
 
             this.lastR = 0;
             this.lastG = 0;
@@ -113,19 +114,19 @@ namespace Antumbra.Glow
 
         public void setDriver(GlowDriver driver)
         {
-            this.Stop();
+            //this.Stop();
             this.GlowDriver = driver;
         }
 
         public void setScreenGrabber(GlowScreenGrabber screenGrabber)
         {
-            this.Stop();
+            //this.Stop();
             this.ScreenGrabber = screenGrabber;
         }
 
         public void setScreenProcessor(GlowScreenProcessor processor)
         {
-            this.Stop();
+            //this.Stop();
             this.ScreenProcessor = processor;
         }
 

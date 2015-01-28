@@ -19,11 +19,15 @@ namespace Antumbra.Glow.Windows
     {
         private AntumbraCore antumbra;
         private ColorPickerDialog picker;
+        private List<string> enabledDecorators, enabledNotifiers;
         public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
             this.picker = new ColorPickerDialog();
+            this.enabledDecorators = new List<string>();
+            this.enabledNotifiers = new List<string>();
             InitializeComponent();
+            this.Focus();
         }
 
         public void updateValues()
@@ -50,7 +54,7 @@ namespace Antumbra.Glow.Windows
             }
             if (screenProcessors.Items.Count > 0)
                 screenProcessors.SelectedIndex = 0;
-            decorators.Items.Clear();
+            /*decorators.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailDecorators()) {
                 decorators.Items.Add(str);
             }
@@ -61,7 +65,7 @@ namespace Antumbra.Glow.Windows
                 notifiers.Items.Add(str);
             }
             if (notifiers.Items.Count > 0)
-                notifiers.SelectedIndex = 0;
+                notifiers.SelectedIndex = 0;*/
         }
 
         private void pollingY_TextChanged(object sender, EventArgs e)
@@ -153,21 +157,30 @@ namespace Antumbra.Glow.Windows
                 this.antumbra.setScreenProcessor(null);
             else
                 this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
-            List<string> enabledDecorators = new List<string>();
-            foreach (GlowDecorator item in decorators.SelectedItems) {
-                enabledDecorators.Add(item.Name);
-            }
             this.antumbra.setDecorators(this.antumbra.MEFHelper.GetDecorators(enabledDecorators));
-            List<string> enabledNotifiers = new List<string>();
-            foreach (GlowNotifier item in notifiers.SelectedItems) {
-                enabledNotifiers.Add(item.Name);
-            }
             this.antumbra.setNotifiers(this.antumbra.MEFHelper.GetNotifiers(enabledNotifiers));
         }
 
         private void apply_Click(object sender, EventArgs e)
         {
             UpdateSelections();
+        }
+
+        private void decoratorToggle_Click(object sender, EventArgs e)
+        {
+            if (null != decorators.SelectedItem)
+                enabledDecorators.Add(decorators.SelectedItem.ToString());
+        }
+
+        private void notifierToggle_Click(object sender, EventArgs e)
+        {
+            if (null != notifiers.SelectedItem)
+                enabledNotifiers.Add(notifiers.SelectedItem.ToString());
+        }
+
+        private void SettingsWindow_MouseEnter(object sender, EventArgs e)
+        {
+            this.Focus();
         }
     }
 }

@@ -49,12 +49,14 @@
             this.screenProcessorLabel = new MetroFramework.Controls.MetroLabel();
             this.notifiersLabel = new MetroFramework.Controls.MetroLabel();
             this.decoratorsLabel = new MetroFramework.Controls.MetroLabel();
-            this.decorators = new System.Windows.Forms.ListBox();
-            this.notifiers = new System.Windows.Forms.ListBox();
             this.apply = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.speedLabel = new System.Windows.Forms.Label();
             this.speed = new System.Windows.Forms.Label();
+            this.decorators = new MetroFramework.Controls.MetroComboBox();
+            this.notifiers = new MetroFramework.Controls.MetroComboBox();
+            this.decoratorToggle = new MetroFramework.Controls.MetroButton();
+            this.notifierToggle = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
@@ -300,29 +302,9 @@
             this.decoratorsLabel.TabIndex = 38;
             this.decoratorsLabel.Text = "Decorators:";
             // 
-            // decorators
-            // 
-            this.decorators.FormattingEnabled = true;
-            this.decorators.Location = new System.Drawing.Point(186, 329);
-            this.decorators.Name = "decorators";
-            this.decorators.ScrollAlwaysVisible = true;
-            this.decorators.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.decorators.Size = new System.Drawing.Size(348, 17);
-            this.decorators.TabIndex = 41;
-            // 
-            // notifiers
-            // 
-            this.notifiers.FormattingEnabled = true;
-            this.notifiers.Location = new System.Drawing.Point(186, 359);
-            this.notifiers.Name = "notifiers";
-            this.notifiers.ScrollAlwaysVisible = true;
-            this.notifiers.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.notifiers.Size = new System.Drawing.Size(348, 17);
-            this.notifiers.TabIndex = 42;
-            // 
             // apply
             // 
-            this.apply.Location = new System.Drawing.Point(375, 392);
+            this.apply.Location = new System.Drawing.Point(375, 399);
             this.apply.Name = "apply";
             this.apply.Size = new System.Drawing.Size(159, 23);
             this.apply.TabIndex = 43;
@@ -361,16 +343,60 @@
             this.speed.TabIndex = 45;
             this.speed.Text = "0";
             // 
+            // decorators
+            // 
+            this.decorators.FormattingEnabled = true;
+            this.decorators.ItemHeight = 23;
+            this.decorators.Location = new System.Drawing.Point(186, 328);
+            this.decorators.Name = "decorators";
+            this.decorators.Size = new System.Drawing.Size(236, 29);
+            this.decorators.TabIndex = 46;
+            this.decorators.UseSelectable = true;
+            // 
+            // notifiers
+            // 
+            this.notifiers.FormattingEnabled = true;
+            this.notifiers.ItemHeight = 23;
+            this.notifiers.Location = new System.Drawing.Point(186, 363);
+            this.notifiers.Name = "notifiers";
+            this.notifiers.Size = new System.Drawing.Size(236, 29);
+            this.notifiers.TabIndex = 47;
+            this.notifiers.UseSelectable = true;
+            // 
+            // decoratorToggle
+            // 
+            this.decoratorToggle.Location = new System.Drawing.Point(428, 328);
+            this.decoratorToggle.Name = "decoratorToggle";
+            this.decoratorToggle.Size = new System.Drawing.Size(106, 29);
+            this.decoratorToggle.TabIndex = 48;
+            this.decoratorToggle.Text = "Toggle Selected";
+            this.decoratorToggle.UseSelectable = true;
+            this.decoratorToggle.UseVisualStyleBackColor = true;
+            this.decoratorToggle.Click += new System.EventHandler(this.decoratorToggle_Click);
+            // 
+            // notifierToggle
+            // 
+            this.notifierToggle.Location = new System.Drawing.Point(428, 363);
+            this.notifierToggle.Name = "notifierToggle";
+            this.notifierToggle.Size = new System.Drawing.Size(106, 29);
+            this.notifierToggle.TabIndex = 49;
+            this.notifierToggle.Text = "Toggle Selected";
+            this.notifierToggle.UseSelectable = true;
+            this.notifierToggle.UseVisualStyleBackColor = true;
+            this.notifierToggle.Click += new System.EventHandler(this.notifierToggle_Click);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.notifierToggle);
+            this.Controls.Add(this.decoratorToggle);
+            this.Controls.Add(this.notifiers);
+            this.Controls.Add(this.decorators);
             this.Controls.Add(this.speed);
             this.Controls.Add(this.speedLabel);
             this.Controls.Add(this.apply);
-            this.Controls.Add(this.notifiers);
-            this.Controls.Add(this.decorators);
             this.Controls.Add(this.notifiersLabel);
             this.Controls.Add(this.decoratorsLabel);
             this.Controls.Add(this.screenProcessors);
@@ -403,6 +429,7 @@
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
+            this.MouseEnter += new System.EventHandler(this.SettingsWindow_MouseEnter);
             ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).EndInit();
             this.ResumeLayout(false);
@@ -419,8 +446,6 @@
         private MetroFramework.Controls.MetroButton fullBtn;
         private MetroFramework.Controls.MetroTextBox sleepSize;
         private MetroFramework.Components.MetroStyleManager settingsStyleManager;
-        private System.Windows.Forms.ListBox notifiers;
-        private System.Windows.Forms.ListBox decorators;
         private MetroFramework.Controls.MetroLabel label1;
         private MetroFramework.Controls.MetroLabel label2;
         private MetroFramework.Controls.MetroLabel label3;
@@ -439,5 +464,9 @@
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private System.Windows.Forms.Label speedLabel;
         public System.Windows.Forms.Label speed;
+        private MetroFramework.Controls.MetroButton notifierToggle;
+        private MetroFramework.Controls.MetroButton decoratorToggle;
+        private MetroFramework.Controls.MetroComboBox notifiers;
+        private MetroFramework.Controls.MetroComboBox decorators;
     }
 }
