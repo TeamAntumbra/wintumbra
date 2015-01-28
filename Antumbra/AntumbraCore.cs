@@ -94,7 +94,6 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;//no sleep
             this.stepSize = 1;
-            updateStatus(this.serial.state);
             //this.picker = new ColorPickerDialog(); //TODO investigate crash with color picker
             //this.screenGrabber = new AntumbraScreenGrabber(this);
             //this.gameScreenGrabber = new AntumbraDirectXScreenGrabber(this, this.pollingX, this.pollingY,
@@ -118,16 +117,37 @@ namespace Antumbra.Glow
             this.GlowDriver = driver;
         }
 
+        public string getCurrentDriverName()
+        {
+            if (null == this.GlowDriver)
+                return null;
+            return this.GlowDriver.Name;
+        }
+
         public void setScreenGrabber(GlowScreenGrabber screenGrabber)
         {
             //this.Stop();
             this.ScreenGrabber = screenGrabber;
         }
 
+        public string getCurrentScreenGrabberName()
+        {
+            if (null == this.ScreenGrabber)
+                return null;
+            return this.ScreenGrabber.Name;
+        }
+
         public void setScreenProcessor(GlowScreenProcessor processor)
         {
             //this.Stop();
             this.ScreenProcessor = processor;
+        }
+
+        public string getCurrentScreenProcessorName()
+        {
+            if (null == this.ScreenProcessor)
+                return null;
+            return this.ScreenProcessor.Name;
         }
 
         public void setDecorators(List<GlowDecorator> decorators)
@@ -229,19 +249,30 @@ namespace Antumbra.Glow
             //Console.WriteLine(System.DateTime.Now.ToString() + "        after");
         }
 
+        public void checkStatus()
+        {
+            this.updateStatus(this.serial.state);
+        }
+
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
         {
+            if (null == this.settings)
+                return;
             switch(status) {
                 case 0:
+                    this.settings.glowStatus.Text = "Not Connected";
                     //dead
                     break;
                 case 1:
+                    this.settings.glowStatus.Text = "Idle";
                     //idle
                     break;
                 case 2:
+                    this.settings.glowStatus.Text = "Sending/Recieving Successfully";
                     //good
                     break;
                 default:
+                    this.settings.glowStatus.Text = "Invalid Status";
                     Console.WriteLine("This should not happen. updateStatus");
                     break;
             }
@@ -276,10 +307,15 @@ namespace Antumbra.Glow
             Application.Exit();
         }
 
-        private void offToolStripMenuItem_Click(object sender, EventArgs e)
+        public void Off()
         {
             this.Stop();
             this.SetColorTo(Color.Black);
+        }
+
+        private void offToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Off();
         }
 
         private void contextMenu_MouseLeave(object sender, EventArgs e)
@@ -305,7 +341,7 @@ namespace Antumbra.Glow
             return true;
         }
 
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        public void Start()
         {
             if (verifyExtensionChoices()) {
                 this.last = DateTime.Now;
@@ -329,7 +365,12 @@ namespace Antumbra.Glow
             }
         }
 
-        private void Stop()
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Start();
+        }
+
+        public void Stop()
         {
             if (null != this.GlowDriver) {
                 if (this.GlowDriver.IsRunning)

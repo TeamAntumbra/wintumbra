@@ -44,7 +44,7 @@
             this.apply = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.speedLabel = new MetroFramework.Controls.MetroLabel();
-            this.speed = new MetroFramework.Controls.MetroLabel();
+            this.speed = new System.Windows.Forms.Label();
             this.notifiers = new MetroFramework.Controls.MetroComboBox();
             this.decoratorToggle = new MetroFramework.Controls.MetroButton();
             this.notifierToggle = new MetroFramework.Controls.MetroButton();
@@ -61,6 +61,11 @@
             this.pollingWidth = new MetroFramework.Controls.MetroLabel();
             this.shouldChangeLabel = new MetroFramework.Controls.MetroLabel();
             this.changeSensitivity = new MetroFramework.Controls.MetroTextBox();
+            this.statusLabel = new MetroFramework.Controls.MetroLabel();
+            this.glowStatus = new System.Windows.Forms.Label();
+            this.startBtn = new System.Windows.Forms.Button();
+            this.offBtn = new System.Windows.Forms.Button();
+            this.stopBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -237,9 +242,9 @@
             // 
             this.speed.AutoSize = true;
             this.speed.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.speed.Location = new System.Drawing.Point(380, 114);
+            this.speed.Location = new System.Drawing.Point(380, 117);
             this.speed.Name = "speed";
-            this.speed.Size = new System.Drawing.Size(16, 19);
+            this.speed.Size = new System.Drawing.Size(13, 13);
             this.speed.TabIndex = 45;
             this.speed.Text = "0";
             // 
@@ -407,11 +412,65 @@
             this.changeSensitivity.UseSelectable = true;
             this.changeSensitivity.TextChanged += new System.EventHandler(this.changeSensitivity_TextChanged);
             // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.statusLabel.Location = new System.Drawing.Point(336, 493);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(79, 19);
+            this.statusLabel.TabIndex = 64;
+            this.statusLabel.Text = "Glow Status:";
+            // 
+            // glowStatus
+            // 
+            this.glowStatus.AutoSize = true;
+            this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.glowStatus.Location = new System.Drawing.Point(421, 496);
+            this.glowStatus.Name = "glowStatus";
+            this.glowStatus.Size = new System.Drawing.Size(0, 13);
+            this.glowStatus.TabIndex = 65;
+            // 
+            // startBtn
+            // 
+            this.startBtn.Location = new System.Drawing.Point(166, 615);
+            this.startBtn.Name = "startBtn";
+            this.startBtn.Size = new System.Drawing.Size(76, 29);
+            this.startBtn.TabIndex = 66;
+            this.startBtn.Text = "Start";
+            this.startBtn.UseVisualStyleBackColor = true;
+            this.startBtn.Click += new System.EventHandler(this.startBtn_Click);
+            // 
+            // offBtn
+            // 
+            this.offBtn.Location = new System.Drawing.Point(330, 615);
+            this.offBtn.Name = "offBtn";
+            this.offBtn.Size = new System.Drawing.Size(76, 29);
+            this.offBtn.TabIndex = 67;
+            this.offBtn.Text = "Off";
+            this.offBtn.UseVisualStyleBackColor = true;
+            this.offBtn.Click += new System.EventHandler(this.offBtn_Click);
+            // 
+            // stopBtn
+            // 
+            this.stopBtn.Location = new System.Drawing.Point(248, 615);
+            this.stopBtn.Name = "stopBtn";
+            this.stopBtn.Size = new System.Drawing.Size(76, 29);
+            this.stopBtn.TabIndex = 68;
+            this.stopBtn.Text = "Stop";
+            this.stopBtn.UseVisualStyleBackColor = true;
+            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.stopBtn);
+            this.Controls.Add(this.offBtn);
+            this.Controls.Add(this.startBtn);
+            this.Controls.Add(this.glowStatus);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.changeSensitivity);
             this.Controls.Add(this.shouldChangeLabel);
             this.Controls.Add(this.pollingWidth);
@@ -496,6 +555,11 @@
         private MetroFramework.Controls.MetroComboBox decorators;
         private MetroFramework.Controls.MetroTextBox changeSensitivity;
         private MetroFramework.Controls.MetroLabel shouldChangeLabel;
-        public MetroFramework.Controls.MetroLabel speed;
+        private System.Windows.Forms.Button stopBtn;
+        private System.Windows.Forms.Button offBtn;
+        private System.Windows.Forms.Button startBtn;
+        private MetroFramework.Controls.MetroLabel statusLabel;
+        public System.Windows.Forms.Label speed;
+        public System.Windows.Forms.Label glowStatus;
     }
 }
