@@ -25,25 +25,14 @@ using System.Reflection;
 namespace Antumbra.Glow
 {
     public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver
-        //Main driver for application
     {
-        //private System.Timers.Timer screenTimer;//timer for screen color averaging
-        //private Thread fadeThread;//thread for color fades
         private Color color;//newest generated color for displaying
         private Color currentColor;//most recent successfully sent set command color
         private ColorPickerDialog picker;
-        //private Thread driverThread;
-        //private bool fadeEnabled;
-        //private bool screenAvgEnabled;
-        //public bool gameMode { get; set; }
         private byte lastR, lastG, lastB;
         private double hz;
-        //bool on;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
-        //public AntumbraScreenGrabber screenGrabber { get; set; }
-        //public AntumbraDirectXScreenGrabber gameScreenGrabber { get; set; }
-        //public AntumbraScreenProcessor screenProcessor { get; set; }
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
         public int pollingX { get; set; }
@@ -62,20 +51,16 @@ namespace Antumbra.Glow
 
         private DateTime last;
 
-        //private Thread MainDriverThread;//main driver thread for whole application
-        //private Thread DriverThread;//driver thread for driver extensions
-
         public AntumbraCore()
         {
             this.serial = new SerialConnector(0x03EB, 0x2040);
-            Console.WriteLine(this.serial.setup());//sanity check that Glow connects correctly
+            this.serial.setup();
             InitializeComponent();
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
-
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
@@ -83,28 +68,14 @@ namespace Antumbra.Glow
             this.currentColor = Color.Black;//depends on how the Glow starts up
             this.color = Color.Black;
             this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
-            //this.continuous = false;
-            //this.fadeEnabled = false;
-            //this.gameMode = false;
-            //this.fadeThread = new Thread(new ThreadStart(callColorFade));
-            //this.screenTimer = new System.Timers.Timer();
-            //this.pollingWidth = this.screen.width;
-            //this.pollingHeight = this.screen.height;
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
             this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
             this.pollingX = 0;//full screen settings
             this.pollingY = 0;
             this.stepSleep = 0;//no sleep
             this.stepSize = 2;
-            //this.picker = new ColorPickerDialog(); //TODO investigate crash with color picker
-            //this.screenGrabber = new AntumbraScreenGrabber(this);
-            //this.gameScreenGrabber = new AntumbraDirectXScreenGrabber(this, this.pollingX, this.pollingY,
-            //    this.pollingWidth, this.pollingHeight, 0);//TODO make timeOut a setting
-            //this.screenProcessor = new AntumbraScreenProcessor(.45, true, 20, 20);
-            //this.driverThread = new Thread(new ThreadStart(setToAvg));
             this.settings = new SettingsWindow(this);
-            //this.DriverThread = new Thread(new ThreadStart(run));
-            this.MEFHelper = new MEFHelper("./Extensions/");//"/Extensions/");
+            this.MEFHelper = new MEFHelper("./Extensions/");
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
             }
@@ -115,7 +86,6 @@ namespace Antumbra.Glow
 
         public void setDriver(GlowDriver driver)
         {
-            //this.Stop();
             this.GlowDriver = driver;
         }
 
@@ -128,7 +98,6 @@ namespace Antumbra.Glow
 
         public void setScreenGrabber(GlowScreenGrabber screenGrabber)
         {
-            //this.Stop();
             this.ScreenGrabber = screenGrabber;
         }
 
@@ -141,7 +110,6 @@ namespace Antumbra.Glow
 
         public void setScreenProcessor(GlowScreenProcessor processor)
         {
-            //this.Stop();
             this.ScreenProcessor = processor;
         }
 
@@ -164,11 +132,10 @@ namespace Antumbra.Glow
 
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
-            //Console.WriteLine();
             double time = DateTime.Now.Subtract(this.last).TotalSeconds;
             if (time != 0) {//ignore when zero TODO find why this happens when decorators are toggled
-                Console.WriteLine(time);
-                this.hz = (this.hz * .01)+ ((1.0 / time) * .99);//weighted average giving each value 1%
+                //Console.WriteLine(time);
+                this.hz = (this.hz * .01)+ ((1.0 / time) * .99);//weighted average giving each new value 1%
                 this.hz = (double)Math.Round((decimal)this.hz, 5);
                 string newText = this.hz.ToString() + " hz";
                 this.Invoke((MethodInvoker)delegate
@@ -188,54 +155,52 @@ namespace Antumbra.Glow
 
         public void SetColorTo(Color newColor)
         {
-            //Console.WriteLine(newColor.ToString());
-            //fade(newColor, 0, 2);
-            fade(newColor, this.stepSleep, this.stepSize);
-            /*byte r = newColor.R;
-            byte g = newColor.G;
-            byte b = newColor.B;
-            changeTo(r, g, b);*/
+            changeTo(newColor.R, newColor.G, newColor.B);
+            //fade(newColor, this.stepSleep, this.stepSize);//broken
         }
 
-        private int calcDiff(Color color, Color other)
+        private void fade(Color newColor, int sleepTime, int stepSize)//probably will become a decorator, either way it's moving out of here soon
         {
-            int r1 = color.R;
-            int g1 = color.G;
-            int b1 = color.B;
-            int r2 = other.R;
-            int g2 = other.G;
-            int b2 = other.B;
-            int total = 0;//represents the total difference
-            total += Math.Abs(r1 - r2);
-            total += Math.Abs(g1 - g2);
-            total += Math.Abs(b1 - b2);
-            return total;
-        }
-        
-        private bool shouldChange(Color color, Color other)
-        {
-            return calcDiff(color, other) > this.changeThreshold;
-        }
-
-        private void fade(Color newColor, int sleepTime, int stepDivider)
-        {
-            if (!shouldChange(Color.FromArgb(this.lastR, this.lastG, this.lastB), newColor))
-                return;//no update needed*/
             float r = this.lastR;
             float g = this.lastG;
             float b = this.lastB;
-            int diff = calcDiff(Color.FromArgb((int)r,(int)g,(int)b), newColor);
-            int steps = diff / 3 / stepDivider;
-            if (steps <= 0)
-                steps = 1;
-            int stepSize = diff / steps;
-            float rStep = (newColor.R - r) / steps;
-            float gStep = (newColor.G - g) / steps;
-            float bStep = (newColor.B - b) / steps;
-            for (int i = 0; i < steps; i++) {
-                r += rStep;
-                g += gStep;
-                b += bStep;
+            int rSteps = (int)(newColor.R - r) / stepSize;
+            bool rDown = false;
+            bool gDown = false;
+            bool bDown = false;
+            if (rSteps < 0) {
+                rDown = true;
+                rSteps = Math.Abs(rSteps);
+            }
+            int gSteps = (int)(newColor.G - g) / stepSize;
+            if (gSteps < 0) {
+                gDown = true;
+                gSteps = Math.Abs(gSteps);
+            }
+            int bSteps = (int)(newColor.B - b) / stepSize;
+            if (bSteps < 0) {
+                bDown = true;
+                bSteps = Math.Abs(bSteps);
+            }
+            int maxSteps = Math.Max(Math.Max(rSteps,gSteps),bSteps);
+            for (int i = 0; i < maxSteps; i++) {
+                Console.WriteLine(i + " - " + stepSize + " - " + r + ","+g+","+b + 
+                    " - " + rSteps +" - " + gSteps + " - " + bSteps);
+                if (rSteps >= i)
+                    if (rDown)
+                        r -= stepSize;
+                    else
+                        r += stepSize;
+                if (gSteps >= i)
+                    if (gDown)
+                        g -= stepSize;
+                    else
+                        g += stepSize;
+                if (bSteps >= i)
+                    if (bDown)
+                        b -= stepSize;
+                    else
+                        b += stepSize;
                 changeTo((byte)r, (byte)g, (byte)b);
                 if(sleepTime != 0)
                     Thread.Sleep(sleepTime);
@@ -244,15 +209,14 @@ namespace Antumbra.Glow
 
         private void changeTo(byte r, byte g, byte b)
         {
-            //Console.WriteLine(System.DateTime.Now.ToString());
-            //Console.WriteLine(r + " " + g + " " + b);
-            if (this.serial.send(r, g, b))//sucessful send
+            if (this.serial.send(r, g, b)) {//sucessful send
                 updateLast(r, g, b);
+                this.updateStatus(2);
+            }
             else {
                 this.updateStatus(0);//send failed, device is probably dead
                 Console.WriteLine("color send failed!");
             }
-            //Console.WriteLine(System.DateTime.Now.ToString() + "        after");
         }
 
         public void checkStatus()
@@ -266,7 +230,7 @@ namespace Antumbra.Glow
                 return;
             switch(status) {
                 case 0:
-                    this.settings.glowStatus.Text = "Not Connected";
+                    this.settings.glowStatus.Text = "No Glow Found";
                     //dead
                     break;
                 case 1:
@@ -286,7 +250,6 @@ namespace Antumbra.Glow
 
         private void updateLast(byte r, byte g, byte b)
         {
-            //this.antumbraLabel.ForeColor = Color.FromArgb(r, g, b);
             this.lastR = r;
             this.lastG = g;
             this.lastB = b;
