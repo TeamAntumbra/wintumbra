@@ -39,7 +39,6 @@
             this.stepSleepLabel = new MetroFramework.Controls.MetroLabel();
             this.sleepSize = new MetroFramework.Controls.MetroTextBox();
             this.displayLabel = new MetroFramework.Controls.MetroLabel();
-            this.displayIndex = new System.Windows.Forms.NumericUpDown();
             this.settingsStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
             this.DriverLabel = new MetroFramework.Controls.MetroLabel();
             this.driverExtensions = new MetroFramework.Controls.MetroComboBox();
@@ -57,7 +56,7 @@
             this.notifiers = new MetroFramework.Controls.MetroComboBox();
             this.decoratorToggle = new MetroFramework.Controls.MetroButton();
             this.notifierToggle = new MetroFramework.Controls.MetroButton();
-            ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).BeginInit();
+            this.displayIndex = new MetroFramework.Controls.MetroComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -201,21 +200,6 @@
             this.displayLabel.Size = new System.Drawing.Size(53, 19);
             this.displayLabel.TabIndex = 29;
             this.displayLabel.Text = "Display:";
-            // 
-            // displayIndex
-            // 
-            this.displayIndex.ForeColor = System.Drawing.Color.Black;
-            this.displayIndex.Location = new System.Drawing.Point(159, 109);
-            this.displayIndex.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.displayIndex.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.displayIndex.Name = "displayIndex";
-            this.displayIndex.Size = new System.Drawing.Size(120, 20);
-            this.displayIndex.TabIndex = 30;
-            this.displayIndex.ValueChanged += new System.EventHandler(this.displayIndex_ValueChanged);
             // 
             // settingsStyleManager
             // 
@@ -385,11 +369,22 @@
             this.notifierToggle.UseVisualStyleBackColor = true;
             this.notifierToggle.Click += new System.EventHandler(this.notifierToggle_Click);
             // 
+            // displayIndex
+            // 
+            this.displayIndex.FormattingEnabled = true;
+            this.displayIndex.ItemHeight = 23;
+            this.displayIndex.Location = new System.Drawing.Point(186, 106);
+            this.displayIndex.Name = "displayIndex";
+            this.displayIndex.Size = new System.Drawing.Size(157, 29);
+            this.displayIndex.TabIndex = 50;
+            this.displayIndex.UseSelectable = true;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.displayIndex);
             this.Controls.Add(this.notifierToggle);
             this.Controls.Add(this.decoratorToggle);
             this.Controls.Add(this.notifiers);
@@ -405,7 +400,6 @@
             this.Controls.Add(this.screenGrabberLabel);
             this.Controls.Add(this.driverExtensions);
             this.Controls.Add(this.DriverLabel);
-            this.Controls.Add(this.displayIndex);
             this.Controls.Add(this.displayLabel);
             this.Controls.Add(this.sleepSize);
             this.Controls.Add(this.stepSleepLabel);
@@ -430,7 +424,6 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.MouseEnter += new System.EventHandler(this.SettingsWindow_MouseEnter);
-            ((System.ComponentModel.ISupportInitialize)(this.displayIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -439,7 +432,6 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown displayIndex;
         private MetroFramework.Controls.MetroTextBox pollingX;
         private MetroFramework.Controls.MetroTextBox pollingY;
         private MetroFramework.Controls.MetroTextBox stepSize;
@@ -468,5 +460,6 @@
         private MetroFramework.Controls.MetroButton decoratorToggle;
         private MetroFramework.Controls.MetroComboBox notifiers;
         private MetroFramework.Controls.MetroComboBox decorators;
+        private MetroFramework.Controls.MetroComboBox displayIndex;
     }
 }

@@ -28,6 +28,10 @@ namespace Antumbra.Glow.Windows
             this.enabledNotifiers = new List<string>();
             InitializeComponent();
             this.Focus();
+            foreach (var screen in Screen.AllScreens)
+                this.displayIndex.Items.Add(screen.DeviceName);
+            if (this.displayIndex.Items.Count > 0)
+                this.displayIndex.SelectedIndex = 0;
         }
 
         public void updateValues()
@@ -117,12 +121,12 @@ namespace Antumbra.Glow.Windows
 
         private void displayIndex_ValueChanged(object sender, EventArgs e)
         {
-            int value = (int)displayIndex.Value;
+            /*int value = (int)displayIndex.Value;
             if (value > Screen.AllScreens.Length - 1)//component handles min value so lets handle max
                 displayIndex.Value = Screen.AllScreens.Length - 1;//max index allowed
             else
                 //this.antumbra.screen.display = Screen.AllScreens[(int)displayIndex.Value];
-                Console.WriteLine("TODO");
+                Console.WriteLine("TODO");*/
         }
 
         private void manualColorBtn_Click(object sender, EventArgs e)
