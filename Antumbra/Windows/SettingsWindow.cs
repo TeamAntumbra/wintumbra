@@ -81,6 +81,7 @@ namespace Antumbra.Glow.Windows
             }
             if (notifiers.Items.Count > 0)
                 notifiers.SelectedIndex = 0;
+            changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
         }
 
         /*private void pollingY_TextChanged(object sender, EventArgs e)
@@ -220,6 +221,16 @@ namespace Antumbra.Glow.Windows
             if (this.pollingAreaWindow == null)
                 this.pollingAreaWindow = new pollingAreaSetter(this.antumbra, this);
             this.pollingAreaWindow.Show();
+        }
+
+        private void changeSensitivity_TextChanged(object sender, EventArgs e)
+        {
+            int value;
+            if (Int32.TryParse(changeSensitivity.Text.ToString(), out value)) {
+                this.antumbra.changeThreshold = value;
+            }
+            else
+                Console.WriteLine("Input value, '" + changeSensitivity.Text + "' is not parsable to an int.");
         }
     }
 }

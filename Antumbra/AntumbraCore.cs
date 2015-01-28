@@ -37,7 +37,6 @@ namespace Antumbra.Glow
         //private bool screenAvgEnabled;
         //public bool gameMode { get; set; }
         private byte lastR, lastG, lastB;
-        private int changeThreshold; //difference in colors needed to change
         //bool on;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
@@ -50,6 +49,7 @@ namespace Antumbra.Glow
         public int pollingY { get; set; }
         public int stepSleep { get; set; }
         public int stepSize { get; set; }
+        public int changeThreshold { get; set; }//difference in colors needed to change
 
         public MEFHelper MEFHelper;
 
@@ -80,7 +80,7 @@ namespace Antumbra.Glow
             this.lastB = 0;
             this.currentColor = Color.Black;//depends on how the Glow starts up
             this.color = Color.Black;
-            this.changeThreshold = 10; //see shouldChange(Color, Color) (lower is more sensitive)
+            this.changeThreshold = 1; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.continuous = false;
             //this.fadeEnabled = false;
             //this.gameMode = false;
@@ -158,20 +158,13 @@ namespace Antumbra.Glow
         {
             //Console.WriteLine(newColor.ToString());
             //fade(newColor, 0, 2);
-            byte r = newColor.R;
+            foreach (var decorator in this.GlowDecorators)
+                newColor = decorator.Decorate(newColor);
+            fade(newColor, this.stepSleep, this.stepSize);
+            /*byte r = newColor.R;
             byte g = newColor.G;
             byte b = newColor.B;
-            changeTo(r, g, b);
-        }
-
-        public int getPollingWidth()//TODO offload to drivers settings
-        {
-            return this.pollingWidth;
-        }
-
-        public int getPollingHeight()
-        {
-            return this.pollingHeight;
+            changeTo(r, g, b);*/
         }
 
         private int calcDiff(Color color, Color other)
@@ -258,20 +251,6 @@ namespace Antumbra.Glow
             this.lastB = b;
         }
 
-        public void updatePollingBounds(int x, int y)
-        {
-            if (x <= 0 || y <= 0)
-                return;//invalid
-            this.pollingWidth = x;
-            this.pollingHeight = y;
-        }
-
-        public void updatePollingBoundsToFull()//assumes primary monitor
-        {
-            updatePollingBounds(Screen.PrimaryScreen.Bounds.Width, 
-                                Screen.PrimaryScreen.Bounds.Height);
-        }
-
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             contextMenu.Show(Cursor.Position);
@@ -297,11 +276,6 @@ namespace Antumbra.Glow
         {
             this.Stop();
             this.SetColorTo(Color.Black);
-        }
-
-        private void manualListener(object sender, EventArgs e)
-        {
-            this.SetColorTo(this.picker.previewPanel.BackColor);
         }
 
         private void contextMenu_MouseLeave(object sender, EventArgs e)
@@ -334,6 +308,14 @@ namespace Antumbra.Glow
                 if (this.GlowDriver.Start()) {
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Started", this.GlowDriver.Name + " was started successfully.", ToolTipIcon.Info);
                     this.GlowDriver.AttachEvent(this);
+                    foreach (var decorator in this.GlowDecorators) {
+                        this.notifyIcon.ShowBalloonTip(3000, "Decorator Found", decorator.Name + " was found.", ToolTipIcon.Info);
+                        decorator.Start();
+                    }
+                    foreach (var notifier in this.GlowNotifiers) {
+                        this.notifyIcon.ShowBalloonTip(3000, "Notifier Found", notifier.Name + " was found.", ToolTipIcon.Info);
+                        notifier.Start();
+                    }
                 }
                 else {
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Issue", this.GlowDriver.Name + " reported that it did not start successfully.",
@@ -354,6 +336,10 @@ namespace Antumbra.Glow
                 else
                     this.GlowDriver = null;
             }
+            foreach (var decorator in this.GlowDecorators)
+                decorator.Stop();
+            foreach (var notifier in this.GlowNotifiers)
+                notifier.Stop();
             //TODO stop everything
         }
 

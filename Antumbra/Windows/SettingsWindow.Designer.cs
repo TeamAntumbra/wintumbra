@@ -59,6 +59,8 @@
             this.pollingHeight = new System.Windows.Forms.Label();
             this.decorators = new MetroFramework.Controls.MetroComboBox();
             this.pollingWidth = new System.Windows.Forms.Label();
+            this.shouldChangeLabel = new System.Windows.Forms.Label();
+            this.changeSensitivity = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -381,11 +383,31 @@
             this.pollingWidth.Size = new System.Drawing.Size(0, 13);
             this.pollingWidth.TabIndex = 61;
             // 
+            // shouldChangeLabel
+            // 
+            this.shouldChangeLabel.AutoSize = true;
+            this.shouldChangeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.shouldChangeLabel.Location = new System.Drawing.Point(33, 541);
+            this.shouldChangeLabel.Name = "shouldChangeLabel";
+            this.shouldChangeLabel.Size = new System.Drawing.Size(124, 13);
+            this.shouldChangeLabel.TabIndex = 62;
+            this.shouldChangeLabel.Text = "Color Change Sensitivity:";
+            // 
+            // changeSensitivity
+            // 
+            this.changeSensitivity.Location = new System.Drawing.Point(201, 538);
+            this.changeSensitivity.Name = "changeSensitivity";
+            this.changeSensitivity.Size = new System.Drawing.Size(106, 20);
+            this.changeSensitivity.TabIndex = 63;
+            this.changeSensitivity.TextChanged += new System.EventHandler(this.changeSensitivity_TextChanged);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.changeSensitivity);
+            this.Controls.Add(this.shouldChangeLabel);
             this.Controls.Add(this.pollingWidth);
             this.Controls.Add(this.pollingHeight);
             this.Controls.Add(this.pollingHeightLabel);
@@ -467,5 +489,7 @@
         private System.Windows.Forms.Label pollingXLabel;
         private System.Windows.Forms.Label label1;
         private MetroFramework.Controls.MetroComboBox decorators;
+        private System.Windows.Forms.TextBox changeSensitivity;
+        private System.Windows.Forms.Label shouldChangeLabel;
     }
 }
