@@ -152,13 +152,6 @@ namespace Antumbra.Glow
             this.last = DateTime.Now;
             SetColorTo((Color)sender);
         }
-/*
-        public void run()
-        {
-            while (true) {
-                //do stuff
-            }
-        }*/
 
         public void SetColorTo(Color newColor)
         {
@@ -180,29 +173,6 @@ namespace Antumbra.Glow
             return this.pollingHeight;
         }
 
-        /*private void setToAvg()
-        {
-            while (true) {
-                if (this.screenGrabber.screen == null)//skip
-                    continue;
-                Color newColor = this.screenProcessor.Process(this.screenGrabber.screen);
-                if (newColor.Equals(Color.Empty))//something went wrong
-                    continue;
-                //fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
-                Console.WriteLine(newColor.ToString());
-            }
-        }
-
-        private void setToGameAvg()
-        {
-            while (true) {
-                Color newColor = this.screenProcessor.Process(this.gameScreenGrabber.screen);
-                if (newColor.Equals(Color.Empty))//something went wrong
-                    return;
-                fade(newColor, this.screenAvgStepSleep, this.screenAvgStepSize);//fade
-            }
-        }
-        */
         private int calcDiff(Color color, Color other)
         {
             int r1 = color.R;
@@ -222,88 +192,6 @@ namespace Antumbra.Glow
         {
             return calcDiff(color, other) > this.changeThreshold;
         }
-
-        /*
-        private void callColorFade()
-        {
-            while (true)
-                colorFade(this.colorFadeStepSleep);
-        }
-
-        private void colorFade(int sleep)
-        {
-            Random rnd = new Random();
-            while(true)
-                fade(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), sleep, this.colorFadeStepSize);
-        }
-
-        private void callSinFade()
-        {
-            while (true)
-                sinFade(this.sinFadeStepSleep, this.sinFadeStepSize);
-        }
-
-        private void sinFade(int sleepTime, double stepSize)
-        {
-            for (double i = 0; i < Math.PI*2; i += stepSize)
-            {
-                if (i <= Math.PI) {//in positive half
-                    byte byte_i = (byte)(Math.Sin(i) * 255);
-                    changeTo(byte_i, byte_i, byte_i);
-                }
-                Thread.Sleep(sleepTime);
-            }
-        }
-
-        private void callHsvFade()
-        {
-            while (true)
-                hsvFade(this.HSVstepSleep);
-        }
-
-        private void hsvFade(int stepSleep)
-        {
-            double s = 100;
-            double v = 100;
-            for (double h = 0; h <= 360; h++)
-            {
-                int[] rgb = HSVRGGConverter.HSVToRGB(h, s, v);
-                fade(Color.FromArgb(rgb[0], rgb[1], rgb[2]), stepSleep, this.HSVstepSize);
-            }
-        }
-
-        private Color decorate(Color newColor)//'decorate' color to conform to brightness and warmth settings
-        {
-            int minModifier = (int)(2.55 * this.minBrightness);//min directly adds percentage of color
-            double maxBrightnessModifier = this.maxBrightness/100.0;//max reduces color proportional to its value
-            int r = (int)(newColor.R * maxBrightnessModifier);
-            int g = (int)(newColor.G * maxBrightnessModifier);
-            int b = (int)(newColor.B * maxBrightnessModifier);
-            r += minModifier;
-            g += minModifier;
-            b += minModifier;
-            if (r > 255)
-                r = 255;
-            if (g > 255)
-                g = 255;
-            if (b > 255)
-                b = 255;
-            return Color.FromArgb(r, g, b);
-        }
-
-        private Color addWarmth(Color newColor)//'decorate' color to conform to warmth setting
-        {
-            int rWarm = 255;
-            int gWarm = 190;
-            int bWarm = 0;
-            int r = newColor.R;
-            int g = newColor.G;
-            int b = newColor.B;
-            r = ((100 - warmth) * r + warmth * rWarm) / (100);
-            g = ((100 - warmth) * g + warmth * gWarm) / (100);
-            b = ((100 - warmth) * b + warmth * bWarm) / (100);
-            return Color.FromArgb(r, g, b);
-        }*/
 
         private void fade(Color newColor, int sleepTime, int stepDivider)
         {
@@ -458,7 +346,8 @@ namespace Antumbra.Glow
         {
             if (null != this.GlowDriver) {
                 if (this.GlowDriver.IsRunning)
-                    this.GlowDriver.Stop();
+                    if (this.GlowDriver.Stop())
+                        this.notifyIcon.ShowBalloonTip(3000, "Driver Stopped", this.GlowDriver.Name + " was stopped successfully.", ToolTipIcon.Info);
                 if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
                     this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
                 else
