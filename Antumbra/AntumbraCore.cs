@@ -37,6 +37,7 @@ namespace Antumbra.Glow
         //private bool screenAvgEnabled;
         //public bool gameMode { get; set; }
         private byte lastR, lastG, lastB;
+        private double hz;
         //bool on;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
@@ -78,9 +79,10 @@ namespace Antumbra.Glow
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
+            this.hz = 0;
             this.currentColor = Color.Black;//depends on how the Glow starts up
             this.color = Color.Black;
-            this.changeThreshold = 1; //see shouldChange(Color, Color) (lower is more sensitive)
+            this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
             //this.continuous = false;
             //this.fadeEnabled = false;
             //this.gameMode = false;
@@ -93,7 +95,7 @@ namespace Antumbra.Glow
             this.pollingX = 0;//full screen settings
             this.pollingY = 0;
             this.stepSleep = 0;//no sleep
-            this.stepSize = 1;
+            this.stepSize = 2;
             //this.picker = new ColorPickerDialog(); //TODO investigate crash with color picker
             //this.screenGrabber = new AntumbraScreenGrabber(this);
             //this.gameScreenGrabber = new AntumbraDirectXScreenGrabber(this, this.pollingX, this.pollingY,
@@ -164,19 +166,23 @@ namespace Antumbra.Glow
         {
             //Console.WriteLine();
             double time = DateTime.Now.Subtract(this.last).TotalSeconds;
-            Console.WriteLine(time);
-            string newText = (1.0/time).ToString() + " hz";
-            this.Invoke((MethodInvoker)delegate
-            {
-                this.settings.speed.Text = newText;
-            });
-            this.last = DateTime.Now;
+            if (time != 0) {//ignore when zero TODO find why this happens when decorators are toggled
+                Console.WriteLine(time);
+                this.hz = (this.hz * .01)+ ((1.0 / time) * .99);//weighted average giving each value 1%
+                this.hz = (double)Math.Round((decimal)this.hz, 5);
+                string newText = this.hz.ToString() + " hz";
+                this.Invoke((MethodInvoker)delegate
+                {
+                    this.settings.speed.Text = newText;
+                });
+                this.last = DateTime.Now;
+            }
             Color newColor = (Color)sender;
             foreach (var decorator in this.GlowDecorators) {
-                Console.WriteLine(newColor.ToString());
+                //Console.WriteLine(newColor.ToString());
                 newColor = decorator.Decorate(newColor);
             }
-            Console.WriteLine(newColor.ToString());
+            //Console.WriteLine(newColor.ToString());
             SetColorTo(newColor);
         }
 
@@ -332,11 +338,11 @@ namespace Antumbra.Glow
                 return false;
             }
             if (this.GlowDriver is GlowScreenDriverCoupler) {//screen based driver selected
-                if (null == this.ScreenGrabber || null == this.ScreenProcessor)
+                if (null == this.ScreenGrabber || null == this.ScreenProcessor)//no grabber or processor set
                     return false;
-                this.notifyIcon.ShowBalloonTip(3000, "Screen Based Driver Found", "A screen based driver was found that uses "
-                    + this.ScreenGrabber.Name + " & " + this.ScreenProcessor.Name + ".", ToolTipIcon.Info);
                 this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
+                this.notifyIcon.ShowBalloonTip(3000, "Screen Based Driver Found", "A screen based driver was found: " +
+                    this.GlowDriver.Name + ".", ToolTipIcon.Info);
             }
             return true;
         }
@@ -373,19 +379,15 @@ namespace Antumbra.Glow
         public void Stop()
         {
             if (null != this.GlowDriver) {
-                if (this.GlowDriver.IsRunning)
-                    if (this.GlowDriver.Stop())
-                        this.notifyIcon.ShowBalloonTip(3000, "Driver Stopped", this.GlowDriver.Name + " was stopped successfully.", ToolTipIcon.Info);
-              //  if (this.GlowDriver is GlowScreenDriverCoupler) //maintain status while reseting
-              //      this.GlowDriver = new GlowScreenDriverCoupler(null, null, null);
-             //   else
-             //  this.GlowDriver = null;
+                if (this.GlowDriver.Stop())
+                    this.notifyIcon.ShowBalloonTip(3000, "Driver Stopped", this.GlowDriver.Name + " was stopped successfully.", ToolTipIcon.Info);
             }
-            foreach (var decorator in this.GlowDecorators)
-                decorator.Stop();
-            foreach (var notifier in this.GlowNotifiers)
-                notifier.Stop();
-            //TODO stop everything
+            if (null != this.GlowDecorators)
+                foreach (var decorator in this.GlowDecorators)
+                    decorator.Stop();
+            if (null != this.GlowNotifiers)
+                foreach (var notifier in this.GlowNotifiers)
+                    notifier.Stop();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)

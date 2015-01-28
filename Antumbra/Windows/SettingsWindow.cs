@@ -167,6 +167,7 @@ namespace Antumbra.Glow.Windows
 
         private void apply_Click(object sender, EventArgs e)
         {
+            this.antumbra.Stop();
             UpdateSelections();
         }
 
