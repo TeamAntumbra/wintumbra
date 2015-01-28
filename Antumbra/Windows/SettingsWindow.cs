@@ -28,10 +28,6 @@ namespace Antumbra.Glow.Windows
             this.enabledNotifiers = new List<string>();
             InitializeComponent();
             this.Focus();
-            foreach (var screen in Screen.AllScreens)
-                this.displayIndex.Items.Add(screen.DeviceName);
-            if (this.displayIndex.Items.Count > 0)
-                this.displayIndex.SelectedIndex = 0;
         }
 
         public void updateValues()
@@ -70,6 +66,10 @@ namespace Antumbra.Glow.Windows
             }
             if (notifiers.Items.Count > 0)
                 notifiers.SelectedIndex = 0;*/
+            foreach (var screen in Screen.AllScreens)
+                this.displayIndex.Items.Add(screen.DeviceName);
+            if (this.displayIndex.Items.Count > 0 && this.displayIndex.SelectedIndex < 0)
+                this.displayIndex.SelectedIndex = 0;
         }
 
         private void pollingY_TextChanged(object sender, EventArgs e)
