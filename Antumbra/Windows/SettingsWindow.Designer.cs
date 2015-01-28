@@ -28,17 +28,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label1 = new MetroFramework.Controls.MetroLabel();
-            this.label2 = new MetroFramework.Controls.MetroLabel();
-            this.label3 = new MetroFramework.Controls.MetroLabel();
-            this.pollingX = new MetroFramework.Controls.MetroTextBox();
-            this.pollingY = new MetroFramework.Controls.MetroTextBox();
             this.stepSizeLabel = new MetroFramework.Controls.MetroLabel();
             this.stepSize = new MetroFramework.Controls.MetroTextBox();
-            this.fullBtn = new MetroFramework.Controls.MetroButton();
             this.stepSleepLabel = new MetroFramework.Controls.MetroLabel();
             this.sleepSize = new MetroFramework.Controls.MetroTextBox();
-            this.displayLabel = new MetroFramework.Controls.MetroLabel();
             this.settingsStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
             this.DriverLabel = new MetroFramework.Controls.MetroLabel();
             this.driverExtensions = new MetroFramework.Controls.MetroComboBox();
@@ -52,79 +45,22 @@
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.speedLabel = new System.Windows.Forms.Label();
             this.speed = new System.Windows.Forms.Label();
-            this.decorators = new MetroFramework.Controls.MetroComboBox();
             this.notifiers = new MetroFramework.Controls.MetroComboBox();
             this.decoratorToggle = new MetroFramework.Controls.MetroButton();
             this.notifierToggle = new MetroFramework.Controls.MetroButton();
-            this.displayIndex = new MetroFramework.Controls.MetroComboBox();
+            this.pollingArea = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pollingXLabel = new System.Windows.Forms.Label();
+            this.pollingX = new System.Windows.Forms.Label();
+            this.pollingYLabel = new System.Windows.Forms.Label();
+            this.pollingY = new System.Windows.Forms.Label();
+            this.pollingWidthLabel = new System.Windows.Forms.Label();
+            this.pollingHeightLabel = new System.Windows.Forms.Label();
+            this.pollingHeight = new System.Windows.Forms.Label();
+            this.decorators = new MetroFramework.Controls.MetroComboBox();
+            this.pollingWidth = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(51, 148);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 19);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Polling Area:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Location = new System.Drawing.Point(154, 148);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(20, 19);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "X:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label3.Location = new System.Drawing.Point(250, 148);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(20, 19);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Y:";
-            // 
-            // pollingX
-            // 
-            this.pollingX.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingX.Lines = new string[] {
-        "0"};
-            this.pollingX.Location = new System.Drawing.Point(184, 148);
-            this.pollingX.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pollingX.MaxLength = 32767;
-            this.pollingX.Name = "pollingX";
-            this.pollingX.PasswordChar = '\0';
-            this.pollingX.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.pollingX.SelectedText = "";
-            this.pollingX.Size = new System.Drawing.Size(62, 31);
-            this.pollingX.TabIndex = 3;
-            this.pollingX.Text = "0";
-            this.pollingX.UseSelectable = true;
-            this.pollingX.TextChanged += new System.EventHandler(this.pollingX_TextChanged);
-            // 
-            // pollingY
-            // 
-            this.pollingY.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingY.Lines = new string[] {
-        "0"};
-            this.pollingY.Location = new System.Drawing.Point(280, 148);
-            this.pollingY.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pollingY.MaxLength = 32767;
-            this.pollingY.Name = "pollingY";
-            this.pollingY.PasswordChar = '\0';
-            this.pollingY.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.pollingY.SelectedText = "";
-            this.pollingY.Size = new System.Drawing.Size(72, 31);
-            this.pollingY.TabIndex = 4;
-            this.pollingY.Text = "0";
-            this.pollingY.UseSelectable = true;
-            this.pollingY.TextChanged += new System.EventHandler(this.pollingY_TextChanged);
             // 
             // stepSizeLabel
             // 
@@ -152,18 +88,6 @@
             this.stepSize.UseSelectable = true;
             this.stepSize.TextChanged += new System.EventHandler(this.stepSize_TextChanged);
             // 
-            // fullBtn
-            // 
-            this.fullBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.fullBtn.Location = new System.Drawing.Point(200, 185);
-            this.fullBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.fullBtn.Name = "fullBtn";
-            this.fullBtn.Size = new System.Drawing.Size(123, 29);
-            this.fullBtn.TabIndex = 16;
-            this.fullBtn.Text = "Full Screen";
-            this.fullBtn.UseSelectable = true;
-            this.fullBtn.Click += new System.EventHandler(this.fullBtn_Click);
-            // 
             // stepSleepLabel
             // 
             this.stepSleepLabel.AutoSize = true;
@@ -190,16 +114,6 @@
             this.sleepSize.TabIndex = 22;
             this.sleepSize.UseSelectable = true;
             this.sleepSize.TextChanged += new System.EventHandler(this.sleepSize_TextChanged);
-            // 
-            // displayLabel
-            // 
-            this.displayLabel.AutoSize = true;
-            this.displayLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.displayLabel.Location = new System.Drawing.Point(56, 109);
-            this.displayLabel.Name = "displayLabel";
-            this.displayLabel.Size = new System.Drawing.Size(53, 19);
-            this.displayLabel.TabIndex = 29;
-            this.displayLabel.Text = "Display:";
             // 
             // settingsStyleManager
             // 
@@ -311,7 +225,7 @@
             // 
             this.speedLabel.AutoSize = true;
             this.speedLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.speedLabel.Location = new System.Drawing.Point(370, 151);
+            this.speedLabel.Location = new System.Drawing.Point(281, 114);
             this.speedLabel.Name = "speedLabel";
             this.speedLabel.Size = new System.Drawing.Size(75, 13);
             this.speedLabel.TabIndex = 44;
@@ -321,21 +235,11 @@
             // 
             this.speed.AutoSize = true;
             this.speed.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.speed.Location = new System.Drawing.Point(452, 151);
+            this.speed.Location = new System.Drawing.Point(380, 114);
             this.speed.Name = "speed";
             this.speed.Size = new System.Drawing.Size(13, 13);
             this.speed.TabIndex = 45;
             this.speed.Text = "0";
-            // 
-            // decorators
-            // 
-            this.decorators.FormattingEnabled = true;
-            this.decorators.ItemHeight = 23;
-            this.decorators.Location = new System.Drawing.Point(186, 328);
-            this.decorators.Name = "decorators";
-            this.decorators.Size = new System.Drawing.Size(236, 29);
-            this.decorators.TabIndex = 46;
-            this.decorators.UseSelectable = true;
             // 
             // notifiers
             // 
@@ -369,22 +273,128 @@
             this.notifierToggle.UseVisualStyleBackColor = true;
             this.notifierToggle.Click += new System.EventHandler(this.notifierToggle_Click);
             // 
-            // displayIndex
+            // pollingArea
             // 
-            this.displayIndex.FormattingEnabled = true;
-            this.displayIndex.ItemHeight = 23;
-            this.displayIndex.Location = new System.Drawing.Point(186, 106);
-            this.displayIndex.Name = "displayIndex";
-            this.displayIndex.Size = new System.Drawing.Size(157, 29);
-            this.displayIndex.TabIndex = 50;
-            this.displayIndex.UseSelectable = true;
+            this.pollingArea.Location = new System.Drawing.Point(284, 173);
+            this.pollingArea.Name = "pollingArea";
+            this.pollingArea.Size = new System.Drawing.Size(138, 35);
+            this.pollingArea.TabIndex = 51;
+            this.pollingArea.Text = "Set Screen Grabber Area";
+            this.pollingArea.UseVisualStyleBackColor = true;
+            this.pollingArea.Click += new System.EventHandler(this.pollingArea_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label1.Location = new System.Drawing.Point(101, 71);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 17);
+            this.label1.TabIndex = 52;
+            this.label1.Text = "Polling Location:";
+            // 
+            // pollingXLabel
+            // 
+            this.pollingXLabel.AutoSize = true;
+            this.pollingXLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingXLabel.Location = new System.Drawing.Point(33, 114);
+            this.pollingXLabel.Name = "pollingXLabel";
+            this.pollingXLabel.Size = new System.Drawing.Size(17, 13);
+            this.pollingXLabel.TabIndex = 53;
+            this.pollingXLabel.Text = "X:";
+            // 
+            // pollingX
+            // 
+            this.pollingX.AutoSize = true;
+            this.pollingX.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingX.Location = new System.Drawing.Point(56, 114);
+            this.pollingX.Name = "pollingX";
+            this.pollingX.Size = new System.Drawing.Size(0, 13);
+            this.pollingX.TabIndex = 54;
+            // 
+            // pollingYLabel
+            // 
+            this.pollingYLabel.AutoSize = true;
+            this.pollingYLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingYLabel.Location = new System.Drawing.Point(33, 146);
+            this.pollingYLabel.Name = "pollingYLabel";
+            this.pollingYLabel.Size = new System.Drawing.Size(17, 13);
+            this.pollingYLabel.TabIndex = 55;
+            this.pollingYLabel.Text = "Y:";
+            // 
+            // pollingY
+            // 
+            this.pollingY.AutoSize = true;
+            this.pollingY.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingY.Location = new System.Drawing.Point(56, 146);
+            this.pollingY.Name = "pollingY";
+            this.pollingY.Size = new System.Drawing.Size(0, 13);
+            this.pollingY.TabIndex = 56;
+            // 
+            // pollingWidthLabel
+            // 
+            this.pollingWidthLabel.AutoSize = true;
+            this.pollingWidthLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingWidthLabel.Location = new System.Drawing.Point(122, 114);
+            this.pollingWidthLabel.Name = "pollingWidthLabel";
+            this.pollingWidthLabel.Size = new System.Drawing.Size(38, 13);
+            this.pollingWidthLabel.TabIndex = 57;
+            this.pollingWidthLabel.Text = "Width:";
+            // 
+            // pollingHeightLabel
+            // 
+            this.pollingHeightLabel.AutoSize = true;
+            this.pollingHeightLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingHeightLabel.Location = new System.Drawing.Point(122, 146);
+            this.pollingHeightLabel.Name = "pollingHeightLabel";
+            this.pollingHeightLabel.Size = new System.Drawing.Size(41, 13);
+            this.pollingHeightLabel.TabIndex = 58;
+            this.pollingHeightLabel.Text = "Height:";
+            // 
+            // pollingHeight
+            // 
+            this.pollingHeight.AutoSize = true;
+            this.pollingHeight.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingHeight.Location = new System.Drawing.Point(169, 146);
+            this.pollingHeight.Name = "pollingHeight";
+            this.pollingHeight.Size = new System.Drawing.Size(0, 13);
+            this.pollingHeight.TabIndex = 60;
+            // 
+            // decorators
+            // 
+            this.decorators.FormattingEnabled = true;
+            this.decorators.ItemHeight = 23;
+            this.decorators.Location = new System.Drawing.Point(186, 328);
+            this.decorators.Name = "decorators";
+            this.decorators.Size = new System.Drawing.Size(236, 29);
+            this.decorators.TabIndex = 46;
+            this.decorators.UseSelectable = true;
+            // 
+            // pollingWidth
+            // 
+            this.pollingWidth.AutoSize = true;
+            this.pollingWidth.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.pollingWidth.Location = new System.Drawing.Point(166, 114);
+            this.pollingWidth.Name = "pollingWidth";
+            this.pollingWidth.Size = new System.Drawing.Size(0, 13);
+            this.pollingWidth.TabIndex = 61;
             // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
-            this.Controls.Add(this.displayIndex);
+            this.Controls.Add(this.pollingWidth);
+            this.Controls.Add(this.pollingHeight);
+            this.Controls.Add(this.pollingHeightLabel);
+            this.Controls.Add(this.pollingWidthLabel);
+            this.Controls.Add(this.pollingY);
+            this.Controls.Add(this.pollingYLabel);
+            this.Controls.Add(this.pollingX);
+            this.Controls.Add(this.pollingXLabel);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pollingArea);
             this.Controls.Add(this.notifierToggle);
             this.Controls.Add(this.decoratorToggle);
             this.Controls.Add(this.notifiers);
@@ -400,17 +410,10 @@
             this.Controls.Add(this.screenGrabberLabel);
             this.Controls.Add(this.driverExtensions);
             this.Controls.Add(this.DriverLabel);
-            this.Controls.Add(this.displayLabel);
             this.Controls.Add(this.sleepSize);
             this.Controls.Add(this.stepSleepLabel);
-            this.Controls.Add(this.fullBtn);
             this.Controls.Add(this.stepSize);
             this.Controls.Add(this.stepSizeLabel);
-            this.Controls.Add(this.pollingY);
-            this.Controls.Add(this.pollingX);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SettingsWindow";
             this.Padding = new System.Windows.Forms.Padding(30, 92, 30, 31);
@@ -432,18 +435,11 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroTextBox pollingX;
-        private MetroFramework.Controls.MetroTextBox pollingY;
         private MetroFramework.Controls.MetroTextBox stepSize;
-        private MetroFramework.Controls.MetroButton fullBtn;
         private MetroFramework.Controls.MetroTextBox sleepSize;
         private MetroFramework.Components.MetroStyleManager settingsStyleManager;
-        private MetroFramework.Controls.MetroLabel label1;
-        private MetroFramework.Controls.MetroLabel label2;
-        private MetroFramework.Controls.MetroLabel label3;
         private MetroFramework.Controls.MetroLabel stepSizeLabel;
         private MetroFramework.Controls.MetroLabel stepSleepLabel;
-        private MetroFramework.Controls.MetroLabel displayLabel;
         private MetroFramework.Controls.MetroComboBox driverExtensions;
         private MetroFramework.Controls.MetroLabel DriverLabel;
         private MetroFramework.Controls.MetroComboBox screenProcessors;
@@ -459,7 +455,16 @@
         private MetroFramework.Controls.MetroButton notifierToggle;
         private MetroFramework.Controls.MetroButton decoratorToggle;
         private MetroFramework.Controls.MetroComboBox notifiers;
+        private System.Windows.Forms.Button pollingArea;
+        private System.Windows.Forms.Label pollingWidth;
+        private System.Windows.Forms.Label pollingHeight;
+        private System.Windows.Forms.Label pollingHeightLabel;
+        private System.Windows.Forms.Label pollingWidthLabel;
+        private System.Windows.Forms.Label pollingY;
+        private System.Windows.Forms.Label pollingYLabel;
+        private System.Windows.Forms.Label pollingX;
+        private System.Windows.Forms.Label pollingXLabel;
+        private System.Windows.Forms.Label label1;
         private MetroFramework.Controls.MetroComboBox decorators;
-        private MetroFramework.Controls.MetroComboBox displayIndex;
     }
 }

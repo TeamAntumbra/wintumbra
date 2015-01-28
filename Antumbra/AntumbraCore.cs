@@ -35,7 +35,7 @@ namespace Antumbra.Glow
         //private Thread driverThread;
         //private bool fadeEnabled;
         //private bool screenAvgEnabled;
-        public bool gameMode { get; set; }
+        //public bool gameMode { get; set; }
         private byte lastR, lastG, lastB;
         private int changeThreshold; //difference in colors needed to change
         //bool on;
@@ -90,9 +90,9 @@ namespace Antumbra.Glow
             //this.pollingHeight = this.screen.height;
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
             this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
-            this.pollingX = 0;
+            this.pollingX = 0;//full screen settings
             this.pollingY = 0;
-            this.stepSleep = 15;
+            this.stepSleep = 0;//no sleep
             this.stepSize = 1;
             updateStatus(this.serial.state);
             //this.picker = new ColorPickerDialog(); //TODO investigate crash with color picker

@@ -20,6 +20,7 @@ namespace Antumbra.Glow.Windows
         private AntumbraCore antumbra;
         private ColorPickerDialog picker;
         private List<string> enabledDecorators, enabledNotifiers;
+        private MetroFramework.Forms.MetroForm pollingAreaWindow;
         public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
@@ -32,10 +33,12 @@ namespace Antumbra.Glow.Windows
 
         public void updateValues()
         {
-            pollingX.Text = this.antumbra.getPollingWidth().ToString();
-            pollingY.Text = this.antumbra.getPollingHeight().ToString();
             stepSize.Text = this.antumbra.stepSize.ToString();
             sleepSize.Text = this.antumbra.stepSleep.ToString();
+            pollingHeight.Text = this.antumbra.pollingHeight.ToString();
+            pollingWidth.Text = this.antumbra.pollingWidth.ToString();
+            pollingX.Text = this.antumbra.pollingX.ToString();
+            pollingY.Text = this.antumbra.pollingY.ToString();
             driverExtensions.Items.Clear();
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailDrivers()) {
                 driverExtensions.Items.Add(str);
@@ -66,13 +69,9 @@ namespace Antumbra.Glow.Windows
             }
             if (notifiers.Items.Count > 0)
                 notifiers.SelectedIndex = 0;*/
-            foreach (var screen in Screen.AllScreens)
-                this.displayIndex.Items.Add(screen.DeviceName);
-            if (this.displayIndex.Items.Count > 0 && this.displayIndex.SelectedIndex < 0)
-                this.displayIndex.SelectedIndex = 0;
         }
 
-        private void pollingY_TextChanged(object sender, EventArgs e)
+        /*private void pollingY_TextChanged(object sender, EventArgs e)
         {
             try {
                 this.antumbra.updatePollingBounds(Convert.ToInt32(pollingX.Text), Convert.ToInt32(pollingY.Text));
@@ -91,7 +90,7 @@ namespace Antumbra.Glow.Windows
                 Console.WriteLine("Format exception from settings");
             }
         }
-
+        */
         private void stepSize_TextChanged(object sender, EventArgs e)
         {
             try {
@@ -102,12 +101,12 @@ namespace Antumbra.Glow.Windows
             }
         }
 
-        private void fullBtn_Click(object sender, EventArgs e)
+        /*private void fullBtn_Click(object sender, EventArgs e)
         {
             this.antumbra.updatePollingBoundsToFull();
             pollingX.Text = this.antumbra.getPollingWidth().ToString();
             pollingY.Text = this.antumbra.getPollingHeight().ToString();
-        }
+        }*/
 
         private void sleepSize_TextChanged(object sender, EventArgs e)
         {
@@ -184,7 +183,15 @@ namespace Antumbra.Glow.Windows
 
         private void SettingsWindow_MouseEnter(object sender, EventArgs e)
         {
-            this.Focus();
+            if (this.pollingAreaWindow == null || !this.pollingAreaWindow.Visible)
+                this.Focus();
+        }
+
+        private void pollingArea_Click(object sender, EventArgs e)
+        {
+            if (this.pollingAreaWindow == null)
+                this.pollingAreaWindow = new pollingAreaSetter(this.antumbra, this);
+            this.pollingAreaWindow.Show();
         }
     }
 }

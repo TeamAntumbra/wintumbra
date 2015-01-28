@@ -134,6 +134,12 @@
     </Compile>
     <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
     <Compile Include="MEFHelper.cs" />
+    <Compile Include="Windows\pollingAreaSetter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\pollingAreaSetter.Designer.cs">
+      <DependentUpon>pollingAreaSetter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\HslColor.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
     <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />
@@ -219,6 +225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ColorPicker\ColorPickerDialog.resx">
       <DependentUpon>ColorPickerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\pollingAreaSetter.resx">
+      <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
