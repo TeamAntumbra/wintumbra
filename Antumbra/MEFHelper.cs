@@ -162,20 +162,22 @@ namespace Antumbra.Glow
             return null;
         }
 
-        public GlowDecorator GetDecorator(string name)
+        public List<GlowDecorator> GetDecorators(List<string> names)
         {
+            List<GlowDecorator> result = new List<GlowDecorator>();
             foreach (var ext in this.AvailDecorators.ToList<GlowDecorator>())
-                if (ext.Name.Equals(name))
-                    return ext;
-            return null;
+                if (names.Contains(ext.Name))
+                    result.Add(ext);
+            return result;
         }
 
-        public GlowNotifier GetNotifier(string name)
+        public List<GlowNotifier> GetNotifiers(List<string> names)
         {
+            List<GlowNotifier> result = new List<GlowNotifier>();
             foreach (var ext in this.AvailNotifiers.ToList<GlowNotifier>())
-                if (ext.Name.Equals(name))
-                    return ext;
-            return null;
+                if (names.Contains(ext.Name))
+                    result.Add(ext);
+            return result;
         }
 
         public GlowDriver GetDefaultDriver()

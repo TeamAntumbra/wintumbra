@@ -153,6 +153,16 @@ namespace Antumbra.Glow.Windows
                 this.antumbra.setScreenProcessor(null);
             else
                 this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
+            List<string> enabledDecorators = new List<string>();
+            foreach (GlowDecorator item in decorators.SelectedItems) {
+                enabledDecorators.Add(item.Name);
+            }
+            this.antumbra.setDecorators(this.antumbra.MEFHelper.GetDecorators(enabledDecorators));
+            List<string> enabledNotifiers = new List<string>();
+            foreach (GlowNotifier item in notifiers.SelectedItems) {
+                enabledNotifiers.Add(item.Name);
+            }
+            this.antumbra.setNotifiers(this.antumbra.MEFHelper.GetNotifiers(enabledNotifiers));
         }
 
         private void apply_Click(object sender, EventArgs e)
