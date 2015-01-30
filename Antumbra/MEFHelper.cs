@@ -182,7 +182,9 @@ namespace Antumbra.Glow
 
         public GlowDriver GetDefaultDriver()
         {
-            return this.AvailDrivers.First<GlowDriver>();
+            if (this.AvailDrivers.Count != 0)
+                return this.AvailDrivers.First<GlowDriver>();
+            return null;
         }
 
         public GlowScreenGrabber GetDefaultScreenGrabber()

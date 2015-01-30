@@ -36,7 +36,12 @@ namespace Antumbra.Glow.ExtensionFramework
             }
         }
         public sealed override string Name
-        { get { return "Glow Screen Driver Coupler (" + this.grabber.Name + " & " + this.processor.Name + ")"; } }
+        { get {
+            if (null != this.grabber && null != this.processor)
+                return "Glow Screen Driver Coupler (" + this.grabber.Name + " & " + this.processor.Name + ")";
+            else
+                return "Glow Screen Driver Coupler";
+            } }
         public sealed override string Author
         { get { return "Team Antumbra"; } }
         public sealed override string Description
@@ -108,8 +113,10 @@ namespace Antumbra.Glow.ExtensionFramework
         public override bool Stop()
         {
             this.observers = new List<IObserver<Color>>();//reset observers
-            this.processor.Stop();
-            this.grabber.Stop();
+            if (this.processor != null)
+                this.processor.Stop();
+            if (this.grabber != null)
+                this.grabber.Stop();
             return true;
         }
     }

@@ -28,6 +28,7 @@ namespace Antumbra.Glow.Windows
             this.enabledDecorators = new List<string>();
             this.enabledNotifiers = new List<string>();
             InitializeComponent();
+            updateValues();
             this.Focus();
         }
 
