@@ -82,7 +82,6 @@ namespace Antumbra.Glow.ExtensionFramework
 
         public override bool Start()
         {
-            bool ready = false;
             if (this.grabber != null && this.processor != null) {
                 /*this.grabber.Subscribe(this.processor);
                 this.processor.Subscribe(this);*/
@@ -94,20 +93,16 @@ namespace Antumbra.Glow.ExtensionFramework
                     this.grabber.y = this.core.pollingY;
                     this.grabber.width = this.core.pollingWidth;
                     this.grabber.height = this.core.pollingHeight;
-                    ready = true;
+                    if (this.grabber.Start()) {
+                        return true;
+                    }
                 }
-                //get ready and start
-                if (ready && this.grabber.Start()) {
-                    return true;
-                }
-                
-                
                 /*this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
                 this.processor.Start();
                 this.grabber.Start();
                 return true;*/
             }
-            return ready;
+            return false;
         }
 
         public override bool Stop()
