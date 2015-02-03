@@ -153,57 +153,8 @@ namespace Antumbra.Glow
         public void SetColorTo(Color newColor)
         {
             changeTo(newColor.R, newColor.G, newColor.B);
-            //fade(newColor, this.stepSleep, this.stepSize);//broken
         }
-
-        private void fade(Color newColor, int sleepTime, int stepSize)//probably will become a decorator, either way it's moving out of here soon
-        {
-            float r = this.lastR;
-            float g = this.lastG;
-            float b = this.lastB;
-            int rSteps = (int)(newColor.R - r) / stepSize;
-            bool rDown = false;
-            bool gDown = false;
-            bool bDown = false;
-            if (rSteps < 0) {
-                rDown = true;
-                rSteps = Math.Abs(rSteps);
-            }
-            int gSteps = (int)(newColor.G - g) / stepSize;
-            if (gSteps < 0) {
-                gDown = true;
-                gSteps = Math.Abs(gSteps);
-            }
-            int bSteps = (int)(newColor.B - b) / stepSize;
-            if (bSteps < 0) {
-                bDown = true;
-                bSteps = Math.Abs(bSteps);
-            }
-            int maxSteps = Math.Max(Math.Max(rSteps,gSteps),bSteps);
-            for (int i = 0; i < maxSteps; i++) {
-                Console.WriteLine(i + " - " + stepSize + " - " + r + ","+g+","+b + 
-                    " - " + rSteps +" - " + gSteps + " - " + bSteps);
-                if (rSteps >= i)
-                    if (rDown)
-                        r -= stepSize;
-                    else
-                        r += stepSize;
-                if (gSteps >= i)
-                    if (gDown)
-                        g -= stepSize;
-                    else
-                        g += stepSize;
-                if (bSteps >= i)
-                    if (bDown)
-                        b -= stepSize;
-                    else
-                        b += stepSize;
-                changeTo((byte)r, (byte)g, (byte)b);
-                if(sleepTime != 0)
-                    Thread.Sleep(sleepTime);
-            }
-        }
-
+       
         private void changeTo(byte r, byte g, byte b)
         {
             if (this.serial.send(r, g, b)) {//sucessful send
@@ -211,7 +162,7 @@ namespace Antumbra.Glow
                 this.updateStatus(2);
             }
             else {
-                this.updateStatus(0);//send failed, device is probably dead
+                this.updateStatus(0);//send failed, device is probably dead / not connected
                 Console.WriteLine("color send failed!");
             }
         }
@@ -266,6 +217,7 @@ namespace Antumbra.Glow
 
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
+            Stop();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             if (this.settings.Visible)
@@ -307,11 +259,16 @@ namespace Antumbra.Glow
                 this.notifyIcon.ShowBalloonTip(3000, "Screen Based Driver Found", "A screen based driver was found: " +
                     this.GlowDriver.Name + ".", ToolTipIcon.Info);
             }
+            else {
+                this.notifyIcon.ShowBalloonTip(3000, "Independent Driver Found.", "An independent driver was found: " +
+                    this.GlowDriver.Name + ".", ToolTipIcon.Info);
+            }
             return true;
         }
 
         public void Start()
         {
+            Stop();
             if (verifyExtensionChoices()) {
                 this.last = DateTime.Now;
                 if (this.GlowDriver.Start()) {
