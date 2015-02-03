@@ -242,7 +242,7 @@ namespace Antumbra.Glow
             }
             this.Invoke((MethodInvoker)delegate
             {
-                this.settings.speed.Text = newText;
+                this.settings.glowStatus.Text = newText;
             });
         }
 
