@@ -73,26 +73,6 @@ namespace Antumbra.Glow.Windows
             this.antumbra.checkStatus();
         }
 
-        /*private void pollingY_TextChanged(object sender, EventArgs e)
-        {
-            try {
-                this.antumbra.updatePollingBounds(Convert.ToInt32(pollingX.Text), Convert.ToInt32(pollingY.Text));
-            }
-            catch (System.FormatException) {
-                Console.WriteLine("Format exception from settings");
-            }
-        }
-
-        private void pollingX_TextChanged(object sender, EventArgs e)
-        {
-            try {
-                this.antumbra.updatePollingBounds(Convert.ToInt32(pollingX.Text), Convert.ToInt32(pollingY.Text));
-            }
-            catch (System.FormatException) {
-                Console.WriteLine("Format exception from settings");
-            }
-        }
-        */
         private void stepSize_TextChanged(object sender, EventArgs e)
         {
             try {
@@ -103,13 +83,6 @@ namespace Antumbra.Glow.Windows
             }
         }
 
-        /*private void fullBtn_Click(object sender, EventArgs e)
-        {
-            this.antumbra.updatePollingBoundsToFull();
-            pollingX.Text = this.antumbra.getPollingWidth().ToString();
-            pollingY.Text = this.antumbra.getPollingHeight().ToString();
-        }*/
-
         private void sleepSize_TextChanged(object sender, EventArgs e)
         {
             try {
@@ -118,28 +91,6 @@ namespace Antumbra.Glow.Windows
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");
             }
-        }
-
-        private void displayIndex_ValueChanged(object sender, EventArgs e)
-        {
-            /*int value = (int)displayIndex.Value;
-            if (value > Screen.AllScreens.Length - 1)//component handles min value so lets handle max
-                displayIndex.Value = Screen.AllScreens.Length - 1;//max index allowed
-            else
-                //this.antumbra.screen.display = Screen.AllScreens[(int)displayIndex.Value];
-                Console.WriteLine("TODO");*/
-        }
-
-        private void manualColorBtn_Click(object sender, EventArgs e)
-        {
-            this.picker = new ColorPickerDialog();
-            this.picker.Show();
-            picker.previewPanel.BackColorChanged += new EventHandler(manualListener);
-        }
-
-        private void manualListener(object sender, EventArgs e)
-        {
-            this.antumbra.SetColorTo(this.picker.previewPanel.BackColor);
         }
 
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
