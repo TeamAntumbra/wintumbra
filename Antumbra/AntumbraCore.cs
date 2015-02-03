@@ -27,7 +27,6 @@ namespace Antumbra.Glow
     public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver
     {
         private Color color;//newest generated color for displaying
-        //private ColorPickerDialog picker;
         private byte lastR, lastG, lastB;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
@@ -48,9 +47,7 @@ namespace Antumbra.Glow
         private List<GlowNotifier> GlowNotifiers;
         private Task outputLoopTask;
         public double OutputLoopFPS { get { return outputLoopFPS.FPS; } }
-        public double OutputLoopFrameTime { get { return outputLoopFPS.FrameTimeInMilliseconds; } }
         private FPSCalc outputLoopFPS = new FPSCalc();
-        //private DateTime last;
 
         public AntumbraCore()
         {
@@ -65,8 +62,6 @@ namespace Antumbra.Glow
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
-            //this.hz = 0;
-            //this.currentColor = Color.Black;//depends on how the Glow starts up
             this.color = Color.Black;
             this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -157,11 +152,6 @@ namespace Antumbra.Glow
 
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
-            /*Color newColor = (Color)sender;
-            foreach (var decorator in this.GlowDecorators) {
-                newColor = decorator.Decorate(newColor);
-            }
-            SetColorTo(newColor);*/
             lock (sync) {
                 color = (Color)sender;
             }
@@ -261,8 +251,8 @@ namespace Antumbra.Glow
 
         private bool verifyExtensionChoices()
         {
-            this.notifyIcon.ShowBalloonTip(3000, "Verifying Extensions", "Verifying the chosen extensions.", ToolTipIcon.Info);
             this.settings.UpdateSelections();
+            this.notifyIcon.ShowBalloonTip(3000, "Verifying Extensions", "Verifying the chosen extensions.", ToolTipIcon.Info);
             if (null == this.GlowDriver) {
                 this.GlowDriver = this.MEFHelper.GetDriver("Screen Driver Coupler");//default to coupler
             }
@@ -287,7 +277,6 @@ namespace Antumbra.Glow
         {
             Stop();
             if (verifyExtensionChoices()) {
-                //this.last = DateTime.Now;
                 if (this.GlowDriver.Start()) {
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Started", this.GlowDriver.Name + " was started successfully.", ToolTipIcon.Info);
                     this.GlowDriver.AttachEvent(this);
