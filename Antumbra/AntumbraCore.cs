@@ -74,7 +74,6 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;//no sleep
             this.stepSize = 2;
-            this.settings = new SettingsWindow(this);
             this.MEFHelper = new MEFHelper("./Extensions/");
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
@@ -82,6 +81,7 @@ namespace Antumbra.Glow
             else {
                 this.GlowDriver = this.MEFHelper.GetDefaultDriver();
             }
+            this.settings = new SettingsWindow(this);
         }
 
         public void setDriver(GlowDriver driver)
@@ -134,7 +134,6 @@ namespace Antumbra.Glow
         {
             double time = DateTime.Now.Subtract(this.last).TotalSeconds;
             if (time != 0) {//ignore when zero TODO find why this happens when decorators are toggled
-                //Console.WriteLine(time);
                 this.hz = (this.hz * .01)+ ((1.0 / time) * .99);//weighted average giving each new value 1%
                 this.hz = (double)Math.Round((decimal)this.hz, 5);
                 string newText = this.hz.ToString() + " hz";
@@ -146,10 +145,8 @@ namespace Antumbra.Glow
             }
             Color newColor = (Color)sender;
             foreach (var decorator in this.GlowDecorators) {
-                //Console.WriteLine(newColor.ToString());
                 newColor = decorator.Decorate(newColor);
             }
-            //Console.WriteLine(newColor.ToString());
             SetColorTo(newColor);
         }
 
@@ -296,13 +293,15 @@ namespace Antumbra.Glow
         {
             this.notifyIcon.ShowBalloonTip(3000, "Verifying Extensions", "Verifying the chosen extensions.", ToolTipIcon.Info);
             this.settings.UpdateSelections();
-            if (null == this.GlowDriver) {//sanity check
-                this.notifyIcon.ShowBalloonTip(3000, "Info", "Glow Driver not selected.", ToolTipIcon.Info);
-                return false;
+            if (null == this.GlowDriver) {
+                this.GlowDriver = this.MEFHelper.GetDriver("Screen Driver Coupler");//default to coupler
             }
             if (this.GlowDriver is GlowScreenDriverCoupler) {//screen based driver selected
-                if (null == this.ScreenGrabber || null == this.ScreenProcessor)//no grabber or processor set
+                if (null == this.ScreenGrabber || null == this.ScreenProcessor) {//no grabber or processor set
+                    this.notifyIcon.ShowBalloonTip(3000, "Driver Issue",
+                        "Please select a screen driver and screen processor for the Screen Driver Coupler to use.", ToolTipIcon.Error);
                     return false;
+                }
                 this.GlowDriver = new GlowScreenDriverCoupler(this, this.ScreenGrabber, this.ScreenProcessor);
                 this.notifyIcon.ShowBalloonTip(3000, "Screen Based Driver Found", "A screen based driver was found: " +
                     this.GlowDriver.Name + ".", ToolTipIcon.Info);
