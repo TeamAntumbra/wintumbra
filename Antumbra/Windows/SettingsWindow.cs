@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace Antumbra.Glow.Windows
 {
-    public partial class SettingsWindow : MetroFramework.Forms.MetroForm
+    public partial class SettingsWindow : MetroFramework.Forms.MetroForm //TODO split this into window event handlers and another settings / setup class
     {
         private AntumbraCore antumbra;
         private List<string> enabledDecorators, enabledNotifiers;//TODO move this and some of the MEF stuff to an extension manager class
@@ -23,8 +23,8 @@ namespace Antumbra.Glow.Windows
         public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
-            this.enabledDecorators = new List<string>();
-            this.enabledNotifiers = new List<string>();
+            this.enabledDecorators = new List<string>();//TODO move to extension manager class
+            this.enabledNotifiers = new List<string>();//TODO move to extension manager class
             InitializeComponent();
             updateValues();
             this.Focus();

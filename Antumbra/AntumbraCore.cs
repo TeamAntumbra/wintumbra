@@ -27,7 +27,7 @@ namespace Antumbra.Glow
     public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver
     {
         private Color color;//newest generated color for displaying
-        private byte lastR, lastG, lastB;
+        private Color prevColor;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
         public int pollingWidth { get; set; }
@@ -59,9 +59,7 @@ namespace Antumbra.Glow
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
-            this.lastR = 0;
-            this.lastG = 0;
-            this.lastB = 0;
+            this.prevColor = Color.Black;
             this.color = Color.Black;
             this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -70,7 +68,7 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;//no sleep
             this.stepSize = 2;
-            this.MEFHelper = new MEFHelper("./Extensions/");
+            this.MEFHelper = new MEFHelper("./Extensions/");//TODO move to extension manager class
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
             }
@@ -104,48 +102,48 @@ namespace Antumbra.Glow
             }
         }
 
-        public void setDriver(GlowDriver driver)
+        public void setDriver(GlowDriver driver)//TODO move to extension manager class
         {
             this.GlowDriver = driver;
         }
 
-        public string getCurrentDriverName()
+        public string getCurrentDriverName()//TODO move to extension manager class
         {
             if (null == this.GlowDriver)
                 return null;
             return this.GlowDriver.Name;
         }
 
-        public void setScreenGrabber(GlowScreenGrabber screenGrabber)
+        public void setScreenGrabber(GlowScreenGrabber screenGrabber)//TODO move to extension manager class
         {
             this.ScreenGrabber = screenGrabber;
         }
 
-        public string getCurrentScreenGrabberName()
+        public string getCurrentScreenGrabberName()//TODO move to extension manager class
         {
             if (null == this.ScreenGrabber)
                 return null;
             return this.ScreenGrabber.Name;
         }
 
-        public void setScreenProcessor(GlowScreenProcessor processor)
+        public void setScreenProcessor(GlowScreenProcessor processor)//TODO move to extension manager class
         {
             this.ScreenProcessor = processor;
         }
 
-        public string getCurrentScreenProcessorName()
+        public string getCurrentScreenProcessorName()//TODO move to extension manager class
         {
             if (null == this.ScreenProcessor)
                 return null;
             return this.ScreenProcessor.Name;
         }
 
-        public void setDecorators(List<GlowDecorator> decorators)
+        public void setDecorators(List<GlowDecorator> decorators)//TODO move to extension manager class
         {
             this.GlowDecorators = decorators;
         }
 
-        public void setNotifiers(List<GlowNotifier> notifiers)
+        public void setNotifiers(List<GlowNotifier> notifiers)//TODO move to extension manager class
         {
             this.GlowNotifiers = notifiers;
         }
@@ -154,12 +152,14 @@ namespace Antumbra.Glow
         {
             lock (sync) {
                 color = (Color)sender;
+                outputLoopFPS.Tick();
             }
         }
 
-        public void SetColorTo(Color newColor)
+        public void SetColorTo(Color newColor)//TODO move to device connection class
         {
-            changeTo(newColor.R, newColor.G, newColor.B);
+            if (shouldChange(newColor))
+                changeTo(newColor.R, newColor.G, newColor.B);
         }
        
         private void changeTo(byte r, byte g, byte b)
@@ -174,12 +174,12 @@ namespace Antumbra.Glow
             }
         }
 
-        public void checkStatus()
+        public void checkStatus()//TODO move to device connection class
         {
             updateStatus(this.serial.state);
         }
 
-        private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
+        private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive //TODO move to device connection class
         {
             if (null == this.settings)
                 return;
@@ -206,9 +206,21 @@ namespace Antumbra.Glow
 
         private void updateLast(byte r, byte g, byte b)
         {
-            this.lastR = r;
-            this.lastG = g;
-            this.lastB = b;
+            this.color = Color.FromArgb(r, g, b);
+        }
+
+        private void updateLast(Color last)
+        {
+            this.color = last;
+        }
+
+        private bool shouldChange(Color newColor)
+        {
+            int diff = 0;
+            diff += Math.Abs(color.R - newColor.R);
+            diff += Math.Abs(color.G - newColor.G);
+            diff += Math.Abs(color.B - newColor.B);
+            return diff >= changeThreshold;
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -249,7 +261,7 @@ namespace Antumbra.Glow
             contextMenu.Close();
         }
 
-        private bool verifyExtensionChoices()
+        private bool verifyExtensionChoices()//TODO move to extension manager class
         {
             this.settings.UpdateSelections();
             this.notifyIcon.ShowBalloonTip(3000, "Verifying Extensions", "Verifying the chosen extensions.", ToolTipIcon.Info);
@@ -305,12 +317,13 @@ namespace Antumbra.Glow
                 while (Active) {
                     foreach (GlowDecorator decorator in GlowDecorators)
                         color = decorator.Decorate(color);
-                    SetColorTo(color);
-                    outputLoopFPS.Tick();
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        this.settings.speed.Text = outputLoopFPS.FPS.ToString();
-                    });
+                    if (!color.Equals(prevColor)) { 
+                        SetColorTo(color);
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            this.settings.speed.Text = outputLoopFPS.FPS.ToString();
+                        });
+                    }
                     //Task.Delay(5);
                 }
             }
