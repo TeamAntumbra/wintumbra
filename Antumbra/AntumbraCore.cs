@@ -27,10 +27,8 @@ namespace Antumbra.Glow
     public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver
     {
         private Color color;//newest generated color for displaying
-        private Color currentColor;//most recent successfully sent set command color
-        private ColorPickerDialog picker;
+        //private ColorPickerDialog picker;
         private byte lastR, lastG, lastB;
-        private double hz;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
         public int pollingWidth { get; set; }
@@ -48,8 +46,11 @@ namespace Antumbra.Glow
         private GlowScreenProcessor ScreenProcessor;
         private List<GlowDecorator> GlowDecorators;//todo convert the system for handeling extensions to ID based determined on startup
         private List<GlowNotifier> GlowNotifiers;
-
-        private DateTime last;
+        private Task outputLoopTask;
+        public double OutputLoopFPS { get { return outputLoopFPS.FPS; } }
+        public double OutputLoopFrameTime { get { return outputLoopFPS.FrameTimeInMilliseconds; } }
+        private FPSCalc outputLoopFPS = new FPSCalc();
+        //private DateTime last;
 
         public AntumbraCore()
         {
@@ -64,8 +65,8 @@ namespace Antumbra.Glow
             this.lastR = 0;
             this.lastG = 0;
             this.lastB = 0;
-            this.hz = 0;
-            this.currentColor = Color.Black;//depends on how the Glow starts up
+            //this.hz = 0;
+            //this.currentColor = Color.Black;//depends on how the Glow starts up
             this.color = Color.Black;
             this.changeThreshold = 3; //see shouldChange(Color, Color) (lower is more sensitive)
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -82,6 +83,30 @@ namespace Antumbra.Glow
                 this.GlowDriver = this.MEFHelper.GetDefaultDriver();
             }
             this.settings = new SettingsWindow(this);
+        }
+
+        /// <summary>
+        /// Synchronisation object
+        /// </summary>
+        private object sync = new object();
+
+        private bool _active = false;
+        /// <summary>
+        /// Setting this to false will stop the capture and output threads
+        /// </summary>
+        /// <remarks>Thread Safe</remarks>
+        public bool Active
+        {
+            get
+            {
+                lock (sync)
+                    return _active;
+            }
+            set
+            {
+                lock (sync)
+                    _active = value;
+            }
         }
 
         public void setDriver(GlowDriver driver)
@@ -132,22 +157,14 @@ namespace Antumbra.Glow
 
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
-            double time = DateTime.Now.Subtract(this.last).TotalSeconds;
-            if (time != 0) {//ignore when zero TODO find why this happens when decorators are toggled
-                this.hz = (this.hz * .01)+ ((1.0 / time) * .99);//weighted average giving each new value 1%
-                this.hz = (double)Math.Round((decimal)this.hz, 5);
-                string newText = this.hz.ToString() + " hz";
-                this.Invoke((MethodInvoker)delegate
-                {
-                    this.settings.speed.Text = newText;
-                });
-                this.last = DateTime.Now;
-            }
-            Color newColor = (Color)sender;
+            /*Color newColor = (Color)sender;
             foreach (var decorator in this.GlowDecorators) {
                 newColor = decorator.Decorate(newColor);
             }
-            SetColorTo(newColor);
+            SetColorTo(newColor);*/
+            lock (sync) {
+                color = (Color)sender;
+            }
         }
 
         public void SetColorTo(Color newColor)
@@ -165,11 +182,6 @@ namespace Antumbra.Glow
                 this.updateStatus(0);//send failed, device is probably dead / not connected
                 Console.WriteLine("color send failed!");
             }
-        }
-
-        public void checkStatus()
-        {
-            this.updateStatus(this.serial.state);
         }
 
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
@@ -270,7 +282,7 @@ namespace Antumbra.Glow
         {
             Stop();
             if (verifyExtensionChoices()) {
-                this.last = DateTime.Now;
+                //this.last = DateTime.Now;
                 if (this.GlowDriver.Start()) {
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Started", this.GlowDriver.Name + " was started successfully.", ToolTipIcon.Info);
                     this.GlowDriver.AttachEvent(this);
@@ -282,12 +294,40 @@ namespace Antumbra.Glow
                         //this.notifyIcon.ShowBalloonTip(3000, "Notifier Found", notifier.Name + " was found.", ToolTipIcon.Info);
                         notifier.Start();
                     }
+                    this.Active = true;
+                    outputLoopTask = Task.Factory.StartNew(outputLoopTarget);
                 }
                 else {
+                    this.GlowDriver.Stop();
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Issue", this.GlowDriver.Name + " reported that it did not start successfully.",
                         ToolTipIcon.Error);
                 }
-                //TODO start other extensions as well
+            }
+        }
+
+        private void outputLoopTarget()
+        {
+            try {
+                while (Active) {
+                    foreach (GlowDecorator decorator in GlowDecorators)
+                        color = decorator.Decorate(color);
+                    SetColorTo(color);
+                    outputLoopFPS.Tick();
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        this.settings.speed.Text = outputLoopFPS.FPS.ToString();
+                    });
+                    //Task.Delay(5);
+                }
+            }
+            catch (Exception e) {
+                lock (sync) {
+                    Active = false;
+                    Console.WriteLine(e.Message);
+                }
+            }
+            finally {
+                this.Stop();
             }
         }
 
@@ -298,6 +338,7 @@ namespace Antumbra.Glow
 
         public void Stop()
         {
+            Active = false;
             if (null != this.GlowDriver) {
                 if (this.GlowDriver.Stop())
                     this.notifyIcon.ShowBalloonTip(3000, "Driver Stopped", this.GlowDriver.Name + " was stopped successfully.", ToolTipIcon.Info);
