@@ -45,27 +45,27 @@ namespace Antumbra.Glow.Windows
                 driverExtensions.Items.Add(str);
             }
             if (driverExtensions.Items.Count > 0)
-                if (null != this.antumbra.getCurrentDriverName())
-               //     driverExtensions.SelectedIndex = 0;
-               // else
+                if (null == this.antumbra.getCurrentDriverName())
+                    driverExtensions.SelectedIndex = 0;
+                else
                     driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.antumbra.getCurrentDriverName());
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailScreenGrabbers()) {
                 if (!screenGrabbers.Items.Contains(str))
                     screenGrabbers.Items.Add(str);
             }
             if (screenGrabbers.Items.Count > 0)
-                if (null != this.antumbra.getCurrentScreenGrabberName())
-          //          screenGrabbers.SelectedIndex = 0;
-           //     else
+                if (null == this.antumbra.getCurrentScreenGrabberName())
+                    screenGrabbers.SelectedIndex = 0;
+                else
                     screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.antumbra.getCurrentScreenGrabberName());
             foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailScreenProcessors()) {
                 if (!screenProcessors.Items.Contains(str))
                     screenProcessors.Items.Add(str);
             }
             if (screenProcessors.Items.Count > 0)
-                if (null != this.antumbra.getCurrentScreenProcessorName())
-           //         screenProcessors.SelectedIndex = 0;
-           //     else
+                if (null == this.antumbra.getCurrentScreenProcessorName())
+                    screenProcessors.SelectedIndex = 0;
+                else
                     screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.antumbra.getCurrentScreenProcessorName());
             changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
             updateDecorators();
