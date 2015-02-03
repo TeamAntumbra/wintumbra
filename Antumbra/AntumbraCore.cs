@@ -225,24 +225,25 @@ namespace Antumbra.Glow
         {
             if (null == this.settings)
                 return;
+            string newText = "Invalid Status";
             switch(status) {
                 case 0:
-                    this.settings.glowStatus.Text = "No Glow Found";
+                    newText = "No Glow Found";
                     //dead
                     break;
                 case 1:
-                    this.settings.glowStatus.Text = "Idle";
+                    newText = "Idle";
                     //idle
                     break;
                 case 2:
-                    this.settings.glowStatus.Text = "Sending/Recieving Successfully";
+                    newText = "Sending/Recieving Successfully";
                     //good
                     break;
-                default:
-                    this.settings.glowStatus.Text = "Invalid Status";
-                    Console.WriteLine("This should not happen. updateStatus");
-                    break;
             }
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.settings.speed.Text = newText;
+            });
         }
 
         private void updateLast(byte r, byte g, byte b)
@@ -254,7 +255,7 @@ namespace Antumbra.Glow
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            contextMenu.Show();
+            contextMenu.Show(Cursor.Position);
         }
 
         private void settingsMenuItem_Click(object sender, EventArgs e)
