@@ -184,6 +184,11 @@ namespace Antumbra.Glow
             }
         }
 
+        public void checkStatus()
+        {
+            updateStatus(this.serial.state);
+        }
+
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
         {
             if (null == this.settings)
