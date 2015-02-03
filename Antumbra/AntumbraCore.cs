@@ -254,7 +254,7 @@ namespace Antumbra.Glow
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            contextMenu.Show(Cursor.Position);
+            contextMenu.Show();
         }
 
         private void settingsMenuItem_Click(object sender, EventArgs e)
