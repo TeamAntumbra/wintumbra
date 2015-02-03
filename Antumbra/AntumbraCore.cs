@@ -66,7 +66,7 @@ namespace Antumbra.Glow
             this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
             this.pollingX = 0;//full screen settings
             this.pollingY = 0;
-            this.stepSleep = 0;//no sleep
+            this.stepSleep = 0;//no step sleep TODO turn this into output throttling
             this.stepSize = 2;
             this.MEFHelper = new MEFHelper("./Extensions/");//TODO move to extension manager class
             if (this.MEFHelper.didFail()) {
@@ -85,7 +85,7 @@ namespace Antumbra.Glow
 
         private bool _active = false;
         /// <summary>
-        /// Setting this to false will stop the capture and output threads
+        /// Setting this to false will stop the output thread
         /// </summary>
         /// <remarks>Thread Safe</remarks>
         public bool Active
@@ -164,6 +164,7 @@ namespace Antumbra.Glow
        
         private void changeTo(byte r, byte g, byte b)
         {
+            Console.WriteLine(r + " - " + g + "  -  " + b);
             if (this.serial.send(r, g, b)) {//sucessful send
                 updateLast(r, g, b);
                 this.updateStatus(2);
@@ -206,21 +207,21 @@ namespace Antumbra.Glow
 
         private void updateLast(byte r, byte g, byte b)
         {
-            this.color = Color.FromArgb(r, g, b);
+            this.prevColor = Color.FromArgb(r, g, b);
         }
 
         private void updateLast(Color last)
         {
-            this.color = last;
+            this.prevColor = last;
         }
 
         private bool shouldChange(Color newColor)
         {
             int diff = 0;
-            diff += Math.Abs(color.R - newColor.R);
-            diff += Math.Abs(color.G - newColor.G);
-            diff += Math.Abs(color.B - newColor.B);
-            return diff >= changeThreshold;
+            diff += Math.Abs(prevColor.R - newColor.R);
+            diff += Math.Abs(prevColor.G - newColor.G);
+            diff += Math.Abs(prevColor.B - newColor.B);
+            return diff > changeThreshold;
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -330,7 +331,7 @@ namespace Antumbra.Glow
             catch (Exception e) {
                 lock (sync) {
                     Active = false;
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Exception in outputLoopTarget: " + e.Message);
                 }
             }
             finally {
