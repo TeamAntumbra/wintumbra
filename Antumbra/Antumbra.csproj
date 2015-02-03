@@ -144,72 +144,6 @@
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HslColor.cs" />
-    <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchColorSpace.cs" />
-    <Compile Include="Windows\ColorPicker\AdobePhotoshopColorSwatchFileVersion.cs" />
-    <Compile Include="Windows\ColorPicker\AdobePhotoShopColorSwatchSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\ColorBarStyle.cs" />
-    <Compile Include="Windows\ColorPicker\ColorCellBorderStyle.cs" />
-    <Compile Include="Windows\ColorPicker\ColorCollection.cs" />
-    <Compile Include="Windows\ColorPicker\ColorCollectionEventArgs.cs" />
-    <Compile Include="Windows\ColorPicker\ColorCollectionSortOrder.cs" />
-    <Compile Include="Windows\ColorPicker\ColorComparer.cs" />
-    <Compile Include="Windows\ColorPicker\ColorEditingMode.cs" />
-    <Compile Include="Windows\ColorPicker\ColorEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\ColorEditor.Designer.cs" />
-    <Compile Include="Windows\ColorPicker\ColorEditorManager.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\ColorGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\ColorGridSelectedCellStyle.cs" />
-    <Compile Include="Windows\ColorPicker\ColorHitTestInfo.cs" />
-    <Compile Include="Windows\ColorPicker\ColorPalette.cs" />
-    <Compile Include="Windows\ColorPicker\ColorPalettes.cs" />
-    <Compile Include="Windows\ColorPicker\ColorPickerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\ColorPickerDialog.Designer.cs" />
-    <Compile Include="Windows\ColorPicker\ColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\ColorSliderNubStyle.cs" />
-    <Compile Include="Windows\ColorPicker\ColorSource.cs" />
-    <Compile Include="Windows\ColorPicker\ColorWheel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\EditColorCancelEventArgs.cs" />
-    <Compile Include="Windows\ColorPicker\EditColorEventArgs.cs" />
-    <Compile Include="Windows\ColorPicker\GimpPaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\HslColor.cs" />
-    <Compile Include="Windows\ColorPicker\HsvColor.cs" />
-    <Compile Include="Windows\ColorPicker\HueColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\IColorEditor.cs" />
-    <Compile Include="Windows\ColorPicker\InterleavedBitmapPaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\IPaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\JascPaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\LightnessColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\NativeMethods.cs" />
-    <Compile Include="Windows\ColorPicker\NavigationOrigin.cs" />
-    <Compile Include="Windows\ColorPicker\PaintNetPaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\PaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\RawPaletteSerializer.cs" />
-    <Compile Include="Windows\ColorPicker\RgbaChannel.cs" />
-    <Compile Include="Windows\ColorPicker\RgbaColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\SaturationColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ColorPicker\ScreenColorPicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
     <Compile Include="Windows\SettingsWindow.cs">
       <SubType>Form</SubType>
@@ -225,9 +159,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AntumbraCore.resx">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\ColorPicker\ColorPickerDialog.resx">
-      <DependentUpon>ColorPickerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>

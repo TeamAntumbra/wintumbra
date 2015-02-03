@@ -18,13 +18,11 @@ namespace Antumbra.Glow.Windows
     public partial class SettingsWindow : MetroFramework.Forms.MetroForm
     {
         private AntumbraCore antumbra;
-        private ColorPickerDialog picker;
-        private List<string> enabledDecorators, enabledNotifiers;
+        private List<string> enabledDecorators, enabledNotifiers;//TODO move this and some of the MEF stuff to an extension manager class
         private MetroFramework.Forms.MetroForm pollingAreaWindow;
         public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
-            this.picker = new ColorPickerDialog();
             this.enabledDecorators = new List<string>();
             this.enabledNotifiers = new List<string>();
             InitializeComponent();
