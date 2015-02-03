@@ -136,6 +136,7 @@
     <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
     <Compile Include="MEFHelper.cs" />
     <Compile Include="Utility\FastBitmap.cs" />
+    <Compile Include="Utility\FPSCalc.cs" />
     <Compile Include="Windows\pollingAreaSetter.cs">
       <SubType>Form</SubType>
     </Compile>
