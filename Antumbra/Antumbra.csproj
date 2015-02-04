@@ -214,10 +214,10 @@
     <Content Include="antumbraglowv3beta.inf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="FodyWeavers.xml" />
     <None Include="libantumbra.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="FodyWeavers.xml" />
     <Content Include="Resources\Antumbra.ico" />
     <Content Include="Resources\cellbackground.png" />
     <None Include="Resources\Culture.ico" />
