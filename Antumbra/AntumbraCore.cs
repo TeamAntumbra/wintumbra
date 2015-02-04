@@ -70,7 +70,7 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;//no step sleep TODO turn this into output throttling
             this.stepSize = 2;
-            this.fadeSteps = 100;
+            this.fadeSteps = 10;
             this.fadeEnabled = true;
             this.MEFHelper = new MEFHelper("./Extensions/");//TODO move to extension manager class
             if (this.MEFHelper.didFail()) {
@@ -185,8 +185,10 @@ namespace Antumbra.Glow
 
         }
 
-        private void SetColorTo(Color newColor)//TODO move to device connection class
+        private void SetColorTo(Color newColor)//TODO move to device connection class NOTE always use this to set color and allow decorators to run
         {
+            foreach (GlowDecorator decorator in GlowDecorators)
+                newColor = decorator.Decorate(newColor);
             changeTo(newColor.R, newColor.G, newColor.B);
         }
        
@@ -344,8 +346,6 @@ namespace Antumbra.Glow
         {
             try {
                 while (Active) {
-                    foreach (GlowDecorator decorator in GlowDecorators)
-                        color = decorator.Decorate(color);
                     if (shouldChange(color)) {
                         if (fadeEnabled)
                             FadeColorTo(color);
