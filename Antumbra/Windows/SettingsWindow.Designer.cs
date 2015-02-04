@@ -66,6 +66,9 @@
             this.startBtn = new System.Windows.Forms.Button();
             this.offBtn = new System.Windows.Forms.Button();
             this.stopBtn = new System.Windows.Forms.Button();
+            this.maxStepsLabel = new MetroFramework.Controls.MetroLabel();
+            this.maxFadeSteps = new MetroFramework.Controls.MetroTextBox();
+            this.fadeEnabledCheck = new MetroFramework.Controls.MetroCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.settingsStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,7 +76,7 @@
             // 
             this.stepSizeLabel.AutoSize = true;
             this.stepSizeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSizeLabel.Location = new System.Drawing.Point(77, 433);
+            this.stepSizeLabel.Location = new System.Drawing.Point(79, 428);
             this.stepSizeLabel.Name = "stepSizeLabel";
             this.stepSizeLabel.Size = new System.Drawing.Size(65, 19);
             this.stepSizeLabel.TabIndex = 7;
@@ -83,7 +86,7 @@
             // 
             this.stepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.stepSize.Lines = new string[0];
-            this.stepSize.Location = new System.Drawing.Point(204, 430);
+            this.stepSize.Location = new System.Drawing.Point(204, 423);
             this.stepSize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stepSize.MaxLength = 32767;
             this.stepSize.Name = "stepSize";
@@ -99,7 +102,7 @@
             // 
             this.stepSleepLabel.AutoSize = true;
             this.stepSleepLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSleepLabel.Location = new System.Drawing.Point(55, 482);
+            this.stepSleepLabel.Location = new System.Drawing.Point(55, 479);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
             this.stepSleepLabel.Size = new System.Drawing.Size(103, 19);
@@ -110,7 +113,7 @@
             // 
             this.sleepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.sleepSize.Lines = new string[0];
-            this.sleepSize.Location = new System.Drawing.Point(204, 482);
+            this.sleepSize.Location = new System.Drawing.Point(204, 473);
             this.sleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sleepSize.MaxLength = 32767;
             this.sleepSize.Name = "sleepSize";
@@ -392,7 +395,7 @@
             // 
             this.shouldChangeLabel.AutoSize = true;
             this.shouldChangeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.shouldChangeLabel.Location = new System.Drawing.Point(33, 541);
+            this.shouldChangeLabel.Location = new System.Drawing.Point(22, 528);
             this.shouldChangeLabel.Name = "shouldChangeLabel";
             this.shouldChangeLabel.Size = new System.Drawing.Size(153, 19);
             this.shouldChangeLabel.TabIndex = 62;
@@ -401,7 +404,7 @@
             // changeSensitivity
             // 
             this.changeSensitivity.Lines = new string[0];
-            this.changeSensitivity.Location = new System.Drawing.Point(204, 538);
+            this.changeSensitivity.Location = new System.Drawing.Point(204, 521);
             this.changeSensitivity.MaxLength = 32767;
             this.changeSensitivity.Name = "changeSensitivity";
             this.changeSensitivity.PasswordChar = '\0';
@@ -461,11 +464,51 @@
             this.stopBtn.UseVisualStyleBackColor = true;
             this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
             // 
+            // maxStepsLabel
+            // 
+            this.maxStepsLabel.AutoSize = true;
+            this.maxStepsLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.maxStepsLabel.Location = new System.Drawing.Point(57, 573);
+            this.maxStepsLabel.Name = "maxStepsLabel";
+            this.maxStepsLabel.Size = new System.Drawing.Size(105, 19);
+            this.maxStepsLabel.TabIndex = 69;
+            this.maxStepsLabel.Text = "Max Fade Steps:";
+            // 
+            // maxFadeSteps
+            // 
+            this.maxFadeSteps.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.maxFadeSteps.Lines = new string[0];
+            this.maxFadeSteps.Location = new System.Drawing.Point(204, 566);
+            this.maxFadeSteps.MaxLength = 32767;
+            this.maxFadeSteps.Name = "maxFadeSteps";
+            this.maxFadeSteps.PasswordChar = '\0';
+            this.maxFadeSteps.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.maxFadeSteps.SelectedText = "";
+            this.maxFadeSteps.Size = new System.Drawing.Size(102, 31);
+            this.maxFadeSteps.TabIndex = 70;
+            this.maxFadeSteps.UseSelectable = true;
+            this.maxFadeSteps.TextChanged += new System.EventHandler(this.maxFadeSteps_TextChanged);
+            // 
+            // fadeEnabledCheck
+            // 
+            this.fadeEnabledCheck.AutoSize = true;
+            this.fadeEnabledCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.fadeEnabledCheck.Location = new System.Drawing.Point(326, 574);
+            this.fadeEnabledCheck.Name = "fadeEnabledCheck";
+            this.fadeEnabledCheck.Size = new System.Drawing.Size(98, 17);
+            this.fadeEnabledCheck.TabIndex = 71;
+            this.fadeEnabledCheck.Text = "Fade Enabled?";
+            this.fadeEnabledCheck.UseVisualStyleBackColor = true;
+            this.fadeEnabledCheck.CheckedChanged += new System.EventHandler(this.fadeEnabledCheck_CheckedChanged);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.fadeEnabledCheck);
+            this.Controls.Add(this.maxFadeSteps);
+            this.Controls.Add(this.maxStepsLabel);
             this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.offBtn);
             this.Controls.Add(this.startBtn);
@@ -508,7 +551,7 @@
             this.Resizable = false;
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Style = MetroFramework.MetroColorStyle.Black;
+            this.Style = MetroFramework.MetroColorStyle.Blue;
             this.Text = "Settings";
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -561,5 +604,8 @@
         private MetroFramework.Controls.MetroLabel statusLabel;
         public System.Windows.Forms.Label speed;
         public System.Windows.Forms.Label glowStatus;
+        private MetroFramework.Controls.MetroTextBox maxFadeSteps;
+        private MetroFramework.Controls.MetroLabel maxStepsLabel;
+        private MetroFramework.Controls.MetroCheckBox fadeEnabledCheck;
     }
 }

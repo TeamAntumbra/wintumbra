@@ -36,6 +36,8 @@ namespace Antumbra.Glow
         public int pollingY { get; set; }
         public int stepSleep { get; set; }
         public int stepSize { get; set; }
+        public int fadeSteps { get; set; }
+        public bool fadeEnabled { get; set; }
         public int changeThreshold { get; set; }//difference in colors needed to change
 
         public MEFHelper MEFHelper;
@@ -43,7 +45,7 @@ namespace Antumbra.Glow
         private GlowDriver GlowDriver;
         private GlowScreenGrabber ScreenGrabber;
         private GlowScreenProcessor ScreenProcessor;
-        private List<GlowDecorator> GlowDecorators;//todo convert the system for handeling extensions to ID based determined on startup
+        private List<GlowDecorator> GlowDecorators;//TODO convert the system for handeling extensions to ID based determined on startup
         private List<GlowNotifier> GlowNotifiers;
         private Task outputLoopTask;
         public double OutputLoopFPS { get { return outputLoopFPS.FPS; } }
@@ -68,6 +70,8 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;//no step sleep TODO turn this into output throttling
             this.stepSize = 2;
+            this.fadeSteps = 100;
+            this.fadeEnabled = true;
             this.MEFHelper = new MEFHelper("./Extensions/");//TODO move to extension manager class
             if (this.MEFHelper.didFail()) {
                 Console.WriteLine("loading extensions failed. See output above.");
@@ -150,16 +154,40 @@ namespace Antumbra.Glow
 
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
+            outputLoopFPS.Tick();
             lock (sync) {
                 color = (Color)sender;
-                outputLoopFPS.Tick();
             }
         }
 
-        public void SetColorTo(Color newColor)//TODO move to device connection class
+        private Color Interpolate(Color color1, Color color2, double fraction)
         {
-            if (shouldChange(newColor))
-                changeTo(newColor.R, newColor.G, newColor.B);
+            double r = Interpolate(color1.R, color2.R, fraction);
+            double g = Interpolate(color1.G, color2.G, fraction);
+            double b = Interpolate(color1.B, color2.B, fraction);
+            return Color.FromArgb((int)Math.Round(r), (int)Math.Round(g), (int)Math.Round(b));
+        }
+
+        private double Interpolate(double d1, double d2, double fraction)
+        {
+            return d1 + (d1 - d2) * fraction;
+        }
+
+        private void FadeColorTo(Color newColor)
+        {
+            for (double step = 0.0; step <= 1; step += (1.0 / this.fadeSteps)) {
+                Color result = Interpolate(newColor, prevColor, step);
+                if (shouldChange(result))
+                    SetColorTo(result);
+                else
+                    return;//done
+            }
+
+        }
+
+        private void SetColorTo(Color newColor)//TODO move to device connection class
+        {
+            changeTo(newColor.R, newColor.G, newColor.B);
         }
        
         private void changeTo(byte r, byte g, byte b)
@@ -318,8 +346,11 @@ namespace Antumbra.Glow
                 while (Active) {
                     foreach (GlowDecorator decorator in GlowDecorators)
                         color = decorator.Decorate(color);
-                    if (!color.Equals(prevColor)) { 
-                        SetColorTo(color);
+                    if (shouldChange(color)) {
+                        if (fadeEnabled)
+                            FadeColorTo(color);
+                        else
+                            SetColorTo(color);
                         this.Invoke((MethodInvoker)delegate
                         {
                             this.settings.speed.Text = outputLoopFPS.FPS.ToString();

@@ -34,6 +34,8 @@ namespace Antumbra.Glow.Windows
         {
             stepSize.Text = this.antumbra.stepSize.ToString();
             sleepSize.Text = this.antumbra.stepSleep.ToString();
+            maxFadeSteps.Text = this.antumbra.fadeSteps.ToString();
+            fadeEnabledCheck.Checked = this.antumbra.fadeEnabled;
             pollingHeight.Text = this.antumbra.pollingHeight.ToString();
             pollingWidth.Text = this.antumbra.pollingWidth.ToString();
             pollingX.Text = this.antumbra.pollingX.ToString();
@@ -204,6 +206,15 @@ namespace Antumbra.Glow.Windows
                 Console.WriteLine("Input value, '" + changeSensitivity.Text + "' is not parsable to an int.");
         }
 
+        private void maxFadeSteps_TextChanged(object sender, EventArgs e)
+        {
+            int value;
+            if (Int32.TryParse(maxFadeSteps.Text.ToString(), out value))
+                this.antumbra.fadeSteps = value;
+            else
+                Console.WriteLine("Input value, '" + maxFadeSteps.Text + "' is not parsable to an int.");
+        }
+
         private void startBtn_Click(object sender, EventArgs e)
         {
             this.antumbra.Start();
@@ -217,6 +228,11 @@ namespace Antumbra.Glow.Windows
         private void offBtn_Click(object sender, EventArgs e)
         {
             this.antumbra.Off();
+        }
+
+        private void fadeEnabledCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            this.antumbra.fadeEnabled = fadeEnabledCheck.Checked;
         }
     }
 }
