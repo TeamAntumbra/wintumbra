@@ -28,6 +28,7 @@ namespace Antumbra.Glow
     {
         private Color color;//newest generated color for displaying
         private Color prevColor;
+        private Color weightedColor;
         private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
         public int pollingWidth { get; set; }
@@ -157,6 +158,8 @@ namespace Antumbra.Glow
             outputLoopFPS.Tick();
             lock (sync) {
                 color = (Color)sender;
+                foreach (GlowDecorator decorator in GlowDecorators)
+                        color = decorator.Decorate(color);
             }
         }
 
@@ -173,6 +176,20 @@ namespace Antumbra.Glow
             return d1 + (d1 - d2) * fraction;
         }
 
+        private Color AddColorToWeightedValue(Color newColor)
+        {
+            if (this.weightedColor == null)
+                this.weightedColor = Color.Black;
+            int newR = (int)(this.weightedColor.R * .8) + (int)(newColor.R * .2);
+            int newG = (int)(this.weightedColor.G * .8) + (int)(newColor.G * .2);
+            int newB = (int)(this.weightedColor.B * .8) + (int)(newColor.B * .2);
+            newR %= 255;
+            newG %= 255;
+            newB %= 255;
+            this.weightedColor = Color.FromArgb(newR, newG, newB);
+            return this.weightedColor;
+        }
+
         private void FadeColorTo(Color newColor)
         {
             for (double step = 0.0; step <= 1; step += (1.0 / this.fadeSteps)) {
@@ -187,8 +204,9 @@ namespace Antumbra.Glow
 
         private void SetColorTo(Color newColor)//TODO move to device connection class NOTE always use this to set color and allow decorators to run
         {
-            foreach (GlowDecorator decorator in GlowDecorators)
-                newColor = decorator.Decorate(newColor);
+            //foreach (GlowDecorator decorator in GlowDecorators)
+             //   newColor = decorator.Decorate(newColor);
+            newColor = AddColorToWeightedValue(newColor);
             changeTo(newColor.R, newColor.G, newColor.B);
         }
        

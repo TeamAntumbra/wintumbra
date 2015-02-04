@@ -125,7 +125,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntumbraCore.cs" />
+    <Compile Include="AntumbraCore.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AntumbraCore.Designer.cs">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </Compile>
@@ -134,13 +136,17 @@
     <Compile Include="Utility\FastBitmap.cs" />
     <Compile Include="Utility\FPSCalc.cs" />
     <Compile Include="Utility\PixelReader.cs" />
-    <Compile Include="Windows\pollingAreaSetter.cs" />
+    <Compile Include="Windows\pollingAreaSetter.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Windows\pollingAreaSetter.Designer.cs">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HslColor.cs" />
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <Compile Include="Windows\SettingsWindow.cs" />
+    <Compile Include="Windows\SettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Windows\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
