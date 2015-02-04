@@ -70,7 +70,7 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
     {
         public override string ToString()
         {
-            return this.Name;
+            return this.Name + " - " + this.Version;
         }
 
         /// <summary>
@@ -165,9 +165,10 @@ namespace Antumbra.Glow.ExtensionFramework //NOTE FOR NOW IGNORE THE SEPARATE FI
     {
         abstract public Color Decorate(Color origColor);//Returns decorated color
     }
-    public abstract class GlowNotifier : GlowExtension, IObservable<Notification> //observed by core
+    public abstract class GlowNotifier : GlowExtension//, IObservable<Notification> //observed by core
     {
-        public abstract IDisposable Subscribe(IObserver<Notification> observer);
+        public abstract void AttachEvent(AntumbraNotificationObserver observer);
+       // public abstract IDisposable Subscribe(IObserver<Notification> observer);
         //run color sequence configured for the notification
         //called after an Update() call returns true
         //public abstract IDisposable Subscribe(IObserver<Notification> notificationHandler);
