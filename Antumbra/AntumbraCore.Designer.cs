@@ -37,9 +37,9 @@
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.metroStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
-            this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager)).BeginInit();
             this.SuspendLayout();
@@ -57,12 +57,12 @@
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whatsMyConfig,
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
             this.settingsMenuItem,
             this.offToolStripMenuItem,
-            this.quitMenuItem,
-            this.whatsMyConfig});
+            this.quitMenuItem});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.contextMenu.ShowCheckMargin = true;
@@ -110,18 +110,18 @@
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
-            // metroStyleManager
-            // 
-            this.metroStyleManager.Owner = this;
-            this.metroStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
-            this.metroStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // whatsMyConfig
             // 
             this.whatsMyConfig.Name = "whatsMyConfig";
             this.whatsMyConfig.Size = new System.Drawing.Size(215, 22);
             this.whatsMyConfig.Text = "What is Currently Enabled?";
             this.whatsMyConfig.Click += new System.EventHandler(this.whatsMyConfig_Click);
+            // 
+            // metroStyleManager
+            // 
+            this.metroStyleManager.Owner = this;
+            this.metroStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
+            this.metroStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // AntumbraCore
             // 
