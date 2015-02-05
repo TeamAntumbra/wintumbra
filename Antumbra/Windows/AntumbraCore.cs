@@ -29,7 +29,7 @@ namespace Antumbra.Glow
         private Color color;//newest generated color for displaying
         private Color prevColor;
         private Color weightedColor;
-        private SerialConnector serial;//serial connector
+        //private SerialConnector serial;//serial connector
         private SettingsWindow settings;//settings window
         public int pollingWidth { get; set; }
         public int pollingHeight { get; set; }
@@ -42,6 +42,7 @@ namespace Antumbra.Glow
         public int changeThreshold { get; set; }//difference in colors needed to change
 
         public MEFHelper MEFHelper;
+        private DeviceManager GlowManager;
 
         private GlowDriver GlowDriver;
         private GlowScreenGrabber ScreenGrabber;
@@ -56,6 +57,7 @@ namespace Antumbra.Glow
         {
             //this.serial = new SerialConnector(0x03EB, 0x2040);
             //this.serial.setup();
+            this.GlowManager = new DeviceManager(this, 0x03EB, 0x2040);
             InitializeComponent();
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
@@ -218,10 +220,12 @@ namespace Antumbra.Glow
             newColor = AddColorToWeightedValue(newColor);
             changeTo(newColor.R, newColor.G, newColor.B);
         }
-       
+
         private void changeTo(byte r, byte g, byte b)
         {
-            Console.WriteLine(r + " - " + g + "  -  " + b);
+            
+        }
+  /*          Console.WriteLine(r + " - " + g + "  -  " + b);
             if (this.serial.send(r, g, b)) {//sucessful send
                 updateLast(r, g, b);
                 this.updateStatus(2);
@@ -236,13 +240,38 @@ namespace Antumbra.Glow
         {
             //updateStatus(this.serial.state);
         }
-
-        private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive //TODO move to device connection class
+        */
+        public void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
         {
             if (null == this.settings)
                 return;
             string newText = "Invalid Status";
             switch(status) {
+                case 0:
+                    newText = "No Glow Found";
+                    //dead
+                    break;
+                case 1:
+                    newText = "Idle";
+                    //idle
+                    break;
+                case 2:
+                    newText = "Sending/Recieving Successfully";
+                    //good
+                    break;
+            }
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.settings.glowStatus.Text = newText;
+            });
+        }
+
+        public void updateStatusText(int status)
+        {
+            if (null == this.settings)
+                return;
+            string newText = "Invalid Status";
+            switch (status) {
                 case 0:
                     newText = "No Glow Found";
                     //dead
