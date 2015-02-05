@@ -39,6 +39,7 @@
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
+            this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager)).BeginInit();
             this.SuspendLayout();
@@ -60,13 +61,14 @@
             this.stopToolStripMenuItem,
             this.settingsMenuItem,
             this.offToolStripMenuItem,
-            this.quitMenuItem});
+            this.quitMenuItem,
+            this.whatsMyConfig});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.contextMenu.ShowCheckMargin = true;
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(117, 114);
+            this.contextMenu.Size = new System.Drawing.Size(216, 136);
             this.contextMenu.Style = MetroFramework.MetroColorStyle.Blue;
             this.contextMenu.Text = "Antumbra|Glow";
             this.contextMenu.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -76,35 +78,35 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // settingsMenuItem
             // 
             this.settingsMenuItem.Name = "settingsMenuItem";
-            this.settingsMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.settingsMenuItem.Size = new System.Drawing.Size(215, 22);
             this.settingsMenuItem.Text = "Settings";
             this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
             // 
             // offToolStripMenuItem
             // 
             this.offToolStripMenuItem.Name = "offToolStripMenuItem";
-            this.offToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.offToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.offToolStripMenuItem.Text = "Off";
             this.offToolStripMenuItem.Click += new System.EventHandler(this.offToolStripMenuItem_Click);
             // 
             // quitMenuItem
             // 
             this.quitMenuItem.Name = "quitMenuItem";
-            this.quitMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.quitMenuItem.Size = new System.Drawing.Size(215, 22);
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
@@ -113,6 +115,13 @@
             this.metroStyleManager.Owner = this;
             this.metroStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
             this.metroStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // whatsMyConfig
+            // 
+            this.whatsMyConfig.Name = "whatsMyConfig";
+            this.whatsMyConfig.Size = new System.Drawing.Size(215, 22);
+            this.whatsMyConfig.Text = "What is Currently Enabled?";
+            this.whatsMyConfig.Click += new System.EventHandler(this.whatsMyConfig_Click);
             // 
             // AntumbraCore
             // 
@@ -148,6 +157,7 @@
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private MetroFramework.Components.MetroStyleExtender metroStyleExtender;
+        private System.Windows.Forms.ToolStripMenuItem whatsMyConfig;
     }
 }
 

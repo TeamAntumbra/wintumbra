@@ -294,6 +294,36 @@ namespace Antumbra.Glow
             Application.Exit();
         }
 
+        private void whatsMyConfig_Click(object sender, EventArgs e)
+        {
+            string driver = "Not set";
+            string grabber = "Not set";
+            string processor = "Not set";
+            string decorators = "Not set";
+            string notifiers = "Not set";
+            if (this.GlowDriver != null)
+                driver = this.GlowDriver.ToString();
+            if (this.ScreenGrabber != null)
+                grabber = this.ScreenGrabber.ToString();
+            if (this.ScreenProcessor != null)
+                processor = this.ScreenProcessor.ToString();
+            if (null != this.GlowDecorators && this.GlowDecorators.Count != 0) {
+                decorators = "";
+                foreach (var decorator in this.GlowDecorators)
+                    decorators += decorator.ToString();
+            }
+            if (null != this.GlowNotifiers && this.GlowNotifiers.Count != 0) {
+                notifiers = "";
+                foreach (var notifier in this.GlowNotifiers)
+                    notifiers += notifier.ToString();
+            }
+
+            this.notifyIcon.ShowBalloonTip(5000, "Current Configuration", "Driver: " + driver +
+                "\nGrabber: " + grabber + "\nProcessor: " + processor +
+                "\nDecorators: " + decorators + "\nNotifiers: " + notifiers,
+                ToolTipIcon.Info);
+        }
+
         public void Off()
         {
             this.Stop();
