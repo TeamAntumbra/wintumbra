@@ -32,12 +32,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AntumbraCore));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.metroStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
             this.contextMenu.SuspendLayout();
@@ -75,6 +75,13 @@
             this.contextMenu.UseStyleColors = true;
             this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
+            // whatsMyConfig
+            // 
+            this.whatsMyConfig.Name = "whatsMyConfig";
+            this.whatsMyConfig.Size = new System.Drawing.Size(215, 22);
+            this.whatsMyConfig.Text = "What is Currently Enabled?";
+            this.whatsMyConfig.Click += new System.EventHandler(this.whatsMyConfig_Click);
+            // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
@@ -109,13 +116,6 @@
             this.quitMenuItem.Size = new System.Drawing.Size(215, 22);
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
-            // 
-            // whatsMyConfig
-            // 
-            this.whatsMyConfig.Name = "whatsMyConfig";
-            this.whatsMyConfig.Size = new System.Drawing.Size(215, 22);
-            this.whatsMyConfig.Text = "What is Currently Enabled?";
-            this.whatsMyConfig.Click += new System.EventHandler(this.whatsMyConfig_Click);
             // 
             // metroStyleManager
             // 

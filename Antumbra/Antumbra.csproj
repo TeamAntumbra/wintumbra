@@ -83,7 +83,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Antumbra.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\AntumbraA.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>FEF6F6E87BDC86BB6EE0AD3C5D0835A09EE0A029</ManifestCertificateThumbprint>
@@ -125,10 +125,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntumbraCore.cs">
+    <Compile Include="Connector\DeviceManager.cs" />
+    <Compile Include="Windows\AntumbraCore.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AntumbraCore.Designer.cs">
+    <Compile Include="Windows\AntumbraCore.Designer.cs">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
@@ -136,18 +137,18 @@
     <Compile Include="Utility\FastBitmap.cs" />
     <Compile Include="Utility\FPSCalc.cs" />
     <Compile Include="Utility\PixelReader.cs" />
-    <Compile Include="Windows\pollingAreaSetter.cs">
+    <Compile Include="Windows\Settings\pollingAreaSetter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\pollingAreaSetter.Designer.cs">
+    <Compile Include="Windows\Settings\pollingAreaSetter.Designer.cs">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HslColor.cs" />
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <Compile Include="Windows\SettingsWindow.cs">
+    <Compile Include="Windows\Settings\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\SettingsWindow.Designer.cs">
+    <Compile Include="Windows\Settings\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HSVRGGConverter.cs" />
@@ -156,13 +157,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AntumbraCore.resx">
+    <EmbeddedResource Include="Windows\AntumbraCore.resx">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\pollingAreaSetter.resx">
+    <EmbeddedResource Include="Windows\Settings\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\SettingsWindow.resx">
+    <EmbeddedResource Include="Windows\Settings\SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -210,15 +211,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Antumbra.ico" />
     <Content Include="antumbraglowv3beta.inf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="FodyWeavers.xml" />
     <None Include="libantumbra.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="FodyWeavers.xml" />
-    <Content Include="Resources\Antumbra.ico" />
+    <None Include="libusb-1.0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Resources\AntumbraA.ico" />
+    <Content Include="Resources\AntumbraA.png" />
     <Content Include="Resources\cellbackground.png" />
     <None Include="Resources\Culture.ico" />
     <Content Include="Resources\eyedropper.cur">

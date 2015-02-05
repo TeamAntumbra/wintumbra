@@ -54,8 +54,8 @@ namespace Antumbra.Glow
 
         public AntumbraCore()
         {
-            this.serial = new SerialConnector(0x03EB, 0x2040);
-            this.serial.setup();
+            //this.serial = new SerialConnector(0x03EB, 0x2040);
+            //this.serial.setup();
             InitializeComponent();
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
@@ -234,7 +234,7 @@ namespace Antumbra.Glow
 
         public void checkStatus()//TODO move to device connection class
         {
-            updateStatus(this.serial.state);
+            //updateStatus(this.serial.state);
         }
 
         private void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive //TODO move to device connection class

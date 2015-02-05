@@ -121,13 +121,16 @@
   <data name="eyedropper" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\eyedropper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="favicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Antumbra.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="LoadPalette" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\palette-load.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SavePalette" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\palette-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AntumbraA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AntumbraA.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AntumbraA1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AntumbraA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
