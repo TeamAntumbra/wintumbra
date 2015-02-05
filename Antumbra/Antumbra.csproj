@@ -220,10 +220,10 @@
     </Content>
     <Content Include="FodyWeavers.xml" />
     <None Include="libantumbra.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="libusb-1.0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Resources\AntumbraA.ico" />
     <Content Include="Resources\AntumbraA.png" />
