@@ -168,7 +168,16 @@ namespace Antumbra.Glow
             double r = Interpolate(color1.R, color2.R, fraction);
             double g = Interpolate(color1.G, color2.G, fraction);
             double b = Interpolate(color1.B, color2.B, fraction);
-            return Color.FromArgb((int)Math.Round(r), (int)Math.Round(g), (int)Math.Round(b));
+            int rI = (int)Math.Round(r) % 255;
+            int gI = (int)Math.Round(g) % 255;
+            int bI = (int)Math.Round(b) % 255;
+            if (rI < 0)
+                rI = 0;
+            if (gI < 0)
+                gI = 0;
+            if (bI < 0)
+                bI = 0;
+            return Color.FromArgb(rI, gI, bI);
         }
 
         private double Interpolate(double d1, double d2, double fraction)
