@@ -177,6 +177,10 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Antumbra_TemporaryKey.pfx" />
+    <None Include="Licenses\AfterGlow_LICENSE" />
+    <None Include="Licenses\MetroFramework_LICENSE.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -216,10 +220,10 @@
     </Content>
     <Content Include="FodyWeavers.xml" />
     <None Include="libantumbra.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="libusb-1.0.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Resources\AntumbraA.ico" />
     <Content Include="Resources\AntumbraA.png" />
