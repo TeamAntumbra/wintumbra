@@ -268,6 +268,11 @@ namespace Antumbra.Glow
 
         private void whatsMyConfig_Click(object sender, EventArgs e)
         {
+            AnnounceConfig();
+        }
+
+        public void AnnounceConfig()
+        {
             string driver = "Not set";
             string grabber = "Not set";
             string processor = "Not set";
@@ -289,16 +294,21 @@ namespace Antumbra.Glow
             }
             GlowNotifier[] notfs = ExtensionManager.ActiveNotifiers.ToArray();
             for (int i = 0; i < notfs.Length; i += 1) {
-                if (i == 0)
+                if (i == 0)//reset string
                     notifiers = "";
                 notifiers += notfs[i].ToString();
-                if (i != notfs.Length - 1)
+                if (i != notfs.Length - 1)//not last
                     notifiers += ", ";
             }
             this.notifyIcon.ShowBalloonTip(5000, "Current Configuration", "Driver: " + driver +
                 "\nGrabber: " + grabber + "\nProcessor: " + processor +
                 "\nDecorators: " + decorators + "\nNotifiers: " + notifiers,
                 ToolTipIcon.Info);
+        }
+
+        public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
+        {
+            this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
 
         public void Off()

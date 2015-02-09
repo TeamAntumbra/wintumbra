@@ -113,16 +113,10 @@ namespace Antumbra.Glow.Windows
         public void UpdateSelections()
         {
             this.antumbra.ExtensionManager.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
-            /*if (null == screenGrabbers.SelectedItem)
-                this.antumbra.setScreenGrabber(null);
-            else
-                this.antumbra.setScreenGrabber(this.antumbra.MEFHelper.GetScreenGrabber(screenGrabbers.SelectedItem.ToString()));
-            if (null == screenProcessors.SelectedItem)
-                this.antumbra.setScreenProcessor(null);
-            else
-                this.antumbra.setScreenProcessor(this.antumbra.MEFHelper.GetScreenProcessor(screenProcessors.SelectedItem.ToString()));
-            this.antumbra.setDecorators(this.antumbra.MEFHelper.GetDecorators(enabledDecorators));
-            this.antumbra.setNotifiers(this.antumbra.MEFHelper.GetNotifiers(enabledNotifiers));*/
+            this.antumbra.ExtensionManager.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
+            this.antumbra.ExtensionManager.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
+            //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
+            this.antumbra.AnnounceConfig();
         }
 
         private void apply_Click(object sender, EventArgs e)
@@ -131,74 +125,40 @@ namespace Antumbra.Glow.Windows
             UpdateSelections();
         }
 
-        /*private void updateDecorators()
-        {
-            decorators.Items.Clear();
-            foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailDecorators()) {
-                if (!decorators.Items.Contains(str)) {
-                    if (enabledDecorators.Contains(str)) {
-                        decorators.Items.Add(str + " - Active");
-                    }
-                    else
-                        decorators.Items.Add(str);
-                }
-            }
-            if (decorators.Items.Count > 0)
-                decorators.SelectedIndex = 0;
-        }*/
-
         private void decoratorToggle_Click(object sender, EventArgs e)
         {
             if (null != decorators.SelectedItem) {
-              /*  var value = decorators.SelectedItem.ToString();
-                if (value.EndsWith(" - Active")) {
-                    value = value.Substring(0, value.Length - 9);
-                    enabledDecorators.Remove(value);
-                }
-                else
-                    enabledDecorators.Add(value);*/
+                this.antumbra.Stop();
                 GlowDecorator value = (GlowDecorator)decorators.SelectedItem;
-                if (this.antumbra.ExtensionManager.ActiveDecorators.Contains(value))
+                if (this.antumbra.ExtensionManager.ActiveDecorators.Contains(value)) {
                     this.antumbra.ExtensionManager.ActiveDecorators.Remove(value);
-                else
+                    this.antumbra.ShowMessage(3000, "Decorator Disabled",
+                        "The decorator, " + value.ToString() + ", has been disabled.", ToolTipIcon.Info);
+                }
+                else {
                     this.antumbra.ExtensionManager.ActiveDecorators.Add(value);
-            }
-            //updateDecorators();
-        }
-
-       /* private void updateNotifiers()
-        {
-            notifiers.Items.Clear();
-            foreach (var str in this.antumbra.MEFHelper.GetNamesOfAvailNotifiers()) {
-                if (!notifiers.Items.Contains(str)) {
-                    if (enabledNotifiers.Contains(str)) {
-                        notifiers.Items.Add(str + " - Active");
-                    }
-                    else
-                        notifiers.Items.Add(str);
+                    this.antumbra.ShowMessage(3000, "Decorator Enabled",
+                        "The decorator, " + value.ToString() + ", has been enabled.", ToolTipIcon.Info);
                 }
             }
-            if (notifiers.Items.Count > 0)
-                notifiers.SelectedIndex = 0;
-        }*/
+        }
 
         private void notifierToggle_Click(object sender, EventArgs e)
         {
             if (null != notifiers.SelectedItem) {
-            /*    var value = notifiers.SelectedItem.ToString();
-                if (value.EndsWith(" - Active")) {
-                    value = value.Substring(0, value.Length - 9);
-                    enabledDecorators.Remove(value);
-                }
-                else
-                    enabledNotifiers.Add(notifiers.SelectedItem.ToString());*/
+                this.antumbra.Stop();
                 GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
-                if (this.antumbra.ExtensionManager.ActiveNotifiers.Contains(notf))
+                if (this.antumbra.ExtensionManager.ActiveNotifiers.Contains(notf)) {
                     this.antumbra.ExtensionManager.ActiveNotifiers.Remove(notf);
-                else
+                    this.antumbra.ShowMessage(3000, "Notifier Disabled",
+                        "The notifier, " + notf.ToString() + ", has been disabled.", ToolTipIcon.Info);
+                }
+                else {
                     this.antumbra.ExtensionManager.ActiveNotifiers.Add(notf);
+                    this.antumbra.ShowMessage(3000, "Notifier Enabled",
+                        "The notifier, " + notf.ToString() + ", has been enabled.", ToolTipIcon.Info);
+                }
             }
-            //updateNotifiers();
         }
 
         private void SettingsWindow_MouseEnter(object sender, EventArgs e)
