@@ -103,8 +103,6 @@ namespace Antumbra.Glow
             });
             lock (sync) {
                 color = (Color)sender;
-                foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)
-                        color = decorator.Decorate(color);
             }
         }
 
@@ -158,10 +156,12 @@ namespace Antumbra.Glow
 
         private void SetColorTo(Color newColor)//TODO move to device connection class NOTE always use this to set color and allow decorators to run
         {
-            this.settingsWindow.updateSwatch(newColor);
             //foreach (GlowDecorator decorator in GlowDecorators)
              //   newColor = decorator.Decorate(newColor);
+            foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)
+                newColor = decorator.Decorate(newColor);
             newColor = AddColorToWeightedValue(newColor);
+            this.settingsWindow.updateSwatch(newColor);
             changeTo(newColor.R, newColor.G, newColor.B);
         }
 
