@@ -42,7 +42,7 @@ namespace Antumbra.Glow.Connector
                 var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
                 IntPtr dev = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
                 result.Add(new GlowDevice(i, true, i, dev));
-                Console.WriteLine("opening - - - - " + AnDevice_Open(this.ctx, this.devs, dev));
+                //Console.WriteLine("opening - - - - " + AnDevice_Open(this.ctx, this.devs, dev));
             }
             //Console.WriteLine(this.devs.ToString());
             return result;

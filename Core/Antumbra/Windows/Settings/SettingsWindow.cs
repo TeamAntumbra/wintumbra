@@ -12,19 +12,32 @@ using Antumbra.Glow.ExtensionFramework;
 using System.Threading;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Antumbra.Glow.Windows
 {
-    public partial class SettingsWindow : MetroFramework.Forms.MetroForm //TODO split this into window event handlers and another settings / setup class
+    public partial class SettingsWindow : Form//TODO split this into window event handlers and another settings / setup class
     {
+        /// <summary>
+        /// AntumbraCore object that created this form
+        /// </summary>
         private AntumbraCore antumbra;
-        //private List<string> enabledDecorators, enabledNotifiers;//TODO move this and some of the MEF stuff to an extension manager class
-        private MetroFramework.Forms.MetroForm pollingAreaWindow;
+        /// <summary>
+        /// Form used to set the screen grabber polling area
+        /// </summary>
+        private Form pollingAreaWindow;
+        /// <summary>
+        /// Move form dependencies
+        /// </summary>
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
         public SettingsWindow(AntumbraCore antumbra)
         {
             this.antumbra = antumbra;
-            //this.enabledDecorators = new List<string>();//TODO move to extension manager class
-            //this.enabledNotifiers = new List<string>();//TODO move to extension manager class
             InitializeComponent();
             updateValues();
             this.Focus();
@@ -232,6 +245,20 @@ namespace Antumbra.Glow.Windows
         private void fadeEnabledCheck_CheckedChanged(object sender, EventArgs e)
         {
             this.antumbra.fadeEnabled = fadeEnabledCheck.Checked;
+        }
+
+        private void closeBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void SettingsWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Drag form to move
+            if (e.Button == MouseButtons.Left) {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }

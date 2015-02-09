@@ -239,12 +239,6 @@
     <Content Include="Resources\palette-load.png" />
     <Content Include="Resources\palette-save.png" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="viperneo-winforms-modernui-7f1ba1d\MetroFramework\MetroFramework.csproj">
-      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
-      <Name>MetroFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

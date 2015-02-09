@@ -11,7 +11,7 @@ using Antumbra.Glow;
 
 namespace Antumbra.Glow.Windows
 {
-    public partial class pollingAreaSetter : MetroFramework.Forms.MetroForm
+    public partial class pollingAreaSetter : Form
     {
         private AntumbraCore core;
         private SettingsWindow settings;

@@ -24,7 +24,7 @@ using System.Reflection;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : MetroFramework.Forms.MetroForm, AntumbraColorObserver
+    public partial class AntumbraCore : Form, AntumbraColorObserver
     {
         private Color color;//newest generated color for displaying
         private Color prevColor;
@@ -355,6 +355,23 @@ namespace Antumbra.Glow
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Stop();
+        }
+    }
+
+    public class CustomRenderer : ToolStripProfessionalRenderer
+    {
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+        {
+            Rectangle item = new Rectangle(new Point(e.ToolStrip.Location.X + e.Item.Bounds.X, e.ToolStrip.Location.Y + e.Item.Bounds.Location.Y), e.Item.Size);
+            if (item.Contains(Cursor.Position)) {
+                Color c = Color.FromArgb(44, 44, 44);
+                Brush brush = new SolidBrush(c);
+                Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
+                e.Graphics.FillRectangle(brush, rect);
+                brush.Dispose();
+            }
+            else
+                base.OnRenderMenuItemBackground(e);
         }
     }
 }

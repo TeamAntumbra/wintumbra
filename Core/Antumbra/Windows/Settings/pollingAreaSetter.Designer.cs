@@ -27,25 +27,41 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.title = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // title
+            // 
+            this.title.AutoSize = true;
+            this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.title.Location = new System.Drawing.Point(108, 120);
+            this.title.Name = "title";
+            this.title.Size = new System.Drawing.Size(541, 24);
+            this.title.TabIndex = 0;
+            this.title.Tag = "";
+            this.title.Text = "Cover the area you would like to capture then close this window";
             // 
             // pollingAreaSetter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(785, 338);
+            this.Controls.Add(this.title);
+            this.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "pollingAreaSetter";
-            this.Opacity = 0.5D;
-            this.Style = MetroFramework.MetroColorStyle.Black;
-            this.Text = "Cover the area to capture then close this window";
-            this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
-            this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Opacity = 0.7D;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.pollingAreaSetter_FormClosing);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Label title;
     }
 }
