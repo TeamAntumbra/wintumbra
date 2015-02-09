@@ -227,6 +227,7 @@
     <None Include="libusb-1.0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Licenses\charliecm_ColorPicker_LICENSE.txt" />
     <Content Include="Resources\AntumbraA.ico" />
     <Content Include="Resources\AntumbraA.png" />
     <Content Include="Resources\cellbackground.png" />

@@ -42,11 +42,6 @@ namespace Antumbra.Glow
 
         public ExtensionManager ExtensionManager { get; private set; }
         private DeviceManager GlowManager;
-      /*  private GlowDriver GlowDriver;
-        private GlowScreenGrabber ScreenGrabber;
-        private GlowScreenProcessor ScreenProcessor;
-        private List<GlowDecorator> GlowDecorators;
-        private List<GlowNotifier> GlowNotifiers;*/
         private Task outputLoopTask;
         public double OutputLoopFPS { get { return outputLoopFPS.FPS; } }
         private FPSCalc outputLoopFPS = new FPSCalc();
@@ -71,8 +66,6 @@ namespace Antumbra.Glow
             this.stepSize = 2;
             this.fadeSteps = 10;
             this.fadeEnabled = true;
-            //this.GlowDecorators = new List<GlowDecorator>();
-            //this.GlowNotifiers = new List<GlowNotifier>();
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
             this.settingsWindow = new SettingsWindow(this);
         }
@@ -161,6 +154,7 @@ namespace Antumbra.Glow
 
         private void SetColorTo(Color newColor)//TODO move to device connection class NOTE always use this to set color and allow decorators to run
         {
+            this.settingsWindow.updateSwatch(newColor);
             //foreach (GlowDecorator decorator in GlowDecorators)
              //   newColor = decorator.Decorate(newColor);
             newColor = AddColorToWeightedValue(newColor);
@@ -306,6 +300,7 @@ namespace Antumbra.Glow
         public void Start()
         {
             Stop();
+            this.outputLoopFPS = new FPSCalc();
             if (ExtensionManager.Start()) {
                 ExtensionManager.ActiveDriver.AttachEvent(this);
                 this.Active = true;
@@ -349,6 +344,8 @@ namespace Antumbra.Glow
         public void Stop()
         {
             this.Active = false;
+            if (this.outputLoopFPS != null)
+                this.outputLoopFPS = null;
             ExtensionManager.Stop();
         }
 

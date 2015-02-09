@@ -78,6 +78,12 @@ namespace Antumbra.Glow.Windows
             //this.antumbra.checkStatus();
         }
 
+        public void updateSwatch(Color newColor)
+        {
+            if (this.Visible)
+                this.colorSwatch.BackColor = newColor;
+        }
+
         private void stepSize_TextChanged(object sender, EventArgs e)
         {
             try {

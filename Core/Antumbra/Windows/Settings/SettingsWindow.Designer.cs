@@ -69,6 +69,8 @@
             this.fadeEnabledCheck = new System.Windows.Forms.CheckBox();
             this.closeBtn = new System.Windows.Forms.Button();
             this.settingsTitle = new System.Windows.Forms.Label();
+            this.colorSwatch = new System.Windows.Forms.Button();
+            this.currentColorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // stepSizeLabel
@@ -546,6 +548,26 @@
             this.settingsTitle.Text = "Settings";
             this.settingsTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // colorSwatch
+            // 
+            this.colorSwatch.Enabled = false;
+            this.colorSwatch.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.colorSwatch.Location = new System.Drawing.Point(372, 69);
+            this.colorSwatch.Name = "colorSwatch";
+            this.colorSwatch.Size = new System.Drawing.Size(21, 21);
+            this.colorSwatch.TabIndex = 74;
+            this.colorSwatch.UseVisualStyleBackColor = false;
+            // 
+            // currentColorLabel
+            // 
+            this.currentColorLabel.AutoSize = true;
+            this.currentColorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.currentColorLabel.Location = new System.Drawing.Point(260, 71);
+            this.currentColorLabel.Name = "currentColorLabel";
+            this.currentColorLabel.Size = new System.Drawing.Size(96, 17);
+            this.currentColorLabel.TabIndex = 75;
+            this.currentColorLabel.Text = "Current Color:";
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -554,6 +576,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.currentColorLabel);
+            this.Controls.Add(this.colorSwatch);
             this.Controls.Add(this.settingsTitle);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.fadeEnabledCheck);
@@ -656,5 +680,7 @@
         private System.Windows.Forms.CheckBox fadeEnabledCheck;
         private System.Windows.Forms.Button closeBtn;
         private System.Windows.Forms.Label settingsTitle;
+        private System.Windows.Forms.Label currentColorLabel;
+        private System.Windows.Forms.Button colorSwatch;
     }
 }
