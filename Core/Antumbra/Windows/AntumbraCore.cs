@@ -332,6 +332,7 @@ namespace Antumbra.Glow
             Stop();
             this.outputLoopFPS = new FPSCalc();
             if (ExtensionManager.Start()) {
+                this.settingsWindow.updateValues();
                 ExtensionManager.ActiveDriver.AttachEvent(this);
                 this.Active = true;
                 outputLoopTask = Task.Factory.StartNew(outputLoopTarget);

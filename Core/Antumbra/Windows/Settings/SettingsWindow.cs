@@ -56,7 +56,15 @@ namespace Antumbra.Glow.Windows
             foreach (var dvr in this.antumbra.ExtensionManager.AvailDrivers)
                 if (!driverExtensions.Items.Contains(dvr))
                     driverExtensions.Items.Add(dvr);
-            driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.antumbra.ExtensionManager.ActiveDriver);
+            if (this.antumbra.ExtensionManager.ActiveDriver is GlowScreenDriverCoupler)
+                for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
+                    if (driverExtensions.Items[i] is GlowScreenDriverCoupler) {
+                        driverExtensions.SelectedIndex = i;
+                        break;
+                    }
+                }
+            else
+                driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.antumbra.ExtensionManager.ActiveDriver);
             foreach (var gbbr in this.antumbra.ExtensionManager.AvailScreenGrabbers)
                 if (!screenGrabbers.Items.Contains(gbbr))
                     screenGrabbers.Items.Add(gbbr);
@@ -73,8 +81,6 @@ namespace Antumbra.Glow.Windows
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
             changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
-            //updateDecorators();
-            //updateNotifiers();
             //this.antumbra.checkStatus();
         }
 
