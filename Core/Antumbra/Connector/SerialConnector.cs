@@ -15,7 +15,8 @@ namespace Antumbra.Glow.Connector
         const int ALIVE = 2;
         private int pid, vid;
         public int state { private set; get; }
-        private IntPtr ctx, devs;
+        private IntPtr ctx;
+        private IntPtr devs;
         public SerialConnector(int vid, int pid)
         {
             var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
@@ -26,6 +27,7 @@ namespace Antumbra.Glow.Connector
             var devsPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
             //this.devs = (IntPtr)Marshal.PtrToStructure(devsPtr, typeof(IntPtr));
             //var ptr2 = IntPtr.Zero;
+            //this.devs = (IntPtr)Marshal.PtrToStructure(devsPtr, typeof(IntPtr));
             this.devs = (IntPtr)Marshal.PtrToStructure(devsPtr, typeof(IntPtr));
             //this.devs = IntPtr.Zero;
             this.state = DEAD;
@@ -40,7 +42,7 @@ namespace Antumbra.Glow.Connector
                 var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
                 IntPtr dev = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
                 result.Add(new GlowDevice(i, true, i, dev));
-                //Console.WriteLine(AnDevice_Open(ctx, ref this.devs, ref dev));
+                Console.WriteLine("opening - - - - " + AnDevice_Open(this.ctx, this.devs, dev));
             }
             //Console.WriteLine(this.devs.ToString());
             return result;
@@ -73,7 +75,7 @@ namespace Antumbra.Glow.Connector
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
         public static extern int AnDevice_State(IntPtr dev);
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnDevice_Open(IntPtr ctx, ref IntPtr devs, ref IntPtr dev);
+        public static extern int AnDevice_Open(IntPtr ctx, IntPtr devs, IntPtr dev);
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
         public static extern int AnDevice_Close(IntPtr ctx, IntPtr dev);
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
