@@ -37,9 +37,9 @@ namespace Antumbra.Glow.ExtensionFramework
                 this.ActiveNotifiers.Add(notf);
         }
 
-        public bool DidLoadingFail()
+        public bool LoadingFailed()
         {
-            return this.MEFHelper.didFail();
+            return this.MEFHelper.failed;
         }
 
         public bool Start()

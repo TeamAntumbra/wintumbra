@@ -90,10 +90,5 @@ namespace Antumbra.Glow.ExtensionFramework
                 }
             }
         }
-
-        public bool didFail()
-        {
-            return this.failed;
-        }
     }
 }

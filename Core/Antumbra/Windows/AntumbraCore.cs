@@ -67,6 +67,10 @@ namespace Antumbra.Glow
             this.fadeSteps = 5;
             this.fadeEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
+            if (this.ExtensionManager.LoadingFailed())
+                this.ShowMessage(3000, "Extension Loading Failed",
+                    "The Extension Manager reported that loading of one or more extensions failed."
+                    + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
             this.settingsWindow = new SettingsWindow(this);
         }
 
