@@ -145,7 +145,7 @@ namespace Antumbra.Glow
         private void FadeColorTo(Color newColor)
         {
             for (double step = 0.0; step <= 1; step += (1.0 / this.fadeSteps)) {
-                Color result = Interpolate(newColor, prevColor, step);
+                Color result = Interpolate(newColor, color, step);
                 if (shouldChange(result))
                     SetColorTo(result);
                 else
