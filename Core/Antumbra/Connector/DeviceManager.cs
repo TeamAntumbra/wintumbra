@@ -21,6 +21,11 @@ namespace Antumbra.Glow.Connector
         {
             this.core = core;
             this.Connector = new SerialConnector(vid, pid);
+            this.Glows = new List<GlowDevice>();
+            foreach (var device in this.Connector.setup()) {
+                Console.WriteLine(device.ToString());
+                this.Glows.Add(device);
+            }
         }
         /// <summary>
         /// Will return the status of the Glow device with

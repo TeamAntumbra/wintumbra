@@ -12,6 +12,7 @@ namespace Antumbra.Glow.Connector
     /// </summary>
     class GlowDevice
     {
+        private IntPtr dev;
         /// <summary>
         /// The index this device is in the serialConnector's devs list
         /// </summary>
@@ -42,11 +43,17 @@ namespace Antumbra.Glow.Connector
         /// <param name="id"></param>
         /// <param name="beta"></param>
         /// <param name="index"></param>
-        public GlowDevice(int id, bool beta, int index)
+        public GlowDevice(int id, bool beta, int index, IntPtr dev)
         {
             this.id = id;
             this.beta = beta;
             this.index = index;
+            this.dev = dev;
+        }
+
+        public override string ToString()
+        {
+            return "Glow device, id: " + this.id;
         }
     }
 }
