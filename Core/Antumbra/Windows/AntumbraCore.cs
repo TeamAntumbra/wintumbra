@@ -97,6 +97,10 @@ namespace Antumbra.Glow
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
             outputLoopFPS.Tick();
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.settingsWindow.speed.Text = outputLoopFPS.FPS.ToString();
+            });
             lock (sync) {
                 color = (Color)sender;
                 foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)
@@ -317,10 +321,6 @@ namespace Antumbra.Glow
                             FadeColorTo(color);
                         else
                             SetColorTo(color);
-                        this.Invoke((MethodInvoker)delegate
-                        {
-                            this.settingsWindow.speed.Text = outputLoopFPS.FPS.ToString();
-                        });
                     }
                     //Task.Delay(5);
                 }

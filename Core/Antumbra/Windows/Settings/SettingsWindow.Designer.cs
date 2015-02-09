@@ -516,7 +516,7 @@
             this.fadeEnabledCheck.Size = new System.Drawing.Size(95, 17);
             this.fadeEnabledCheck.TabIndex = 71;
             this.fadeEnabledCheck.Text = "Fade Enabled?";
-            this.fadeEnabledCheck.UseVisualStyleBackColor = true;
+            this.fadeEnabledCheck.UseVisualStyleBackColor = false;
             this.fadeEnabledCheck.CheckedChanged += new System.EventHandler(this.fadeEnabledCheck_CheckedChanged);
             // 
             // closeBtn
