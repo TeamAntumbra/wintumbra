@@ -209,7 +209,7 @@ namespace Antumbra.Glow.Windows
 
         private void pollingArea_Click(object sender, EventArgs e)
         {
-            if (this.pollingAreaWindow == null)
+            if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed)
                 this.pollingAreaWindow = new pollingAreaSetter(this.antumbra, this);
             this.pollingAreaWindow.Show();
         }

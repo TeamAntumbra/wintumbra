@@ -64,7 +64,7 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;
             this.stepSize = 2;
-            this.fadeSteps = 10;
+            this.fadeSteps = 5;
             this.fadeEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
             this.settingsWindow = new SettingsWindow(this);
@@ -278,7 +278,23 @@ namespace Antumbra.Glow
             if (ExtensionManager.ActiveGrabber != null)
                 grabber = ExtensionManager.ActiveGrabber.ToString();
             if (ExtensionManager.ActiveProcessor != null)
-                processor = ExtensionManager.ActiveProcessor.ToString();//TODO finish
+                processor = ExtensionManager.ActiveProcessor.ToString();
+            GlowDecorator[] decs = ExtensionManager.ActiveDecorators.ToArray();
+            for (int i = 0; i < decs.Length; i += 1) {
+                if (i == 0)//reset string
+                    decorators = "";
+                decorators += decs[i].ToString();
+                if (i != decs.Length - 1)//not last
+                    decorators += ", ";
+            }
+            GlowNotifier[] notfs = ExtensionManager.ActiveNotifiers.ToArray();
+            for (int i = 0; i < notfs.Length; i += 1) {
+                if (i == 0)
+                    notifiers = "";
+                notifiers += notfs[i].ToString();
+                if (i != notfs.Length - 1)
+                    notifiers += ", ";
+            }
             this.notifyIcon.ShowBalloonTip(5000, "Current Configuration", "Driver: " + driver +
                 "\nGrabber: " + grabber + "\nProcessor: " + processor +
                 "\nDecorators: " + decorators + "\nNotifiers: " + notifiers,
