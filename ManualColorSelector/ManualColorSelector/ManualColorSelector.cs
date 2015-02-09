@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using System.ComponentModel.Composition;
-using ColorPicker;
+using System.Threading;
+using System.Drawing;
 
 namespace ManualColorSelector
 {
@@ -15,6 +16,7 @@ namespace ManualColorSelector
         private Dictionary<string, object> settings;
         private bool running;
         private MainForm picker;
+        private Thread driver;
         public delegate void NewColorAvail(object sender, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         public override void AttachEvent(AntumbraColorObserver observer)
@@ -70,13 +72,24 @@ namespace ManualColorSelector
 
         public override bool Start()
         {
-            this.picker = new ColorPicker.MainForm();
+            this.picker = new MainForm();
+            this.picker.Show();
+            this.driver = new Thread(new ThreadStart(target));
             this.running = true;
             return true;
         }
 
+        private void target()
+        {
+            while (this.picker.WindowState == System.Windows.Forms.FormWindowState.Normal) {//while open
+                NewColorAvailEvent(this.picker.sampleColor, EventArgs.Empty);//send current color
+            }
+        }
+
         public override bool Stop()
         {
+            if (this.driver != null && this.driver.IsAlive)
+                this.driver.Abort();
             if (this.picker != null)
                 this.picker.Close();
             this.running = false;

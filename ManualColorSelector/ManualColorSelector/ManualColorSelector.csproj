@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ManualColorSelector</RootNamespace>
-    <AssemblyName>ManualColorSelector</AssemblyName>
+    <AssemblyName>ManualColorSelector.glow</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\wintumbra\Antumbra\bin\x86\Debug\Extensions\</OutputPath>
+    <OutputPath>..\..\Core\Antumbra\bin\x86\Debug\Extensions\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -68,7 +68,7 @@
       <Project>{4c680536-f558-4a6c-9c18-09f09c0b4024}</Project>
       <Name>ColorPicker</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\wintumbra\Antumbra\Antumbra.csproj">
+    <ProjectReference Include="..\..\Core\Antumbra\Antumbra.csproj">
       <Project>{b5887076-f914-4f71-8cb7-cf3cbf663ccf}</Project>
       <Name>Antumbra</Name>
     </ProjectReference>
