@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace ManualColorSelector
 {
@@ -16,7 +16,7 @@ namespace ManualColorSelector
         private Dictionary<string, object> settings;
         private bool running;
         private MainForm picker;
-        private Thread driver;
+        private Color lastUpdate;
         public delegate void NewColorAvail(object sender, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         public override void AttachEvent(AntumbraColorObserver observer)
@@ -72,28 +72,33 @@ namespace ManualColorSelector
 
         public override bool Start()
         {
+            this.lastUpdate = Color.Empty;
             this.picker = new MainForm();
+            this.picker.BackColorChanged += new EventHandler(SendColorEvent);
             this.picker.Show();
-            this.driver = new Thread(new ThreadStart(target));
             this.running = true;
             return true;
         }
 
-        private void target()
+        public void SendColorEvent(Object sender, EventArgs args)
         {
-            while (this.picker.WindowState == System.Windows.Forms.FormWindowState.Normal) {//while open
-                NewColorAvailEvent(this.picker.sampleColor, EventArgs.Empty);//send current color
-            }
+            if (sender == null)//invalid
+                return;
+            SendColor(((MainForm)sender).sampleColor);
+        }
+
+        public void SendColor(Color newColor)
+        {
+            NewColorAvailEvent(newColor, EventArgs.Empty);
         }
 
         public override bool Stop()
         {
-            if (this.driver != null && this.driver.IsAlive)
-                this.driver.Abort();
+            bool result = true;//success?
             if (this.picker != null)
                 this.picker.Close();
             this.running = false;
-            return true;
+            return result;
         }
     }
 }
