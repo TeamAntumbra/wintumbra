@@ -238,9 +238,9 @@
             this.speedLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.speedLabel.Location = new System.Drawing.Point(281, 114);
             this.speedLabel.Name = "speedLabel";
-            this.speedLabel.Size = new System.Drawing.Size(75, 13);
+            this.speedLabel.Size = new System.Drawing.Size(79, 13);
             this.speedLabel.TabIndex = 44;
-            this.speedLabel.Text = "Polling Speed:";
+            this.speedLabel.Text = "Update Speed:";
             // 
             // speed
             // 
