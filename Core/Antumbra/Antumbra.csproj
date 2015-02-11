@@ -128,6 +128,7 @@
     <Compile Include="Connector\DeviceManager.cs" />
     <Compile Include="Connector\GlowDevice.cs" />
     <Compile Include="ExtensionFramework\ExtensionManager.cs" />
+    <Compile Include="Utility\Mixer.cs" />
     <Compile Include="Windows\AntumbraCore.cs">
       <SubType>Form</SubType>
     </Compile>
