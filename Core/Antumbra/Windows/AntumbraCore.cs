@@ -140,9 +140,10 @@ namespace Antumbra.Glow
         {
             if (this.weightedColor == null)
                 this.weightedColor = Color.Black;
-            int newR = (int)(this.weightedColor.R * .8) + (int)(newColor.R * .2);//TODO make weighting configurable
-            int newG = (int)(this.weightedColor.G * .8) + (int)(newColor.G * .2);
-            int newB = (int)(this.weightedColor.B * .8) + (int)(newColor.B * .2);
+            double prevWeight = 1.00 - this.newColorWeight;
+            int newR = (int)(this.weightedColor.R * prevWeight) + (int)(newColor.R * this.newColorWeight);
+            int newG = (int)(this.weightedColor.G * prevWeight) + (int)(newColor.G * this.newColorWeight);
+            int newB = (int)(this.weightedColor.B * prevWeight) + (int)(newColor.B * this.newColorWeight);
             newR %= 255;
             newG %= 255;
             newB %= 255;
