@@ -210,7 +210,7 @@
             // apply
             // 
             this.apply.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.apply.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.apply.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.apply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.apply.Location = new System.Drawing.Point(375, 399);
             this.apply.Name = "apply";
@@ -265,7 +265,7 @@
             // decoratorToggle
             // 
             this.decoratorToggle.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.decoratorToggle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.decoratorToggle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.decoratorToggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.decoratorToggle.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.decoratorToggle.Location = new System.Drawing.Point(428, 328);
@@ -279,7 +279,7 @@
             // notifierToggle
             // 
             this.notifierToggle.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.notifierToggle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.notifierToggle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.notifierToggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.notifierToggle.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.notifierToggle.Location = new System.Drawing.Point(428, 363);
@@ -293,7 +293,7 @@
             // pollingArea
             // 
             this.pollingArea.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.pollingArea.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pollingArea.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.pollingArea.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pollingArea.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.pollingArea.Location = new System.Drawing.Point(280, 149);
@@ -309,7 +309,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(101, 71);
+            this.label1.Location = new System.Drawing.Point(79, 71);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 17);
             this.label1.TabIndex = 52;
@@ -428,17 +428,17 @@
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.statusLabel.Location = new System.Drawing.Point(323, 493);
+            this.statusLabel.Location = new System.Drawing.Point(317, 493);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(67, 13);
+            this.statusLabel.Size = new System.Drawing.Size(77, 13);
             this.statusLabel.TabIndex = 64;
-            this.statusLabel.Text = "Glow Status:";
+            this.statusLabel.Text = "System Status:";
             // 
             // glowStatus
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(393, 493);
+            this.glowStatus.Location = new System.Drawing.Point(397, 493);
             this.glowStatus.Name = "glowStatus";
             this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;
@@ -446,7 +446,7 @@
             // startBtn
             // 
             this.startBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.startBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.startBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.startBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.startBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.startBtn.Location = new System.Drawing.Point(166, 615);
@@ -460,7 +460,7 @@
             // offBtn
             // 
             this.offBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.offBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.offBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.offBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.offBtn.Location = new System.Drawing.Point(330, 615);
@@ -474,7 +474,7 @@
             // stopBtn
             // 
             this.stopBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.stopBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.stopBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.stopBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stopBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.stopBtn.Location = new System.Drawing.Point(248, 615);
@@ -514,7 +514,7 @@
             this.fadeEnabledCheck.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.fadeEnabledCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.fadeEnabledCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.fadeEnabledCheck.Location = new System.Drawing.Point(326, 574);
+            this.fadeEnabledCheck.Location = new System.Drawing.Point(326, 566);
             this.fadeEnabledCheck.Name = "fadeEnabledCheck";
             this.fadeEnabledCheck.Size = new System.Drawing.Size(95, 17);
             this.fadeEnabledCheck.TabIndex = 71;
@@ -526,8 +526,8 @@
             // 
             this.closeBtn.AutoSize = true;
             this.closeBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Firebrick;
+            this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.closeBtn.Location = new System.Drawing.Point(508, -2);
@@ -601,7 +601,7 @@
             this.weightingEnabled.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.weightingEnabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.weightingEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingEnabled.Location = new System.Drawing.Point(326, 536);
+            this.weightingEnabled.Location = new System.Drawing.Point(326, 529);
             this.weightingEnabled.Name = "weightingEnabled";
             this.weightingEnabled.Size = new System.Drawing.Size(160, 17);
             this.weightingEnabled.TabIndex = 78;
