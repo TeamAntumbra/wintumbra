@@ -20,7 +20,7 @@ namespace Saturator
         public override int id { get; set; }
         public override bool IsDefault
         {
-            get { return false; }
+            get { return true; }
         }
         public override string Name
         {
