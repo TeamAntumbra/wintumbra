@@ -308,7 +308,8 @@ namespace Antumbra.Glow
 
         public void Stop()
         {
-            this.ShowMessage(3000, "Stopping", "Please wait for all extensions to stop.", ToolTipIcon.Info);
+            if (this.Active)
+                this.ShowMessage(3000, "Stopping", "Please wait for all extensions to stop.", ToolTipIcon.Info);
             this.Active = false;
             if (this.outputLoopTask != null) {
                 this.outputLoopTask.Wait(3000);
