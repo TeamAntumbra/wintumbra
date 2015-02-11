@@ -82,7 +82,7 @@ namespace Antumbra.Glow.Windows
             foreach (var notf in this.antumbra.ExtensionManager.AvailNotifiers)
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
-            changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
+            //changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
         }
 
         public void updateSwatch(Color newColor)
@@ -176,7 +176,7 @@ namespace Antumbra.Glow.Windows
             this.pollingAreaWindow.Show();
         }
 
-        private void changeSensitivity_TextChanged(object sender, EventArgs e)
+        /*private void changeSensitivity_TextChanged(object sender, EventArgs e)
         {
             int value;
             if (Int32.TryParse(changeSensitivity.Text.ToString(), out value)) {
@@ -184,7 +184,7 @@ namespace Antumbra.Glow.Windows
             }
             else
                 Console.WriteLine("Input value, '" + changeSensitivity.Text + "' is not parsable to an int.");
-        }
+        }*/
 
         private void maxFadeSteps_TextChanged(object sender, EventArgs e)
         {

@@ -57,8 +57,6 @@
             this.pollingHeight = new System.Windows.Forms.Label();
             this.decorators = new System.Windows.Forms.ComboBox();
             this.pollingWidth = new System.Windows.Forms.Label();
-            this.shouldChangeLabel = new System.Windows.Forms.Label();
-            this.changeSensitivity = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
             this.glowStatus = new System.Windows.Forms.Label();
             this.startBtn = new System.Windows.Forms.Button();
@@ -405,27 +403,6 @@
             this.pollingWidth.Size = new System.Drawing.Size(0, 13);
             this.pollingWidth.TabIndex = 61;
             // 
-            // shouldChangeLabel
-            // 
-            this.shouldChangeLabel.AutoSize = true;
-            this.shouldChangeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.shouldChangeLabel.Location = new System.Drawing.Point(22, 500);
-            this.shouldChangeLabel.Name = "shouldChangeLabel";
-            this.shouldChangeLabel.Size = new System.Drawing.Size(124, 13);
-            this.shouldChangeLabel.TabIndex = 62;
-            this.shouldChangeLabel.Text = "Color Change Sensitivity:";
-            // 
-            // changeSensitivity
-            // 
-            this.changeSensitivity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.changeSensitivity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.changeSensitivity.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.changeSensitivity.Location = new System.Drawing.Point(204, 493);
-            this.changeSensitivity.Name = "changeSensitivity";
-            this.changeSensitivity.Size = new System.Drawing.Size(102, 20);
-            this.changeSensitivity.TabIndex = 63;
-            this.changeSensitivity.TextChanged += new System.EventHandler(this.changeSensitivity_TextChanged);
-            // 
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
@@ -491,7 +468,7 @@
             // 
             this.maxStepsLabel.AutoSize = true;
             this.maxStepsLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.maxStepsLabel.Location = new System.Drawing.Point(57, 573);
+            this.maxStepsLabel.Location = new System.Drawing.Point(57, 536);
             this.maxStepsLabel.Name = "maxStepsLabel";
             this.maxStepsLabel.Size = new System.Drawing.Size(87, 13);
             this.maxStepsLabel.TabIndex = 69;
@@ -502,7 +479,7 @@
             this.maxFadeSteps.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.maxFadeSteps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.maxFadeSteps.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.maxFadeSteps.Location = new System.Drawing.Point(204, 566);
+            this.maxFadeSteps.Location = new System.Drawing.Point(204, 529);
             this.maxFadeSteps.Name = "maxFadeSteps";
             this.maxFadeSteps.Size = new System.Drawing.Size(102, 20);
             this.maxFadeSteps.TabIndex = 70;
@@ -579,7 +556,7 @@
             this.newColorWeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.newColorWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.newColorWeight.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.newColorWeight.Location = new System.Drawing.Point(204, 529);
+            this.newColorWeight.Location = new System.Drawing.Point(204, 492);
             this.newColorWeight.Name = "newColorWeight";
             this.newColorWeight.Size = new System.Drawing.Size(102, 20);
             this.newColorWeight.TabIndex = 77;
@@ -589,7 +566,7 @@
             // 
             this.weightingLabel.AutoSize = true;
             this.weightingLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingLabel.Location = new System.Drawing.Point(22, 536);
+            this.weightingLabel.Location = new System.Drawing.Point(22, 499);
             this.weightingLabel.Name = "weightingLabel";
             this.weightingLabel.Size = new System.Drawing.Size(140, 13);
             this.weightingLabel.TabIndex = 76;
@@ -653,8 +630,6 @@
             this.Controls.Add(this.startBtn);
             this.Controls.Add(this.glowStatus);
             this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.changeSensitivity);
-            this.Controls.Add(this.shouldChangeLabel);
             this.Controls.Add(this.pollingWidth);
             this.Controls.Add(this.pollingHeight);
             this.Controls.Add(this.pollingHeightLabel);
@@ -731,8 +706,6 @@
         private System.Windows.Forms.Label pollingXLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox decorators;
-        private System.Windows.Forms.TextBox changeSensitivity;
-        private System.Windows.Forms.Label shouldChangeLabel;
         private System.Windows.Forms.Button stopBtn;
         private System.Windows.Forms.Button offBtn;
         private System.Windows.Forms.Button startBtn;

@@ -163,10 +163,10 @@ namespace Antumbra.Glow
         {
             for (double step = 0.0; step <= 1; step += (1.0 / this.fadeSteps)) {
                 Color result = Interpolate(newColor, color, step);
-                if (shouldChange(result))
-                    SetColorTo(result);
-                else
-                    return;//done fading
+                //if (shouldChange(result))
+                SetColorTo(result);
+               // else
+                //    return;//done fading
             }
 
         }
@@ -359,13 +359,13 @@ namespace Antumbra.Glow
         {
             try {
                 while (Active) {
-                    if (shouldChange(color)) {
+                    //if (shouldChange(color)) {
                         this.settingsWindow.updateSwatch(color);
                         if (fadeEnabled)
                             FadeColorTo(color);
                         else
                             SetColorTo(color);
-                    }
+                    //}
                     //Task.Delay(5);
                 }
             }
