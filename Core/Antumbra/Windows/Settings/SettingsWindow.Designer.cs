@@ -62,9 +62,6 @@
             this.startBtn = new System.Windows.Forms.Button();
             this.offBtn = new System.Windows.Forms.Button();
             this.stopBtn = new System.Windows.Forms.Button();
-            this.maxStepsLabel = new System.Windows.Forms.Label();
-            this.maxFadeSteps = new System.Windows.Forms.TextBox();
-            this.fadeEnabledCheck = new System.Windows.Forms.CheckBox();
             this.closeBtn = new System.Windows.Forms.Button();
             this.settingsTitle = new System.Windows.Forms.Label();
             this.colorSwatch = new System.Windows.Forms.Button();
@@ -407,7 +404,7 @@
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.statusLabel.Location = new System.Drawing.Point(317, 493);
+            this.statusLabel.Location = new System.Drawing.Point(317, 466);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(77, 13);
             this.statusLabel.TabIndex = 64;
@@ -417,7 +414,7 @@
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(397, 493);
+            this.glowStatus.Location = new System.Drawing.Point(397, 466);
             this.glowStatus.Name = "glowStatus";
             this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;
@@ -463,43 +460,6 @@
             this.stopBtn.Text = "Stop";
             this.stopBtn.UseVisualStyleBackColor = false;
             this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
-            // 
-            // maxStepsLabel
-            // 
-            this.maxStepsLabel.AutoSize = true;
-            this.maxStepsLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.maxStepsLabel.Location = new System.Drawing.Point(57, 536);
-            this.maxStepsLabel.Name = "maxStepsLabel";
-            this.maxStepsLabel.Size = new System.Drawing.Size(87, 13);
-            this.maxStepsLabel.TabIndex = 69;
-            this.maxStepsLabel.Text = "Max Fade Steps:";
-            // 
-            // maxFadeSteps
-            // 
-            this.maxFadeSteps.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.maxFadeSteps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.maxFadeSteps.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.maxFadeSteps.Location = new System.Drawing.Point(204, 529);
-            this.maxFadeSteps.Name = "maxFadeSteps";
-            this.maxFadeSteps.Size = new System.Drawing.Size(102, 20);
-            this.maxFadeSteps.TabIndex = 70;
-            this.maxFadeSteps.TextChanged += new System.EventHandler(this.maxFadeSteps_TextChanged);
-            // 
-            // fadeEnabledCheck
-            // 
-            this.fadeEnabledCheck.AutoSize = true;
-            this.fadeEnabledCheck.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.fadeEnabledCheck.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.fadeEnabledCheck.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.fadeEnabledCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fadeEnabledCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.fadeEnabledCheck.Location = new System.Drawing.Point(326, 566);
-            this.fadeEnabledCheck.Name = "fadeEnabledCheck";
-            this.fadeEnabledCheck.Size = new System.Drawing.Size(95, 17);
-            this.fadeEnabledCheck.TabIndex = 71;
-            this.fadeEnabledCheck.Text = "Fade Enabled?";
-            this.fadeEnabledCheck.UseVisualStyleBackColor = false;
-            this.fadeEnabledCheck.CheckedChanged += new System.EventHandler(this.fadeEnabledCheck_CheckedChanged);
             // 
             // closeBtn
             // 
@@ -580,7 +540,7 @@
             this.weightingEnabled.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.weightingEnabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.weightingEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingEnabled.Location = new System.Drawing.Point(326, 529);
+            this.weightingEnabled.Location = new System.Drawing.Point(326, 497);
             this.weightingEnabled.Name = "weightingEnabled";
             this.weightingEnabled.Size = new System.Drawing.Size(160, 17);
             this.weightingEnabled.TabIndex = 78;
@@ -591,7 +551,7 @@
             // glowsFoundLabel
             // 
             this.glowsFoundLabel.AutoSize = true;
-            this.glowsFoundLabel.Location = new System.Drawing.Point(317, 459);
+            this.glowsFoundLabel.Location = new System.Drawing.Point(317, 432);
             this.glowsFoundLabel.Name = "glowsFoundLabel";
             this.glowsFoundLabel.Size = new System.Drawing.Size(94, 13);
             this.glowsFoundLabel.TabIndex = 79;
@@ -600,7 +560,7 @@
             // glowsFound
             // 
             this.glowsFound.AutoSize = true;
-            this.glowsFound.Location = new System.Drawing.Point(417, 459);
+            this.glowsFound.Location = new System.Drawing.Point(417, 432);
             this.glowsFound.Name = "glowsFound";
             this.glowsFound.Size = new System.Drawing.Size(0, 13);
             this.glowsFound.TabIndex = 80;
@@ -622,9 +582,6 @@
             this.Controls.Add(this.colorSwatch);
             this.Controls.Add(this.settingsTitle);
             this.Controls.Add(this.closeBtn);
-            this.Controls.Add(this.fadeEnabledCheck);
-            this.Controls.Add(this.maxFadeSteps);
-            this.Controls.Add(this.maxStepsLabel);
             this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.offBtn);
             this.Controls.Add(this.startBtn);
@@ -712,9 +669,6 @@
         private System.Windows.Forms.Label statusLabel;
         public System.Windows.Forms.Label speed;
         public System.Windows.Forms.Label glowStatus;
-        private System.Windows.Forms.TextBox maxFadeSteps;
-        private System.Windows.Forms.Label maxStepsLabel;
-        private System.Windows.Forms.CheckBox fadeEnabledCheck;
         private System.Windows.Forms.Button closeBtn;
         private System.Windows.Forms.Label settingsTitle;
         private System.Windows.Forms.Label currentColorLabel;

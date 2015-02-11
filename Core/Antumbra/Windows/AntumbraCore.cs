@@ -35,15 +35,12 @@ namespace Antumbra.Glow
         public int pollingY { get; set; }
         public int stepSleep { get; set; }
         public int stepSize { get; set; }
-        public int fadeSteps { get; set; }
-        public bool fadeEnabled { get; set; }
         public bool weightingEnabled { get; set; }
         public double newColorWeight { get; set; }
 
         public ExtensionManager ExtensionManager { get; private set; }
         private DeviceManager GlowManager;
         private Task outputLoopTask;
-        public double OutputLoopFPS { get { return outputLoopFPS.FPS; } }
         private FPSCalc outputLoopFPS = new FPSCalc();
 
         public AntumbraCore()
@@ -62,8 +59,6 @@ namespace Antumbra.Glow
             this.pollingY = 0;
             this.stepSleep = 0;
             this.stepSize = 2;
-            this.fadeSteps = 5;
-            this.fadeEnabled = false;
             this.newColorWeight = .05;
             this.weightingEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
@@ -131,19 +126,6 @@ namespace Antumbra.Glow
             foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)//TODO allow config of decorator order or avg their results or something
                 newColor = decorator.Decorate(newColor);
             return newColor;
-        }
-
-        private void FadeColorTo(Color newColor)
-        {
-            double fadeStep = (1.0 / this.fadeSteps);
-            for (double step = 0.0; step <= 1; step += fadeStep) {
-                Color result = Mixer.Interpolate(newColor, color, step);
-                //if (shouldChange(result))
-                SetColorTo(result);
-               // else
-                //    return;//done fading
-            }
-
         }
 
         private void SetColorTo(Color newColor)//send to all
@@ -308,10 +290,7 @@ namespace Antumbra.Glow
             try {
                 while (Active) {
                     this.settingsWindow.updateSwatch(color);
-                    if (fadeEnabled)
-                        FadeColorTo(color);
-                    else
-                        SetColorTo(color);
+                    SetColorTo(color);
                 }
             }
             catch (Exception e) {
