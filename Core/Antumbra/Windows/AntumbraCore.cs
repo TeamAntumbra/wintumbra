@@ -40,7 +40,6 @@ namespace Antumbra.Glow
         public bool fadeEnabled { get; set; }
         public bool weightingEnabled { get; set; }
         public double newColorWeight { get; set; }
-        public int changeThreshold { get; set; }//difference in colors needed to change
 
         public ExtensionManager ExtensionManager { get; private set; }
         private DeviceManager GlowManager;
@@ -59,7 +58,6 @@ namespace Antumbra.Glow
             this.Visible = false;
             this.prevColor = Color.Black;
             this.color = Color.Black;
-            this.changeThreshold = 3;
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
             this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
             this.pollingX = 0;//full screen settings
@@ -249,15 +247,6 @@ namespace Antumbra.Glow
             {
                 this.settingsWindow.glowStatus.Text = newText;
             });
-        }
-
-        private bool shouldChange(Color newColor)
-        {
-            int diff = 0;
-            diff += Math.Abs(prevColor.R - newColor.R);
-            diff += Math.Abs(prevColor.G - newColor.G);
-            diff += Math.Abs(prevColor.B - newColor.B);
-            return diff > changeThreshold;
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)

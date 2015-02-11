@@ -7,7 +7,7 @@ using Antumbra.Glow;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
-    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver//TODO compare this objects speed vs an Afterglow style grabber/processor duplex object
+    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
@@ -16,13 +16,11 @@ namespace Antumbra.Glow.ExtensionFramework
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
         private List<IObserver<Color>> observers;
-        //private AntumbraCore core;
         private Dictionary<string, object> settings;
         public override int id { get; set; }
 
         public GlowScreenDriverCoupler(GlowScreenGrabber grab, GlowScreenProcessor proc)
         {
-            //this.core = core;
             this.grabber = grab;
             this.processor = proc;
             this.observers = new List<IObserver<Color>>();
@@ -89,8 +87,6 @@ namespace Antumbra.Glow.ExtensionFramework
         public override bool Start()
         {
             if (this.grabber != null && this.processor != null) {
-                /*this.grabber.Subscribe(this.processor);
-                this.processor.Subscribe(this);*/
                 if (this.processor.Start()) {
                     if (this.processor is AntumbraBitmapObserver)
                         this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
@@ -99,10 +95,6 @@ namespace Antumbra.Glow.ExtensionFramework
                         return true;
                     }
                 }
-                /*this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
-                this.processor.Start();
-                this.grabber.Start();
-                return true;*/
             }
             return false;
         }

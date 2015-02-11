@@ -156,3 +156,5 @@ $RECYCLE.BIN/
 .DS_Store
 packages/
 *.dll
+WintumbraInstaller/dependencies/
+WintumbraInstaller/Output/
