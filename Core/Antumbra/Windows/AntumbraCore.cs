@@ -27,7 +27,6 @@ namespace Antumbra.Glow
     public partial class AntumbraCore : Form, AntumbraColorObserver
     {
         private Color color;//newest generated color for displaying
-        private Color prevColor;
         private Color weightedColor;
         private SettingsWindow settingsWindow;
         public int pollingWidth { get; set; }//TODO move these into the settings class
@@ -56,7 +55,6 @@ namespace Antumbra.Glow
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
-            this.prevColor = Color.Black;
             this.color = Color.Black;
             this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
             this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
