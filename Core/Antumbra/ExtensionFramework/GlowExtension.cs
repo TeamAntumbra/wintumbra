@@ -144,6 +144,7 @@ namespace Antumbra.Glow.ExtensionFramework
     public abstract class GlowDriver : GlowExtension
     {
         public abstract void AttachEvent(AntumbraColorObserver observer);
+        public int stepSleep { get; set; }
     }
 
     public abstract class GlowIndependentDriver : GlowDriver
