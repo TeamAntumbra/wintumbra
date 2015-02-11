@@ -66,7 +66,7 @@ namespace Antumbra.Glow
             this.stepSize = 2;
             this.fadeSteps = 5;
             this.fadeEnabled = true;
-            this.newColorWeight = .20;
+            this.newColorWeight = .05;
             this.weightingEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
             if (this.ExtensionManager.LoadingFailed())
@@ -348,14 +348,11 @@ namespace Antumbra.Glow
         {
             try {
                 while (Active) {
-                    //if (shouldChange(color)) {
-                        this.settingsWindow.updateSwatch(color);
-                        if (fadeEnabled)
-                            FadeColorTo(color);
-                        else
-                            SetColorTo(color);
-                    //}
-                    //Task.Delay(5);
+                    this.settingsWindow.updateSwatch(color);
+                    if (fadeEnabled)
+                        FadeColorTo(color);
+                    else
+                        SetColorTo(color);
                 }
             }
             catch (Exception e) {
