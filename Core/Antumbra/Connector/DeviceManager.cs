@@ -62,20 +62,21 @@ namespace Antumbra.Glow.Connector
 
         public void sendColor(Color newColor, int index)
         {
-            sendColor(newColor.R, newColor.G, newColor.B);
+            sendColor(newColor.R, newColor.G, newColor.B, index);
         }
 
-        public void sendColor(byte r, byte g, byte b)//TODO modifiy for multi-Glow use
+        public void sendColor(byte r, byte g, byte b, int index)
         {
-            foreach (var activeDev in this.ActiveGlows) {
-                int err;
-                if (activeDev.dev == IntPtr.Zero) {//needs opening
-                    activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
-                }
-                int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
-                activeDev.lastColor = Color.FromArgb(r, g, b);
-                this.core.updateStatusText(status);
+            GlowDevice activeDev = getDevice(index);
+            if (activeDev == null)//device not found
+                return;
+            int err;
+            if (activeDev.dev == IntPtr.Zero) {//needs opening
+                activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
             }
+            int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
+            activeDev.lastColor = Color.FromArgb(r, g, b);
+            this.core.updateStatusText(status);
         }
 
         private GlowDevice getDevice(int index)
