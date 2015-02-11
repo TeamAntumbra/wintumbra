@@ -39,6 +39,7 @@ namespace Antumbra.Glow
         public int fadeSteps { get; set; }
         public bool fadeEnabled { get; set; }
         public bool weightingEnabled { get; set; }
+        public double newColorWeight { get; set; }
         public int changeThreshold { get; set; }//difference in colors needed to change
 
         public ExtensionManager ExtensionManager { get; private set; }
@@ -67,6 +68,7 @@ namespace Antumbra.Glow
             this.stepSize = 2;
             this.fadeSteps = 5;
             this.fadeEnabled = true;
+            this.newColorWeight = .20;
             this.weightingEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
             if (this.ExtensionManager.LoadingFailed())
@@ -138,7 +140,7 @@ namespace Antumbra.Glow
         {
             if (this.weightedColor == null)
                 this.weightedColor = Color.Black;
-            int newR = (int)(this.weightedColor.R * .8) + (int)(newColor.R * .2);//todo make weighting configurable
+            int newR = (int)(this.weightedColor.R * .8) + (int)(newColor.R * .2);//TODO make weighting configurable
             int newG = (int)(this.weightedColor.G * .8) + (int)(newColor.G * .2);
             int newB = (int)(this.weightedColor.B * .8) + (int)(newColor.B * .2);
             newR %= 255;

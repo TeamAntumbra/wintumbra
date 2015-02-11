@@ -45,6 +45,8 @@ namespace Antumbra.Glow.Windows
 
         public void updateValues()
         {
+            newColorWeight.Text = (this.antumbra.newColorWeight * 100).ToString();
+            weightingEnabled.Checked = this.antumbra.weightingEnabled;
             stepSize.Text = this.antumbra.stepSize.ToString();
             sleepSize.Text = this.antumbra.stepSleep.ToString();
             maxFadeSteps.Text = this.antumbra.fadeSteps.ToString();
@@ -231,6 +233,23 @@ namespace Antumbra.Glow.Windows
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
+        }
+
+        private void newColorWeight_TextChanged(object sender, EventArgs e)
+        {
+            try {
+                int percent = Convert.ToInt16(newColorWeight.Text);
+                if (percent >= 0 && percent <= 100)//valid
+                    this.antumbra.newColorWeight = Convert.ToDouble(percent / 100.0);
+            }
+            catch (System.FormatException) {
+                Console.WriteLine("Format exception in settings");
+            }
+        }
+
+        private void weightingEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            this.antumbra.weightingEnabled = weightingEnabled.Checked;
         }
     }
 }

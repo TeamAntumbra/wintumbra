@@ -71,6 +71,9 @@
             this.settingsTitle = new System.Windows.Forms.Label();
             this.colorSwatch = new System.Windows.Forms.Button();
             this.currentColorLabel = new System.Windows.Forms.Label();
+            this.newColorWeight = new System.Windows.Forms.TextBox();
+            this.weightingLabel = new System.Windows.Forms.Label();
+            this.weightingEnabled = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // stepSizeLabel
@@ -99,7 +102,7 @@
             // 
             this.stepSleepLabel.AutoSize = true;
             this.stepSleepLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSleepLabel.Location = new System.Drawing.Point(55, 479);
+            this.stepSleepLabel.Location = new System.Drawing.Point(55, 463);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
             this.stepSleepLabel.Size = new System.Drawing.Size(84, 13);
@@ -111,7 +114,7 @@
             this.sleepSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.sleepSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sleepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.sleepSize.Location = new System.Drawing.Point(204, 473);
+            this.sleepSize.Location = new System.Drawing.Point(204, 457);
             this.sleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sleepSize.Name = "sleepSize";
             this.sleepSize.Size = new System.Drawing.Size(102, 20);
@@ -404,7 +407,7 @@
             // 
             this.shouldChangeLabel.AutoSize = true;
             this.shouldChangeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.shouldChangeLabel.Location = new System.Drawing.Point(22, 528);
+            this.shouldChangeLabel.Location = new System.Drawing.Point(22, 500);
             this.shouldChangeLabel.Name = "shouldChangeLabel";
             this.shouldChangeLabel.Size = new System.Drawing.Size(124, 13);
             this.shouldChangeLabel.TabIndex = 62;
@@ -415,7 +418,7 @@
             this.changeSensitivity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.changeSensitivity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.changeSensitivity.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.changeSensitivity.Location = new System.Drawing.Point(204, 521);
+            this.changeSensitivity.Location = new System.Drawing.Point(204, 493);
             this.changeSensitivity.Name = "changeSensitivity";
             this.changeSensitivity.Size = new System.Drawing.Size(102, 20);
             this.changeSensitivity.TabIndex = 63;
@@ -568,6 +571,43 @@
             this.currentColorLabel.TabIndex = 75;
             this.currentColorLabel.Text = "Current Color:";
             // 
+            // newColorWeight
+            // 
+            this.newColorWeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.newColorWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.newColorWeight.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.newColorWeight.Location = new System.Drawing.Point(204, 529);
+            this.newColorWeight.Name = "newColorWeight";
+            this.newColorWeight.Size = new System.Drawing.Size(102, 20);
+            this.newColorWeight.TabIndex = 77;
+            this.newColorWeight.TextChanged += new System.EventHandler(this.newColorWeight_TextChanged);
+            // 
+            // weightingLabel
+            // 
+            this.weightingLabel.AutoSize = true;
+            this.weightingLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.weightingLabel.Location = new System.Drawing.Point(22, 536);
+            this.weightingLabel.Name = "weightingLabel";
+            this.weightingLabel.Size = new System.Drawing.Size(140, 13);
+            this.weightingLabel.TabIndex = 76;
+            this.weightingLabel.Text = "New Color Weight: (0-100%)";
+            // 
+            // weightingEnabled
+            // 
+            this.weightingEnabled.AutoSize = true;
+            this.weightingEnabled.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.weightingEnabled.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.weightingEnabled.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.weightingEnabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.weightingEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.weightingEnabled.Location = new System.Drawing.Point(326, 536);
+            this.weightingEnabled.Name = "weightingEnabled";
+            this.weightingEnabled.Size = new System.Drawing.Size(160, 17);
+            this.weightingEnabled.TabIndex = 78;
+            this.weightingEnabled.Text = "Weighted Average Enabled?";
+            this.weightingEnabled.UseVisualStyleBackColor = false;
+            this.weightingEnabled.CheckedChanged += new System.EventHandler(this.weightingEnabled_CheckedChanged);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -576,6 +616,9 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.weightingEnabled);
+            this.Controls.Add(this.newColorWeight);
+            this.Controls.Add(this.weightingLabel);
             this.Controls.Add(this.currentColorLabel);
             this.Controls.Add(this.colorSwatch);
             this.Controls.Add(this.settingsTitle);
@@ -682,5 +725,8 @@
         private System.Windows.Forms.Label settingsTitle;
         private System.Windows.Forms.Label currentColorLabel;
         private System.Windows.Forms.Button colorSwatch;
+        private System.Windows.Forms.TextBox newColorWeight;
+        private System.Windows.Forms.Label weightingLabel;
+        private System.Windows.Forms.CheckBox weightingEnabled;
     }
 }
