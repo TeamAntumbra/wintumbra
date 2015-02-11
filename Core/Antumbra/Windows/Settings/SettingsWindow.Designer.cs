@@ -74,6 +74,8 @@
             this.newColorWeight = new System.Windows.Forms.TextBox();
             this.weightingLabel = new System.Windows.Forms.Label();
             this.weightingEnabled = new System.Windows.Forms.CheckBox();
+            this.glowsFoundLabel = new System.Windows.Forms.Label();
+            this.glowsFound = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // stepSizeLabel
@@ -609,6 +611,23 @@
             this.weightingEnabled.UseVisualStyleBackColor = false;
             this.weightingEnabled.CheckedChanged += new System.EventHandler(this.weightingEnabled_CheckedChanged);
             // 
+            // glowsFoundLabel
+            // 
+            this.glowsFoundLabel.AutoSize = true;
+            this.glowsFoundLabel.Location = new System.Drawing.Point(317, 459);
+            this.glowsFoundLabel.Name = "glowsFoundLabel";
+            this.glowsFoundLabel.Size = new System.Drawing.Size(94, 13);
+            this.glowsFoundLabel.TabIndex = 79;
+            this.glowsFoundLabel.Text = "# of Glows Found:";
+            // 
+            // glowsFound
+            // 
+            this.glowsFound.AutoSize = true;
+            this.glowsFound.Location = new System.Drawing.Point(417, 459);
+            this.glowsFound.Name = "glowsFound";
+            this.glowsFound.Size = new System.Drawing.Size(0, 13);
+            this.glowsFound.TabIndex = 80;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -617,6 +636,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.glowsFound);
+            this.Controls.Add(this.glowsFoundLabel);
             this.Controls.Add(this.weightingEnabled);
             this.Controls.Add(this.newColorWeight);
             this.Controls.Add(this.weightingLabel);
@@ -728,5 +749,7 @@
         private System.Windows.Forms.TextBox newColorWeight;
         private System.Windows.Forms.Label weightingLabel;
         private System.Windows.Forms.CheckBox weightingEnabled;
+        private System.Windows.Forms.Label glowsFoundLabel;
+        public System.Windows.Forms.Label glowsFound;
     }
 }

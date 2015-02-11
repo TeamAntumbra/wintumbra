@@ -76,6 +76,7 @@ namespace Antumbra.Glow
                     "The Extension Manager reported that loading of one or more extensions failed."
                     + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
             this.settingsWindow = new SettingsWindow(this);
+            this.settingsWindow.glowsFound.Text = this.GlowManager.GlowsFound.ToString(); ;
         }
 
         /// <summary>
