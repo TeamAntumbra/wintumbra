@@ -75,6 +75,7 @@ namespace ColorClock
 
         public override bool Start()
         {
+            this.stepSleep = 1000;//1 second between updates
             this.driver = new Task(driverTarget);
             this.driver.Start();
             this.running = true;
@@ -98,7 +99,7 @@ namespace ColorClock
                 if (NewColorAvailEvent == null) {}//no one is listening, do nothing...
                 else
                     NewColorAvailEvent(getTimeColor(DateTime.Now), EventArgs.Empty);
-                Task.Delay(1000);
+                Task.Delay(this.stepSleep);
             }
         }
 
