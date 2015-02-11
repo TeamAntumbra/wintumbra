@@ -155,34 +155,9 @@ namespace Antumbra.Glow
 
         private void SetColorTo(Color newColor, int index)//send to one
         {
+            newColor = Decorate(newColor);
             if (this.weightingEnabled)
-                this.SetColorToWithWeighting(newColor, index);
-            else
-                this.SetColorToWithoutWeighting(newColor, index);
-        }
-
-        /// <summary>
-        /// Set the Glow Device in mention directly to the passed color without using the weighted average
-        /// Only to be used when doing things such as manual setting and turning the light off
-        /// </summary>
-        /// <param name="newColor"></param>
-        /// <param name="index"></param>
-        private void SetColorToWithoutWeighting(Color newColor, int index)
-        {
-            newColor = Decorate(newColor);
-            this.GlowManager.sendColor(newColor, index);
-        }
-
-        private void SetColorToWithoutWeighting(Color newColor)//send to all
-        {
-            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1)
-                SetColorToWithoutWeighting(newColor, i);
-        }
-
-        private void SetColorToWithWeighting(Color newColor, int index)
-        {
-            newColor = Decorate(newColor);
-            newColor = AddColorToWeightedValue(newColor);
+                newColor = AddColorToWeightedValue(newColor);
             this.GlowManager.sendColor(newColor, index);
         }
 
@@ -296,7 +271,14 @@ namespace Antumbra.Glow
         public void Off()
         {
             this.Stop();
-            this.SetColorToWithoutWeighting(Color.Black);
+            bool turnOn = false;
+            if (this.weightingEnabled) {
+                this.weightingEnabled = false;//temp turn off
+                turnOn = true;
+            }
+            this.SetColorTo(Color.Black);
+            if (turnOn)
+                this.weightingEnabled = true;
         }
 
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
