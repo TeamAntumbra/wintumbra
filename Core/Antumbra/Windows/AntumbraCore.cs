@@ -38,6 +38,7 @@ namespace Antumbra.Glow
         public int stepSize { get; set; }
         public int fadeSteps { get; set; }
         public bool fadeEnabled { get; set; }
+        public bool weightingEnabled { get; set; }
         public int changeThreshold { get; set; }//difference in colors needed to change
 
         public ExtensionManager ExtensionManager { get; private set; }
@@ -66,6 +67,7 @@ namespace Antumbra.Glow
             this.stepSize = 2;
             this.fadeSteps = 5;
             this.fadeEnabled = true;
+            this.weightingEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
             if (this.ExtensionManager.LoadingFailed())
                 this.ShowMessage(3000, "Extension Loading Failed",
@@ -136,7 +138,7 @@ namespace Antumbra.Glow
         {
             if (this.weightedColor == null)
                 this.weightedColor = Color.Black;
-            int newR = (int)(this.weightedColor.R * .8) + (int)(newColor.R * .2);
+            int newR = (int)(this.weightedColor.R * .8) + (int)(newColor.R * .2);//todo make weighting configurable
             int newG = (int)(this.weightedColor.G * .8) + (int)(newColor.G * .2);
             int newB = (int)(this.weightedColor.B * .8) + (int)(newColor.B * .2);
             newR %= 255;
@@ -146,6 +148,13 @@ namespace Antumbra.Glow
             return this.weightedColor;
         }
 
+        private Color Decorate(Color newColor)
+        {
+            foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)//TODO allow config of decorator order or avg their results or something
+                newColor = decorator.Decorate(newColor);
+            return newColor;
+        }
+
         private void FadeColorTo(Color newColor)
         {
             for (double step = 0.0; step <= 1; step += (1.0 / this.fadeSteps)) {
@@ -153,15 +162,31 @@ namespace Antumbra.Glow
                 if (shouldChange(result))
                     SetColorTo(result);
                 else
-                    return;//done
+                    return;//done fading
             }
 
         }
 
         private void SetColorTo(Color newColor)
         {
-            foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)
-                newColor = decorator.Decorate(newColor);
+            if (this.weightingEnabled)
+                this.SetColorToWithWeighting(newColor);
+            else
+                this.SetColorToWithoutWeighting(newColor);
+        }
+
+        /// <summary>
+        /// Set the Glow Device in mention directly to the passed color without using the weighted average
+        /// Only to be used when doing things such as manual setting and turning the light off
+        /// </summary>
+        /// <param name="newColor"></param>
+        private void SetColorToWithoutWeighting(Color newColor)
+        {
+            this.GlowManager.sendColor(newColor);
+        }
+
+        private void SetColorToWithWeighting(Color newColor)
+        {
             newColor = AddColorToWeightedValue(newColor);
             this.settingsWindow.updateSwatch(newColor);
             this.GlowManager.sendColor(newColor);
@@ -207,7 +232,7 @@ namespace Antumbra.Glow
             });
         }
 
-        private void updateLast(Color last)
+        private void updateLast(Color last)//TODO update for multi-Glow support
         {
             this.prevColor = last;
         }
@@ -291,7 +316,7 @@ namespace Antumbra.Glow
         public void Off()
         {
             this.Stop();
-            this.SetColorTo(Color.Black);
+            this.SetColorToWithoutWeighting(Color.Black);
         }
 
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
@@ -335,9 +360,6 @@ namespace Antumbra.Glow
                     Console.WriteLine("Exception in outputLoopTarget: " + e.Message);
                 }
             }
-            finally {
-                this.Stop();
-            }
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
@@ -348,8 +370,12 @@ namespace Antumbra.Glow
         public void Stop()
         {
             this.Active = false;
-            if (this.outputLoopFPS != null)
-                this.outputLoopFPS = null;
+            if (this.outputLoopTask != null) {
+                this.outputLoopTask.Wait(3000);
+                if (this.outputLoopTask.IsCompleted || this.outputLoopTask.IsCanceled)
+                    this.outputLoopTask.Dispose();
+                this.outputLoopTask = null;
+            }
             ExtensionManager.Stop();
         }
 

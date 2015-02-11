@@ -62,7 +62,7 @@ namespace Antumbra.Glow.Connector
             sendColor(newColor.R, newColor.G, newColor.B);
         }
 
-        public void sendColor(byte r, byte g, byte b)
+        public void sendColor(byte r, byte g, byte b)//TODO modifiy for multi-Glow use
         {
             foreach (var activeDev in this.ActiveGlows) {
                 int err;
