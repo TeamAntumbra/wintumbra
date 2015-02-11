@@ -17,8 +17,10 @@ namespace Antumbra.Glow.Connector
         private SerialConnector Connector;
         private List<GlowDevice> Glows;
         private List<GlowDevice> ActiveGlows;
+        public int GlowsFound { get; private set; }
         public DeviceManager(AntumbraCore core, int vid, int pid)
         {
+            this.GlowsFound = 0;
             this.core = core;
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
@@ -31,6 +33,7 @@ namespace Antumbra.Glow.Connector
                 GlowDevice device = this.Glows.First<GlowDevice>();
                 this.ActiveGlows.Add(device);//make the first the default
             }
+            this.GlowsFound = this.Glows.Count;
         }
 
         private IntPtr OpenDevice(int index)
@@ -57,7 +60,7 @@ namespace Antumbra.Glow.Connector
             return -1;
         }
 
-        public void sendColor(Color newColor)
+        public void sendColor(Color newColor, int index)
         {
             sendColor(newColor.R, newColor.G, newColor.B);
         }
@@ -71,7 +74,7 @@ namespace Antumbra.Glow.Connector
                 }
                 int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
                 activeDev.lastColor = Color.FromArgb(r, g, b);
-                updateStatus(status);
+                this.core.updateStatusText(status);
             }
         }
 
@@ -81,11 +84,6 @@ namespace Antumbra.Glow.Connector
                 if (dev.id == index)
                     return dev;
             return null;
-        }
-
-        private void updateStatus(int state)
-        {
-            this.core.updateStatusText(state);
         }
     }
 }

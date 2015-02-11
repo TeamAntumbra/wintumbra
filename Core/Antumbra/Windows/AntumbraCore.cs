@@ -170,12 +170,19 @@ namespace Antumbra.Glow
 
         }
 
-        private void SetColorTo(Color newColor)
+        private void SetColorTo(Color newColor)//send to all
+        {
+            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {//for all devices
+                this.GlowManager.sendColor(newColor, i);
+            }
+        }
+
+        private void SetColorTo(Color newColor, int index)//send to one
         {
             if (this.weightingEnabled)
-                this.SetColorToWithWeighting(newColor);
+                this.SetColorToWithWeighting(newColor, index);
             else
-                this.SetColorToWithoutWeighting(newColor);
+                this.SetColorToWithoutWeighting(newColor, index);
         }
 
         /// <summary>
@@ -183,16 +190,22 @@ namespace Antumbra.Glow
         /// Only to be used when doing things such as manual setting and turning the light off
         /// </summary>
         /// <param name="newColor"></param>
-        private void SetColorToWithoutWeighting(Color newColor)
+        /// <param name="index"></param>
+        private void SetColorToWithoutWeighting(Color newColor, int index)
         {
-            this.GlowManager.sendColor(newColor);
+            this.GlowManager.sendColor(newColor, index);
         }
 
-        private void SetColorToWithWeighting(Color newColor)
+        private void SetColorToWithoutWeighting(Color newColor)//send to all
+        {
+            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1)
+                SetColorToWithoutWeighting(newColor, i);
+        }
+
+        private void SetColorToWithWeighting(Color newColor, int index)
         {
             newColor = AddColorToWeightedValue(newColor);
-            this.settingsWindow.updateSwatch(newColor);
-            this.GlowManager.sendColor(newColor);
+            this.GlowManager.sendColor(newColor, index);
         }
 
         public void updateStatusText(int status)
@@ -233,11 +246,6 @@ namespace Antumbra.Glow
             {
                 this.settingsWindow.glowStatus.Text = newText;
             });
-        }
-
-        private void updateLast(Color last)//TODO update for multi-Glow support
-        {
-            this.prevColor = last;
         }
 
         private bool shouldChange(Color newColor)
@@ -349,6 +357,7 @@ namespace Antumbra.Glow
             try {
                 while (Active) {
                     if (shouldChange(color)) {
+                        this.settingsWindow.updateSwatch(color);
                         if (fadeEnabled)
                             FadeColorTo(color);
                         else
