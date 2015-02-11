@@ -158,50 +158,13 @@ namespace Antumbra.Glow
 
         }
 
-        private void SetColorTo(Color newColor)//TODO move to device connection class NOTE always use this to set color and allow decorators to run
+        private void SetColorTo(Color newColor)
         {
-            //foreach (GlowDecorator decorator in GlowDecorators)
-             //   newColor = decorator.Decorate(newColor);
             foreach (GlowDecorator decorator in ExtensionManager.ActiveDecorators)
                 newColor = decorator.Decorate(newColor);
             newColor = AddColorToWeightedValue(newColor);
             this.settingsWindow.updateSwatch(newColor);
-            changeTo(newColor.R, newColor.G, newColor.B);
-        }
-
-        private void changeTo(byte r, byte g, byte b)
-        {
-            //TODO
-        }
-      
-        public void checkStatus()//TODO move to device connection class
-        {
-            //updateStatus(this.serial.state);
-        }
-        
-        public void updateStatus(int status)//0 - dead, 1 - idle, 2 - alive
-        {
-            if (null == this.settingsWindow)
-                return;
-            string newText = "Invalid Status";
-            switch(status) {
-                case 0:
-                    newText = "No Glow Found";
-                    //dead
-                    break;
-                case 1:
-                    newText = "Idle";
-                    //idle
-                    break;
-                case 2:
-                    newText = "Sending/Recieving Successfully";
-                    //good
-                    break;
-            }
-            this.Invoke((MethodInvoker)delegate
-            {
-                this.settingsWindow.glowStatus.Text = newText;
-            });
+            this.GlowManager.sendColor(newColor);
         }
 
         public void updateStatusText(int status)
@@ -211,27 +174,37 @@ namespace Antumbra.Glow
             string newText = "Invalid Status";
             switch (status) {
                 case 0:
-                    newText = "No Glow Found";
-                    //dead
+                    newText = "Sending/Recieving Successfully";
                     break;
                 case 1:
-                    newText = "Idle";
-                    //idle
+                    newText = "Glow Device Disconnected";
                     break;
                 case 2:
-                    newText = "Sending/Recieving Successfully";
-                    //good
+                    newText = "LibAntumbra Memory Allocation Failed";
+                    break;
+                case 3:
+                    newText = "LibUSB Exception";
+                    break;
+                case 4:
+                    newText = "Device in Invalid State for Operation";
+                    break;
+                case 5:
+                    newText = "Index or Size Out of Range";
+                    break;
+                case 6:
+                    newText = "Protocol Command Not Supported";
+                    break;
+                case 7:
+                    newText = "Command Failure";
+                    break;
+                case 8:
+                    newText = "Protocol Error";
                     break;
             }
             this.Invoke((MethodInvoker)delegate
             {
                 this.settingsWindow.glowStatus.Text = newText;
             });
-        }
-
-        private void updateLast(byte r, byte g, byte b)
-        {
-            this.prevColor = Color.FromArgb(r, g, b);
         }
 
         private void updateLast(Color last)

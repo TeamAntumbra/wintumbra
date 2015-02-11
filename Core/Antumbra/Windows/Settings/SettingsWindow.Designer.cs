@@ -425,7 +425,7 @@
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.statusLabel.Location = new System.Drawing.Point(336, 493);
+            this.statusLabel.Location = new System.Drawing.Point(323, 493);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(67, 13);
             this.statusLabel.TabIndex = 64;
@@ -435,7 +435,7 @@
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(421, 496);
+            this.glowStatus.Location = new System.Drawing.Point(393, 493);
             this.glowStatus.Name = "glowStatus";
             this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;

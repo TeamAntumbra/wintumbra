@@ -14,71 +14,73 @@ namespace Antumbra.Glow.Connector
     class DeviceManager
     {
         private AntumbraCore core;
-        private SerialConnector Connector;//move to GlowDevice(s)?
+        private SerialConnector Connector;
         private List<GlowDevice> Glows;
-        private int vid, pid;
+        private List<GlowDevice> ActiveGlows;
         public DeviceManager(AntumbraCore core, int vid, int pid)
         {
             this.core = core;
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
-            foreach (var device in this.Connector.setup()) {
-                Console.WriteLine(device.ToString());
-                this.Glows.Add(device);
+            this.ActiveGlows = new List<GlowDevice>();
+            int len = this.Connector.UpdateDeviceList();
+            for (var i = 0; i < len; i += 1) {
+                this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i)));
             }
+            if (this.Glows.Count > 0) {//at least 1 Glow found
+                GlowDevice device = this.Glows.First<GlowDevice>();
+                this.ActiveGlows.Add(device);//make the first the default
+            }
+        }
+
+        private IntPtr OpenDevice(int index)
+        {
+            if (index < 0 || index >= this.Glows.Count)//invalid
+                return IntPtr.Zero;
+            int outerr;
+            IntPtr result = this.Connector.OpenDevice(getDevice(index).info, out outerr);
+            if (outerr != 0)
+                Console.WriteLine("Error detected opening device. Code: " + outerr);
+            return result;
         }
         /// <summary>
         /// Will return the status of the Glow device with
         /// the passed id. Will return -1 if not found.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-        public int getStatus(int id)
+        public int getStatus(int index)
         {
             foreach (var device in Glows)
-                if (device.id == id)
+                if (device.id == index)
                     return device.status;
             return -1;
         }
 
-        public void sendColor(int id, byte r, byte g, byte b)
+        public void sendColor(Color newColor)
         {
-        /*    GlowDevice dev = getDevice(id);
-            if (dev != null)
-                dev.changeTo(r, g, b);*/
+            sendColor(newColor.R, newColor.G, newColor.B);
         }
 
-        private GlowDevice getDevice(int id)
+        public void sendColor(byte r, byte g, byte b)
+        {
+            foreach (var activeDev in this.ActiveGlows) {
+                int err;
+                if (activeDev.dev == IntPtr.Zero) {//needs opening
+                    activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
+                }
+                int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
+                activeDev.lastColor = Color.FromArgb(r, g, b);
+                updateStatus(status);
+            }
+        }
+
+        private GlowDevice getDevice(int index)
         {
             foreach (var dev in this.Glows)
-                if (dev.id == id)
+                if (dev.id == index)
                     return dev;
             return null;
-        }
-
-        private void updateLast(int id, Color last)
-        {
-            GlowDevice dev = getDevice(id);
-            if (dev != null)
-                dev.lastColor = last;
-        }
-
-        private void changeTo(byte r, byte g, byte b)
-        {
-      /*      Console.WriteLine(r + " - " + g + "  -  " + b);
-            if (this.Connector.send(r, g, b)) {//sucessful send
-                updateLast(r, g, b);
-                this.updateStatus(2);
-            }
-            else {
-                this.updateStatus(0);//send failed, device is probably dead / not connected
-                Console.WriteLine("color send failed!");
-            }*/
-        }
-
-        public void checkStatus()
-        {
-            updateStatus(this.Connector.state);
         }
 
         private void updateStatus(int state)

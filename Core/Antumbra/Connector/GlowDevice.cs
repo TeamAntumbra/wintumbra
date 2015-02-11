@@ -12,19 +12,21 @@ namespace Antumbra.Glow.Connector
     /// </summary>
     class GlowDevice
     {
-        private IntPtr dev;
+        const int DEAD = 0;
+        const int IDLE = 1;
+        const int ALIVE = 2;
+        public IntPtr dev {get; set;}
+        public IntPtr info { get; private set; }
+
+        public IntPtr lightInfo { get; private set; }
         /// <summary>
         /// The index this device is in the serialConnector's devs list
         /// </summary>
-        public int index { get; private set; }
+        public int id { get; private set; }
         /// <summary>
         /// ;D
         /// </summary>
         public bool beta { get; private set; }
-        /// <summary>
-        /// Unique id for this GlowDevice
-        /// </summary>
-        public int id { get; private set; }
         /// <summary>
         /// Stored value of last temperature read in mK (yeah, ikr)
         /// </summary>
@@ -32,7 +34,7 @@ namespace Antumbra.Glow.Connector
         /// <summary>
         /// Returns the status of the Glow device
         /// </summary>
-        public int status { get; private set; }
+        public int status { get; set; }
         /// <summary>
         /// Last color this Device was successfully set to
         /// </summary>
@@ -40,20 +42,20 @@ namespace Antumbra.Glow.Connector
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="beta"></param>
         /// <param name="index"></param>
-        public GlowDevice(int id, bool beta, int index, IntPtr dev)
+        public GlowDevice(bool beta, int index, IntPtr info)
         {
-            this.id = id;
+            this.info = info;
             this.beta = beta;
-            this.index = index;
-            this.dev = dev;
+            this.id = index;
+            this.dev = IntPtr.Zero;
+            this.status = DEAD;
         }
 
         public override string ToString()
         {
-            return "Glow device, id: " + this.id;
+            return "Glow device, index: " + this.id;
         }
     }
 }

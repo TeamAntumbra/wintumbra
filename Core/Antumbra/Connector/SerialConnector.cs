@@ -5,82 +5,82 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Antumbra.Glow.Connector
 {
     class SerialConnector
     {
-        const int DEAD = 0;
-        const int IDLE = 1;
-        const int ALIVE = 2;
-        private int pid, vid;
-        public int state { private set; get; }
-        private IntPtr ctx;
-        private IntPtr devs;
+        private int pid, vid, err, outndevs;
+        private IntPtr ctx, devs;
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct LightInfo
+        {
+            byte endpoint;
+        }
         public SerialConnector(int vid, int pid)
         {
-            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
+            this.ctx = IntPtr.Zero;
             this.pid = pid;
             this.vid = vid;
-            AnCtx_Init(ptr);
-            this.ctx = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
-            var devsPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
-            //this.devs = (IntPtr)Marshal.PtrToStructure(devsPtr, typeof(IntPtr));
-            //var ptr2 = IntPtr.Zero;
-            //this.devs = (IntPtr)Marshal.PtrToStructure(devsPtr, typeof(IntPtr));
-            this.devs = (IntPtr)Marshal.PtrToStructure(devsPtr, typeof(IntPtr));
-            //this.devs = IntPtr.Zero;
-            this.state = DEAD;
+            this.ctx = AnCtx_InitReturn(out err);
+            UpdateDeviceList();
         }
 
-        public List<GlowDevice> setup()
+        public IntPtr GetDeviceInfo(int index)
         {
-            uint size = 1;
-            List<GlowDevice> result = new List<GlowDevice>();
-            this.devs = GetList(this.ctx, ref size);
-            for (int i = 0; i < size; i += 1) {//create devices
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
-                IntPtr dev = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
-                result.Add(new GlowDevice(i, true, i, dev));
-                //Console.WriteLine("opening - - - - " + AnDevice_Open(this.ctx, this.devs, dev));
-            }
-            //Console.WriteLine(this.devs.ToString());
-            return result;
+            return AnDevice_IndexOpaqueList(this.devs, index);
         }
 
-        private IntPtr GetList(IntPtr ctx, ref uint numDevs)
+        public IntPtr OpenDevice(IntPtr info, out int outerr)
         {
-            //var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
-            //this.devs = (IntPtr)Marshal.PtrToStructure(ptr, typeof(IntPtr));
-            Console.WriteLine(AnDevice_GetList(this.ctx, ref this.devs, ref numDevs));
-            return this.devs;
+            return AnDevice_OpenReturn(this.ctx, info, out outerr);
         }
 
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnCtx_Init(IntPtr ctx);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnCtx_Deinit(IntPtr ctx);
+        public int UpdateDeviceList()
+        {
+            this.devs = AnDevice_GetOpaqueList(this.ctx, out outndevs, out err);
+            return outndevs;
+        }
+
+        public int SetDeviceColor(int index, IntPtr dev, byte r, byte g, byte b)
+        {
+            LightInfo info;
+            AnLight_Info_S(this.ctx, dev, out info);
+            byte[] rArray = {r};
+            UInt16 red = (UInt16)((r / 255.0) * UInt16.MaxValue);//convert to UInt16s
+            UInt16 green = (UInt16)((g / 255.0) * UInt16.MaxValue);
+            UInt16 blue = (UInt16)((b / 255.0) * UInt16.MaxValue);
+            return AnLight_Set_S(this.ctx, dev, out info, red, green, blue);
+        }
+
+        public void CloseDevice(IntPtr dev)
+        {
+            AnDevice_Close(this.ctx, dev);
+        }
+
+        public void FreeList()
+        {
+            AnDevice_FreeOpaqueList(this.devs);
+        }
+
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int AnDevice_GetList(IntPtr ctx, ref IntPtr outdevs, ref uint outndevs);
-        //public static extern void AnDeviceInfo_UsbInfo(IntPtr info, byte bus, byte addr, Int16 vid, Int16 pid);
-        //public static extern int AnDevice_Populate(IntPtr ctx);
+        public static extern IntPtr AnCtx_InitReturn(out int outerr);
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern char[] AnError_String(int e);
-        //public static extern int AnDevice_GetCount(IntPtr ctx);
-        //[DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
-        //public static extern int AnDevice_GetList(IntPtr ctx, IntPtr outdevs, int outndevs);
-        //public static extern IntPtr AnDevice_Get(IntPtr ctx, int i);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern void AnDevice_Info(IntPtr dev, UInt16 vid, UInt16 pid, IntPtr serial);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnDevice_State(IntPtr dev);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnDevice_Open(IntPtr ctx, IntPtr devs, IntPtr dev);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnDevice_Close(IntPtr ctx, IntPtr dev);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern void AnDevice_FreeList(IntPtr devs);
-        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)] 
-        public static extern int AnDevice_SetRGB_S(IntPtr ctx, IntPtr dev, byte r, byte g, byte b);
+        public static extern IntPtr AnDevice_GetOpaqueList(IntPtr ctx, out int outndevs, out int outerr);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr AnDevice_OpenReturn(IntPtr ctx, IntPtr info, out int err);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr AnDevice_IndexOpaqueList(IntPtr list, int index);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int AnLight_Set_S(IntPtr ctx, IntPtr dev, out LightInfo info,
+                             UInt16 r, UInt16 g, UInt16 b);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AnDevice_FreeOpaqueList(IntPtr devs);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AnDevice_Close(IntPtr ctx, IntPtr dev);
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int AnLight_Info_S(IntPtr ctx, IntPtr dev, out LightInfo info);
+
     }
 }

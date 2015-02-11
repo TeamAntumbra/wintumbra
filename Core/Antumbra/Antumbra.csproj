@@ -221,10 +221,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="FodyWeavers.xml" />
-    <None Include="libantumbra.dll">
+    <None Include="libusb-1.0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="libusb-1.0.dll">
+    <None Include="libantumbra.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Licenses\charliecm_ColorPicker_LICENSE.txt" />
