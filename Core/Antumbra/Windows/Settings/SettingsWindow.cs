@@ -83,7 +83,6 @@ namespace Antumbra.Glow.Windows
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
             changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
-            //this.antumbra.checkStatus();
         }
 
         public void updateSwatch(Color newColor)
@@ -118,19 +117,14 @@ namespace Antumbra.Glow.Windows
             e.Cancel = true;
         }
 
-        public void UpdateSelections()
+        private void apply_Click(object sender, EventArgs e)
         {
+            this.antumbra.Stop();
             this.antumbra.ExtensionManager.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
             this.antumbra.ExtensionManager.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
             this.antumbra.ExtensionManager.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
             this.antumbra.AnnounceConfig();
-        }
-
-        private void apply_Click(object sender, EventArgs e)
-        {
-            this.antumbra.Stop();
-            UpdateSelections();
         }
 
         private void decoratorToggle_Click(object sender, EventArgs e)

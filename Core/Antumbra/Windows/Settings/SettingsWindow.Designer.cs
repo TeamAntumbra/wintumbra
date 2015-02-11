@@ -554,6 +554,7 @@
             // colorSwatch
             // 
             this.colorSwatch.Enabled = false;
+            this.colorSwatch.FlatAppearance.BorderSize = 0;
             this.colorSwatch.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.colorSwatch.Location = new System.Drawing.Point(372, 69);
             this.colorSwatch.Name = "colorSwatch";

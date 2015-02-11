@@ -20,7 +20,7 @@ namespace Antumbra.Glow.Connector
 
         public IntPtr lightInfo { get; private set; }
         /// <summary>
-        /// The index this device is in the serialConnector's devs list
+        /// The id of this device as given by the manager upon creation
         /// </summary>
         public int id { get; private set; }
         /// <summary>
@@ -43,12 +43,12 @@ namespace Antumbra.Glow.Connector
         /// Constructor
         /// </summary>
         /// <param name="beta"></param>
-        /// <param name="index"></param>
-        public GlowDevice(bool beta, int index, IntPtr info)
+        /// <param name="id"></param>
+        public GlowDevice(bool beta, int id, IntPtr info)
         {
             this.info = info;
             this.beta = beta;
-            this.id = index;
+            this.id = id;
             this.dev = IntPtr.Zero;
             this.status = DEAD;
         }
