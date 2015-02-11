@@ -63,7 +63,7 @@ namespace Antumbra.Glow
             this.stepSleep = 0;
             this.stepSize = 2;
             this.fadeSteps = 5;
-            this.fadeEnabled = true;
+            this.fadeEnabled = false;
             this.newColorWeight = .05;
             this.weightingEnabled = true;
             this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
@@ -135,7 +135,8 @@ namespace Antumbra.Glow
 
         private void FadeColorTo(Color newColor)
         {
-            for (double step = 0.0; step <= 1; step += (1.0 / this.fadeSteps)) {
+            double fadeStep = (1.0 / this.fadeSteps);
+            for (double step = 0.0; step <= 1; step += fadeStep) {
                 Color result = Mixer.Interpolate(newColor, color, step);
                 //if (shouldChange(result))
                 SetColorTo(result);
