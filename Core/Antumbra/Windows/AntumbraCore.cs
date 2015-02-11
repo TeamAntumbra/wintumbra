@@ -76,7 +76,7 @@ namespace Antumbra.Glow
                     "The Extension Manager reported that loading of one or more extensions failed."
                     + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
             this.settingsWindow = new SettingsWindow(this);
-            this.settingsWindow.glowsFound.Text = this.GlowManager.GlowsFound.ToString(); ;
+            this.settingsWindow.glowsFound.Text = this.GlowManager.GlowsFound.ToString();
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Antumbra.Glow
         private void SetColorTo(Color newColor)//send to all
         {
             for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {//for all devices
-                this.GlowManager.sendColor(newColor, i);
+                SetColorTo(newColor, i);
             }
         }
 
@@ -194,6 +194,7 @@ namespace Antumbra.Glow
         /// <param name="index"></param>
         private void SetColorToWithoutWeighting(Color newColor, int index)
         {
+            newColor = Decorate(newColor);
             this.GlowManager.sendColor(newColor, index);
         }
 
@@ -205,6 +206,7 @@ namespace Antumbra.Glow
 
         private void SetColorToWithWeighting(Color newColor, int index)
         {
+            newColor = Decorate(newColor);
             newColor = AddColorToWeightedValue(newColor);
             this.GlowManager.sendColor(newColor, index);
         }
