@@ -34,8 +34,10 @@ namespace Antumbra.Glow.Connector
                 this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), mef));
             }
             foreach (var dev in this.Glows)
-                if (dev.settings.active)
-                    this.ActiveGlows.Add(dev);
+                if (dev.settings.active) {
+                    if (OpenDevice(dev.id))
+                        this.ActiveGlows.Add(dev);
+                }
             this.GlowsFound = this.Glows.Count;
         }
 

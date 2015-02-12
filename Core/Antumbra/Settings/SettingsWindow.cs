@@ -48,6 +48,12 @@ namespace Antumbra.Glow.Settings
             updateValues();
             this.Focus();
         }
+
+        public void CleanUp()
+        {
+            this.Close();
+            this.Dispose();
+        }
         /// <summary>
         /// Update the settings window form to reflect the settings found in the GlowDevice object
         /// </summary>

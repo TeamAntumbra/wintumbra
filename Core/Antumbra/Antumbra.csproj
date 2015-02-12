@@ -131,10 +131,10 @@
     <Compile Include="ExtensionFramework\ExtensionManager.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Utility\Mixer.cs" />
-    <Compile Include="Windows\AntumbraCore.cs">
+    <Compile Include="AntumbraCore.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\AntumbraCore.Designer.cs">
+    <Compile Include="AntumbraCore.Designer.cs">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
@@ -160,7 +160,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Windows\AntumbraCore.resx">
+    <EmbeddedResource Include="AntumbraCore.resx">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\pollingAreaSetter.resx">

@@ -72,15 +72,17 @@ namespace Antumbra.Glow
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             this.GlowManager.CleanUp();
+            if (this.settingsWindow != null)
+                this.settingsWindow.CleanUp();
 //if (this.settingsWindow.Visible) //TODO settings disposal
   //              this.settingsWindow.Close();
     //        this.settingsWindow.Dispose();
             Application.Exit();
         }
 
-        private void whatsMyConfig_Click(object sender, EventArgs e)
+        private void whatsMyConfig_Click(object sender, EventArgs e) //TODO
         {
-            //AnnounceConfig(); //TODO
+            //ShowMessage(3000, "Current Configuration", config, ToolTipIcon.Info);
         }
 
         public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
