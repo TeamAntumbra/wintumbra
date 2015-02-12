@@ -23,9 +23,10 @@ namespace Antumbra.Glow.Settings
         /// AntumbraCore object
         /// </summary>
         private AntumbraCore antumbra;
-        //private DeviceSettings settingsObj;
+        /// <summary>
+        /// GlowDevice object for the device whose settings are being rendered currently
+        /// </summary>
         private GlowDevice currentDevice;
-        //private DeviceManager devMgr;
         /// <summary>
         /// Form used to set the screen grabber polling area
         /// </summary>
@@ -44,11 +45,12 @@ namespace Antumbra.Glow.Settings
             this.antumbra = core;
             this.currentDevice = device;
             InitializeComponent();
-            if (this.currentDevice != null)
-                updateValues();
+            updateValues();
             this.Focus();
         }
-
+        /// <summary>
+        /// Update the settings window form to reflect the settings found in the GlowDevice object
+        /// </summary>
         public void updateValues()
         {
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
@@ -86,8 +88,13 @@ namespace Antumbra.Glow.Settings
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
             glowStatus.Text = GetStatusString(this.currentDevice.status);
+            deviceName.Text = this.currentDevice.id.ToString();
         }
-
+        /// <summary>
+        /// Return the string representation of the given status value
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
         private string GetStatusString(int status)
         {
             switch (status) {
@@ -113,7 +120,11 @@ namespace Antumbra.Glow.Settings
                     return "Invalid Status";
             }
         }
-
+        /// <summary>
+        /// Update stepSleepSize for current device
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sleepSize_TextChanged(object sender, EventArgs e)
         {
             try {
@@ -123,7 +134,11 @@ namespace Antumbra.Glow.Settings
                 Console.WriteLine("Format exception in settings");
             }
         }
-
+        /// <summary>
+        /// Hide settings form and cancel closing / disposal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Hide();

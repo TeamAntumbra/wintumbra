@@ -39,8 +39,6 @@
             this.decoratorsLabel = new System.Windows.Forms.Label();
             this.apply = new System.Windows.Forms.Button();
             this.metroLabel1 = new System.Windows.Forms.Label();
-            this.speedLabel = new System.Windows.Forms.Label();
-            this.speed = new System.Windows.Forms.Label();
             this.notifiers = new System.Windows.Forms.ComboBox();
             this.decoratorToggle = new System.Windows.Forms.Button();
             this.notifierToggle = new System.Windows.Forms.Button();
@@ -65,6 +63,8 @@
             this.newColorWeight = new System.Windows.Forms.TextBox();
             this.weightingLabel = new System.Windows.Forms.Label();
             this.weightingEnabled = new System.Windows.Forms.CheckBox();
+            this.deviceNameLabel = new System.Windows.Forms.Label();
+            this.deviceName = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -199,26 +199,6 @@
             this.metroLabel1.TabIndex = 40;
             this.metroLabel1.Text = "Notifiers:";
             // 
-            // speedLabel
-            // 
-            this.speedLabel.AutoSize = true;
-            this.speedLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.speedLabel.Location = new System.Drawing.Point(281, 114);
-            this.speedLabel.Name = "speedLabel";
-            this.speedLabel.Size = new System.Drawing.Size(79, 13);
-            this.speedLabel.TabIndex = 44;
-            this.speedLabel.Text = "Update Speed:";
-            // 
-            // speed
-            // 
-            this.speed.AutoSize = true;
-            this.speed.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.speed.Location = new System.Drawing.Point(380, 114);
-            this.speed.Name = "speed";
-            this.speed.Size = new System.Drawing.Size(13, 13);
-            this.speed.TabIndex = 45;
-            this.speed.Text = "0";
-            // 
             // notifiers
             // 
             this.notifiers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
@@ -265,7 +245,7 @@
             this.pollingArea.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.pollingArea.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pollingArea.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingArea.Location = new System.Drawing.Point(280, 149);
+            this.pollingArea.Location = new System.Drawing.Point(320, 124);
             this.pollingArea.Name = "pollingArea";
             this.pollingArea.Size = new System.Drawing.Size(138, 35);
             this.pollingArea.TabIndex = 51;
@@ -499,6 +479,23 @@
             this.weightingEnabled.UseVisualStyleBackColor = false;
             this.weightingEnabled.CheckedChanged += new System.EventHandler(this.weightingEnabled_CheckedChanged);
             // 
+            // deviceNameLabel
+            // 
+            this.deviceNameLabel.AutoSize = true;
+            this.deviceNameLabel.Location = new System.Drawing.Point(317, 92);
+            this.deviceNameLabel.Name = "deviceNameLabel";
+            this.deviceNameLabel.Size = new System.Drawing.Size(58, 13);
+            this.deviceNameLabel.TabIndex = 79;
+            this.deviceNameLabel.Text = "Device ID:";
+            // 
+            // deviceName
+            // 
+            this.deviceName.AutoSize = true;
+            this.deviceName.Location = new System.Drawing.Point(398, 92);
+            this.deviceName.Name = "deviceName";
+            this.deviceName.Size = new System.Drawing.Size(0, 13);
+            this.deviceName.TabIndex = 80;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -507,6 +504,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(567, 707);
+            this.Controls.Add(this.deviceName);
+            this.Controls.Add(this.deviceNameLabel);
             this.Controls.Add(this.weightingEnabled);
             this.Controls.Add(this.newColorWeight);
             this.Controls.Add(this.weightingLabel);
@@ -531,8 +530,6 @@
             this.Controls.Add(this.decoratorToggle);
             this.Controls.Add(this.notifiers);
             this.Controls.Add(this.decorators);
-            this.Controls.Add(this.speed);
-            this.Controls.Add(this.speedLabel);
             this.Controls.Add(this.apply);
             this.Controls.Add(this.notifiersLabel);
             this.Controls.Add(this.decoratorsLabel);
@@ -574,7 +571,6 @@
         private System.Windows.Forms.Label decoratorsLabel;
         private System.Windows.Forms.Button apply;
         private System.Windows.Forms.Label metroLabel1;
-        private System.Windows.Forms.Label speedLabel;
         private System.Windows.Forms.Button notifierToggle;
         private System.Windows.Forms.Button decoratorToggle;
         private System.Windows.Forms.ComboBox notifiers;
@@ -593,12 +589,13 @@
         private System.Windows.Forms.Button offBtn;
         private System.Windows.Forms.Button startBtn;
         private System.Windows.Forms.Label statusLabel;
-        public System.Windows.Forms.Label speed;
         public System.Windows.Forms.Label glowStatus;
         private System.Windows.Forms.Button closeBtn;
         private System.Windows.Forms.Label settingsTitle;
         private System.Windows.Forms.TextBox newColorWeight;
         private System.Windows.Forms.Label weightingLabel;
         private System.Windows.Forms.CheckBox weightingEnabled;
+        private System.Windows.Forms.Label deviceNameLabel;
+        private System.Windows.Forms.Label deviceName;
     }
 }
