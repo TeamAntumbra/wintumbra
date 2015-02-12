@@ -89,7 +89,7 @@ namespace Antumbra.Glow
                 outSpeeds = "No output loops found.";
             else {
                 foreach (var loop in outLoops)
-                    outSpeeds += "ID: " + loop.id + " - " + loop.FPS + " hz.\n";
+                    outSpeeds += "ID: " + loop.id + " - " + Math.Round(loop.FPS, 3) +" hz.\n";
             }
             ShowMessage(3000, "Current Output Speed(s)", outSpeeds, ToolTipIcon.Info);
         }
