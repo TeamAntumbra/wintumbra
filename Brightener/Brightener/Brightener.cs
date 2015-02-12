@@ -33,7 +33,7 @@ namespace Brightener
 
         public override bool IsDefault
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override Color Decorate(Color origColor)
@@ -53,13 +53,13 @@ namespace Brightener
 
         public override bool Start()
         {
-            this.running = false;
+            this.running = true;
             return true;
         }
 
         public override bool Stop()
         {
-            this.running = true;
+            this.running = false;
             return true;
         }
 
