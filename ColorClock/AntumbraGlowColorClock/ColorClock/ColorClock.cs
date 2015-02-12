@@ -18,19 +18,6 @@ namespace ColorClock
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
-        private Dictionary<string, object> settings = new Dictionary<string, object>();
-        public override Dictionary<string, object> Settings
-        {
-            get
-            {
-                return this.settings;
-            }
-            set
-            {
-                this.settings = Settings;
-            }
-        }
-
         public override int id { get; set; }
 
         public override bool IsDefault

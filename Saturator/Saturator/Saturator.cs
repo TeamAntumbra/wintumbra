@@ -16,7 +16,6 @@ namespace Saturator
     public class Saturator : GlowDecorator
     {
         private bool running = false;
-        private Dictionary<string, object> settings;
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -63,21 +62,8 @@ namespace Saturator
             get { return this.running; }
         }
 
-        public override Dictionary<string, object> Settings
-        {
-            get
-            {
-                return this.settings;
-            }
-            set
-            {
-                this.settings = Settings;
-            }
-        }
-
         public override bool Start()
         {
-            this.settings = new Dictionary<string,object>();
             this.running = true;
             return true;
         }

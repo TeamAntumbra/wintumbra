@@ -16,7 +16,6 @@ namespace HSVFade
         public override int id { get; set; }
         public delegate void NewColorAvail(object sender, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
-        //private Dictionary<string, object> settings;
         private Task driver;
         private bool running;
 
@@ -48,18 +47,6 @@ namespace HSVFade
         public override bool IsDefault
         {
             get { return false; }
-        }
-
-        public override Dictionary<string, object> Settings
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public override bool Start()

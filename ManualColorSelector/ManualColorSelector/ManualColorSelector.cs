@@ -13,7 +13,6 @@ namespace ManualColorSelector
     [Export(typeof(GlowExtension))]
     public class ManualColorSelector : GlowIndependentDriver
     {
-        private Dictionary<string, object> settings;
         private bool running;
         private MainForm picker;
         private Color lastUpdate;
@@ -22,17 +21,6 @@ namespace ManualColorSelector
         public override void AttachEvent(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
-        }
-        public override Dictionary<string, object> Settings
-        {
-            get
-            {
-                return this.settings;
-            }
-            set
-            {
-                this.settings = Settings;
-            }
         }
         public override int id { get; set; }
         public override string Name

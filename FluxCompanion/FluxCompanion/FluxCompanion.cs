@@ -82,7 +82,7 @@ namespace FluxCompanion
         }
 
         private Color ConvertKelvinToColor(int kelvin)
-        {/*http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/*/
+        {/*http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/ */
             int temp = kelvin / 100;
             int red = 0;
             int green = 0;
@@ -143,18 +143,6 @@ namespace FluxCompanion
         public override string Website
         {
             get { throw new NotImplementedException(); }
-        }
-
-        public override Dictionary<string, object> Settings
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }

@@ -72,17 +72,5 @@ namespace Brightener
         {
             get { throw new NotImplementedException(); }
         }
-
-        public override Dictionary<string, object> Settings
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }
