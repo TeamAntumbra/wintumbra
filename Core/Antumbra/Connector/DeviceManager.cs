@@ -18,7 +18,7 @@ namespace Antumbra.Glow.Connector
     {
         private SerialConnector Connector;
         public List<GlowDevice> Glows { get; private set; }
-        public List<GlowDevice> ActiveGlows { get; private set; }
+        //public List<GlowDevice> ActiveGlows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
 
@@ -28,16 +28,11 @@ namespace Antumbra.Glow.Connector
             this.GlowsFound = 0;
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
-            this.ActiveGlows = new List<GlowDevice>();
+            //this.ActiveGlows = new List<GlowDevice>();
             int len = this.Connector.UpdateDeviceList();
             for (var i = 0; i < len; i += 1) {
                 this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), mef));
             }
-            foreach (var dev in this.Glows)
-                if (dev.id == 0) {//only automatically open the first device
-                    if (OpenDevice(dev.id))
-                        this.ActiveGlows.Add(dev);
-                }
             this.GlowsFound = this.Glows.Count;
         }
 
@@ -113,7 +108,7 @@ namespace Antumbra.Glow.Connector
 
         private void CloseAll()
         {
-            foreach (var active in this.ActiveGlows) {
+            foreach (var active in this.Glows) {
                 IntPtr ptr = active.dev;
                 if (!ptr.Equals(IntPtr.Zero))//actually open?
                     this.Connector.CloseDevice(active.dev);

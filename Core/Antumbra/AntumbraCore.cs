@@ -46,10 +46,8 @@ namespace Antumbra.Glow
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
             this.outLoops = new List<OutputLoop>();
-            foreach (var active in this.GlowManager.ActiveGlows) {
-                this.outLoops.Add(new OutputLoop(this.GlowManager, active.id));
-            }
             foreach (var dev in this.GlowManager.Glows) {
+                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));
                 this.toolStripDeviceList.Items.Add(dev);
                 this.toolStripDeviceList.SelectedIndex = 0;
             }
@@ -126,10 +124,10 @@ namespace Antumbra.Glow
         {
             Stop();
             ShowMessage(3000, "Starting", "Extensions are being started. Please wait.", ToolTipIcon.Info);
-            foreach (var dev in this.GlowManager.ActiveGlows) {
-                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));
+            foreach (var dev in this.GlowManager.Glows) {
+                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));//setup output loop for each Glow
             }
-            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {
+            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {//start each output loop
                 var loop = this.outLoops.ElementAt(i);
                 var dev = this.GlowManager.Glows.ElementAt(i);
                 var mgr = dev.extMgr;
