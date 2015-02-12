@@ -57,7 +57,10 @@ namespace Antumbra.Glow
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            contextMenu.Show(Cursor.Position);
+            if (contextMenu.Visible)
+                contextMenu.Hide();
+            else
+                contextMenu.Show(Cursor.Position);
         }
 
         private void settingsMenuItem_Click(object sender, EventArgs e)
@@ -79,6 +82,18 @@ namespace Antumbra.Glow
             if (this.settingsWindow != null)
                 this.settingsWindow.CleanUp();
             Application.Exit();
+        }
+
+        private void currentOutRateItem_Click(object sender, System.EventArgs e)
+        {
+            string outSpeeds = "";
+            if (outLoops.Count == 0)
+                outSpeeds = "No output loops found.";
+            else {
+                foreach (var loop in outLoops)
+                    outSpeeds += "ID: " + loop.id + " - " + loop.FPS + " hz.\n";
+            }
+            ShowMessage(3000, "Current Output Speed(s)", outSpeeds, ToolTipIcon.Info);
         }
 
         private void whatsMyConfig_Click(object sender, EventArgs e)
@@ -107,12 +122,7 @@ namespace Antumbra.Glow
             this.Off();
         }
 
-        private void contextMenu_MouseLeave(object sender, EventArgs e)
-        {
-            //contextMenu.Close();
-        }
-
-        public void Start()
+        public void Start()//currently start and stop refers to all devices     TODO change
         {
             Stop();
             ShowMessage(3000, "Starting", "Extensions are being started. Please wait.", ToolTipIcon.Info);

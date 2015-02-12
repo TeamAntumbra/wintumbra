@@ -14,7 +14,7 @@ namespace Antumbra.Glow.Connector
         private Task outputLoopTask;
         private FPSCalc outputFPS = new FPSCalc();
         private DeviceManager mgr;
-        private int id;
+        public int id { get; private set; }
         private Color color;
         private Color weightedAvg;
         private bool weightingEnabled;//TODO move to decorator?

@@ -33,12 +33,13 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDeviceList = new System.Windows.Forms.ToolStripComboBox();
+            this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDeviceList = new System.Windows.Forms.ToolStripComboBox();
+            this.currentOutRate = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,6 +58,7 @@
             this.contextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.whatsMyConfig,
+            this.currentOutRate,
             this.toolStripDeviceList,
             this.settingsMenuItem,
             this.startToolStripMenuItem,
@@ -66,9 +68,8 @@
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(180, 161);
+            this.contextMenu.Size = new System.Drawing.Size(180, 183);
             this.contextMenu.Text = "Antumbra|Glow";
-            this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
             // whatsMyConfig
             // 
@@ -78,6 +79,23 @@
             this.whatsMyConfig.Size = new System.Drawing.Size(179, 22);
             this.whatsMyConfig.Text = "What is Currently Enabled?";
             this.whatsMyConfig.Click += new System.EventHandler(this.whatsMyConfig_Click);
+            // 
+            // toolStripDeviceList
+            // 
+            this.toolStripDeviceList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.toolStripDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.toolStripDeviceList.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.toolStripDeviceList.Name = "toolStripDeviceList";
+            this.toolStripDeviceList.Size = new System.Drawing.Size(121, 21);
+            // 
+            // settingsMenuItem
+            // 
+            this.settingsMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.settingsMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.settingsMenuItem.Name = "settingsMenuItem";
+            this.settingsMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.settingsMenuItem.Text = "Settings";
+            this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
             // 
             // startToolStripMenuItem
             // 
@@ -97,15 +115,6 @@
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
-            // settingsMenuItem
-            // 
-            this.settingsMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.settingsMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.settingsMenuItem.Name = "settingsMenuItem";
-            this.settingsMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.settingsMenuItem.Text = "Settings";
-            this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
-            // 
             // offToolStripMenuItem
             // 
             this.offToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -124,13 +133,13 @@
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
-            // toolStripDeviceList
+            // currentOutRate
             // 
-            this.toolStripDeviceList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.toolStripDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.toolStripDeviceList.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.toolStripDeviceList.Name = "toolStripDeviceList";
-            this.toolStripDeviceList.Size = new System.Drawing.Size(121, 21);
+            this.currentOutRate.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.currentOutRate.Name = "currentOutRate";
+            this.currentOutRate.Size = new System.Drawing.Size(179, 22);
+            this.currentOutRate.Text = "Current Output Rate?";
+            this.currentOutRate.Click += new System.EventHandler(this.currentOutRateItem_Click);
             // 
             // AntumbraCore
             // 
@@ -161,6 +170,7 @@
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem whatsMyConfig;
         public System.Windows.Forms.ToolStripComboBox toolStripDeviceList;
+        private System.Windows.Forms.ToolStripMenuItem currentOutRate;
     }
 }
 
