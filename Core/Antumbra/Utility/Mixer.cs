@@ -9,6 +9,20 @@ namespace Antumbra.Glow.Utility
 {
     public static class Mixer
     {
+        public static Color MixColorPercIn(Color newColor, Color prevColor, double newWeight)
+        {
+            if (prevColor == null)
+                prevColor = Color.Black;
+            double prevWeight = 1.00 - newWeight;
+            int newR = (int)(prevColor.R * prevWeight) + (int)(newColor.R * newWeight);
+            int newG = (int)(prevColor.G * prevWeight) + (int)(newColor.G * newWeight);
+            int newB = (int)(prevColor.B * prevWeight) + (int)(newColor.B * newWeight);
+            newR %= 255;
+            newG %= 255;
+            newB %= 255;
+            return Color.FromArgb(newR, newG, newB);
+        }
+
         public static Color Interpolate(Color color1, Color color2, double fraction)
         {
             double r = Interpolate(color1.R, color2.R, fraction);

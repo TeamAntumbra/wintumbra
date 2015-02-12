@@ -127,7 +127,9 @@
   <ItemGroup>
     <Compile Include="Connector\DeviceManager.cs" />
     <Compile Include="Connector\GlowDevice.cs" />
+    <Compile Include="Connector\OutputLoop.cs" />
     <Compile Include="ExtensionFramework\ExtensionManager.cs" />
+    <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Utility\Mixer.cs" />
     <Compile Include="Windows\AntumbraCore.cs">
       <SubType>Form</SubType>
@@ -138,18 +140,18 @@
     <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
     <Compile Include="ExtensionFramework\MEFHelper.cs" />
     <Compile Include="Utility\FPSCalc.cs" />
-    <Compile Include="Windows\Settings\pollingAreaSetter.cs">
+    <Compile Include="Settings\pollingAreaSetter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\Settings\pollingAreaSetter.Designer.cs">
+    <Compile Include="Settings\pollingAreaSetter.Designer.cs">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HslColor.cs" />
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <Compile Include="Windows\Settings\SettingsWindow.cs">
+    <Compile Include="Settings\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\Settings\SettingsWindow.Designer.cs">
+    <Compile Include="Settings\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HSVRGGConverter.cs" />
@@ -161,10 +163,10 @@
     <EmbeddedResource Include="Windows\AntumbraCore.resx">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Settings\pollingAreaSetter.resx">
+    <EmbeddedResource Include="Settings\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Settings\SettingsWindow.resx">
+    <EmbeddedResource Include="Settings\SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

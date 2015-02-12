@@ -90,5 +90,47 @@ namespace Antumbra.Glow.ExtensionFramework
                 }
             }
         }
+
+        public GlowDriver GetDefaultDriver()
+        {
+            foreach (var drv in this.AvailDrivers)
+                if (drv.IsDefault)
+                    return drv;
+            return null;
+        }
+
+        public GlowScreenGrabber GetDefaultGrabber()
+        {
+            foreach (var gbbr in this.AvailScreenDrivers)
+                if (gbbr.IsDefault)
+                    return gbbr;
+            return null;
+        }
+
+        public GlowScreenProcessor GetDefaultProcessor()
+        {
+            foreach (var pcsr in this.AvailScreenProcessors)
+                if (pcsr.IsDefault)
+                    return pcsr;
+            return null;
+        }
+
+        public List<GlowDecorator> GetDefaultDecorators()
+        {
+            List<GlowDecorator> result = new List<GlowDecorator>();
+            foreach (var dctr in this.AvailDecorators)
+                if (dctr.IsDefault)
+                    result.Add(dctr);
+            return result;
+        }
+
+        public List<GlowNotifier> GetDefaultNotifiers()
+        {
+            List<GlowNotifier> result = new List<GlowNotifier>();
+            foreach (var notf in this.AvailNotifiers)
+                if (notf.IsDefault)
+                    result.Add(notf);
+            return result;
+        }
     }
 }

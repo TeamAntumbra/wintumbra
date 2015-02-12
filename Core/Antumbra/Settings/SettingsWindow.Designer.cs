@@ -1,4 +1,4 @@
-﻿namespace Antumbra.Glow.Windows
+﻿namespace Antumbra.Glow.Settings
 {
     partial class SettingsWindow
     {
@@ -64,13 +64,9 @@
             this.stopBtn = new System.Windows.Forms.Button();
             this.closeBtn = new System.Windows.Forms.Button();
             this.settingsTitle = new System.Windows.Forms.Label();
-            this.colorSwatch = new System.Windows.Forms.Button();
-            this.currentColorLabel = new System.Windows.Forms.Label();
             this.newColorWeight = new System.Windows.Forms.TextBox();
             this.weightingLabel = new System.Windows.Forms.Label();
             this.weightingEnabled = new System.Windows.Forms.CheckBox();
-            this.glowsFoundLabel = new System.Windows.Forms.Label();
-            this.glowsFound = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // stepSizeLabel
@@ -241,7 +237,7 @@
             // 
             this.speed.AutoSize = true;
             this.speed.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.speed.Location = new System.Drawing.Point(380, 117);
+            this.speed.Location = new System.Drawing.Point(380, 114);
             this.speed.Name = "speed";
             this.speed.Size = new System.Drawing.Size(13, 13);
             this.speed.TabIndex = 45;
@@ -406,15 +402,15 @@
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.statusLabel.Location = new System.Drawing.Point(317, 466);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(77, 13);
+            this.statusLabel.Size = new System.Drawing.Size(67, 13);
             this.statusLabel.TabIndex = 64;
-            this.statusLabel.Text = "System Status:";
+            this.statusLabel.Text = "Glow Status:";
             // 
             // glowStatus
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(397, 466);
+            this.glowStatus.Location = new System.Drawing.Point(387, 467);
             this.glowStatus.Name = "glowStatus";
             this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;
@@ -490,27 +486,6 @@
             this.settingsTitle.Text = "Settings";
             this.settingsTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // colorSwatch
-            // 
-            this.colorSwatch.Enabled = false;
-            this.colorSwatch.FlatAppearance.BorderSize = 0;
-            this.colorSwatch.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.colorSwatch.Location = new System.Drawing.Point(372, 69);
-            this.colorSwatch.Name = "colorSwatch";
-            this.colorSwatch.Size = new System.Drawing.Size(21, 21);
-            this.colorSwatch.TabIndex = 74;
-            this.colorSwatch.UseVisualStyleBackColor = false;
-            // 
-            // currentColorLabel
-            // 
-            this.currentColorLabel.AutoSize = true;
-            this.currentColorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.currentColorLabel.Location = new System.Drawing.Point(260, 71);
-            this.currentColorLabel.Name = "currentColorLabel";
-            this.currentColorLabel.Size = new System.Drawing.Size(96, 17);
-            this.currentColorLabel.TabIndex = 75;
-            this.currentColorLabel.Text = "Current Color:";
-            // 
             // newColorWeight
             // 
             this.newColorWeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
@@ -548,23 +523,6 @@
             this.weightingEnabled.UseVisualStyleBackColor = false;
             this.weightingEnabled.CheckedChanged += new System.EventHandler(this.weightingEnabled_CheckedChanged);
             // 
-            // glowsFoundLabel
-            // 
-            this.glowsFoundLabel.AutoSize = true;
-            this.glowsFoundLabel.Location = new System.Drawing.Point(317, 432);
-            this.glowsFoundLabel.Name = "glowsFoundLabel";
-            this.glowsFoundLabel.Size = new System.Drawing.Size(94, 13);
-            this.glowsFoundLabel.TabIndex = 79;
-            this.glowsFoundLabel.Text = "# of Glows Found:";
-            // 
-            // glowsFound
-            // 
-            this.glowsFound.AutoSize = true;
-            this.glowsFound.Location = new System.Drawing.Point(417, 432);
-            this.glowsFound.Name = "glowsFound";
-            this.glowsFound.Size = new System.Drawing.Size(0, 13);
-            this.glowsFound.TabIndex = 80;
-            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -573,13 +531,9 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(567, 707);
-            this.Controls.Add(this.glowsFound);
-            this.Controls.Add(this.glowsFoundLabel);
             this.Controls.Add(this.weightingEnabled);
             this.Controls.Add(this.newColorWeight);
             this.Controls.Add(this.weightingLabel);
-            this.Controls.Add(this.currentColorLabel);
-            this.Controls.Add(this.colorSwatch);
             this.Controls.Add(this.settingsTitle);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.stopBtn);
@@ -671,12 +625,8 @@
         public System.Windows.Forms.Label glowStatus;
         private System.Windows.Forms.Button closeBtn;
         private System.Windows.Forms.Label settingsTitle;
-        private System.Windows.Forms.Label currentColorLabel;
-        private System.Windows.Forms.Button colorSwatch;
         private System.Windows.Forms.TextBox newColorWeight;
         private System.Windows.Forms.Label weightingLabel;
         private System.Windows.Forms.CheckBox weightingEnabled;
-        private System.Windows.Forms.Label glowsFoundLabel;
-        public System.Windows.Forms.Label glowsFound;
     }
 }

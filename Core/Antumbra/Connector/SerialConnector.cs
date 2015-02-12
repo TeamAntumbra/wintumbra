@@ -64,6 +64,13 @@ namespace Antumbra.Glow.Connector
             AnDevice_FreeOpaqueList(this.devs);
         }
 
+        public void FreeCtx()
+        {
+            AnCtx_Deinit(this.ctx);
+        }
+
+        [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AnCtx_Deinit(IntPtr ctx);
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr AnCtx_InitReturn(out int outerr);
         [DllImport("libantumbra.dll", CallingConvention = CallingConvention.Cdecl)]

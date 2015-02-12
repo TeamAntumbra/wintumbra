@@ -4,70 +4,71 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Antumbra.Glow.Utility;
+using Antumbra.Glow.Settings;
+using Antumbra.Glow.ExtensionFramework;
 
 namespace Antumbra.Glow.Connector
 {
     /// <summary>
     /// Manages dealing with connected Glow units via the SerialConnector class.
-    /// Also manages device status.
+    /// Also manages device command sending on a higher level.
     /// </summary>
-    class DeviceManager
+    public class DeviceManager
     {
-        private AntumbraCore core;
+        //private AntumbraCore core;
+        //private SettingsManager settings;
+        //private Color color;
         private SerialConnector Connector;
-        private List<GlowDevice> Glows;
-        private List<GlowDevice> ActiveGlows;
+        public List<GlowDevice> Glows { get; private set; }
+        public List<GlowDevice> ActiveGlows { get; private set; }
+        public int status { get; private set; }
         public int GlowsFound { get; private set; }
-        public DeviceManager(AntumbraCore core, int vid, int pid)
+
+        public DeviceManager(int vid, int pid, MEFHelper mef)
         {
+            //this.settings = mgr;
+            this.status = 0;
             this.GlowsFound = 0;
-            this.core = core;
+            //this.core = core;
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
             this.ActiveGlows = new List<GlowDevice>();
             int len = this.Connector.UpdateDeviceList();
             for (var i = 0; i < len; i += 1) {
-                this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i)));
+                this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), mef));
             }
-            if (this.Glows.Count > 0) {//at least 1 Glow found
-                GlowDevice device = this.Glows.First<GlowDevice>();
-                this.ActiveGlows.Add(device);//make the first the default
-            }
+            foreach (var dev in this.Glows)
+                if (dev.settings.active)
+                    this.ActiveGlows.Add(dev);
             this.GlowsFound = this.Glows.Count;
         }
 
-        private IntPtr OpenDevice(int index)
+        private bool OpenDevice(int id)
         {
-            if (index < 0 || index >= this.Glows.Count)//invalid
-                return IntPtr.Zero;
+            if (id < 0 || id >= this.Glows.Count)//invalid
+                return false;
             int outerr;
-            IntPtr result = this.Connector.OpenDevice(getDevice(index).info, out outerr);
+            IntPtr result = this.Connector.OpenDevice(getDevice(id).info, out outerr);
             if (outerr != 0)
-                Console.WriteLine("Error detected opening device. Code: " + outerr);
-            return result;
-        }
-        /// <summary>
-        /// Will return the status of the Glow device with
-        /// the passed id. Will return -1 if not found.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public int getStatus(int index)
-        {
-            foreach (var device in Glows)
-                if (device.id == index)
-                    return device.status;
-            return -1;
+                return false;
+            this.getDevice(id).dev = result;
+            return true;
         }
 
-        public void sendColor(Color newColor, int index)
-        {
-            sendColor(newColor.R, newColor.G, newColor.B, index);
+        public void sendColor(Color newColor) {
+            foreach (var dev in this.Glows)
+                sendColor(newColor, dev.id);
         }
 
-        public void sendColor(byte r, byte g, byte b, int index)
+        public void sendColor(Color newColor, int id)
         {
-            GlowDevice activeDev = getDevice(index);
+            sendColor(newColor.R, newColor.G, newColor.B, id);
+        }
+
+        public void sendColor(byte r, byte g, byte b, int id)
+        {
+            GlowDevice activeDev = getDevice(id);
             if (activeDev == null)//device not found
                 return;
             int err;
@@ -75,16 +76,43 @@ namespace Antumbra.Glow.Connector
                 activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
+            this.status = status;
             activeDev.lastColor = Color.FromArgb(r, g, b);
-            this.core.updateStatusText(status);
+            //this.core.updateStatusText(status);
         }
 
-        private GlowDevice getDevice(int index)
+        public DeviceSettings getDeviceSettings(int id)
+        {
+            GlowDevice dev = getDevice(id);
+            if (dev == null)
+                return null;
+            return dev.settings;
+        }
+
+        public GlowDevice getDevice(int id)
         {
             foreach (var dev in this.Glows)
-                if (dev.id == index)
+                if (dev.id == id)
                     return dev;
             return null;
+        }
+
+        public void CleanUp()
+        {
+            CloseAll();
+            FreeList();
+        }
+
+        private void CloseAll()
+        {
+            foreach (var active in this.ActiveGlows) {
+                this.Connector.CloseDevice(active.dev);
+            }
+        }
+
+        private void FreeList()
+        {
+            this.Connector.FreeList();
         }
     }
 }

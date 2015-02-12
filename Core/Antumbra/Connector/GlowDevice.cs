@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Antumbra.Glow.Settings;
+using Antumbra.Glow.ExtensionFramework;
 
 namespace Antumbra.Glow.Connector
 {
     /// <summary>
     /// Represents a physical Antumbra|Glow unit.
     /// </summary>
-    class GlowDevice
+    public class GlowDevice
     {
-        const int DEAD = 0;
-        const int IDLE = 1;
-        const int ALIVE = 2;
         public IntPtr dev {get; set;}
         public IntPtr info { get; private set; }
-
         public IntPtr lightInfo { get; private set; }
         /// <summary>
         /// The id of this device as given by the manager upon creation
@@ -32,30 +30,30 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         public int lastTemp { get; private set; }
         /// <summary>
-        /// Returns the status of the Glow device
-        /// </summary>
-        public int status { get; set; }
-        /// <summary>
         /// Last color this Device was successfully set to
         /// </summary>
         public Color lastColor { get; set; }
+        public DeviceSettings settings { get; private set; }
+        public ExtensionManager extMgr { get; private set; }
+        public int status { get; set; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="beta"></param>
         /// <param name="id"></param>
-        public GlowDevice(bool beta, int id, IntPtr info)
+        public GlowDevice(bool beta, int id, IntPtr info, MEFHelper helper)
         {
             this.info = info;
             this.beta = beta;
             this.id = id;
             this.dev = IntPtr.Zero;
-            this.status = DEAD;
+            this.settings = new DeviceSettings(id);
+            this.extMgr = new ExtensionManager(helper, id, settings);
         }
 
         public override string ToString()
         {
-            return "Glow device, index: " + this.id;
+            return "Glow device, id: " + this.id;
         }
     }
 }

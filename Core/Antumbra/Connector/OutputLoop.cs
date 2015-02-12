@@ -1,0 +1,91 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Antumbra.Glow.Utility;
+using Antumbra.Glow.ExtensionFramework;
+using System.Drawing;
+
+namespace Antumbra.Glow.Connector
+{
+    public class OutputLoop : AntumbraColorObserver
+    {
+        private Task outputLoopTask;
+        private FPSCalc outputFPS = new FPSCalc();
+        private DeviceManager mgr;
+        private int id;
+        private Color color;
+        public double FPS { get { return outputFPS.FPS; } }
+        /// <summary>
+        /// Synchronisation object
+        /// </summary>
+        private object sync = new object();
+
+        private bool _active = false;
+        /// <summary>
+        /// Setting this to false will stop the output thread
+        /// </summary>
+        /// <remarks>Thread Safe</remarks>
+        public bool Active
+        {
+            get
+            {
+                lock (sync)
+                    return _active;
+            }
+            set
+            {
+                lock (sync)
+                    _active = value;
+            }
+        }
+        public OutputLoop(DeviceManager mgr, int devId)
+        {
+            this.id = devId;
+            this.mgr = mgr;
+        }
+
+        public bool Start()
+        {
+            this._active = true;
+            this.outputLoopTask = new Task(target);
+            this.outputLoopTask.Start();
+            return true;
+        }
+
+        private void target()
+        {
+            try {
+                while (Active) {
+                    this.mgr.sendColor(color, this.id);
+                }
+            }
+            catch (Exception e) {
+                lock (sync) {
+                    Active = false;
+                    Console.WriteLine("Exception in outputLoopTarget: " + e.Message);
+                }
+            }
+        }
+
+        public bool Stop()
+        {
+            this._active = false;
+            if (this.outputLoopTask == null)
+                return true;
+            this.outputLoopTask.Wait(1000);
+            if (this.outputLoopTask.IsCompleted)
+                return true;
+            return false;
+        }
+
+        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        {
+            outputFPS.Tick();
+            lock (sync) {
+                color = (Color)sender;
+            }
+        }
+    }
+}

@@ -13,15 +13,19 @@ using System.Threading;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Antumbra.Glow.Connector;
 
-namespace Antumbra.Glow.Windows
+namespace Antumbra.Glow.Settings
 {
-    public partial class SettingsWindow : Form//TODO split this into window event handlers and another settings / setup class
+    public partial class SettingsWindow : Form
     {
         /// <summary>
-        /// AntumbraCore object that created this form
+        /// AntumbraCore object
         /// </summary>
         private AntumbraCore antumbra;
+        //private DeviceSettings settingsObj;
+        private GlowDevice currentDevice;
+        //private DeviceManager devMgr;
         /// <summary>
         /// Form used to set the screen grabber polling area
         /// </summary>
@@ -35,28 +39,31 @@ namespace Antumbra.Glow.Windows
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(AntumbraCore antumbra)
+        public SettingsWindow(GlowDevice device, AntumbraCore core)
         {
-            this.antumbra = antumbra;
+            this.antumbra = core;
+            this.currentDevice = device;
             InitializeComponent();
-            updateValues();
+            if (this.currentDevice != null)
+                updateValues();
             this.Focus();
         }
 
         public void updateValues()
         {
-            newColorWeight.Text = (this.antumbra.newColorWeight * 100).ToString();
-            weightingEnabled.Checked = this.antumbra.weightingEnabled;
-            stepSize.Text = this.antumbra.stepSize.ToString();
-            sleepSize.Text = this.antumbra.stepSleep.ToString();
-            pollingHeight.Text = this.antumbra.pollingHeight.ToString();
-            pollingWidth.Text = this.antumbra.pollingWidth.ToString();
-            pollingX.Text = this.antumbra.pollingX.ToString();
-            pollingY.Text = this.antumbra.pollingY.ToString();
-            foreach (var dvr in this.antumbra.ExtensionManager.AvailDrivers)
+            newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
+            weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
+            stepSize.Text = this.currentDevice.settings.stepSize.ToString();
+            sleepSize.Text = this.currentDevice.settings.stepSleep.ToString();
+            pollingHeight.Text = this.currentDevice.settings.height.ToString();
+            pollingWidth.Text = this.currentDevice.settings.width.ToString();
+            pollingX.Text = this.currentDevice.settings.x.ToString();
+            pollingY.Text = this.currentDevice.settings.y.ToString();
+            //foreach (var dvr in this.antumbra.ExtensionManager.AvailDrivers)
+            foreach (var dvr in this.currentDevice.extMgr.MEFHelper.AvailDrivers)
                 if (!driverExtensions.Items.Contains(dvr))
                     driverExtensions.Items.Add(dvr);
-            if (this.antumbra.ExtensionManager.ActiveDriver is GlowScreenDriverCoupler)
+            if (this.currentDevice.extMgr.ActiveDriver is GlowScreenDriverCoupler)
                 for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
                     if (driverExtensions.Items[i] is GlowScreenDriverCoupler) {
                         driverExtensions.SelectedIndex = i;
@@ -64,35 +71,55 @@ namespace Antumbra.Glow.Windows
                     }
                 }
             else
-                driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.antumbra.ExtensionManager.ActiveDriver);
-            foreach (var gbbr in this.antumbra.ExtensionManager.AvailScreenGrabbers)
+                driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.currentDevice.extMgr.ActiveDriver);
+            foreach (var gbbr in this.currentDevice.extMgr.MEFHelper.AvailScreenDrivers)
                 if (!screenGrabbers.Items.Contains(gbbr))
                     screenGrabbers.Items.Add(gbbr);
-            screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.antumbra.ExtensionManager.ActiveGrabber);
-            foreach (var pcsr in this.antumbra.ExtensionManager.AvailScreenProcessors)
+            screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.currentDevice.extMgr.ActiveGrabber);
+            foreach (var pcsr in this.currentDevice.extMgr.MEFHelper.AvailScreenProcessors)
                 if (!screenProcessors.Items.Contains(pcsr))
                     screenProcessors.Items.Add(pcsr);
-            screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.antumbra.ExtensionManager.ActiveProcessor);
-            foreach (var dctr in this.antumbra.ExtensionManager.AvailDecorators)
+            screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.currentDevice.extMgr.ActiveProcessor);
+            foreach (var dctr in this.currentDevice.extMgr.MEFHelper.AvailDecorators)
                 if (!decorators.Items.Contains(dctr))
                     decorators.Items.Add(dctr);
             //TODO add some way to differentiate the active decorators and notifiers (and maybe the others too)
-            foreach (var notf in this.antumbra.ExtensionManager.AvailNotifiers)
+            foreach (var notf in this.currentDevice.extMgr.MEFHelper.AvailNotifiers)
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
-            //changeSensitivity.Text = this.antumbra.changeThreshold.ToString();
+            glowStatus.Text = GetStatusString(this.currentDevice.status);
         }
 
-        public void updateSwatch(Color newColor)
+        private string GetStatusString(int status)
         {
-            if (this.Visible)
-                this.colorSwatch.BackColor = newColor;
+            switch (status) {
+                case 0:
+                    return "Sending/Recieving Successfully";
+                case 1:
+                    return "Glow Device Disconnected";
+                case 2:
+                    return "LibAntumbra Memory Allocation Failed";
+                case 3:
+                    return "LibUSB Exception";
+                case 4:
+                    return "Device in Invalid State for Operation";
+                case 5:
+                    return "Index or Size Out of Range";
+                case 6:
+                    return "Protocol Command Not Supported";
+                case 7:
+                    return "Protocol Command Failure";
+                case 8:
+                    return "Unspecified Protocol Error";
+                default:
+                    return "Invalid Status";
+            }
         }
 
         private void stepSize_TextChanged(object sender, EventArgs e)
         {
             try {
-                this.antumbra.stepSize = Convert.ToInt32(stepSize.Text);
+            //    this.antumbra.stepSize = Convert.ToInt32(stepSize.Text);
             }
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");
@@ -102,7 +129,7 @@ namespace Antumbra.Glow.Windows
         private void sleepSize_TextChanged(object sender, EventArgs e)
         {
             try {
-                this.antumbra.stepSleep = Convert.ToInt32(sleepSize.Text);
+            //    this.antumbra.stepSleep = Convert.ToInt32(sleepSize.Text);
             }
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");
@@ -118,11 +145,11 @@ namespace Antumbra.Glow.Windows
         private void apply_Click(object sender, EventArgs e)
         {
             this.antumbra.Stop();
-            this.antumbra.ExtensionManager.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
-            this.antumbra.ExtensionManager.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
-            this.antumbra.ExtensionManager.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
+            this.currentDevice.extMgr.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
+            this.currentDevice.extMgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
+            this.currentDevice.extMgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
-            this.antumbra.AnnounceConfig();
+            //this.antumbra.AnnounceConfig();
         }
 
         private void decoratorToggle_Click(object sender, EventArgs e)
@@ -130,13 +157,13 @@ namespace Antumbra.Glow.Windows
             if (null != decorators.SelectedItem) {
                 this.antumbra.Stop();
                 GlowDecorator value = (GlowDecorator)decorators.SelectedItem;
-                if (this.antumbra.ExtensionManager.ActiveDecorators.Contains(value)) {
-                    this.antumbra.ExtensionManager.ActiveDecorators.Remove(value);
+                if (this.currentDevice.extMgr.ActiveDecorators.Contains(value)) {
+                    this.currentDevice.extMgr.ActiveDecorators.Remove(value);
                     this.antumbra.ShowMessage(3000, "Decorator Disabled",
                         "The decorator, " + value.ToString() + ", has been disabled.", ToolTipIcon.Info);
                 }
                 else {
-                    this.antumbra.ExtensionManager.ActiveDecorators.Add(value);
+                    this.currentDevice.extMgr.ActiveDecorators.Add(value);
                     this.antumbra.ShowMessage(3000, "Decorator Enabled",
                         "The decorator, " + value.ToString() + ", has been enabled.", ToolTipIcon.Info);
                 }
@@ -148,13 +175,13 @@ namespace Antumbra.Glow.Windows
             if (null != notifiers.SelectedItem) {
                 this.antumbra.Stop();
                 GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
-                if (this.antumbra.ExtensionManager.ActiveNotifiers.Contains(notf)) {
-                    this.antumbra.ExtensionManager.ActiveNotifiers.Remove(notf);
+                if (this.currentDevice.extMgr.ActiveNotifiers.Contains(notf)) {
+                    this.currentDevice.extMgr.ActiveNotifiers.Remove(notf);
                     this.antumbra.ShowMessage(3000, "Notifier Disabled",
                         "The notifier, " + notf.ToString() + ", has been disabled.", ToolTipIcon.Info);
                 }
                 else {
-                    this.antumbra.ExtensionManager.ActiveNotifiers.Add(notf);
+                    this.currentDevice.extMgr.ActiveNotifiers.Add(notf);
                     this.antumbra.ShowMessage(3000, "Notifier Enabled",
                         "The notifier, " + notf.ToString() + ", has been enabled.", ToolTipIcon.Info);
                 }
@@ -170,19 +197,9 @@ namespace Antumbra.Glow.Windows
         private void pollingArea_Click(object sender, EventArgs e)
         {
             if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed)
-                this.pollingAreaWindow = new pollingAreaSetter(this.antumbra, this);
+                this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, this);
             this.pollingAreaWindow.Show();
         }
-
-        /*private void changeSensitivity_TextChanged(object sender, EventArgs e)
-        {
-            int value;
-            if (Int32.TryParse(changeSensitivity.Text.ToString(), out value)) {
-                this.antumbra.changeThreshold = value;
-            }
-            else
-                Console.WriteLine("Input value, '" + changeSensitivity.Text + "' is not parsable to an int.");
-        }*/
 
         private void startBtn_Click(object sender, EventArgs e)
         {
@@ -218,7 +235,7 @@ namespace Antumbra.Glow.Windows
             try {
                 int percent = Convert.ToInt16(newColorWeight.Text);
                 if (percent >= 0 && percent <= 100)//valid
-                    this.antumbra.newColorWeight = Convert.ToDouble(percent / 100.0);
+                    this.currentDevice.settings.newColorWeight = Convert.ToDouble(percent / 100.0);
             }
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");
@@ -227,7 +244,7 @@ namespace Antumbra.Glow.Windows
 
         private void weightingEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            this.antumbra.weightingEnabled = weightingEnabled.Checked;
+            this.currentDevice.settings.weightingEnabled = weightingEnabled.Checked;
         }
     }
 }

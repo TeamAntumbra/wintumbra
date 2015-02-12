@@ -19,61 +19,68 @@ using System.ComponentModel.Composition.Hosting;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
-using Antumbra.Glow.Windows;
+using Antumbra.Glow.Settings;
 using System.Reflection;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : Form, AntumbraColorObserver
+    public partial class AntumbraCore : Form//, AntumbraColorObserver
     {
-        private Color color;//newest generated color for displaying
-        private Color weightedColor;
-        private SettingsWindow settingsWindow;
-        public int pollingWidth { get; set; }//TODO move these into the settings class
-        public int pollingHeight { get; set; }
-        public int pollingX { get; set; }
-        public int pollingY { get; set; }
-        public int stepSleep { get; set; }
-        public int stepSize { get; set; }
-        public bool weightingEnabled { get; set; }
-        public double newColorWeight { get; set; }
+        //private Color color;//newest generated color for displaying
+        //private Color weightedColor;
+        //private SettingsWindow settingsWindow;
+        //public int pollingWidth { get; set; }//TODO move these into the settings class
+        //public int pollingHeight { get; set; }
+        //public int pollingX { get; set; }
+        //public int pollingY { get; set; }
+        //public int stepSleep { get; set; }
+        //public int stepSize { get; set; }
+        //public bool weightingEnabled { get; set; }
+        //public double newColorWeight { get; set; }
 
-        public ExtensionManager ExtensionManager { get; private set; }
+        private MEFHelper MEFHelper;
+        //private ExtensionManager ExtensionManager;
         private DeviceManager GlowManager;
-        private Task outputLoopTask;
-        private FPSCalc outputLoopFPS = new FPSCalc();
+        private SettingsWindow settingsWindow;
+        private List<OutputLoop> outLoops;
+        //private Task outputLoopTask;
+        //private FPSCalc outputLoopFPS = new FPSCalc();
 
         public AntumbraCore()
         {
-            this.GlowManager = new DeviceManager(this, 0x16D0, 0x0A85);
+            this.MEFHelper = new MEFHelper("./Extensions/");
+            if (this.MEFHelper.failed)
+                this.ShowMessage(3000, "Extension Loading Failed",
+                    "The Extension Manager reported that loading of one or more extensions failed."
+                    + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
+            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, MEFHelper);//find devices
             InitializeComponent();
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
-            this.color = Color.Black;
-            this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
-            this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
-            this.pollingX = 0;//full screen settings
-            this.pollingY = 0;
-            this.stepSleep = 0;
-            this.stepSize = 2;
-            this.newColorWeight = .05;
-            this.weightingEnabled = true;
-            this.ExtensionManager = new ExtensionManager(this, "./Extensions/");
-            if (this.ExtensionManager.LoadingFailed())
-                this.ShowMessage(3000, "Extension Loading Failed",
-                    "The Extension Manager reported that loading of one or more extensions failed."
-                    + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
-            this.settingsWindow = new SettingsWindow(this);
-            this.settingsWindow.glowsFound.Text = this.GlowManager.GlowsFound.ToString();
+            this.outLoops = new List<OutputLoop>();
+            foreach (var active in this.GlowManager.ActiveGlows) {
+                this.outLoops.Add(new OutputLoop(this.GlowManager, active.id));
+            }
+            //this.color = Color.Black;
+            //this.pollingWidth = Screen.PrimaryScreen.Bounds.Width;
+            //this.pollingHeight = Screen.PrimaryScreen.Bounds.Height;
+            //this.pollingX = 0;//full screen settings
+            //this.pollingY = 0;
+            //this.stepSleep = 0;
+            //this.stepSize = 2;
+            //this.newColorWeight = .05;
+            //this.weightingEnabled = true;
+            //this.settingsWindow = new SettingsWindow(this);
+            //this.settingsWindow.glowsFound.Text = this.GlowManager.GlowsFound.ToString();
         }
 
         /// <summary>
         /// Synchronisation object
         /// </summary>
-        private object sync = new object();
+       /* private object sync = new object();
 
         private bool _active = false;
         /// <summary>
@@ -93,8 +100,8 @@ namespace Antumbra.Glow
                     _active = value;
             }
         }
-
-        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        */
+        /*void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
         {
             outputLoopFPS.Tick();
             this.Invoke((MethodInvoker)delegate
@@ -141,9 +148,9 @@ namespace Antumbra.Glow
             if (this.weightingEnabled)
                 newColor = AddColorToWeightedValue(newColor);
             this.GlowManager.sendColor(newColor, index);
-        }
+        }*/
 
-        public void updateStatusText(int status)
+      /*public void updateStatusText(int status)//TODO move to device manager
         {
             if (null == this.settingsWindow)
                 return;
@@ -182,7 +189,7 @@ namespace Antumbra.Glow
                 this.settingsWindow.glowStatus.Text = newText;
             });
         }
-
+        */
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             contextMenu.Show(Cursor.Position);
@@ -190,8 +197,14 @@ namespace Antumbra.Glow
 
         private void settingsMenuItem_Click(object sender, EventArgs e)
         {
-            this.settingsWindow.updateValues();
-            this.settingsWindow.Visible = true;
+            if (this.GlowManager.GlowsFound == 0)
+                this.ShowMessage(3000, "No Glow Devices Found",
+                    "No Devices were found to edit the settings of.", ToolTipIcon.Info);
+            GlowDevice current = this.GlowManager.getDevice(0);
+            this.settingsWindow = new SettingsWindow(current, this);
+            this.settingsWindow.Show();
+            //this.settingsWindow.updateValues();
+            //this.settingsWindow.Visible = true;
         }
 
         private void quitMenuItem_Click(object sender, EventArgs e)
@@ -199,18 +212,19 @@ namespace Antumbra.Glow
             Stop();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
-            if (this.settingsWindow.Visible)
-                this.settingsWindow.Close();
-            this.settingsWindow.Dispose();
+            this.GlowManager.CleanUp();
+//if (this.settingsWindow.Visible)
+  //              this.settingsWindow.Close();
+    //        this.settingsWindow.Dispose();
             Application.Exit();
         }
 
         private void whatsMyConfig_Click(object sender, EventArgs e)
         {
-            AnnounceConfig();
+            //AnnounceConfig();
         }
 
-        public void AnnounceConfig()
+     /*   public void AnnounceConfig()
         {
             string driver = "Not set";
             string grabber = "Not set";
@@ -243,7 +257,7 @@ namespace Antumbra.Glow
                 "\nGrabber: " + grabber + "\nProcessor: " + processor +
                 "\nDecorators: " + decorators + "\nNotifiers: " + notifiers,
                 ToolTipIcon.Info);
-        }
+        }*/
 
         public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
         {
@@ -253,14 +267,15 @@ namespace Antumbra.Glow
         public void Off()
         {
             this.Stop();
-            bool turnOn = false;
-            if (this.weightingEnabled) {
-                this.weightingEnabled = false;//temp turn off
-                turnOn = true;
-            }
-            this.SetColorTo(Color.Black);
-            if (turnOn)
-                this.weightingEnabled = true;
+            this.GlowManager.sendColor(Color.Black);
+      //      bool turnOn = false;
+          //  if (this.weightingEnabled) {
+           //     this.weightingEnabled = false;//temp turn off
+           //     turnOn = true;
+           // }
+           // this.SetColorTo(Color.Black);
+           // if (turnOn)
+             //   this.weightingEnabled = true;
         }
 
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
@@ -276,29 +291,25 @@ namespace Antumbra.Glow
         public void Start()
         {
             Stop();
-            this.outputLoopFPS = new FPSCalc();
-            if (ExtensionManager.Start()) {
-                this.settingsWindow.updateValues();
-                ExtensionManager.ActiveDriver.AttachEvent(this);
-                this.Active = true;
-                outputLoopTask = Task.Factory.StartNew(outputLoopTarget);
+            ShowMessage(3000, "Starting", "Extensions are being started. Please wait.", ToolTipIcon.Info);
+            foreach (var dev in this.GlowManager.ActiveGlows) {
+                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));
             }
-        }
-
-        private void outputLoopTarget()
-        {
-            try {
-                while (Active) {
-                    this.settingsWindow.updateSwatch(color);
-                    SetColorTo(color);
-                }
+            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {
+                var loop = this.outLoops.ElementAt(i);
+                var mgr = this.GlowManager.Glows.ElementAt(i).extMgr;
+                mgr.AttachEvent(loop);
+                mgr.Start();
+                loop.Start();
             }
-            catch (Exception e) {
-                lock (sync) {
-                    Active = false;
-                    Console.WriteLine("Exception in outputLoopTarget: " + e.Message);
-                }
-            }
+            ShowMessage(3000, "Started", "Extensions have been started.", ToolTipIcon.Info);
+            //this.outputLoopFPS = new FPSCalc();
+            //if (ExtensionManager.Start()) {
+              //  this.settingsWindow.updateValues();
+                //ExtensionManager.ActiveDriver.AttachEvent(this);
+                //this.Active = true;
+                //outputLoopTask = Task.Factory.StartNew(outputLoopTarget);
+            //}
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
@@ -308,16 +319,26 @@ namespace Antumbra.Glow
 
         public void Stop()
         {
-            if (this.Active)
-                this.ShowMessage(3000, "Stopping", "Please wait for all extensions to stop.", ToolTipIcon.Info);
-            this.Active = false;
-            if (this.outputLoopTask != null) {
-                this.outputLoopTask.Wait(3000);
-                if (this.outputLoopTask.IsCompleted || this.outputLoopTask.IsCanceled)
-                    this.outputLoopTask.Dispose();
-                this.outputLoopTask = null;
+            ShowMessage(3000, "Stopping", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
+            foreach (var loop in this.outLoops) {//stop outLoops
+                loop.Stop();
             }
-            ExtensionManager.Stop();
+            this.outLoops = new List<OutputLoop>();
+            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {
+                var mgr = this.GlowManager.Glows.ElementAt(i).extMgr;
+                mgr.Stop();
+            }
+            ShowMessage(3000, "Stopped", "Extensions Stopped.", ToolTipIcon.Info);
+            //if (this.Active)
+            //    this.ShowMessage(3000, "Stopping", "Please wait for all extensions to stop.", ToolTipIcon.Info);
+            //this.Active = false;
+            //if (this.outputLoopTask != null) {
+            //    this.outputLoopTask.Wait(3000);
+            //    if (this.outputLoopTask.IsCompleted || this.outputLoopTask.IsCanceled)
+            //        this.outputLoopTask.Dispose();
+            //    this.outputLoopTask = null;
+            //}
+           // ExtensionManager.Stop();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
