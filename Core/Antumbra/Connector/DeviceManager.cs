@@ -79,6 +79,16 @@ namespace Antumbra.Glow.Connector
             activeDev.lastColor = Color.FromArgb(r, g, b);
         }
 
+        public string GetDeviceSetupDecs()
+        {
+            string result = "";
+            foreach (var dev in this.Glows)
+                result += dev.GetSetupDesc();
+            if (result.Equals(""))
+                return "No devices found";
+            return result;
+        }
+
         public DeviceSettings getDeviceSettings(int id)
         {
             GlowDevice dev = getDevice(id);

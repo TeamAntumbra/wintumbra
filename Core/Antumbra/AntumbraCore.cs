@@ -77,9 +77,14 @@ namespace Antumbra.Glow
             Application.Exit();
         }
 
-        private void whatsMyConfig_Click(object sender, EventArgs e) //TODO
+        private void whatsMyConfig_Click(object sender, EventArgs e)
         {
-            //ShowMessage(3000, "Current Configuration", config, ToolTipIcon.Info);
+            AnnounceConfig();
+        }
+
+        public void AnnounceConfig()
+        {
+            ShowMessage(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), ToolTipIcon.Info);
         }
 
         public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)

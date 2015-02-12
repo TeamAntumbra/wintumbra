@@ -144,11 +144,12 @@ namespace Antumbra.Glow.Settings
         private void apply_Click(object sender, EventArgs e)
         {
             this.antumbra.Stop();
-            this.currentDevice.extMgr.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
-            this.currentDevice.extMgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
-            this.currentDevice.extMgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
+            var mgr = this.currentDevice.extMgr;
+            mgr.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
+            mgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
+            mgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
-            //this.antumbra.AnnounceConfig(); //TODO
+            this.antumbra.AnnounceConfig();
         }
 
         private void decoratorToggle_Click(object sender, EventArgs e)
