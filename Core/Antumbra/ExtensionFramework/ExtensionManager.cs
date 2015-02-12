@@ -82,7 +82,7 @@ namespace Antumbra.Glow.ExtensionFramework
                 if (null == ActiveGrabber || null == ActiveProcessor) {//no grabber or processor set
                     return false;
                 }
-                ActiveGrabber.x = this.settings.x;
+                ActiveGrabber.x = this.settings.x;//set screen related settings for grabber
                 ActiveGrabber.y = this.settings.y;
                 ActiveGrabber.width = this.settings.width;
                 ActiveGrabber.height = this.settings.height;

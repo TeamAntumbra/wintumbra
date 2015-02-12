@@ -140,16 +140,6 @@ namespace Antumbra.Glow.Settings
                 Console.WriteLine("Format exception in settings");
             }
         }
-        /// <summary>
-        /// Hide settings form and cancel closing / disposal
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.Hide();
-            e.Cancel = true;
-        }
 
         private void apply_Click(object sender, EventArgs e)
         {

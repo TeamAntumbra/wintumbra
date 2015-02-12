@@ -548,7 +548,6 @@
             this.Padding = new System.Windows.Forms.Padding(30, 92, 30, 31);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SettingsWindow_MouseDown);
             this.MouseEnter += new System.EventHandler(this.SettingsWindow_MouseEnter);
             this.ResumeLayout(false);
