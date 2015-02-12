@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Windows.Forms;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
@@ -161,6 +162,7 @@ namespace Antumbra.Glow.ExtensionFramework
         public int y { get; set; }
         public int width { get; set; }
         public int height { get; set; }
+        public Screen screen { get; set; }
     }
 
     public abstract class GlowDecorator : GlowExtension
