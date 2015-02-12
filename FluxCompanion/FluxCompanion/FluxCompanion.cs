@@ -71,12 +71,15 @@ namespace FluxCompanion
             int maxKelvin = 40000;//TODO make configurable in settings
             double oneDay = 86400.0;
             double percDone = totalSec / oneDay;
-            if (percDone > .5) {//getting darker
-                percDone = (percDone - .5) * 2;//percent into second half
+            if (percDone > .75) {//getting darker
+                percDone = (percDone - .75) * 4;//percent into last quarter
                 return (int)((maxKelvin * (1.0 - percDone)) + (minKelvin * percDone));
             }
-            else {//getting brighter
-                percDone *= 2;//percent done with first half of day
+            else if (percDone >= .25) {//middle half of the day
+                return maxKelvin;//as bright as possible
+            }
+            else {//first quarter of day - getting brighter
+                percDone *= 4;//percent done with first quarter of day
                 return (int)((maxKelvin * percDone) + (minKelvin * (1.0 - percDone)));
             }
         }
