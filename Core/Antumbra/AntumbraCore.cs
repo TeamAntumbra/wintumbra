@@ -74,9 +74,6 @@ namespace Antumbra.Glow
             this.GlowManager.CleanUp();
             if (this.settingsWindow != null)
                 this.settingsWindow.CleanUp();
-//if (this.settingsWindow.Visible) //TODO settings disposal
-  //              this.settingsWindow.Close();
-    //        this.settingsWindow.Dispose();
             Application.Exit();
         }
 

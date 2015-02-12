@@ -10,7 +10,6 @@ namespace Antumbra.Glow.Settings
 {
     public class DeviceSettings
     {
-        public bool active { get; set; }
         public int id { get; private set; }
         public int x { get; set; }
         public int y { get; set; }
@@ -22,7 +21,6 @@ namespace Antumbra.Glow.Settings
         public double newColorWeight { get; set; }//for the output loop
         public DeviceSettings(int id)
         {
-            this.active = (id == 0);//default on if first device found
             this.id = id;
             this.x = 0;
             this.y = 0;

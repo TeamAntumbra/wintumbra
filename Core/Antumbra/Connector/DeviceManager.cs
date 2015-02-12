@@ -34,7 +34,7 @@ namespace Antumbra.Glow.Connector
                 this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), mef));
             }
             foreach (var dev in this.Glows)
-                if (dev.settings.active) {
+                if (dev.id == 0) {//only automatically open the first device
                     if (OpenDevice(dev.id))
                         this.ActiveGlows.Add(dev);
                 }
@@ -71,6 +71,8 @@ namespace Antumbra.Glow.Connector
             int err;
             if (activeDev.dev == IntPtr.Zero) {//needs opening
                 activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
+                if (err != 0)//error occured
+                    return;
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
             this.status = status;
@@ -102,7 +104,9 @@ namespace Antumbra.Glow.Connector
         private void CloseAll()
         {
             foreach (var active in this.ActiveGlows) {
-                this.Connector.CloseDevice(active.dev);
+                IntPtr ptr = active.dev;
+                if (!ptr.Equals(IntPtr.Zero))//actually open?
+                    this.Connector.CloseDevice(active.dev);
             }
         }
 
