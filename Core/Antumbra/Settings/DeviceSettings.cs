@@ -17,10 +17,9 @@ namespace Antumbra.Glow.Settings
         public int width { get; set; }
         public int height { get; set; }
         public Screen screen { get; set; }
-        public int stepSleep { get; set; }
-        public int stepSize { get; set; }
-        public bool weightingEnabled { get; set; }
-        public double newColorWeight { get; set; }
+        public int stepSleep { get; set; }//for the driver
+        public bool weightingEnabled { get; set; }//for the output loop
+        public double newColorWeight { get; set; }//for the output loop
         public DeviceSettings(int id)
         {
             this.active = (id == 0);//default on if first device found
@@ -31,7 +30,6 @@ namespace Antumbra.Glow.Settings
             this.width = this.screen.Bounds.Width;
             this.height = this.screen.Bounds.Height;
             this.stepSleep = 0;
-            this.stepSize = 2;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
         }

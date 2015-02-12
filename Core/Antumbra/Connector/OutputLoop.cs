@@ -16,6 +16,10 @@ namespace Antumbra.Glow.Connector
         private DeviceManager mgr;
         private int id;
         private Color color;
+        private Color weightedAvg;
+        private bool weightingEnabled;//TODO move to extension?
+        private double newColorWeight;
+
         public double FPS { get { return outputFPS.FPS; } }
         /// <summary>
         /// Synchronisation object
@@ -46,8 +50,12 @@ namespace Antumbra.Glow.Connector
             this.mgr = mgr;
         }
 
-        public bool Start()
+        public bool Start(bool weightEnabled, double newColorWeight)
         {
+            this.weightingEnabled = weightEnabled;
+            this.newColorWeight = newColorWeight;
+            this.weightedAvg = Color.Black;
+            color = Color.Black;
             this._active = true;
             this.outputLoopTask = new Task(target);
             this.outputLoopTask.Start();
@@ -58,7 +66,12 @@ namespace Antumbra.Glow.Connector
         {
             try {
                 while (Active) {
-                    this.mgr.sendColor(color, this.id);
+                    if (this.weightingEnabled) {
+                        weightedAvg = Mixer.MixColorPercIn(color, weightedAvg, this.newColorWeight);
+                        this.mgr.sendColor(weightedAvg, this.id);
+                    }
+                    else
+                        this.mgr.sendColor(color, this.id);
                 }
             }
             catch (Exception e) {

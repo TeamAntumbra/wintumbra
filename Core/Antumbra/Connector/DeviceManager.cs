@@ -16,9 +16,6 @@ namespace Antumbra.Glow.Connector
     /// </summary>
     public class DeviceManager
     {
-        //private AntumbraCore core;
-        //private SettingsManager settings;
-        //private Color color;
         private SerialConnector Connector;
         public List<GlowDevice> Glows { get; private set; }
         public List<GlowDevice> ActiveGlows { get; private set; }
@@ -27,10 +24,8 @@ namespace Antumbra.Glow.Connector
 
         public DeviceManager(int vid, int pid, MEFHelper mef)
         {
-            //this.settings = mgr;
             this.status = 0;
             this.GlowsFound = 0;
-            //this.core = core;
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
             this.ActiveGlows = new List<GlowDevice>();
@@ -78,7 +73,6 @@ namespace Antumbra.Glow.Connector
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
             this.status = status;
             activeDev.lastColor = Color.FromArgb(r, g, b);
-            //this.core.updateStatusText(status);
         }
 
         public DeviceSettings getDeviceSettings(int id)

@@ -53,13 +53,11 @@ namespace Antumbra.Glow.Settings
         {
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
-            stepSize.Text = this.currentDevice.settings.stepSize.ToString();
             sleepSize.Text = this.currentDevice.settings.stepSleep.ToString();
             pollingHeight.Text = this.currentDevice.settings.height.ToString();
             pollingWidth.Text = this.currentDevice.settings.width.ToString();
             pollingX.Text = this.currentDevice.settings.x.ToString();
             pollingY.Text = this.currentDevice.settings.y.ToString();
-            //foreach (var dvr in this.antumbra.ExtensionManager.AvailDrivers)
             foreach (var dvr in this.currentDevice.extMgr.MEFHelper.AvailDrivers)
                 if (!driverExtensions.Items.Contains(dvr))
                     driverExtensions.Items.Add(dvr);
@@ -116,20 +114,10 @@ namespace Antumbra.Glow.Settings
             }
         }
 
-        private void stepSize_TextChanged(object sender, EventArgs e)
-        {
-            try {
-            //    this.antumbra.stepSize = Convert.ToInt32(stepSize.Text);
-            }
-            catch (System.FormatException) {
-                Console.WriteLine("Format exception in settings");
-            }
-        }
-
         private void sleepSize_TextChanged(object sender, EventArgs e)
         {
             try {
-            //    this.antumbra.stepSleep = Convert.ToInt32(sleepSize.Text);
+                this.currentDevice.settings.stepSleep = Convert.ToInt32(sleepSize.Text);
             }
             catch (System.FormatException) {
                 Console.WriteLine("Format exception in settings");
@@ -149,7 +137,7 @@ namespace Antumbra.Glow.Settings
             this.currentDevice.extMgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
             this.currentDevice.extMgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
-            //this.antumbra.AnnounceConfig();
+            //this.antumbra.AnnounceConfig(); //TODO
         }
 
         private void decoratorToggle_Click(object sender, EventArgs e)

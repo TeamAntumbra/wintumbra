@@ -27,8 +27,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.stepSizeLabel = new System.Windows.Forms.Label();
-            this.stepSize = new System.Windows.Forms.TextBox();
             this.stepSleepLabel = new System.Windows.Forms.Label();
             this.sleepSize = new System.Windows.Forms.TextBox();
             this.DriverLabel = new System.Windows.Forms.Label();
@@ -69,33 +67,11 @@
             this.weightingEnabled = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // stepSizeLabel
-            // 
-            this.stepSizeLabel.AutoSize = true;
-            this.stepSizeLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSizeLabel.Location = new System.Drawing.Point(79, 428);
-            this.stepSizeLabel.Name = "stepSizeLabel";
-            this.stepSizeLabel.Size = new System.Drawing.Size(55, 13);
-            this.stepSizeLabel.TabIndex = 7;
-            this.stepSizeLabel.Text = "Step Size:";
-            // 
-            // stepSize
-            // 
-            this.stepSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.stepSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.stepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSize.Location = new System.Drawing.Point(204, 423);
-            this.stepSize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.stepSize.Name = "stepSize";
-            this.stepSize.Size = new System.Drawing.Size(102, 20);
-            this.stepSize.TabIndex = 13;
-            this.stepSize.TextChanged += new System.EventHandler(this.stepSize_TextChanged);
-            // 
             // stepSleepLabel
             // 
             this.stepSleepLabel.AutoSize = true;
             this.stepSleepLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSleepLabel.Location = new System.Drawing.Point(55, 463);
+            this.stepSleepLabel.Location = new System.Drawing.Point(55, 435);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
             this.stepSleepLabel.Size = new System.Drawing.Size(84, 13);
@@ -107,7 +83,7 @@
             this.sleepSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.sleepSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sleepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.sleepSize.Location = new System.Drawing.Point(204, 457);
+            this.sleepSize.Location = new System.Drawing.Point(204, 429);
             this.sleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sleepSize.Name = "sleepSize";
             this.sleepSize.Size = new System.Drawing.Size(102, 20);
@@ -400,7 +376,7 @@
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.statusLabel.Location = new System.Drawing.Point(317, 466);
+            this.statusLabel.Location = new System.Drawing.Point(317, 434);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(67, 13);
             this.statusLabel.TabIndex = 64;
@@ -410,7 +386,7 @@
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(387, 467);
+            this.glowStatus.Location = new System.Drawing.Point(387, 435);
             this.glowStatus.Name = "glowStatus";
             this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;
@@ -491,7 +467,7 @@
             this.newColorWeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.newColorWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.newColorWeight.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.newColorWeight.Location = new System.Drawing.Point(204, 492);
+            this.newColorWeight.Location = new System.Drawing.Point(204, 464);
             this.newColorWeight.Name = "newColorWeight";
             this.newColorWeight.Size = new System.Drawing.Size(102, 20);
             this.newColorWeight.TabIndex = 77;
@@ -501,7 +477,7 @@
             // 
             this.weightingLabel.AutoSize = true;
             this.weightingLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingLabel.Location = new System.Drawing.Point(22, 499);
+            this.weightingLabel.Location = new System.Drawing.Point(22, 471);
             this.weightingLabel.Name = "weightingLabel";
             this.weightingLabel.Size = new System.Drawing.Size(140, 13);
             this.weightingLabel.TabIndex = 76;
@@ -515,7 +491,7 @@
             this.weightingEnabled.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.weightingEnabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.weightingEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingEnabled.Location = new System.Drawing.Point(326, 497);
+            this.weightingEnabled.Location = new System.Drawing.Point(326, 465);
             this.weightingEnabled.Name = "weightingEnabled";
             this.weightingEnabled.Size = new System.Drawing.Size(160, 17);
             this.weightingEnabled.TabIndex = 78;
@@ -568,8 +544,6 @@
             this.Controls.Add(this.DriverLabel);
             this.Controls.Add(this.sleepSize);
             this.Controls.Add(this.stepSleepLabel);
-            this.Controls.Add(this.stepSize);
-            this.Controls.Add(this.stepSizeLabel);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -587,10 +561,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox stepSize;
         private System.Windows.Forms.TextBox sleepSize;
         //private MetroFramework.Components.MetroStyleManager settingsStyleManager;
-        private System.Windows.Forms.Label stepSizeLabel;
         private System.Windows.Forms.Label stepSleepLabel;
         private System.Windows.Forms.ComboBox driverExtensions;
         private System.Windows.Forms.Label DriverLabel;

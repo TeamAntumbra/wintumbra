@@ -20,7 +20,6 @@ namespace Antumbra.Glow.ExtensionFramework
         /// </summary>
         public MEFHelper MEFHelper { get; private set; }
         private DeviceSettings settings;
-        //private AntumbraCore core;
         public int id { get; private set; }
         public GlowDriver ActiveDriver { get; set; }
         public GlowScreenGrabber ActiveGrabber { get; set; }
@@ -89,6 +88,7 @@ namespace Antumbra.Glow.ExtensionFramework
                 ActiveGrabber.height = this.settings.height;
                 ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessor);
             }
+            ActiveDriver.stepSleep = settings.stepSleep;
             return true;
         }
 
