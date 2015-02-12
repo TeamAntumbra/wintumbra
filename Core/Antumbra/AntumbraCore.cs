@@ -49,6 +49,10 @@ namespace Antumbra.Glow
             foreach (var active in this.GlowManager.ActiveGlows) {
                 this.outLoops.Add(new OutputLoop(this.GlowManager, active.id));
             }
+            foreach (var dev in this.GlowManager.Glows) {
+                this.toolStripDeviceList.Items.Add(dev);
+                this.toolStripDeviceList.SelectedIndex = 0;
+            }
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -61,7 +65,7 @@ namespace Antumbra.Glow
             if (this.GlowManager.GlowsFound == 0)
                 this.ShowMessage(3000, "No Glow Devices Found",
                     "No Devices were found to edit the settings of.", ToolTipIcon.Info);
-            GlowDevice current = this.GlowManager.getDevice(0);
+            GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
             this.settingsWindow = new SettingsWindow(current, this);
             this.settingsWindow.Show();
         }
@@ -105,7 +109,7 @@ namespace Antumbra.Glow
 
         private void contextMenu_MouseLeave(object sender, EventArgs e)
         {
-            contextMenu.Close();
+            //contextMenu.Close();
         }
 
         public void Start()

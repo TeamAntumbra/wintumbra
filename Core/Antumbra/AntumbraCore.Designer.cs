@@ -38,6 +38,7 @@
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDeviceList = new System.Windows.Forms.ToolStripComboBox();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,15 +57,16 @@
             this.contextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.whatsMyConfig,
+            this.toolStripDeviceList,
+            this.settingsMenuItem,
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
-            this.settingsMenuItem,
             this.offToolStripMenuItem,
             this.quitMenuItem});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(180, 136);
+            this.contextMenu.Size = new System.Drawing.Size(180, 161);
             this.contextMenu.Text = "Antumbra|Glow";
             this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
@@ -122,6 +124,14 @@
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
+            // toolStripDeviceList
+            // 
+            this.toolStripDeviceList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.toolStripDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.toolStripDeviceList.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.toolStripDeviceList.Name = "toolStripDeviceList";
+            this.toolStripDeviceList.Size = new System.Drawing.Size(121, 21);
+            // 
             // AntumbraCore
             // 
             this.ClientSize = new System.Drawing.Size(116, 22);
@@ -150,6 +160,7 @@
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem whatsMyConfig;
+        public System.Windows.Forms.ToolStripComboBox toolStripDeviceList;
     }
 }
 
