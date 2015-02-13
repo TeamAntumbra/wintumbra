@@ -134,6 +134,7 @@ namespace Antumbra.Glow.ExtensionFramework
 
     public abstract class GlowDriver : GlowExtension
     {
+        public abstract void RecmmndCoreSettings();
         public abstract void AttachEvent(AntumbraColorObserver observer);
         public int stepSleep { get; set; }
     }
@@ -148,6 +149,7 @@ namespace Antumbra.Glow.ExtensionFramework
         //uses a GlowScreenProcessor to determine color to return
     {
         public abstract void AttachEvent(AntumbraBitmapObserver observer);
+        public abstract void RecmmndCoreSettings();
         public int x { get; set; }
         public int y { get; set; }
         public int width { get; set; }

@@ -43,6 +43,12 @@ namespace Antumbra.Glow.ExtensionFramework
                 this.ActiveNotifiers.Add(notf);
         }
 
+        public void SendSetToRecommended()
+        {
+            this.ActiveDriver.RecmmndCoreSettings();
+            this.ActiveGrabber.RecmmndCoreSettings();
+        }
+
         public void AttachEvent(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += observer.NewColorAvail;

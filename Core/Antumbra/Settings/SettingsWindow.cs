@@ -246,5 +246,26 @@ namespace Antumbra.Glow.Settings
         {
             this.currentDevice.settings.weightingEnabled = weightingEnabled.Checked;
         }
+
+        private void driverRecBtn_Click(object sender, EventArgs e)
+        {
+            var driver = this.currentDevice.extMgr.ActiveDriver;
+            driver.RecmmndCoreSettings();
+            this.currentDevice.settings.stepSleep = driver.stepSleep;
+            updateValues();
+        }
+
+        private void grabberRecBtn_Click(object sender, EventArgs e)
+        {
+            var grabber = this.currentDevice.extMgr.ActiveGrabber;
+            grabber.RecmmndCoreSettings();
+            var settings = this.currentDevice.settings;
+            settings.x = grabber.x;
+            settings.y = grabber.y;
+            settings.height = grabber.height;
+            settings.width = grabber.width;
+            settings.screen = grabber.screen;
+            updateValues();
+        }
     }
 }
