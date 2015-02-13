@@ -54,6 +54,7 @@ namespace Antumbra.Glow.Settings
             this.Close();
             this.Dispose();
         }
+
         /// <summary>
         /// Update the settings window form to reflect the settings found in the GlowDevice object
         /// </summary>
@@ -144,10 +145,9 @@ namespace Antumbra.Glow.Settings
         private void apply_Click(object sender, EventArgs e)
         {
             this.antumbra.Stop();
-            var mgr = this.currentDevice.extMgr;
-            mgr.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
-            mgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
-            mgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
+            this.currentDevice.extMgr.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
+            this.currentDevice.extMgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
+            this.currentDevice.extMgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
             this.antumbra.AnnounceConfig();
         }
@@ -196,9 +196,23 @@ namespace Antumbra.Glow.Settings
 
         private void pollingArea_Click(object sender, EventArgs e)
         {
-            if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed)
-                this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, this);
+            if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
+                this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings);
+                this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdateSelectionsEvent);
+                this.pollingAreaWindow.BackColorChanged += new EventHandler(UpdateDeviceColor);
+            }
             this.pollingAreaWindow.Show();
+        }
+
+        private void UpdateDeviceColor(object sender, EventArgs args)
+        {
+            pollingAreaSetter setter = (pollingAreaSetter)sender;
+            this.antumbra.SendColor(this.currentDevice.id, setter.BackColor);
+        }
+
+        private void UpdateSelectionsEvent(object sender, EventArgs args)
+        {
+            this.updateValues();
         }
 
         private void startBtn_Click(object sender, EventArgs e)
@@ -249,9 +263,8 @@ namespace Antumbra.Glow.Settings
 
         private void driverRecBtn_Click(object sender, EventArgs e)
         {
-            var driver = this.currentDevice.extMgr.ActiveDriver;
-            driver.RecmmndCoreSettings();
-            this.currentDevice.settings.stepSleep = driver.stepSleep;
+            this.currentDevice.extMgr.ActiveDriver.RecmmndCoreSettings();
+            this.currentDevice.settings.stepSleep = this.currentDevice.extMgr.ActiveDriver.stepSleep;
             updateValues();
         }
 
@@ -259,12 +272,10 @@ namespace Antumbra.Glow.Settings
         {
             var grabber = this.currentDevice.extMgr.ActiveGrabber;
             grabber.RecmmndCoreSettings();
-            var settings = this.currentDevice.settings;
-            settings.x = grabber.x;
-            settings.y = grabber.y;
-            settings.height = grabber.height;
-            settings.width = grabber.width;
-            settings.screen = grabber.screen;
+            this.currentDevice.settings.x = grabber.x;
+            this.currentDevice.settings.y = grabber.y;
+            this.currentDevice.settings.height = grabber.height;
+            this.currentDevice.settings.width = grabber.width;
             updateValues();
         }
     }

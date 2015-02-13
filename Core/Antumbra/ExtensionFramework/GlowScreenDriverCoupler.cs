@@ -15,14 +15,12 @@ namespace Antumbra.Glow.ExtensionFramework
         public event NewColorAvail NewColorAvailEvent;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
-        private List<IObserver<Color>> observers;
         public override int id { get; set; }
 
         public GlowScreenDriverCoupler(GlowScreenGrabber grab, GlowScreenProcessor proc)
         {
             this.grabber = grab;
             this.processor = proc;
-            this.observers = new List<IObserver<Color>>();
         }
 
         public override bool IsRunning
@@ -87,7 +85,6 @@ namespace Antumbra.Glow.ExtensionFramework
 
         public override bool Stop()
         {
-            this.observers = new List<IObserver<Color>>();//reset observers
             if (this.processor != null)
                 this.processor.Stop();
             if (this.grabber != null)

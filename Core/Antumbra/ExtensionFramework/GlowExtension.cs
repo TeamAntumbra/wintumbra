@@ -154,7 +154,6 @@ namespace Antumbra.Glow.ExtensionFramework
         public int y { get; set; }
         public int width { get; set; }
         public int height { get; set; }
-        public Screen screen { get; set; }
     }
 
     public abstract class GlowDecorator : GlowExtension

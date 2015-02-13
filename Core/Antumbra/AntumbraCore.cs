@@ -121,6 +121,11 @@ namespace Antumbra.Glow
             this.GlowManager.sendColor(Color.Black);
         }
 
+        public void SendColor(int id, Color col)
+        {
+            this.GlowManager.sendColor(col, id);
+        }
+
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Off();

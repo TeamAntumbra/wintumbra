@@ -7,22 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Antumbra.Glow;
 
 namespace Antumbra.Glow.Settings
 {
     public partial class pollingAreaSetter : Form
     {
-        //private AntumbraCore core;
+        public delegate void SetToColor(Color newColor, int id);
+        public event SetToColor SetToColorEvent;
         private DeviceSettings settingsObj;
-        private SettingsWindow settings;
-        public pollingAreaSetter(DeviceSettings settingsObj, SettingsWindow settings)
+        private Color[] WindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
+        public pollingAreaSetter(DeviceSettings settingsObj)
         {
-            this.settings = settings;
             this.settingsObj = settingsObj;
-            //this.core = core;
             InitializeComponent();
         }
+
+       /* public override void AttachEvent(SetToColorObserver observer)
+        {
+            this.SetToColorEvent += new SetToColor(observer.SetToColor);
+        }*/
 
         private void pollingAreaSetter_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -30,12 +33,17 @@ namespace Antumbra.Glow.Settings
             this.settingsObj.y = this.Location.Y;
             this.settingsObj.height = this.Height;
             this.settingsObj.width = this.Width;
-            this.settings.updateValues();
         }
 
-        private void nextDevBtn_Click(object sender, EventArgs e)
+        private void setToUniqueColorBtn_Click(object sender, EventArgs args)
         {
-            //TODO cycle to next devices settings and change polling window color to match color output by current device (all others set to black)
+            this.BackColor = GetUniqueColor(this.settingsObj.id);
+        }
+
+        private Color GetUniqueColor(int id)
+        {
+            int index = id % 8;
+            return WindowColors[index];
         }
     }
 }
