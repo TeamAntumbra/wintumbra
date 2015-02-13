@@ -24,14 +24,15 @@ using System.Reflection;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : Form//, AntumbraColorObserver
+    public partial class AntumbraCore : Form
     {
         private MEFHelper MEFHelper;
         private DeviceManager GlowManager;
         private SettingsWindow settingsWindow;
         private OutputLoopManager outManager;
-        //private List<OutputLoop> outLoops;
-
+        /// <summary>
+        /// AntumbraCore Constructor
+        /// </summary>
         public AntumbraCore()
         {
             this.MEFHelper = new MEFHelper("./Extensions/");
@@ -46,7 +47,6 @@ namespace Antumbra.Glow
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
-            //this.outLoops = new List<OutputLoop>();
             this.outManager = new OutputLoopManager();
             foreach (var dev in this.GlowManager.Glows) {
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
@@ -54,7 +54,11 @@ namespace Antumbra.Glow
                 this.toolStripDeviceList.SelectedIndex = 0;
             }
         }
-
+        /// <summary>
+        /// Event handler for when the menubar icon is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (contextMenu.Visible)
@@ -62,7 +66,11 @@ namespace Antumbra.Glow
             else
                 contextMenu.Show(Cursor.Position);
         }
-
+        /// <summary>
+        /// Event handler for the settings menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void settingsMenuItem_Click(object sender, EventArgs e)
         {
             if (this.GlowManager.GlowsFound == 0)
@@ -72,17 +80,29 @@ namespace Antumbra.Glow
             this.settingsWindow = new SettingsWindow(current, this);
             this.settingsWindow.Show();
         }
-
+        /// <summary>
+        /// Event handler for the start all devices button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void startAllItem_Click(object sender, System.EventArgs e)
         {
             this.StartAll();
         }
-
+        /// <summary>
+        /// Event handler for the stop all devices button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void stopAllItem_Click(object sender, System.EventArgs e)
         {
             this.StopAll();
         }
-
+        /// <summary>
+        /// Event handler for the quit program menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
             Stop();
@@ -93,58 +113,69 @@ namespace Antumbra.Glow
                 this.settingsWindow.CleanUp();
             Application.Exit();
         }
-
+        /// <summary>
+        /// Event handler for current devices output rate menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void currentOutRateItem_Click(object sender, System.EventArgs e)
         {
             string outSpeeds = this.outManager.GetSpeedsStr();
             ShowMessage(3000, "Current Output Speed(s)", outSpeeds, ToolTipIcon.Info);
         }
-
+        /// <summary>
+        /// Event handler for whats currently configured menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void whatsMyConfig_Click(object sender, EventArgs e)
         {
             AnnounceConfig();
         }
-
+        /// <summary>
+        /// Announce the current devices extension configuration
+        /// </summary>
         public void AnnounceConfig()
         {
             ShowMessage(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), ToolTipIcon.Info);
         }
 
-        public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
+        public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)//TODO somewhat replace with eventhandler and delegate for showing messages
         {
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
-
+        //replace with custom event handler as well TODO
         public void Off()
         {
             this.StopAll();
             this.GlowManager.sendColor(Color.Black);
         }
-
+        //TODO replace with custom event handler from dev mgr
         public void SendColor(int id, Color col)
         {
             this.GlowManager.sendColor(col, id);
         }
-
+        /// <summary>
+        /// Event handler for off menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Off();
         }
-
-        public void StartAll()//currently start and stop refers to all devices     TODO change
+        /// <summary>
+        /// Start all found Glows
+        /// </summary>
+        public void StartAll()
         {
             StopAll();
             ShowMessage(3000, "Starting All", "Extensions are being started. Please wait.", ToolTipIcon.Info);
-           /* foreach (var dev in this.GlowManager.Glows) {
-                
-                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));//setup output loop for each Glow//IMPLEMENTTTTTTTTFINDMEEEEE
-            }*/
+
             foreach (var dev in this.GlowManager.Glows) {//start each output loop
                 var loop = this.outManager.FindLoopOrReturnNull(dev.id);
                 if (loop == null)
                     loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
-                //var loop = this.outLoops.ElementAt(i);
-                //var dev = this.GlowManager.Glows.ElementAt(i);
                 var mgr = dev.extMgr;
                 mgr.AttachEvent(loop);
                 mgr.Start();
@@ -154,7 +185,7 @@ namespace Antumbra.Glow
         }
 
         /// <summary>
-        /// Start only the selected device
+        /// Start only the selected Glow
         /// </summary>
         public void Start()
         {
@@ -171,7 +202,9 @@ namespace Antumbra.Glow
             ShowMessage(3000, "Device " + current + " Started.", "The current device has been started.",
                 ToolTipIcon.Info);
         }
-
+        /// <summary>
+        /// Stop the currently selected Glow
+        /// </summary>
         public void Stop()
         {
             if (this.settingsWindow != null) {
