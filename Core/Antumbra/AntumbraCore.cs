@@ -28,7 +28,7 @@ namespace Antumbra.Glow
     {
         private MEFHelper MEFHelper;
         private DeviceManager GlowManager;
-        private SettingsWindow settingsWindow;
+        private List<SettingsWindow> settingsWindows;
         private OutputLoopManager outManager;
         /// <summary>
         /// AntumbraCore Constructor
@@ -52,9 +52,10 @@ namespace Antumbra.Glow
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
                 this.toolStripDeviceList.Items.Add(dev);
             }
-            if (GlowManager.GlowsFound > 0) {
+            this.settingsWindows = new List<SettingsWindow>();
+            if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
-                this.settingsWindow = new SettingsWindow(this.GlowManager.getDevice(0), this);
+                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this));
             }
         }
         /// <summary>
@@ -80,7 +81,13 @@ namespace Antumbra.Glow
                 this.ShowMessage(3000, "No Glow Devices Found",
                     "No Devices were found to edit the settings of.", ToolTipIcon.Info);
             GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
-            this.settingsWindow.Show();
+            if (this.settingsWindows.Count > current.id)//in range
+                this.settingsWindows.ElementAt<SettingsWindow>(current.id).Show();
+            else {
+                var win = new SettingsWindow(current, this);
+                this.settingsWindows.Add(win);
+                win.Show();
+            }
         }
         /// <summary>
         /// Event handler for the start all devices button
@@ -111,8 +118,8 @@ namespace Antumbra.Glow
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             this.GlowManager.CleanUp();
-            if (this.settingsWindow != null)
-                this.settingsWindow.CleanUp();
+            foreach (var win in this.settingsWindows)
+                win.CleanUp();
             Application.Exit();
         }
         /// <summary>
@@ -192,7 +199,7 @@ namespace Antumbra.Glow
         public void Start()
         {
             Stop();
-            int current = this.settingsWindow.currentDevice.id;
+            int current = this.toolStripDeviceList.SelectedIndex;
             var dev = this.GlowManager.getDevice(current);
             var loop = this.outManager.FindLoopOrReturnNull(dev.id);
             if (loop == null)
@@ -209,7 +216,7 @@ namespace Antumbra.Glow
         /// </summary>
         public void Stop()
         {
-            int current = this.settingsWindow.currentDevice.id;
+            int current = this.toolStripDeviceList.SelectedIndex;
             var dev = this.GlowManager.getDevice(current);
             var loop = this.outManager.FindLoopOrReturnNull(current);
             if (loop == null)
