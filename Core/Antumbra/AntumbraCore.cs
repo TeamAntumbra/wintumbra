@@ -29,7 +29,8 @@ namespace Antumbra.Glow
         private MEFHelper MEFHelper;
         private DeviceManager GlowManager;
         private SettingsWindow settingsWindow;
-        private List<OutputLoop> outLoops;
+        private OutputLoopManager outManager;
+        //private List<OutputLoop> outLoops;
 
         public AntumbraCore()
         {
@@ -45,9 +46,10 @@ namespace Antumbra.Glow
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Visible = false;
-            this.outLoops = new List<OutputLoop>();
+            //this.outLoops = new List<OutputLoop>();
+            this.outManager = new OutputLoopManager();
             foreach (var dev in this.GlowManager.Glows) {
-                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));
+                this.outManager.CreateAndAddLoop(GlowManager, dev.id);
                 this.toolStripDeviceList.Items.Add(dev);
                 this.toolStripDeviceList.SelectedIndex = 0;
             }
@@ -94,13 +96,7 @@ namespace Antumbra.Glow
 
         private void currentOutRateItem_Click(object sender, System.EventArgs e)
         {
-            string outSpeeds = "";
-            if (outLoops.Count == 0)
-                outSpeeds = "No output loops found.";
-            else {
-                foreach (var loop in outLoops)
-                    outSpeeds += "ID: " + loop.id + " - " + Math.Round(loop.FPS, 3) +" hz.\n";
-            }
+            string outSpeeds = this.outManager.GetSpeedsStr();
             ShowMessage(3000, "Current Output Speed(s)", outSpeeds, ToolTipIcon.Info);
         }
 
@@ -134,12 +130,16 @@ namespace Antumbra.Glow
         {
             StopAll();
             ShowMessage(3000, "Starting All", "Extensions are being started. Please wait.", ToolTipIcon.Info);
-            foreach (var dev in this.GlowManager.Glows) {
-                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));//setup output loop for each Glow
-            }
-            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {//start each output loop
-                var loop = this.outLoops.ElementAt(i);
-                var dev = this.GlowManager.Glows.ElementAt(i);
+           /* foreach (var dev in this.GlowManager.Glows) {
+                
+                this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));//setup output loop for each Glow//IMPLEMENTTTTTTTTFINDMEEEEE
+            }*/
+            foreach (var dev in this.GlowManager.Glows) {//start each output loop
+                var loop = this.outManager.FindLoopOrReturnNull(dev.id);
+                if (loop == null)
+                    loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
+                //var loop = this.outLoops.ElementAt(i);
+                //var dev = this.GlowManager.Glows.ElementAt(i);
                 var mgr = dev.extMgr;
                 mgr.AttachEvent(loop);
                 mgr.Start();
@@ -156,8 +156,9 @@ namespace Antumbra.Glow
             Stop();
             int current = this.settingsWindow.currentDevice.id;
             var dev = this.GlowManager.getDevice(current);
-            var loop = new OutputLoop(this.GlowManager, dev.id);
-            this.outLoops.Add(loop);
+            var loop = this.outManager.FindLoopOrReturnNull(dev.id);
+            if (loop == null)
+                loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
             var mgr = dev.extMgr;
             mgr.AttachEvent(loop);
             mgr.Start();
@@ -170,9 +171,11 @@ namespace Antumbra.Glow
         {
             if (this.settingsWindow != null) {
                 int current = this.settingsWindow.currentDevice.id;
-                foreach (var loop in this.outLoops)
-                    if (loop.id == current)
-                        loop.Stop();
+                var dev = this.GlowManager.getDevice(current);
+                var loop = this.outManager.FindLoopOrReturnNull(current);
+                if (loop == null)
+                    return;//nothing to stop
+                loop.Stop();
                 var mgr = this.GlowManager.getDevice(current).extMgr;
                 mgr.Stop();
                 ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
@@ -188,10 +191,11 @@ namespace Antumbra.Glow
         public void StopAll()
         {
             ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
-            foreach (var loop in this.outLoops) {//stop outLoops
-                loop.Stop();
+            foreach (var dev in this.GlowManager.Glows) {
+                var loop = this.outManager.FindLoopOrReturnNull(dev.id);
+                if (loop != null)
+                    loop.Dispose();
             }
-            this.outLoops = new List<OutputLoop>();
             for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {
                 var mgr = this.GlowManager.Glows.ElementAt(i).extMgr;
                 mgr.Stop();
