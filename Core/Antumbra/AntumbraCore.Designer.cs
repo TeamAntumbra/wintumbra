@@ -34,14 +34,14 @@
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.currentOutRate = new System.Windows.Forms.ToolStripMenuItem();
+            this.startAllItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopAllItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDeviceList = new System.Windows.Forms.ToolStripComboBox();
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startAllItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopAllItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,6 +91,22 @@
             this.currentOutRate.Size = new System.Drawing.Size(179, 22);
             this.currentOutRate.Text = "Current Output Rate?";
             this.currentOutRate.Click += new System.EventHandler(this.currentOutRateItem_Click);
+            // 
+            // startAllItem
+            // 
+            this.startAllItem.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.startAllItem.Name = "startAllItem";
+            this.startAllItem.Size = new System.Drawing.Size(179, 22);
+            this.startAllItem.Text = "Start All Glows";
+            this.startAllItem.Click += new System.EventHandler(this.startAllItem_Click);
+            // 
+            // stopAllItem
+            // 
+            this.stopAllItem.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.stopAllItem.Name = "stopAllItem";
+            this.stopAllItem.Size = new System.Drawing.Size(179, 22);
+            this.stopAllItem.Text = "Stop All Glows";
+            this.stopAllItem.Click += new System.EventHandler(this.stopAllItem_Click);
             // 
             // toolStripDeviceList
             // 
@@ -144,24 +160,6 @@
             this.quitMenuItem.Size = new System.Drawing.Size(179, 22);
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
-            // 
-            // startAllItem
-            // 
-            this.stopToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stopToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.startAllItem.Name = "startAllItem";
-            this.startAllItem.Size = new System.Drawing.Size(179, 22);
-            this.startAllItem.Text = "Start All Glows";
-            this.startAllItem.Click += new System.EventHandler(this.startAllItem_Click);
-            // 
-            // stopAllItem
-            // 
-            this.stopToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stopToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stopAllItem.Name = "stopAllItem";
-            this.stopAllItem.Size = new System.Drawing.Size(179, 22);
-            this.stopAllItem.Text = "Stop All Glows";
-            this.stopAllItem.Click += new System.EventHandler(this.stopAllItem_Click);
             // 
             // AntumbraCore
             // 

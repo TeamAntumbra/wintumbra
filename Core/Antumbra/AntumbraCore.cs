@@ -168,13 +168,15 @@ namespace Antumbra.Glow
 
         public void Stop()
         {
-            int current = this.settingsWindow.currentDevice.id;
-            foreach (var loop in this.outLoops)
-                if (loop.id == current)
-                    loop.Stop();
-            var mgr = this.GlowManager.getDevice(current).extMgr;
-            mgr.Stop();
-            ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
+            if (this.settingsWindow != null) {
+                int current = this.settingsWindow.currentDevice.id;
+                foreach (var loop in this.outLoops)
+                    if (loop.id == current)
+                        loop.Stop();
+                var mgr = this.GlowManager.getDevice(current).extMgr;
+                mgr.Stop();
+                ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
+            }
             
         }
 
