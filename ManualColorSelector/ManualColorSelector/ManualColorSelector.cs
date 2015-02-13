@@ -60,7 +60,6 @@ namespace ManualColorSelector
 
         public override bool Start()
         {
-            this.stepSleep = 0;//turn off, unaffected anyways
             this.lastUpdate = Color.Empty;
             this.picker = new MainForm();
             this.picker.BackColorChanged += new EventHandler(SendColorEvent);
@@ -88,6 +87,11 @@ namespace ManualColorSelector
                 this.picker.Close();
             this.running = false;
             return result;
+        }
+
+        public override void RecmmndCoreSettings()
+        {
+            this.stepSleep = 0;
         }
     }
 }
