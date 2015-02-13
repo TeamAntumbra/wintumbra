@@ -90,6 +90,11 @@ namespace HSVFade
             return true;
         }
 
+        public override void RecmmndCoreSettings()
+        {
+            this.stepSleep = 1000;
+        }
+
         public override string Website
         {
             get { throw new NotImplementedException(); }
