@@ -80,6 +80,11 @@ namespace ColorClock
             return true;
         }
 
+        public override void RecmmndCoreSettings()
+        {
+            this.stepSleep = 1000;
+        }
+
         private void driverTarget()
         {
             while (this.running) {
