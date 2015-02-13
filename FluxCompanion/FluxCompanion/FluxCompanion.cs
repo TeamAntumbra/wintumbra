@@ -47,6 +47,11 @@ namespace FluxCompanion
             return true;
         }
 
+        public override void RecmmndCoreSettings()
+        {
+            this.stepSleep = 60000;//60 sec
+        }
+
         public override void AttachEvent(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
