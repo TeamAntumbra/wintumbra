@@ -51,7 +51,10 @@ namespace Antumbra.Glow
             foreach (var dev in this.GlowManager.Glows) {
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
                 this.toolStripDeviceList.Items.Add(dev);
+            }
+            if (GlowManager.GlowsFound > 0) {
                 this.toolStripDeviceList.SelectedIndex = 0;
+                this.settingsWindow = new SettingsWindow(this.GlowManager.getDevice(0), this);
             }
         }
         /// <summary>
@@ -77,7 +80,6 @@ namespace Antumbra.Glow
                 this.ShowMessage(3000, "No Glow Devices Found",
                     "No Devices were found to edit the settings of.", ToolTipIcon.Info);
             GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
-            this.settingsWindow = new SettingsWindow(current, this);
             this.settingsWindow.Show();
         }
         /// <summary>
@@ -207,17 +209,15 @@ namespace Antumbra.Glow
         /// </summary>
         public void Stop()
         {
-            if (this.settingsWindow != null) {
-                int current = this.settingsWindow.currentDevice.id;
-                var dev = this.GlowManager.getDevice(current);
-                var loop = this.outManager.FindLoopOrReturnNull(current);
-                if (loop == null)
-                    return;//nothing to stop
-                loop.Stop();
-                var mgr = this.GlowManager.getDevice(current).extMgr;
-                mgr.Stop();
-                ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
-            }
+            int current = this.settingsWindow.currentDevice.id;
+            var dev = this.GlowManager.getDevice(current);
+            var loop = this.outManager.FindLoopOrReturnNull(current);
+            if (loop == null)
+                return;//nothing to stop
+            loop.Dispose();
+            var mgr = this.GlowManager.getDevice(current).extMgr;
+            mgr.Stop();
+            ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
             
         }
 

@@ -82,15 +82,11 @@ namespace Antumbra.Glow.Connector
             }
         }
 
-        public bool Stop()
+        private void Stop()
         {
             this._active = false;
-            if (this.outputLoopTask == null)
-                return true;
-            this.outputLoopTask.Wait(1000);
-            if (this.outputLoopTask.IsCompleted)
-                return true;
-            return false;
+            if (this.outputLoopTask != null)
+                this.outputLoopTask.Wait(1000);
         }
 
         void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
@@ -104,6 +100,9 @@ namespace Antumbra.Glow.Connector
         public void Dispose()
         {
             this.Stop();
+            if (outputLoopTask != null)
+                outputLoopTask.Dispose();
+            this.outputFPS = new FPSCalc();
         }
     }
 }
