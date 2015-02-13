@@ -111,7 +111,7 @@ namespace Antumbra.Glow
 
         public void Off()
         {
-            this.Stop();
+            this.StopAll();
             this.GlowManager.sendColor(Color.Black);
         }
 
@@ -120,10 +120,10 @@ namespace Antumbra.Glow
             this.Off();
         }
 
-        public void Start()//currently start and stop refers to all devices     TODO change
+        public void StartAll()//currently start and stop refers to all devices     TODO change
         {
-            Stop();
-            ShowMessage(3000, "Starting", "Extensions are being started. Please wait.", ToolTipIcon.Info);
+            StopAll();
+            ShowMessage(3000, "Starting All", "Extensions are being started. Please wait.", ToolTipIcon.Info);
             foreach (var dev in this.GlowManager.Glows) {
                 this.outLoops.Add(new OutputLoop(this.GlowManager, dev.id));//setup output loop for each Glow
             }
@@ -138,14 +138,44 @@ namespace Antumbra.Glow
             ShowMessage(3000, "Started", "Extensions have been started.", ToolTipIcon.Info);
         }
 
+        /// <summary>
+        /// Start only the selected device
+        /// </summary>
+        public void Start()
+        {
+            Stop();
+            int current = this.settingsWindow.currentDevice.id;
+            var dev = this.GlowManager.getDevice(current);
+            var loop = new OutputLoop(this.GlowManager, dev.id);
+            this.outLoops.Add(loop);
+            var mgr = dev.extMgr;
+            mgr.AttachEvent(loop);
+            mgr.Start();
+            loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
+            ShowMessage(3000, "Device " + current + " Started.", "The current device has been started.",
+                ToolTipIcon.Info);
+        }
+
+        public void Stop()
+        {
+            int current = this.settingsWindow.currentDevice.id;
+            foreach (var loop in this.outLoops)
+                if (loop.id == current)
+                    loop.Stop();
+            var mgr = this.GlowManager.getDevice(current).extMgr;
+            mgr.Stop();
+            ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
+            
+        }
+
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Start();
         }
 
-        public void Stop()
+        public void StopAll()
         {
-            ShowMessage(3000, "Stopping", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
+            ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
             foreach (var loop in this.outLoops) {//stop outLoops
                 loop.Stop();
             }

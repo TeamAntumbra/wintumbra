@@ -26,7 +26,7 @@ namespace Antumbra.Glow.Settings
         /// <summary>
         /// GlowDevice object for the device whose settings are being rendered currently
         /// </summary>
-        private GlowDevice currentDevice;
+        public GlowDevice currentDevice { get; private set; }
         /// <summary>
         /// Form used to set the screen grabber polling area
         /// </summary>

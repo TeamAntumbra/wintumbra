@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
-    public class MEFHelper
+    public class MEFHelper : IDisposable
     {
         public bool failed { get; private set; }
         private CompositionContainer container;
@@ -131,6 +131,11 @@ namespace Antumbra.Glow.ExtensionFramework
                 if (notf.IsDefault)
                     result.Add(notf);
             return result;
+        }
+
+        public void Dispose()
+        {
+            this.container.Dispose();
         }
     }
 }

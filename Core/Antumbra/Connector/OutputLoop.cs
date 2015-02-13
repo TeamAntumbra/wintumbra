@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Antumbra.Glow.Connector
 {
-    public class OutputLoop : AntumbraColorObserver
+    public class OutputLoop : AntumbraColorObserver, IDisposable
     {
         private Task outputLoopTask;
         private FPSCalc outputFPS = new FPSCalc();
@@ -55,7 +55,7 @@ namespace Antumbra.Glow.Connector
             this.weightingEnabled = weightEnabled;
             this.newColorWeight = newColorWeight;
             this.weightedAvg = Color.Black;
-            color = Color.Black;
+            this.color = Color.Black;
             this._active = true;
             this.outputLoopTask = new Task(target);
             this.outputLoopTask.Start();
@@ -99,6 +99,11 @@ namespace Antumbra.Glow.Connector
             lock (sync) {
                 color = (Color)sender;
             }
+        }
+
+        public void Dispose()
+        {
+            this.Stop();
         }
     }
 }

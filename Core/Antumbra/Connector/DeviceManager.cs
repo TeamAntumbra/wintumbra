@@ -28,7 +28,6 @@ namespace Antumbra.Glow.Connector
             this.GlowsFound = 0;
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
-            //this.ActiveGlows = new List<GlowDevice>();
             int len = this.Connector.UpdateDeviceList();
             for (var i = 0; i < len; i += 1) {
                 this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), mef));
