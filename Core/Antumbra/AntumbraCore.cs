@@ -71,6 +71,16 @@ namespace Antumbra.Glow
             this.settingsWindow.Show();
         }
 
+        private void startAllItem_Click(object sender, System.EventArgs e)
+        {
+            this.StartAll();
+        }
+
+        private void stopAllItem_Click(object sender, System.EventArgs e)
+        {
+            this.StopAll();
+        }
+
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
             Stop();

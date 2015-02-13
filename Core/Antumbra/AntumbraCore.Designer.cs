@@ -33,13 +33,15 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.whatsMyConfig = new System.Windows.Forms.ToolStripMenuItem();
+            this.currentOutRate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDeviceList = new System.Windows.Forms.ToolStripComboBox();
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.currentOutRate = new System.Windows.Forms.ToolStripMenuItem();
+            this.startAllItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopAllItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +61,8 @@
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.whatsMyConfig,
             this.currentOutRate,
+            this.startAllItem,
+            this.stopAllItem,
             this.toolStripDeviceList,
             this.settingsMenuItem,
             this.startToolStripMenuItem,
@@ -68,7 +72,7 @@
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
-            this.contextMenu.Size = new System.Drawing.Size(180, 183);
+            this.contextMenu.Size = new System.Drawing.Size(180, 227);
             this.contextMenu.Text = "Antumbra|Glow";
             // 
             // whatsMyConfig
@@ -79,6 +83,14 @@
             this.whatsMyConfig.Size = new System.Drawing.Size(179, 22);
             this.whatsMyConfig.Text = "What is Currently Enabled?";
             this.whatsMyConfig.Click += new System.EventHandler(this.whatsMyConfig_Click);
+            // 
+            // currentOutRate
+            // 
+            this.currentOutRate.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.currentOutRate.Name = "currentOutRate";
+            this.currentOutRate.Size = new System.Drawing.Size(179, 22);
+            this.currentOutRate.Text = "Current Output Rate?";
+            this.currentOutRate.Click += new System.EventHandler(this.currentOutRateItem_Click);
             // 
             // toolStripDeviceList
             // 
@@ -133,13 +145,23 @@
             this.quitMenuItem.Text = "Quit";
             this.quitMenuItem.Click += new System.EventHandler(this.quitMenuItem_Click);
             // 
-            // currentOutRate
+            // startAllItem
             // 
-            this.currentOutRate.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.currentOutRate.Name = "currentOutRate";
-            this.currentOutRate.Size = new System.Drawing.Size(179, 22);
-            this.currentOutRate.Text = "Current Output Rate?";
-            this.currentOutRate.Click += new System.EventHandler(this.currentOutRateItem_Click);
+            this.stopToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.stopToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.startAllItem.Name = "startAllItem";
+            this.startAllItem.Size = new System.Drawing.Size(179, 22);
+            this.startAllItem.Text = "Start All Glows";
+            this.startAllItem.Click += new System.EventHandler(this.startAllItem_Click);
+            // 
+            // stopAllItem
+            // 
+            this.stopToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.stopToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.stopAllItem.Name = "stopAllItem";
+            this.stopAllItem.Size = new System.Drawing.Size(179, 22);
+            this.stopAllItem.Text = "Stop All Glows";
+            this.stopAllItem.Click += new System.EventHandler(this.stopAllItem_Click);
             // 
             // AntumbraCore
             // 
@@ -171,6 +193,8 @@
         private System.Windows.Forms.ToolStripMenuItem whatsMyConfig;
         public System.Windows.Forms.ToolStripComboBox toolStripDeviceList;
         private System.Windows.Forms.ToolStripMenuItem currentOutRate;
+        private System.Windows.Forms.ToolStripMenuItem startAllItem;
+        private System.Windows.Forms.ToolStripMenuItem stopAllItem;
     }
 }
 
