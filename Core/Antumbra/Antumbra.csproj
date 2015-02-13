@@ -83,7 +83,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\AntumbraA.ico</ApplicationIcon>
+    <ApplicationIcon>AntumbraA.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>FEF6F6E87BDC86BB6EE0AD3C5D0835A09EE0A029</ManifestCertificateThumbprint>
@@ -228,6 +228,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AntumbraA.ico" />
     <Content Include="antumbraglowv3beta.inf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

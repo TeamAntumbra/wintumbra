@@ -95,7 +95,8 @@ namespace Antumbra.Glow.ExtensionFramework
         public override void RecmmndCoreSettings()
         {
             this.stepSleep = 0;
-            this.grabber.RecmmndCoreSettings();
+            if (this.grabber != null)
+                this.grabber.RecmmndCoreSettings();
         }
     }
 }

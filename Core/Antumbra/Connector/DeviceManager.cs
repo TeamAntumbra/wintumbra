@@ -18,7 +18,6 @@ namespace Antumbra.Glow.Connector
     {
         private SerialConnector Connector;
         public List<GlowDevice> Glows { get; private set; }
-        //public List<GlowDevice> ActiveGlows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
 

@@ -278,5 +278,11 @@ namespace Antumbra.Glow.Settings
             this.currentDevice.settings.width = grabber.width;
             updateValues();
         }
+
+        private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+        }
     }
 }

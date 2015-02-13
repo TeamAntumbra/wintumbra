@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Glow")]
-[assembly: AssemblyDescription("Antumbra|Glow controller")]
+[assembly: AssemblyDescription("Windows Antumbra|Glow Controller")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Antumbra")]
+[assembly: AssemblyCompany("Antumbra Technologies Inc.")]
 [assembly: AssemblyProduct("Glow")]
-[assembly: AssemblyCopyright("Copyright © Antumbra 2015")]
+[assembly: AssemblyCopyright("Copyright © Antumbra Technologies Inc. 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.stepSleepLabel = new System.Windows.Forms.Label();
             this.sleepSize = new System.Windows.Forms.TextBox();
             this.DriverLabel = new System.Windows.Forms.Label();
@@ -505,7 +506,7 @@
             this.driverRecBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.driverRecBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.driverRecBtn.Location = new System.Drawing.Point(487, 216);
-            this.driverRecBtn.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.driverRecBtn.Margin = new System.Windows.Forms.Padding(0);
             this.driverRecBtn.Name = "driverRecBtn";
             this.driverRecBtn.Size = new System.Drawing.Size(103, 36);
             this.driverRecBtn.TabIndex = 81;
@@ -577,11 +578,13 @@
             this.Controls.Add(this.stepSleepLabel);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SettingsWindow";
             this.Padding = new System.Windows.Forms.Padding(30, 92, 30, 31);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SettingsWindow_MouseDown);
             this.MouseEnter += new System.EventHandler(this.SettingsWindow_MouseEnter);
             this.ResumeLayout(false);

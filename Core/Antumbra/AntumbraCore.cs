@@ -42,11 +42,7 @@ namespace Antumbra.Glow
                     + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
             this.GlowManager = new DeviceManager(0x16D0, 0x0A85, MEFHelper);//find devices
             InitializeComponent();
-            this.WindowState = FormWindowState.Minimized;
-            this.Hide();
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Visible = false;
+            //this.Hide();
             this.outManager = new OutputLoopManager();
             foreach (var dev in this.GlowManager.Glows) {
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
