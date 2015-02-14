@@ -135,6 +135,7 @@
     <Compile Include="ExtensionFramework\AntumbraExtSettingsWindow.Designer.cs">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExtensionFramework\ExtensionLibrary.cs" />
     <Compile Include="ExtensionFramework\ExtensionManager.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Utility\Mixer.cs" />

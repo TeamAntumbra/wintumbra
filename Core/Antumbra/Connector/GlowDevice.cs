@@ -34,7 +34,12 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         public Color lastColor { get; set; }
         public DeviceSettings settings { get; private set; }
-        public ExtensionManager extMgr { get; private set; }
+        private ExtensionManager extMgr;
+        public GlowDriver ActiveDriver { get; set; }
+        public GlowScreenGrabber ActiveGrabber { get; set; }
+        public GlowScreenProcessor ActiveProcessor { get; set; }
+        public List<GlowDecorator> ActiveDecorators { get; set; }
+        public List<GlowNotifier> ActiveNotifiers { get; set; }
         public int status { get; set; }
         /// <summary>
         /// Constructor
@@ -49,6 +54,18 @@ namespace Antumbra.Glow.Connector
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
             this.extMgr = new ExtensionManager(path, id, settings);
+            this.ActiveDecorators = new List<GlowDecorator>();
+            this.ActiveNotifiers = new List<GlowNotifier>();
+        }
+
+        internal bool Start()
+        {
+            return this.extMgr.Start();
+        }
+
+        public void AttachEventToExtMgr(AntumbraColorObserver observer)
+        {
+            this.extMgr.AttachEvent(observer);
         }
 
         public string GetSetupDesc()
@@ -59,6 +76,11 @@ namespace Antumbra.Glow.Connector
         public override string ToString()
         {
             return "Glow device, id: " + this.id;
+        }
+
+        internal bool Stop()
+        {
+            return this.extMgr.Stop();
         }
     }
 }

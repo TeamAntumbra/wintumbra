@@ -29,12 +29,15 @@ namespace Antumbra.Glow
         private DeviceManager GlowManager;
         private List<SettingsWindow> settingsWindows;
         private OutputLoopManager outManager;
+        private const string extPath = "./Extensions/";
+        private ExtensionLibrary extLibrary;
         /// <summary>
         /// AntumbraCore Constructor
         /// </summary>
         public AntumbraCore()
         {
-            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, "./Extensions/");//find devices
+            this.extLibrary = new ExtensionLibrary(extPath);
+            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
             InitializeComponent();
             this.outManager = new OutputLoopManager();
             foreach (var dev in this.GlowManager.Glows) {//create output loop
@@ -44,7 +47,7 @@ namespace Antumbra.Glow
             this.settingsWindows = new List<SettingsWindow>();
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
-                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this));
+                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary));
             }
         }
         /// <summary>
@@ -75,7 +78,7 @@ namespace Antumbra.Glow
             if (this.settingsWindows.Count > current.id)//in range
                 this.settingsWindows.ElementAt<SettingsWindow>(current.id).Show();
             else {
-                var win = new SettingsWindow(current, this);
+                var win = new SettingsWindow(current, this.extLibrary);
                 this.settingsWindows.Add(win);
                 win.Show();
             }
@@ -176,9 +179,8 @@ namespace Antumbra.Glow
                 var loop = this.outManager.FindLoopOrReturnNull(dev.id);
                 if (loop == null)
                     loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
-                var mgr = dev.extMgr;
-                mgr.AttachEvent(loop);
-                mgr.Start();
+                dev.AttachEventToExtMgr(loop);
+                dev.Start();
                 loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
             }
             ShowMessage(3000, "Started", "Extensions have been started.", ToolTipIcon.Info);
@@ -195,16 +197,12 @@ namespace Antumbra.Glow
             var loop = this.outManager.FindLoopOrReturnNull(dev.id);
             if (loop == null)
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
-            var mgr = dev.extMgr;
-            if (mgr.LoadingFailed()) {
-                Stop();
-                this.ShowMessage(3000, "Extension Loading Failed",
-                    "The Extension Manager reported that loading of one or more extensions failed."
-                    + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
-                return;
-            }
-            mgr.AttachEvent(loop);
-            mgr.Start();
+            Stop();
+            this.ShowMessage(3000, "Extension Loading Failed",
+                "The Extension Manager reported that loading of one or more extensions failed."
+                + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
+            dev.AttachEventToExtMgr(loop);
+            dev.Start();
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
             ShowMessage(3000, "Device " + current + " Started.", "The current device has been started.",
                 ToolTipIcon.Info);
@@ -220,8 +218,7 @@ namespace Antumbra.Glow
             if (loop == null)
                 return;//nothing to stop
             loop.Dispose();
-            var mgr = this.GlowManager.getDevice(current).extMgr;
-            mgr.Stop();
+            dev.Stop();
             ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
             
         }
@@ -238,10 +235,7 @@ namespace Antumbra.Glow
                 var loop = this.outManager.FindLoopOrReturnNull(dev.id);
                 if (loop != null)
                     loop.Dispose();
-            }
-            for (var i = 0; i < this.GlowManager.GlowsFound; i += 1) {
-                var mgr = this.GlowManager.Glows.ElementAt(i).extMgr;
-                mgr.Stop();
+                dev.Stop();
             }
             ShowMessage(3000, "Stopped", "Extensions Stopped.", ToolTipIcon.Info);
         }

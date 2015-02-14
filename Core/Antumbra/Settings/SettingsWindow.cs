@@ -31,6 +31,7 @@ namespace Antumbra.Glow.Settings
         /// Form used to set the screen grabber polling area
         /// </summary>
         private Form pollingAreaWindow;
+        private ExtensionLibrary library;
         /// <summary>
         /// Move form dependencies
         /// </summary>
@@ -40,9 +41,9 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, AntumbraCore core)
+        public SettingsWindow(GlowDevice device, ExtensionLibrary library)
         {
-            this.antumbra = core;
+            this.library = library;
             this.currentDevice = device;
             InitializeComponent();
             updateValues();
@@ -56,7 +57,7 @@ namespace Antumbra.Glow.Settings
         }
 
         /// <summary>
-        /// Update the settings window form to reflect the settings found in the GlowDevice object
+        /// Update the settings window form to reflect the settings found in the GlowDevice settings object
         /// </summary>
         private void updateValues()
         {
@@ -67,10 +68,10 @@ namespace Antumbra.Glow.Settings
             pollingWidth.Text = this.currentDevice.settings.width.ToString();
             pollingX.Text = this.currentDevice.settings.x.ToString();
             pollingY.Text = this.currentDevice.settings.y.ToString();
-            foreach (var dvr in this.currentDevice.extMgr.AvailDrivers)
+            foreach (var dvr in this.library.AvailDrivers)
                 if (!driverExtensions.Items.Contains(dvr))
                     driverExtensions.Items.Add(dvr);
-            if (this.currentDevice.extMgr.ActiveDriver is GlowScreenDriverCoupler)
+            if (this.currentDevice.ActiveDriver is GlowScreenDriverCoupler)
                 for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
                     if (driverExtensions.Items[i] is GlowScreenDriverCoupler) {
                         driverExtensions.SelectedIndex = i;
@@ -78,28 +79,28 @@ namespace Antumbra.Glow.Settings
                     }
                 }
             else
-                driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.currentDevice.extMgr.ActiveDriver);
-            foreach (var gbbr in this.currentDevice.extMgr.AvailGrabbers)
+                driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.currentDevice.ActiveDriver);
+            foreach (var gbbr in this.library.AvailGrabbers)
                 if (!screenGrabbers.Items.Contains(gbbr))
                     screenGrabbers.Items.Add(gbbr);
-            screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.currentDevice.extMgr.ActiveGrabber);
-            foreach (var pcsr in this.currentDevice.extMgr.AvailProcessors)
+            screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.currentDevice.ActiveGrabber);
+            foreach (var pcsr in this.library.AvailProcessors)
                 if (!screenProcessors.Items.Contains(pcsr))
                     screenProcessors.Items.Add(pcsr);
-            screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.currentDevice.extMgr.ActiveProcessor);
-            foreach (var dctr in this.currentDevice.extMgr.AvailDecorators)
+            screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.currentDevice.ActiveProcessor);
+            foreach (var dctr in this.library.AvailDecorators)
                 if (!decorators.Items.Contains(dctr))
                     decorators.Items.Add(dctr);
             if (decorators.SelectedItem == null && decorators.Items.Count > 0)//no item selected & there are items
                 decorators.SelectedIndex = 0;
-            foreach (var notf in this.currentDevice.extMgr.AvailNotifiers)
+            foreach (var notf in this.library.AvailNotifiers)
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
             if (notifiers.SelectedItem == null && notifiers.Items.Count > 0)//no item selected & there are items
                 notifiers.SelectedIndex = 0;
             glowStatus.Text = GetStatusString(this.currentDevice.status);
             deviceName.Text = this.currentDevice.id.ToString();
-            currentSetup.Text = this.currentDevice.extMgr.GetSetupDesc();
+            currentSetup.Text = this.currentDevice.GetSetupDesc();
         }
         /// <summary>
         /// Return the string representation of the given status value
@@ -149,9 +150,9 @@ namespace Antumbra.Glow.Settings
         private void apply_Click(object sender, EventArgs e)
         {
             this.antumbra.Stop();
-            this.currentDevice.extMgr.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
-            this.currentDevice.extMgr.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
-            this.currentDevice.extMgr.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
+            this.currentDevice.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
+            this.currentDevice.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
+            this.currentDevice.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
             this.antumbra.AnnounceConfig();
         }
@@ -161,13 +162,13 @@ namespace Antumbra.Glow.Settings
             if (null != decorators.SelectedItem) {
                 this.antumbra.Stop();
                 GlowDecorator value = (GlowDecorator)decorators.SelectedItem;
-                if (this.currentDevice.extMgr.ActiveDecorators.Contains(value)) {
-                    this.currentDevice.extMgr.ActiveDecorators.Remove(value);
+                if (this.currentDevice.ActiveDecorators.Contains(value)) {
+                    this.currentDevice.ActiveDecorators.Remove(value);
                     this.antumbra.ShowMessage(3000, "Decorator Disabled",
                         "The decorator, " + value.ToString() + ", has been disabled.", ToolTipIcon.Info);
                 }
                 else {
-                    this.currentDevice.extMgr.ActiveDecorators.Add(value);
+                    this.currentDevice.ActiveDecorators.Add(value);
                     this.antumbra.ShowMessage(3000, "Decorator Enabled",
                         "The decorator, " + value.ToString() + ", has been enabled.", ToolTipIcon.Info);
                 }
@@ -179,13 +180,13 @@ namespace Antumbra.Glow.Settings
             if (null != notifiers.SelectedItem) {
                 this.antumbra.Stop();
                 GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
-                if (this.currentDevice.extMgr.ActiveNotifiers.Contains(notf)) {
-                    this.currentDevice.extMgr.ActiveNotifiers.Remove(notf);
+                if (this.currentDevice.ActiveNotifiers.Contains(notf)) {
+                    this.currentDevice.ActiveNotifiers.Remove(notf);
                     this.antumbra.ShowMessage(3000, "Notifier Disabled",
                         "The notifier, " + notf.ToString() + ", has been disabled.", ToolTipIcon.Info);
                 }
                 else {
-                    this.currentDevice.extMgr.ActiveNotifiers.Add(notf);
+                    this.currentDevice.ActiveNotifiers.Add(notf);
                     this.antumbra.ShowMessage(3000, "Notifier Enabled",
                         "The notifier, " + notf.ToString() + ", has been enabled.", ToolTipIcon.Info);
                 }
@@ -267,14 +268,14 @@ namespace Antumbra.Glow.Settings
 
         private void driverRecBtn_Click(object sender, EventArgs e)
         {
-            this.currentDevice.extMgr.ActiveDriver.RecmmndCoreSettings();
-            this.currentDevice.settings.stepSleep = this.currentDevice.extMgr.ActiveDriver.stepSleep;
+            this.currentDevice.ActiveDriver.RecmmndCoreSettings();
+            this.currentDevice.settings.stepSleep = this.currentDevice.ActiveDriver.stepSleep;
             updateValues();
         }
 
         private void grabberRecBtn_Click(object sender, EventArgs e)
         {
-            var grabber = this.currentDevice.extMgr.ActiveGrabber;
+            var grabber = this.currentDevice.ActiveGrabber;
             grabber.RecmmndCoreSettings();
             this.currentDevice.settings.x = grabber.x;
             this.currentDevice.settings.y = grabber.y;

@@ -26,12 +26,6 @@ namespace Antumbra.Glow.ExtensionFramework
         public GlowScreenProcessor ActiveProcessor { get; set; }
         public List<GlowDecorator> ActiveDecorators { get; set; }
         public List<GlowNotifier> ActiveNotifiers { get; set; }
-        public List<GlowDriver> AvailDrivers { get { return this.MEFHelper.AvailDrivers; } }
-        public List<GlowScreenGrabber> AvailGrabbers { get { return this.MEFHelper.AvailScreenDrivers; } }
-        public List<GlowScreenProcessor> AvailProcessors { get { return this.MEFHelper.AvailScreenProcessors; } }
-        public List<GlowDecorator> AvailDecorators { get { return this.MEFHelper.AvailDecorators; } }
-        public List<GlowNotifier> AvailNotifiers { get { return this.MEFHelper.AvailNotifiers; } }
-
         public ExtensionManager(string path, int id, DeviceSettings settings)
         {
             this.settings = settings;
