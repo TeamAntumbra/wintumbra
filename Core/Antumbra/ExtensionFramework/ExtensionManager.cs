@@ -34,12 +34,14 @@ namespace Antumbra.Glow.ExtensionFramework
             this.ActiveDriver = this.MEFHelper.GetDefaultDriver();
             this.ActiveGrabber = this.MEFHelper.GetDefaultGrabber();
             this.ActiveProcessor = this.MEFHelper.GetDefaultProcessor();
-            this.ActiveDecorators = new List<GlowDecorator>();
+            /*this.ActiveDecorators = new List<GlowDecorator>();
             foreach (var dec in this.MEFHelper.GetDefaultDecorators())
                 this.ActiveDecorators.Add(dec);
             this.ActiveNotifiers = new List<GlowNotifier>();
             foreach (var notf in this.MEFHelper.GetDefaultNotifiers())
-                this.ActiveNotifiers.Add(notf);
+                this.ActiveNotifiers.Add(notf);*/
+            this.ActiveDecorators = this.MEFHelper.GetDefaultDecorators();
+            this.ActiveNotifiers = this.MEFHelper.GetDefaultNotifiers();
         }
 
         public string GetSetupDesc()

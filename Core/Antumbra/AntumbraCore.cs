@@ -122,7 +122,7 @@ namespace Antumbra.Glow
         /// <param name="e"></param>
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
-            Stop();
+            StopAll();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
             this.GlowManager.CleanUp();
@@ -177,7 +177,7 @@ namespace Antumbra.Glow
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void offToolStripMenuItem_Click(object sender, EventArgs e)
+        private void offToolStripMenuItem_Click(object sender, EventArgs e)//TODO make offCurrent
         {
             this.Off();
         }
@@ -203,39 +203,46 @@ namespace Antumbra.Glow
         /// <summary>
         /// Start only the selected Glow
         /// </summary>
-        public void Start()
+        public void StartCurrent()
         {
-            Stop();
-            int current = this.toolStripDeviceList.SelectedIndex;
-            var dev = this.GlowManager.getDevice(current);
-            var loop = this.outManager.FindLoopOrReturnNull(dev.id);
+            StopCurrent();
+            Start(this.toolStripDeviceList.SelectedIndex);
+        }
+
+        public void Start(int id)
+        {
+            var dev = this.GlowManager.getDevice(id);
+            var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)
-                loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
+                loop = this.outManager.CreateAndAddLoop(this.GlowManager, id);
             dev.AttachEventToExtMgr(loop);
             dev.Start();
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
-            ShowMessage(3000, "Device " + current + " Started.", "The current device has been started.",
+            ShowMessage(3000, "Device " + id + " Started.", "The current device has been started.",
                 ToolTipIcon.Info);
         }
         /// <summary>
         /// Stop the currently selected Glow
         /// </summary>
-        public void Stop()
+        public void StopCurrent()
         {
-            int current = this.toolStripDeviceList.SelectedIndex;
-            var dev = this.GlowManager.getDevice(current);
+            this.Stop(this.toolStripDeviceList.SelectedIndex);  
+        }
+
+        public void Stop(int id)
+        {
+            var dev = this.GlowManager.getDevice(id);
             dev.Stop();
-            var loop = this.outManager.FindLoopOrReturnNull(current);
+            var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)
                 return;//nothing to stop
             loop.Dispose();
-            ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
-            
+            ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Start();
+            this.StartCurrent();
         }
 
         public void StopAll()
@@ -252,7 +259,7 @@ namespace Antumbra.Glow
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Stop();
+            this.StopCurrent();
         }
     }
 

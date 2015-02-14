@@ -13,11 +13,11 @@ namespace Antumbra.Glow.Settings
     public partial class pollingAreaSetter : Form
     {
         private DeviceSettings settingsObj;
-        private Color[] WindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
-        public pollingAreaSetter(DeviceSettings settingsObj)
+        public pollingAreaSetter(DeviceSettings settingsObj, Color back)
         {
             this.settingsObj = settingsObj;
             InitializeComponent();
+            this.BackColor = back;
         }
 
         private void pollingAreaSetter_FormClosing(object sender, FormClosingEventArgs e)
@@ -26,17 +26,6 @@ namespace Antumbra.Glow.Settings
             this.settingsObj.y = this.Location.Y;
             this.settingsObj.height = this.Height;
             this.settingsObj.width = this.Width;
-        }
-
-        private void setToUniqueColorBtn_Click(object sender, EventArgs args)
-        {
-            this.BackColor = GetUniqueColor(this.settingsObj.id);
-        }
-
-        private Color GetUniqueColor(int id)
-        {
-            int index = id % 8;
-            return WindowColors[index];
         }
     }
 }

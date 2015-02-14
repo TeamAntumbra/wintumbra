@@ -19,6 +19,7 @@ namespace Antumbra.Glow.Settings
 {
     public partial class SettingsWindow : Form
     {
+        private Color[] PollingWindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
         private AntumbraCore antumbra;
         /// <summary>
         /// GlowDevice object for the device whose settings are being rendered currently
@@ -162,7 +163,7 @@ namespace Antumbra.Glow.Settings
 
         private void apply_Click(object sender, EventArgs e)
         {
-            this.antumbra.Stop();
+            this.antumbra.StopCurrent();
             this.currentDevice.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
             this.currentDevice.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
             this.currentDevice.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
@@ -173,7 +174,7 @@ namespace Antumbra.Glow.Settings
         private void decoratorToggle_Click(object sender, EventArgs e)
         {
             if (null != decorators.SelectedItem) {
-                this.antumbra.Stop();
+                this.antumbra.StopCurrent();
                 GlowDecorator value = (GlowDecorator)decorators.SelectedItem;
                 if (this.currentDevice.ActiveDecorators.Contains(value)) {
                     this.currentDevice.ActiveDecorators.Remove(value);
@@ -191,7 +192,7 @@ namespace Antumbra.Glow.Settings
         private void notifierToggle_Click(object sender, EventArgs e)
         {
             if (null != notifiers.SelectedItem) {
-                this.antumbra.Stop();
+                this.antumbra.StopCurrent();
                 GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
                 if (this.currentDevice.ActiveNotifiers.Contains(notf)) {
                     this.currentDevice.ActiveNotifiers.Remove(notf);
@@ -215,18 +216,14 @@ namespace Antumbra.Glow.Settings
         private void pollingArea_Click(object sender, EventArgs e)
         {
             if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
-                this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings);
+                var current = this.currentDevice.id;
+                var back = PollingWindowColors[current % 8];
+                this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, back);
+                this.antumbra.Stop(current);
+                this.antumbra.SendColor(current, back);
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdateSelectionsEvent);
-                this.pollingAreaWindow.BackColorChanged += new EventHandler(UpdateDeviceColor);
             }
             this.pollingAreaWindow.Show();
-        }
-
-
-        private void UpdateDeviceColor(object sender, EventArgs args)
-        {
-            pollingAreaSetter setter = (pollingAreaSetter)sender;
-            this.antumbra.SendColor(this.currentDevice.id, setter.BackColor);
         }
 
         private void UpdateSelectionsEvent(object sender, EventArgs args)
@@ -236,12 +233,12 @@ namespace Antumbra.Glow.Settings
 
         private void startBtn_Click(object sender, EventArgs e)
         {
-            this.antumbra.Start();
+            this.antumbra.Start(this.currentDevice.id);
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
-            this.antumbra.Stop();
+            this.antumbra.Stop(this.currentDevice.id);
         }
 
         private void offBtn_Click(object sender, EventArgs e)
