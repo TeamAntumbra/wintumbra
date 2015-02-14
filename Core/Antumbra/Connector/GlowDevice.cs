@@ -104,8 +104,6 @@ namespace Antumbra.Glow.Connector
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
             this.extMgr = new ExtensionManager(path, id, settings);
-            this.ActiveDecorators = new List<GlowDecorator>();
-            this.ActiveNotifiers = new List<GlowNotifier>();
         }
 
         internal bool Start()
