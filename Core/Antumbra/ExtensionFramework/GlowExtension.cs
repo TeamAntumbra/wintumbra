@@ -74,7 +74,7 @@ namespace Antumbra.Glow.ExtensionFramework
     {
         public override string ToString()
         {
-            return this.Name;
+            return this.Name + " - " + this.Version.ToString();
         }
 
         /// <summary>
