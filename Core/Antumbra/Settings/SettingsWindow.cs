@@ -92,7 +92,6 @@ namespace Antumbra.Glow.Settings
                     decorators.Items.Add(dctr);
             if (decorators.SelectedItem == null && decorators.Items.Count > 0)//no item selected & there are items
                 decorators.SelectedIndex = 0;
-            //TODO add some way to differentiate the active decorators and notifiers (and maybe the others too)
             foreach (var notf in this.currentDevice.extMgr.AvailNotifiers)
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);

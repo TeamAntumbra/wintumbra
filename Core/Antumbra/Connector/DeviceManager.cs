@@ -107,6 +107,7 @@ namespace Antumbra.Glow.Connector
         private void CloseAll()
         {
             foreach (var active in this.Glows) {
+                active.extMgr.Stop();
                 IntPtr ptr = active.dev;
                 if (!ptr.Equals(IntPtr.Zero))//actually open?
                     this.Connector.CloseDevice(active.dev);
