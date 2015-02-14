@@ -19,9 +19,6 @@ namespace Antumbra.Glow.Settings
 {
     public partial class SettingsWindow : Form
     {
-        /// <summary>
-        /// AntumbraCore object
-        /// </summary>
         private AntumbraCore antumbra;
         /// <summary>
         /// GlowDevice object for the device whose settings are being rendered currently
@@ -41,8 +38,9 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, ExtensionLibrary library)
+        public SettingsWindow(GlowDevice device, ExtensionLibrary library, AntumbraCore core)
         {
+            this.antumbra = core;
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();

@@ -47,7 +47,7 @@ namespace Antumbra.Glow
             this.settingsWindows = new List<SettingsWindow>();
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
-                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary));
+                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
             }
         }
         /// <summary>
@@ -80,7 +80,7 @@ namespace Antumbra.Glow
                 win = this.settingsWindows.ElementAt<SettingsWindow>(current.id);
             }
             else {
-                win = new SettingsWindow(current, this.extLibrary);
+                win = new SettingsWindow(current, this.extLibrary, this);
                 this.settingsWindows.Add(win);
             }
             win.updateValues();
@@ -231,7 +231,7 @@ namespace Antumbra.Glow
             this.Start();
         }
 
-        public void StopAll()
+        public void StopAll()//move implementation to deviceManager TODO
         {
             ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
             foreach (var dev in this.GlowManager.Glows) {
