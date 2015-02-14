@@ -31,23 +31,34 @@ namespace Antumbra.Glow
         private OutputLoopManager outManager;
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
+        public bool goodStart { get; private set; }//start-up completion status
         /// <summary>
         /// AntumbraCore Constructor
         /// </summary>
         public AntumbraCore()
         {
-            this.extLibrary = new ExtensionLibrary(extPath);
-            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
+            this.goodStart = true;
             InitializeComponent();
-            this.outManager = new OutputLoopManager();
-            foreach (var dev in this.GlowManager.Glows) {//create output loop
-                this.outManager.CreateAndAddLoop(GlowManager, dev.id);
-                this.toolStripDeviceList.Items.Add(dev);
+            this.extLibrary = new ExtensionLibrary(extPath);
+            if (!this.extLibrary.ready) {//loading failed
+                this.ShowMessage(4000, "Extension Loading Failed",
+                "The Extension Manager reported that loading of one or more extensions failed."
+                + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
+                Thread.Sleep(4000);//wait for message to be seen
+                this.goodStart = false;
             }
-            this.settingsWindows = new List<SettingsWindow>();
-            if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
-                this.toolStripDeviceList.SelectedIndex = 0;
-                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
+            else {//successful load
+                this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
+                this.outManager = new OutputLoopManager();
+                foreach (var dev in this.GlowManager.Glows) {//create output loop
+                    this.outManager.CreateAndAddLoop(GlowManager, dev.id);
+                    this.toolStripDeviceList.Items.Add(dev);
+                }
+                this.settingsWindows = new List<SettingsWindow>();
+                if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
+                    this.toolStripDeviceList.SelectedIndex = 0;
+                    this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
+                }
             }
         }
         /// <summary>
@@ -200,10 +211,6 @@ namespace Antumbra.Glow
             var loop = this.outManager.FindLoopOrReturnNull(dev.id);
             if (loop == null)
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
-            Stop();
-            this.ShowMessage(3000, "Extension Loading Failed",
-                "The Extension Manager reported that loading of one or more extensions failed."
-                + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
             dev.AttachEventToExtMgr(loop);
             dev.Start();
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
@@ -217,11 +224,11 @@ namespace Antumbra.Glow
         {
             int current = this.toolStripDeviceList.SelectedIndex;
             var dev = this.GlowManager.getDevice(current);
+            dev.Stop();
             var loop = this.outManager.FindLoopOrReturnNull(current);
             if (loop == null)
                 return;//nothing to stop
             loop.Dispose();
-            dev.Stop();
             ShowMessage(3000, "Device " + current + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
             
         }
@@ -231,14 +238,14 @@ namespace Antumbra.Glow
             this.Start();
         }
 
-        public void StopAll()//move implementation to deviceManager TODO
+        public void StopAll()
         {
             ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
             foreach (var dev in this.GlowManager.Glows) {
+                dev.Stop();
                 var loop = this.outManager.FindLoopOrReturnNull(dev.id);
                 if (loop != null)
-                    loop.Dispose();
-                dev.Stop();
+                    loop.Dispose();//stop and dispose if exists
             }
             ShowMessage(3000, "Stopped", "Extensions Stopped.", ToolTipIcon.Info);
         }

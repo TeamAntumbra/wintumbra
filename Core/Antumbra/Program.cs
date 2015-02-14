@@ -16,9 +16,14 @@ namespace Antumbra.Glow
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form core = new AntumbraCore();
+            AntumbraCore core = new AntumbraCore();
             core.Hide();
-            Application.Run();
+            if (core.goodStart)
+                Application.Run();
+            else {//if start up failed close the app before it even starts
+                core.Close();
+                core.Dispose();
+            }
         }
     }
 }
