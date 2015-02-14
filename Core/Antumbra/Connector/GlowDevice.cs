@@ -41,14 +41,14 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         /// <param name="beta"></param>
         /// <param name="id"></param>
-        public GlowDevice(bool beta, int id, IntPtr info, MEFHelper helper)
+        public GlowDevice(bool beta, int id, IntPtr info, string path)
         {
             this.info = info;
             this.beta = beta;
             this.id = id;
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
-            this.extMgr = new ExtensionManager(helper, id, settings);
+            this.extMgr = new ExtensionManager(path, id, settings);
         }
 
         public string GetSetupDesc()

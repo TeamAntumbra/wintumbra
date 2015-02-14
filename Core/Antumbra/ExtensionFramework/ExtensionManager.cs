@@ -18,7 +18,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// MEFHelper used to find and load the extensions.
         /// </summary>
-        public MEFHelper MEFHelper { get; private set; }
+        private MEFHelper MEFHelper;
         private DeviceSettings settings;
         public int id { get; private set; }
         public GlowDriver ActiveDriver { get; set; }
@@ -26,12 +26,17 @@ namespace Antumbra.Glow.ExtensionFramework
         public GlowScreenProcessor ActiveProcessor { get; set; }
         public List<GlowDecorator> ActiveDecorators { get; set; }
         public List<GlowNotifier> ActiveNotifiers { get; set; }
+        public List<GlowDriver> AvailDrivers { get { return this.MEFHelper.AvailDrivers; } }
+        public List<GlowScreenGrabber> AvailGrabbers { get { return this.MEFHelper.AvailScreenDrivers; } }
+        public List<GlowScreenProcessor> AvailProcessors { get { return this.MEFHelper.AvailScreenProcessors; } }
+        public List<GlowDecorator> AvailDecorators { get { return this.MEFHelper.AvailDecorators; } }
+        public List<GlowNotifier> AvailNotifiers { get { return this.MEFHelper.AvailNotifiers; } }
 
-        public ExtensionManager(MEFHelper helper, int id, DeviceSettings settings)
+        public ExtensionManager(string path, int id, DeviceSettings settings)
         {
             this.settings = settings;
             this.id = id;
-            this.MEFHelper = helper;
+            this.MEFHelper = new MEFHelper(path);
             this.ActiveDriver = this.MEFHelper.GetDefaultDriver();
             this.ActiveGrabber = this.MEFHelper.GetDefaultGrabber();
             this.ActiveProcessor = this.MEFHelper.GetDefaultProcessor();
@@ -41,6 +46,7 @@ namespace Antumbra.Glow.ExtensionFramework
             this.ActiveNotifiers = new List<GlowNotifier>();
             foreach (var notf in this.MEFHelper.GetDefaultNotifiers())
                 this.ActiveNotifiers.Add(notf);
+            
         }
 
         public void SendSetToRecommended()

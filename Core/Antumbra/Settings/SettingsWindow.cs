@@ -67,7 +67,7 @@ namespace Antumbra.Glow.Settings
             pollingWidth.Text = this.currentDevice.settings.width.ToString();
             pollingX.Text = this.currentDevice.settings.x.ToString();
             pollingY.Text = this.currentDevice.settings.y.ToString();
-            foreach (var dvr in this.currentDevice.extMgr.MEFHelper.AvailDrivers)
+            foreach (var dvr in this.currentDevice.extMgr.AvailDrivers)
                 if (!driverExtensions.Items.Contains(dvr))
                     driverExtensions.Items.Add(dvr);
             if (this.currentDevice.extMgr.ActiveDriver is GlowScreenDriverCoupler)
@@ -79,19 +79,19 @@ namespace Antumbra.Glow.Settings
                 }
             else
                 driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.currentDevice.extMgr.ActiveDriver);
-            foreach (var gbbr in this.currentDevice.extMgr.MEFHelper.AvailScreenDrivers)
+            foreach (var gbbr in this.currentDevice.extMgr.AvailGrabbers)
                 if (!screenGrabbers.Items.Contains(gbbr))
                     screenGrabbers.Items.Add(gbbr);
             screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.currentDevice.extMgr.ActiveGrabber);
-            foreach (var pcsr in this.currentDevice.extMgr.MEFHelper.AvailScreenProcessors)
+            foreach (var pcsr in this.currentDevice.extMgr.AvailProcessors)
                 if (!screenProcessors.Items.Contains(pcsr))
                     screenProcessors.Items.Add(pcsr);
             screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.currentDevice.extMgr.ActiveProcessor);
-            foreach (var dctr in this.currentDevice.extMgr.MEFHelper.AvailDecorators)
+            foreach (var dctr in this.currentDevice.extMgr.AvailDecorators)
                 if (!decorators.Items.Contains(dctr))
                     decorators.Items.Add(dctr);
             //TODO add some way to differentiate the active decorators and notifiers (and maybe the others too)
-            foreach (var notf in this.currentDevice.extMgr.MEFHelper.AvailNotifiers)
+            foreach (var notf in this.currentDevice.extMgr.AvailNotifiers)
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
             glowStatus.Text = GetStatusString(this.currentDevice.status);

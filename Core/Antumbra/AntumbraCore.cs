@@ -26,7 +26,6 @@ namespace Antumbra.Glow
 {
     public partial class AntumbraCore : Form
     {
-        private MEFHelper MEFHelper;
         private DeviceManager GlowManager;
         private List<SettingsWindow> settingsWindows;
         private OutputLoopManager outManager;
@@ -35,16 +34,10 @@ namespace Antumbra.Glow
         /// </summary>
         public AntumbraCore()
         {
-            this.MEFHelper = new MEFHelper("./Extensions/");
-            if (this.MEFHelper.failed)
-                this.ShowMessage(3000, "Extension Loading Failed",
-                    "The Extension Manager reported that loading of one or more extensions failed."
-                    + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
-            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, MEFHelper);//find devices
+            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, "./Extensions/");//find devices
             InitializeComponent();
-            //this.Hide();
             this.outManager = new OutputLoopManager();
-            foreach (var dev in this.GlowManager.Glows) {
+            foreach (var dev in this.GlowManager.Glows) {//create output loop
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
                 this.toolStripDeviceList.Items.Add(dev);
             }
@@ -73,9 +66,11 @@ namespace Antumbra.Glow
         /// <param name="e"></param>
         private void settingsMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.GlowManager.GlowsFound == 0)
+            if (this.GlowManager.GlowsFound == 0) {
                 this.ShowMessage(3000, "No Glow Devices Found",
                     "No Devices were found to edit the settings of.", ToolTipIcon.Info);
+                return;
+            }
             GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
             if (this.settingsWindows.Count > current.id)//in range
                 this.settingsWindows.ElementAt<SettingsWindow>(current.id).Show();
@@ -201,6 +196,13 @@ namespace Antumbra.Glow
             if (loop == null)
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
             var mgr = dev.extMgr;
+            if (mgr.LoadingFailed()) {
+                Stop();
+                this.ShowMessage(3000, "Extension Loading Failed",
+                    "The Extension Manager reported that loading of one or more extensions failed."
+                    + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
+                return;
+            }
             mgr.AttachEvent(loop);
             mgr.Start();
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
