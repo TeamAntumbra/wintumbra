@@ -90,10 +90,14 @@ namespace Antumbra.Glow.Settings
             foreach (var dctr in this.currentDevice.extMgr.AvailDecorators)
                 if (!decorators.Items.Contains(dctr))
                     decorators.Items.Add(dctr);
+            if (decorators.SelectedItem == null && decorators.Items.Count > 0)//no item selected & there are items
+                decorators.SelectedIndex = 0;
             //TODO add some way to differentiate the active decorators and notifiers (and maybe the others too)
             foreach (var notf in this.currentDevice.extMgr.AvailNotifiers)
                 if (!notifiers.Items.Contains(notf))
                     notifiers.Items.Add(notf);
+            if (notifiers.SelectedItem == null && notifiers.Items.Count > 0)//no item selected & there are items
+                notifiers.SelectedIndex = 0;
             glowStatus.Text = GetStatusString(this.currentDevice.status);
             deviceName.Text = this.currentDevice.id.ToString();
         }
