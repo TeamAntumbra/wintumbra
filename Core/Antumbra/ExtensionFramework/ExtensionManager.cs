@@ -75,9 +75,26 @@ namespace Antumbra.Glow.ExtensionFramework
 
         void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
         {
-            foreach (var dec in ActiveDecorators)//decorate
-                newColor = dec.Decorate(newColor);
-            NewColorAvailEvent(newColor, args);
+            if (ActiveDecorators.Count == 0) {
+                NewColorAvailEvent(newColor, args);//no decoration to do
+                return;
+            }
+            if (this.settings.compoundDecoration) {
+                foreach (var dec in ActiveDecorators)//decorate
+                    newColor = dec.Decorate(newColor);
+                NewColorAvailEvent(newColor, args);
+                return;
+            }
+            //average decorators output
+            int r = 0, g = 0, b = 0;
+            foreach (var dec in ActiveDecorators) {
+                Color decorated = dec.Decorate(newColor);
+                r += decorated.R;
+                g += decorated.G;
+                b += decorated.B;
+            }
+            int count = ActiveDecorators.Count;
+            NewColorAvailEvent(Color.FromArgb(r / count, g / count, b / count), args);
         }
 
         public bool LoadingFailed()

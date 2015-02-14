@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Antumbra.Glow.Connector
 {
-    public class OutputLoop : AntumbraColorObserver, IDisposable//TODO make output loop manager for getting starting stopping via id
+    public class OutputLoop : AntumbraColorObserver, IDisposable
     {
         private Task outputLoopTask;
         private FPSCalc outputFPS = new FPSCalc();
@@ -17,7 +17,7 @@ namespace Antumbra.Glow.Connector
         public int id { get; private set; }
         private Color color;
         private Color weightedAvg;
-        private bool weightingEnabled;//TODO move to decorator?
+        private bool weightingEnabled;//TODO move to decorator
         private double newColorWeight;
 
         public double FPS { get { return outputFPS.FPS; } }

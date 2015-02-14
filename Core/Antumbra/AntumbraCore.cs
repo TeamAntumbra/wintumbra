@@ -75,13 +75,16 @@ namespace Antumbra.Glow
                 return;
             }
             GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
-            if (this.settingsWindows.Count > current.id)//in range
-                this.settingsWindows.ElementAt<SettingsWindow>(current.id).Show();
-            else {
-                var win = new SettingsWindow(current, this.extLibrary);
-                this.settingsWindows.Add(win);
-                win.Show();
+            SettingsWindow win;
+            if (this.settingsWindows.Count > current.id) {//in range
+                win = this.settingsWindows.ElementAt<SettingsWindow>(current.id);
             }
+            else {
+                win = new SettingsWindow(current, this.extLibrary);
+                this.settingsWindows.Add(win);
+            }
+            win.updateValues();
+            win.Show();
         }
         /// <summary>
         /// Event handler for the start all devices button

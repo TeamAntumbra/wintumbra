@@ -35,11 +35,61 @@ namespace Antumbra.Glow.Connector
         public Color lastColor { get; set; }
         public DeviceSettings settings { get; private set; }
         private ExtensionManager extMgr;
-        public GlowDriver ActiveDriver { get; set; }
-        public GlowScreenGrabber ActiveGrabber { get; set; }
-        public GlowScreenProcessor ActiveProcessor { get; set; }
-        public List<GlowDecorator> ActiveDecorators { get; set; }
-        public List<GlowNotifier> ActiveNotifiers { get; set; }
+        public GlowDriver ActiveDriver
+        {
+            get
+            {
+                return this.extMgr.ActiveDriver;
+            }
+            set
+            {
+                this.extMgr.ActiveDriver = value;
+            }
+        }
+        public GlowScreenGrabber ActiveGrabber
+        {
+            get
+            {
+                return this.extMgr.ActiveGrabber;
+            }
+            set
+            {
+                this.extMgr.ActiveGrabber = value;
+            }
+        }
+        public GlowScreenProcessor ActiveProcessor
+        {
+            get
+            {
+                return this.extMgr.ActiveProcessor;
+            }
+            set
+            {
+                this.extMgr.ActiveProcessor = value;
+            }
+        }
+        public List<GlowDecorator> ActiveDecorators
+        {
+            get
+            {
+                return this.extMgr.ActiveDecorators;
+            }
+            set
+            {
+                this.extMgr.ActiveDecorators = value;
+            }
+        }
+        public List<GlowNotifier> ActiveNotifiers
+        {
+            get
+            {
+                return this.extMgr.ActiveNotifiers;
+            }
+            set
+            {
+                this.extMgr.ActiveNotifiers = value;
+            }
+        }
         public int status { get; set; }
         /// <summary>
         /// Constructor

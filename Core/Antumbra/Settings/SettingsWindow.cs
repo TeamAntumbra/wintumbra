@@ -59,7 +59,7 @@ namespace Antumbra.Glow.Settings
         /// <summary>
         /// Update the settings window form to reflect the settings found in the GlowDevice settings object
         /// </summary>
-        private void updateValues()
+        public void updateValues()
         {
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
@@ -71,23 +71,27 @@ namespace Antumbra.Glow.Settings
             foreach (var dvr in this.library.AvailDrivers)
                 if (!driverExtensions.Items.Contains(dvr))
                     driverExtensions.Items.Add(dvr);
-            if (this.currentDevice.ActiveDriver is GlowScreenDriverCoupler)
-                for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
-                    if (driverExtensions.Items[i] is GlowScreenDriverCoupler) {
-                        driverExtensions.SelectedIndex = i;
-                        break;
+            if (this.currentDevice.ActiveDriver != null) {
+                if (this.currentDevice.ActiveDriver is GlowScreenDriverCoupler)
+                    for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
+                        if (driverExtensions.Items[i] is GlowScreenDriverCoupler) {
+                            driverExtensions.SelectedIndex = i;
+                            break;
+                        }
                     }
-                }
-            else
-                driverExtensions.SelectedIndex = driverExtensions.Items.IndexOf(this.currentDevice.ActiveDriver);
+                else
+                    driverExtensions.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveDriver, driverExtensions);
+            }
             foreach (var gbbr in this.library.AvailGrabbers)
                 if (!screenGrabbers.Items.Contains(gbbr))
                     screenGrabbers.Items.Add(gbbr);
-            screenGrabbers.SelectedIndex = screenGrabbers.Items.IndexOf(this.currentDevice.ActiveGrabber);
+            if (this.currentDevice.ActiveGrabber != null)
+                screenGrabbers.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveGrabber, screenGrabbers);
             foreach (var pcsr in this.library.AvailProcessors)
                 if (!screenProcessors.Items.Contains(pcsr))
                     screenProcessors.Items.Add(pcsr);
-            screenProcessors.SelectedIndex = screenProcessors.Items.IndexOf(this.currentDevice.ActiveProcessor);
+            if (this.currentDevice.ActiveProcessor != null)
+                screenProcessors.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveProcessor, screenProcessors);
             foreach (var dctr in this.library.AvailDecorators)
                 if (!decorators.Items.Contains(dctr))
                     decorators.Items.Add(dctr);
@@ -102,6 +106,17 @@ namespace Antumbra.Glow.Settings
             deviceName.Text = this.currentDevice.id.ToString();
             currentSetup.Text = this.currentDevice.GetSetupDesc();
         }
+
+        private int GetIndexOfExtInComboBox(GlowExtension ext, ComboBox combo)
+        {
+            var items = combo.Items;
+            for (var i = 0; i < items.Count; i += 1) {
+                if (((GlowExtension)items[i]).id == ext.id)
+                    return i;
+            }
+            return -1;//not found
+        }
+
         /// <summary>
         /// Return the string representation of the given status value
         /// </summary>
@@ -209,6 +224,7 @@ namespace Antumbra.Glow.Settings
             this.pollingAreaWindow.Show();
         }
 
+
         private void UpdateDeviceColor(object sender, EventArgs args)
         {
             pollingAreaSetter setter = (pollingAreaSetter)sender;
@@ -288,6 +304,11 @@ namespace Antumbra.Glow.Settings
         {
             this.Hide();
             e.Cancel = true;
+        }
+
+        private void compoundDecorationCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            this.currentDevice.settings.compoundDecoration = compoundDecorationCheck.Checked;
         }
     }
 }

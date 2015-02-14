@@ -70,6 +70,7 @@
             this.grabberRecBtn = new System.Windows.Forms.Button();
             this.currentSetupLabel = new System.Windows.Forms.Label();
             this.currentSetup = new System.Windows.Forms.Label();
+            this.compoundDecorationCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -361,7 +362,7 @@
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.statusLabel.Location = new System.Drawing.Point(317, 461);
+            this.statusLabel.Location = new System.Drawing.Point(317, 453);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(67, 13);
             this.statusLabel.TabIndex = 64;
@@ -371,7 +372,7 @@
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(387, 462);
+            this.glowStatus.Location = new System.Drawing.Point(387, 454);
             this.glowStatus.Name = "glowStatus";
             this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;
@@ -476,7 +477,7 @@
             this.weightingEnabled.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.weightingEnabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.weightingEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingEnabled.Location = new System.Drawing.Point(326, 492);
+            this.weightingEnabled.Location = new System.Drawing.Point(326, 480);
             this.weightingEnabled.Name = "weightingEnabled";
             this.weightingEnabled.Size = new System.Drawing.Size(160, 17);
             this.weightingEnabled.TabIndex = 78;
@@ -548,6 +549,22 @@
             this.currentSetup.Size = new System.Drawing.Size(0, 13);
             this.currentSetup.TabIndex = 84;
             // 
+            // compoundDecorationCheck
+            // 
+            this.compoundDecorationCheck.AutoSize = true;
+            this.compoundDecorationCheck.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.compoundDecorationCheck.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.compoundDecorationCheck.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.compoundDecorationCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.compoundDecorationCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.compoundDecorationCheck.Location = new System.Drawing.Point(326, 503);
+            this.compoundDecorationCheck.Name = "compoundDecorationCheck";
+            this.compoundDecorationCheck.Size = new System.Drawing.Size(270, 30);
+            this.compoundDecorationCheck.TabIndex = 85;
+            this.compoundDecorationCheck.Text = "Compound Decoration \r\n(Each Decorator Acts on the Output of the Previous)";
+            this.compoundDecorationCheck.UseVisualStyleBackColor = false;
+            this.compoundDecorationCheck.CheckedChanged += new System.EventHandler(this.compoundDecorationCheck_CheckedChanged);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -556,6 +573,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(642, 707);
+            this.Controls.Add(this.compoundDecorationCheck);
             this.Controls.Add(this.currentSetup);
             this.Controls.Add(this.currentSetupLabel);
             this.Controls.Add(this.grabberRecBtn);
@@ -658,5 +676,6 @@
         private System.Windows.Forms.Button grabberRecBtn;
         private System.Windows.Forms.Label currentSetupLabel;
         private System.Windows.Forms.Label currentSetup;
+        private System.Windows.Forms.CheckBox compoundDecorationCheck;
     }
 }

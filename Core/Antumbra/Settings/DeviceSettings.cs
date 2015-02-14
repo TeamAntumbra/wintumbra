@@ -18,6 +18,7 @@ namespace Antumbra.Glow.Settings
         public int stepSleep { get; set; }//for the driver
         public bool weightingEnabled { get; set; }//for the output loop
         public double newColorWeight { get; set; }//for the output loop
+        public bool compoundDecoration { get; set; }
         public DeviceSettings(int id)
         {
             this.id = id;
@@ -29,6 +30,7 @@ namespace Antumbra.Glow.Settings
             this.stepSleep = 0;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
+            this.compoundDecoration = true;
         }
     }
 }

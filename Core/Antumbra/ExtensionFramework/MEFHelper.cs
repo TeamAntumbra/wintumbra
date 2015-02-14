@@ -45,6 +45,7 @@ namespace Antumbra.Glow.ExtensionFramework
             int numExt = 0;
             foreach (var extension in extensions) {
                 numExt += 1;
+                extension.id = numExt;
                 Console.WriteLine("Extension Found: " + extension.Name);
                 if (extension is GlowDriver) {
                     Console.WriteLine("Type: Driver");
