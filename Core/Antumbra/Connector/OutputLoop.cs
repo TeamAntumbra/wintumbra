@@ -89,11 +89,11 @@ namespace Antumbra.Glow.Connector
                 this.outputLoopTask.Wait(1000);
         }
 
-        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
         {
             outputFPS.Tick();
             lock (sync) {
-                color = (Color)sender;
+                color = newColor;
             }
         }
 

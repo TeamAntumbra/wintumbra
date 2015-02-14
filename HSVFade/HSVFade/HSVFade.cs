@@ -7,6 +7,7 @@ using System.Threading;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
+using System.Drawing;
 
 namespace HSVFade
 {
@@ -14,7 +15,7 @@ namespace HSVFade
     public class HSVFade : GlowIndependentDriver
     {
         public override int id { get; set; }
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;

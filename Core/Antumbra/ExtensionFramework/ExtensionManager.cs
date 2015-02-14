@@ -13,7 +13,7 @@ namespace Antumbra.Glow.ExtensionFramework
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver//TODO add observer for notifiers
     {
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         /// <summary>
         /// MEFHelper used to find and load the extensions.
@@ -46,7 +46,6 @@ namespace Antumbra.Glow.ExtensionFramework
             this.ActiveNotifiers = new List<GlowNotifier>();
             foreach (var notf in this.MEFHelper.GetDefaultNotifiers())
                 this.ActiveNotifiers.Add(notf);
-            
         }
 
         public string GetSetupDesc()
@@ -80,9 +79,8 @@ namespace Antumbra.Glow.ExtensionFramework
             NewColorAvailEvent += observer.NewColorAvail;
         }
 
-        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
         {
-            Color newColor = (Color)sender;
             foreach (var dec in ActiveDecorators)//decorate
                 newColor = dec.Decorate(newColor);
             NewColorAvailEvent(newColor, args);

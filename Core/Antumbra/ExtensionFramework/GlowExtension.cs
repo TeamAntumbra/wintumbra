@@ -164,7 +164,7 @@ namespace Antumbra.Glow.ExtensionFramework
     {
         public abstract void AttachEvent(AntumbraNotificationObserver observer);
     }
-    public struct Notification
+    public struct Notification//TODO
     {
         private String NotiName;
         private String NotiDetails;
@@ -183,21 +183,21 @@ namespace Antumbra.Glow.ExtensionFramework
     }
     public abstract class GlowScreenProcessor : GlowExtension, AntumbraBitmapObserver
     {
-        public abstract void NewBitmapAvail(object sender, EventArgs args);
+        public abstract void NewBitmapAvail(Bitmap image, EventArgs args);
         public abstract void AttachEvent(AntumbraColorObserver observer);
     }
 
     public interface AntumbraColorObserver
     {
-        void NewColorAvail(object sender, EventArgs args);
+        void NewColorAvail(Color newCol, EventArgs args);
     }
 
     public interface AntumbraBitmapObserver
     {
-        void NewBitmapAvail(object sender, EventArgs args);
+        void NewBitmapAvail(Bitmap image, EventArgs args);
     }
 
-    public interface AntumbraNotificationObserver
+    public interface AntumbraNotificationObserver//TODO
     {
         void NewNotificationAvail(object sender, EventArgs args);
     }

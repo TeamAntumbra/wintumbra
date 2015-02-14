@@ -13,7 +13,7 @@ namespace SinFade
     [Export(typeof(GlowExtension))]
     public class SinFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newCol, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;

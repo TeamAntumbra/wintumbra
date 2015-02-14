@@ -16,7 +16,7 @@ namespace ManualColorSelector
         private bool running;
         private MainForm picker;
         private Color lastUpdate;
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         public override void AttachEvent(AntumbraColorObserver observer)
         {

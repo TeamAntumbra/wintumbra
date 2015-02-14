@@ -13,7 +13,7 @@ namespace FluxCompanion
     [Export(typeof(GlowExtension))]
     public class FluxCompanion : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         public override int id { get; set; }
         private bool running;

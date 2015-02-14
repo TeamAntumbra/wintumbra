@@ -11,7 +11,7 @@ namespace Antumbra.Glow.ExtensionFramework
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newCol, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
@@ -63,9 +63,9 @@ namespace Antumbra.Glow.ExtensionFramework
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        void AntumbraColorObserver.NewColorAvail(object sender, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color newCol, EventArgs args)
         {
-            NewColorAvailEvent(sender, args);//pass it up
+            NewColorAvailEvent(newCol, args);//pass it up
         }
 
         public override bool Start()

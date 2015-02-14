@@ -14,7 +14,7 @@ namespace ColorClock
     [Export(typeof(GlowExtension))]
     public class ColorClock : GlowDriver
     {
-        public delegate void NewColorAvail(object sender, EventArgs args);
+        public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
