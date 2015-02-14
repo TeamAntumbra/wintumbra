@@ -68,6 +68,8 @@
             this.deviceName = new System.Windows.Forms.Label();
             this.driverRecBtn = new System.Windows.Forms.Button();
             this.grabberRecBtn = new System.Windows.Forms.Button();
+            this.currentSetupLabel = new System.Windows.Forms.Label();
+            this.currentSetup = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -529,6 +531,23 @@
             this.grabberRecBtn.UseVisualStyleBackColor = false;
             this.grabberRecBtn.Click += new System.EventHandler(this.grabberRecBtn_Click);
             // 
+            // currentSetupLabel
+            // 
+            this.currentSetupLabel.AutoSize = true;
+            this.currentSetupLabel.Location = new System.Drawing.Point(69, 533);
+            this.currentSetupLabel.Name = "currentSetupLabel";
+            this.currentSetupLabel.Size = new System.Drawing.Size(75, 13);
+            this.currentSetupLabel.TabIndex = 83;
+            this.currentSetupLabel.Text = "Current Setup:";
+            // 
+            // currentSetup
+            // 
+            this.currentSetup.AutoSize = true;
+            this.currentSetup.Location = new System.Drawing.Point(150, 533);
+            this.currentSetup.Name = "currentSetup";
+            this.currentSetup.Size = new System.Drawing.Size(0, 13);
+            this.currentSetup.TabIndex = 84;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -537,6 +556,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(642, 707);
+            this.Controls.Add(this.currentSetup);
+            this.Controls.Add(this.currentSetupLabel);
             this.Controls.Add(this.grabberRecBtn);
             this.Controls.Add(this.driverRecBtn);
             this.Controls.Add(this.deviceName);
@@ -635,5 +656,7 @@
         private System.Windows.Forms.Label deviceName;
         private System.Windows.Forms.Button driverRecBtn;
         private System.Windows.Forms.Button grabberRecBtn;
+        private System.Windows.Forms.Label currentSetupLabel;
+        private System.Windows.Forms.Label currentSetup;
     }
 }

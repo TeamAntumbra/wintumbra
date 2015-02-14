@@ -58,7 +58,7 @@ namespace Antumbra.Glow.Settings
         /// <summary>
         /// Update the settings window form to reflect the settings found in the GlowDevice object
         /// </summary>
-        public void updateValues()
+        private void updateValues()
         {
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
@@ -100,6 +100,7 @@ namespace Antumbra.Glow.Settings
                 notifiers.SelectedIndex = 0;
             glowStatus.Text = GetStatusString(this.currentDevice.status);
             deviceName.Text = this.currentDevice.id.ToString();
+            currentSetup.Text = this.currentDevice.extMgr.GetSetupDesc();
         }
         /// <summary>
         /// Return the string representation of the given status value

@@ -53,36 +53,7 @@ namespace Antumbra.Glow.Connector
 
         public string GetSetupDesc()
         {
-            var mgr = this.extMgr;
-            string config = "Driver: " + mgr.ActiveDriver.ToString();
-            config += "\nGrabber: " + mgr.ActiveGrabber.ToString();
-            config += "\nProcessor: " + mgr.ActiveProcessor.ToString();
-            config += "\nDecorator(s): ";
-            var decStr = "None";
-            var decs = mgr.ActiveDecorators;
-            for (var i = 0; i < decs.Count; i += 1) {
-                if (i == 0)//first one
-                    decStr = "";
-                var ele = decs.ElementAt(i).ToString();
-                if (i == decs.Count - 1)//last one
-                    decStr += ele;
-                else
-                    decStr += ele + ", ";
-            }
-            config += decStr;
-            config += "\nNotifier(s): ";
-            var notfs = mgr.ActiveNotifiers;
-            var notfStr = "None";
-            for (var i = 0; i < notfs.Count; i += 1) {
-                if (i == 0)//first one
-                    notfStr = "";
-                var ele = notfs.ElementAt(i).ToString();
-                if (i == notfs.Count - 1)//last one
-                    notfStr += ele;
-                else
-                    notfStr += ele + ", ";
-            }
-            return config + notfStr + "\n";
+            return extMgr.GetSetupDesc();
         }
 
         public override string ToString()
