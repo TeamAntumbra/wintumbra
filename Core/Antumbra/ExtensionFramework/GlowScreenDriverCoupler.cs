@@ -31,12 +31,7 @@ namespace Antumbra.Glow.ExtensionFramework
             }
         }
         public sealed override string Name
-        { get {
-            if (null != this.grabber && null != this.processor)
-                return "Glow Screen Driver Coupler (" + this.grabber.Name + " & " + this.processor.Name + ")";
-            else
-                return "Glow Screen Driver Coupler";
-            } }
+        { get { return "Glow Screen Driver Coupler"; } }
         public sealed override string Author
         { get { return "Team Antumbra"; } }
         public sealed override string Description
