@@ -97,12 +97,11 @@ namespace DirectXScreenCapture
         private volatile bool _stopped = false;
         private global::Capture.Interface.Screenshot _currentResponse;
         private long _captures;
-        private Thread driver;
+        private Task driver;
         private string Target;
         
         public override bool Start()
         {
-            Thread.Sleep(10000);//10 sec delay for user to get DX application setup and in foreground
             _captureInterface = new Capture.Interface.CaptureInterface();
             _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
 
@@ -113,9 +112,17 @@ namespace DirectXScreenCapture
             {
                 return false;
             }
-            //Thread.Sleep(5000);//5 second wait for user to open game window
-            Inject();
-            this.driver = new Thread(new ThreadStart(target));
+            Thread.Sleep(10000);//10 sec delay for user to get DX application setup and in foreground
+            try {
+                Inject();
+            }
+            catch (InjectionFailedException e) {
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+            //this.driver = new Thread(new ThreadStart(target));
+            this.running = true;
+            this.driver = new Task(target);
             this.driver.Start();
             _stopped = false;
             return true;
@@ -123,7 +130,7 @@ namespace DirectXScreenCapture
 
         private void target()
         {
-            while (true) {
+            while (this.running) {
                 Capture();
                 if (null != _capturedImage)
                     NewScreenAvailEvent(_capturedImage, EventArgs.Empty);
@@ -171,11 +178,12 @@ namespace DirectXScreenCapture
         {
             _stopped = true;
             this.running = false;
-            if (this.driver.IsAlive)
-                this.driver.Abort();
+            this.driver.Wait(3000);
+            this.driver.Dispose();
             if (_capturedProcess != null)
             {
                 _capturedProcess.CaptureInterface.Disconnect();
+                _capturedProcess.Process.Dispose();
                 _capturedProcess.Dispose();
             }
             ReleaseCapture();
