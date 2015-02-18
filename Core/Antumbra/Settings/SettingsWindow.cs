@@ -322,17 +322,17 @@ namespace Antumbra.Glow.Settings
 
         private void driverSettingsBtn_Click(object sender, EventArgs e)
         {
-            AttemptToOpenSettingsWindow(this.currentDevice.ActiveDriver);
+            AttemptToOpenSettingsWindow((GlowDriver)this.driverExtensions.SelectedItem);
         }
 
         private void grabberSettingsBtn_Click(object sender, EventArgs e)
         {
-            AttemptToOpenSettingsWindow(this.currentDevice.ActiveGrabber);
+            AttemptToOpenSettingsWindow((GlowScreenGrabber)this.screenGrabbers.SelectedItem);
         }
 
         private void processorSettingsBtn_Click(object sender, EventArgs e)
         {
-            AttemptToOpenSettingsWindow(this.currentDevice.ActiveProcessor);
+            AttemptToOpenSettingsWindow((GlowScreenProcessor)this.screenProcessors.SelectedItem);
         }
 
         private void currentDecSettingsBtn_Click(object sender, EventArgs e)
