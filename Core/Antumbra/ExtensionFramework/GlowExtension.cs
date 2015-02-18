@@ -65,6 +65,11 @@ namespace Antumbra.Glow.ExtensionFramework
         /// Stop this Extension
         /// </summary>
         bool Stop();
+
+        /// <summary>
+        /// Open the settings window for this extension if one exists
+        /// </summary>
+        void Settings();
     }
 
     /// <summary>
@@ -130,6 +135,11 @@ namespace Antumbra.Glow.ExtensionFramework
         /// Stop this extension, clean up
         /// </summary>
         public abstract bool Stop();
+
+        /// <summary>
+        /// Return the settings window for this extension, or null if none
+        /// </summary>
+        public abstract void Settings();
     }
 
     public abstract class GlowDriver : GlowExtension

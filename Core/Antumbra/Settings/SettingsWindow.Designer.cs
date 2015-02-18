@@ -71,6 +71,16 @@
             this.currentSetupLabel = new System.Windows.Forms.Label();
             this.currentSetup = new System.Windows.Forms.Label();
             this.compoundDecorationCheck = new System.Windows.Forms.CheckBox();
+            this.driverSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.grabberSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.processorSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.currentDecSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.currentNotfSettingsBtn = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.currentDecSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.currentNotfSettingsBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -223,7 +233,7 @@
             this.decoratorToggle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.decoratorToggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.decoratorToggle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.decoratorToggle.Location = new System.Drawing.Point(487, 321);
+            this.decoratorToggle.Location = new System.Drawing.Point(506, 321);
             this.decoratorToggle.Name = "decoratorToggle";
             this.decoratorToggle.Size = new System.Drawing.Size(103, 29);
             this.decoratorToggle.TabIndex = 48;
@@ -237,7 +247,7 @@
             this.notifierToggle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.notifierToggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.notifierToggle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.notifierToggle.Location = new System.Drawing.Point(487, 358);
+            this.notifierToggle.Location = new System.Drawing.Point(506, 358);
             this.notifierToggle.Name = "notifierToggle";
             this.notifierToggle.Size = new System.Drawing.Size(103, 29);
             this.notifierToggle.TabIndex = 49;
@@ -423,8 +433,8 @@
             // 
             this.closeBtn.AutoSize = true;
             this.closeBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Firebrick;
-            this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
+            this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.closeBtn.Location = new System.Drawing.Point(583, -3);
@@ -508,7 +518,7 @@
             this.driverRecBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.driverRecBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.driverRecBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.driverRecBtn.Location = new System.Drawing.Point(487, 216);
+            this.driverRecBtn.Location = new System.Drawing.Point(506, 216);
             this.driverRecBtn.Margin = new System.Windows.Forms.Padding(0);
             this.driverRecBtn.Name = "driverRecBtn";
             this.driverRecBtn.Size = new System.Drawing.Size(103, 36);
@@ -523,7 +533,7 @@
             this.grabberRecBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.grabberRecBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.grabberRecBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.grabberRecBtn.Location = new System.Drawing.Point(487, 252);
+            this.grabberRecBtn.Location = new System.Drawing.Point(506, 252);
             this.grabberRecBtn.Margin = new System.Windows.Forms.Padding(0);
             this.grabberRecBtn.Name = "grabberRecBtn";
             this.grabberRecBtn.Size = new System.Drawing.Size(103, 36);
@@ -565,6 +575,71 @@
             this.compoundDecorationCheck.UseVisualStyleBackColor = false;
             this.compoundDecorationCheck.CheckedChanged += new System.EventHandler(this.compoundDecorationCheck_CheckedChanged);
             // 
+            // driverSettingsBtn
+            // 
+            this.driverSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.driverSettingsBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.driverSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.driverSettingsBtn.Location = new System.Drawing.Point(464, 225);
+            this.driverSettingsBtn.Name = "driverSettingsBtn";
+            this.driverSettingsBtn.Size = new System.Drawing.Size(21, 21);
+            this.driverSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.driverSettingsBtn.TabIndex = 86;
+            this.driverSettingsBtn.TabStop = false;
+            this.driverSettingsBtn.Click += new System.EventHandler(this.driverSettingsBtn_Click);
+            // 
+            // grabberSettingsBtn
+            // 
+            this.grabberSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.grabberSettingsBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.grabberSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.grabberSettingsBtn.Location = new System.Drawing.Point(464, 259);
+            this.grabberSettingsBtn.Name = "grabberSettingsBtn";
+            this.grabberSettingsBtn.Size = new System.Drawing.Size(21, 21);
+            this.grabberSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.grabberSettingsBtn.TabIndex = 87;
+            this.grabberSettingsBtn.TabStop = false;
+            this.grabberSettingsBtn.Click += new System.EventHandler(this.grabberSettingsBtn_Click);
+            // 
+            // processorSettingsBtn
+            // 
+            this.processorSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.processorSettingsBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.processorSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.processorSettingsBtn.Location = new System.Drawing.Point(464, 293);
+            this.processorSettingsBtn.Name = "processorSettingsBtn";
+            this.processorSettingsBtn.Size = new System.Drawing.Size(21, 21);
+            this.processorSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.processorSettingsBtn.TabIndex = 88;
+            this.processorSettingsBtn.TabStop = false;
+            this.processorSettingsBtn.Click += new System.EventHandler(this.processorSettingsBtn_Click);
+            // 
+            // currentDecSettingsBtn
+            // 
+            this.currentDecSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.currentDecSettingsBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.currentDecSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.currentDecSettingsBtn.Location = new System.Drawing.Point(464, 328);
+            this.currentDecSettingsBtn.Name = "currentDecSettingsBtn";
+            this.currentDecSettingsBtn.Size = new System.Drawing.Size(21, 21);
+            this.currentDecSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.currentDecSettingsBtn.TabIndex = 89;
+            this.currentDecSettingsBtn.TabStop = false;
+            this.currentDecSettingsBtn.Click += new System.EventHandler(this.currentDecSettingsBtn_Click);
+            // 
+            // currentNotfSettingsBtn
+            // 
+            this.currentNotfSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.currentNotfSettingsBtn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.currentNotfSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.currentNotfSettingsBtn.Location = new System.Drawing.Point(464, 363);
+            this.currentNotfSettingsBtn.Name = "currentNotfSettingsBtn";
+            this.currentNotfSettingsBtn.Size = new System.Drawing.Size(21, 21);
+            this.currentNotfSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.currentNotfSettingsBtn.TabIndex = 90;
+            this.currentNotfSettingsBtn.TabStop = false;
+            this.currentNotfSettingsBtn.Click += new System.EventHandler(this.currentNotfSettingsBtn_Click);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -573,6 +648,11 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(642, 707);
+            this.Controls.Add(this.currentNotfSettingsBtn);
+            this.Controls.Add(this.currentDecSettingsBtn);
+            this.Controls.Add(this.processorSettingsBtn);
+            this.Controls.Add(this.grabberSettingsBtn);
+            this.Controls.Add(this.driverSettingsBtn);
             this.Controls.Add(this.compoundDecorationCheck);
             this.Controls.Add(this.currentSetup);
             this.Controls.Add(this.currentSetupLabel);
@@ -626,6 +706,11 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SettingsWindow_MouseDown);
             this.MouseEnter += new System.EventHandler(this.SettingsWindow_MouseEnter);
+            ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.currentDecSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.currentNotfSettingsBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -677,5 +762,10 @@
         private System.Windows.Forms.Label currentSetupLabel;
         private System.Windows.Forms.Label currentSetup;
         private System.Windows.Forms.CheckBox compoundDecorationCheck;
+        private System.Windows.Forms.PictureBox driverSettingsBtn;
+        private System.Windows.Forms.PictureBox grabberSettingsBtn;
+        private System.Windows.Forms.PictureBox processorSettingsBtn;
+        private System.Windows.Forms.PictureBox currentDecSettingsBtn;
+        private System.Windows.Forms.PictureBox currentNotfSettingsBtn;
     }
 }

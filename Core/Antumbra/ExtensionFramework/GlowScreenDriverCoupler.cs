@@ -93,5 +93,11 @@ namespace Antumbra.Glow.ExtensionFramework
             if (this.grabber != null)
                 this.grabber.RecmmndCoreSettings();
         }
+
+        public override void Settings()
+        {
+            AntumbraExtSettingsWindow win = new AntumbraExtSettingsWindow(this);
+            win.Show();
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace Antumbra.Glow.ExtensionFramework
             Update();
         }
 
-        public void Update()
+        private void Update()
         {
             var mef = new MEFHelper(extPath);
             if (mef.failed) {

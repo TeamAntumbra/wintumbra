@@ -39,26 +39,28 @@ namespace Antumbra.Glow
         {
             this.goodStart = true;
             InitializeComponent();
-            this.extLibrary = new ExtensionLibrary(extPath);
-            if (!this.extLibrary.ready) {//loading failed
-                this.ShowMessage(4000, "Extension Loading Failed",
-                "The Extension Manager reported that loading of one or more extensions failed."
-                + " Please report this with your error log. Thank you.", ToolTipIcon.Error);
-                Thread.Sleep(4000);//wait for message to be seen
-                this.goodStart = false;
+            try {
+                this.extLibrary = new ExtensionLibrary(extPath);
             }
-            else {//successful load
-                this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
-                this.outManager = new OutputLoopManager();
-                foreach (var dev in this.GlowManager.Glows) {//create output loop
-                    this.outManager.CreateAndAddLoop(GlowManager, dev.id);
-                    this.toolStripDeviceList.Items.Add(dev);
-                }
-                this.settingsWindows = new List<SettingsWindow>();
-                if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
-                    this.toolStripDeviceList.SelectedIndex = 0;
-                    this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
-                }
+            catch (System.Reflection.ReflectionTypeLoadException e) {
+                string msg = "";
+                foreach (var err in e.LoaderExceptions)
+                    msg += err.Message;
+                ShowMessage(10000, "Exception Occured While Loading Extensions", msg, ToolTipIcon.Error);
+                this.goodStart = false;
+                Thread.Sleep(10000);//wait for message
+                return;//skip rest
+            }
+            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
+            this.outManager = new OutputLoopManager();
+            foreach (var dev in this.GlowManager.Glows) {//create output loop
+                this.outManager.CreateAndAddLoop(GlowManager, dev.id);
+                this.toolStripDeviceList.Items.Add(dev);
+            }
+            this.settingsWindows = new List<SettingsWindow>();
+            if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
+                this.toolStripDeviceList.SelectedIndex = 0;
+                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
             }
         }
         /// <summary>
@@ -179,13 +181,20 @@ namespace Antumbra.Glow
         /// <param name="e"></param>
         private void offToolStripMenuItem_Click(object sender, EventArgs e)//TODO make offCurrent
         {
-            this.Off();
+            if (this.GlowManager.GlowsFound == 0)
+                ShowMessage(3000, "No Devices Found", "No devices were found to turn off.", ToolTipIcon.Error);
+            else
+                this.Off();
         }
         /// <summary>
         /// Start all found Glows
         /// </summary>
         public void StartAll()
         {
+            if (this.GlowManager.GlowsFound == 0) {
+                ShowMessage(3000, "No Devices Found", "No devices were found to start.", ToolTipIcon.Error);
+                return;
+            }
             StopAll();
             ShowMessage(3000, "Starting All", "Extensions are being started. Please wait.", ToolTipIcon.Info);
 
@@ -242,11 +251,18 @@ namespace Antumbra.Glow
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.StartCurrent();
+            if (this.GlowManager.GlowsFound == 0)
+                ShowMessage(3000, "No Devices Found", "No devices were found to start.", ToolTipIcon.Error);
+            else
+                this.StartCurrent();
         }
 
         public void StopAll()
         {
+            if (this.GlowManager.GlowsFound == 0) {
+                ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
+                return;
+            }
             ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
             foreach (var dev in this.GlowManager.Glows) {
                 dev.Stop();
@@ -259,7 +275,10 @@ namespace Antumbra.Glow
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.StopCurrent();
+            if (this.GlowManager.GlowsFound == 0)
+                ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
+            else
+                this.StopCurrent();
         }
     }
 

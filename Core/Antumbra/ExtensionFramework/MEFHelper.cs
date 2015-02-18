@@ -71,25 +71,13 @@ namespace Antumbra.Glow.ExtensionFramework
                     Console.WriteLine("Ignoring Extension - invalid type");
                 }
             }
-            if (numExt == 0) {
-                Console.WriteLine("No extensions found.");
-                this.failed = true;
-            }
         }
 
         private void Compose()
         {
             DirectoryCatalog catalog = new DirectoryCatalog(this.path, "*.glow.dll");
             this.container = new CompositionContainer(catalog);
-            try {
-                this.container.ComposeParts(this);
-            }
-            catch (System.Reflection.ReflectionTypeLoadException reflectionTypeLoadException) {
-                Console.WriteLine("An exception occured while loading extensions. Now printing:");
-                foreach (Exception exception in reflectionTypeLoadException.LoaderExceptions) {
-                    Console.WriteLine('\n' + exception.ToString() + '\n');
-                }
-            }
+            this.container.ComposeParts(this);
         }
 
         public GlowDriver GetDefaultDriver()

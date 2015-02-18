@@ -14,7 +14,7 @@ namespace Antumbra.Glow.Connector
     /// Manages dealing with connected Glow units via the SerialConnector class.
     /// Also manages device command sending on a higher level.
     /// </summary>
-    public class DeviceManager
+    public class DeviceManager//TODO add reloading
     {
         private SerialConnector Connector;
         public List<GlowDevice> Glows { get; private set; }

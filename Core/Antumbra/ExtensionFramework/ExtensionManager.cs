@@ -43,10 +43,14 @@ namespace Antumbra.Glow.ExtensionFramework
             if (this.ActiveDriver == null)
                 return "The current driver is null. Extension loading probably failed.";
             string result = "Driver: ";
-            if (ActiveDriver is GlowScreenDriverCoupler)
-                result += ActiveDriver.ToString()
-                    + "\nGrabber: " + ActiveGrabber.ToString() + "\nProcessor: "
-                    + ActiveProcessor.ToString();
+            if (ActiveDriver is GlowScreenDriverCoupler) {
+                if (ActiveGrabber != null && ActiveProcessor != null)
+                    result += ActiveDriver.ToString()
+                        + "\nGrabber: " + ActiveGrabber.ToString() + "\nProcessor: "
+                        + ActiveProcessor.ToString();
+                else
+                    result += ActiveDriver.ToString();
+            }
             else
                 result += ActiveDriver.ToString();
             result += "\nDecorators: ";

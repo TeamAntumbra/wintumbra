@@ -45,7 +45,7 @@ namespace Antumbra.Glow.Settings
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();
-            updateValues();
+            //updateValues();
             this.Focus();
         }
 
@@ -60,6 +60,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         public void updateValues()
         {
+            compoundDecorationCheck.Checked = this.currentDevice.settings.compoundDecoration;
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
             sleepSize.Text = this.currentDevice.settings.stepSleep.ToString();
@@ -67,9 +68,23 @@ namespace Antumbra.Glow.Settings
             pollingWidth.Text = this.currentDevice.settings.width.ToString();
             pollingX.Text = this.currentDevice.settings.x.ToString();
             pollingY.Text = this.currentDevice.settings.y.ToString();
-            foreach (var dvr in this.library.AvailDrivers)
-                if (!driverExtensions.Items.Contains(dvr))
-                    driverExtensions.Items.Add(dvr);
+            if (this.library.ready) {
+                foreach (var dvr in this.library.AvailDrivers)
+                    if (!driverExtensions.Items.Contains(dvr))
+                        driverExtensions.Items.Add(dvr);
+                foreach (var gbbr in this.library.AvailGrabbers)
+                    if (!screenGrabbers.Items.Contains(gbbr))
+                        screenGrabbers.Items.Add(gbbr);
+                foreach (var pcsr in this.library.AvailProcessors)
+                    if (!screenProcessors.Items.Contains(pcsr))
+                        screenProcessors.Items.Add(pcsr);
+                foreach (var dctr in this.library.AvailDecorators)
+                    if (!decorators.Items.Contains(dctr))
+                        decorators.Items.Add(dctr);
+                foreach (var notf in this.library.AvailNotifiers)
+                    if (!notifiers.Items.Contains(notf))
+                        notifiers.Items.Add(notf);
+            }
             if (this.currentDevice.ActiveDriver != null) {
                 if (this.currentDevice.ActiveDriver is GlowScreenDriverCoupler)
                     for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
@@ -81,24 +96,12 @@ namespace Antumbra.Glow.Settings
                 else
                     driverExtensions.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveDriver, driverExtensions);
             }
-            foreach (var gbbr in this.library.AvailGrabbers)
-                if (!screenGrabbers.Items.Contains(gbbr))
-                    screenGrabbers.Items.Add(gbbr);
             if (this.currentDevice.ActiveGrabber != null)
                 screenGrabbers.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveGrabber, screenGrabbers);
-            foreach (var pcsr in this.library.AvailProcessors)
-                if (!screenProcessors.Items.Contains(pcsr))
-                    screenProcessors.Items.Add(pcsr);
             if (this.currentDevice.ActiveProcessor != null)
                 screenProcessors.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveProcessor, screenProcessors);
-            foreach (var dctr in this.library.AvailDecorators)
-                if (!decorators.Items.Contains(dctr))
-                    decorators.Items.Add(dctr);
             if (decorators.SelectedItem == null && decorators.Items.Count > 0)//no item selected & there are items
                 decorators.SelectedIndex = 0;
-            foreach (var notf in this.library.AvailNotifiers)
-                if (!notifiers.Items.Contains(notf))
-                    notifiers.Items.Add(notf);
             if (notifiers.SelectedItem == null && notifiers.Items.Count > 0)//no item selected & there are items
                 notifiers.SelectedIndex = 0;
             glowStatus.Text = GetStatusString(this.currentDevice.status);
@@ -304,6 +307,42 @@ namespace Antumbra.Glow.Settings
         private void compoundDecorationCheck_CheckedChanged(object sender, EventArgs e)
         {
             this.currentDevice.settings.compoundDecoration = compoundDecorationCheck.Checked;
+        }
+
+        private void AttemptToOpenSettingsWindow(GlowExtension ext)
+        {
+            if (ext == null) {
+                this.antumbra.ShowMessage(3000, "No Selected Extension",
+                    "There is no extension to open the settings of.",
+                    ToolTipIcon.Warning);
+                return;
+            }
+            ext.Settings();
+        }
+
+        private void driverSettingsBtn_Click(object sender, EventArgs e)
+        {
+            AttemptToOpenSettingsWindow(this.currentDevice.ActiveDriver);
+        }
+
+        private void grabberSettingsBtn_Click(object sender, EventArgs e)
+        {
+            AttemptToOpenSettingsWindow(this.currentDevice.ActiveGrabber);
+        }
+
+        private void processorSettingsBtn_Click(object sender, EventArgs e)
+        {
+            AttemptToOpenSettingsWindow(this.currentDevice.ActiveProcessor);
+        }
+
+        private void currentDecSettingsBtn_Click(object sender, EventArgs e)
+        {
+            AttemptToOpenSettingsWindow((GlowDecorator)this.decorators.SelectedItem);
+        }
+
+        private void currentNotfSettingsBtn_Click(object sender, EventArgs e)
+        {
+            AttemptToOpenSettingsWindow((GlowNotifier)this.notifiers.SelectedItem);
         }
     }
 }
