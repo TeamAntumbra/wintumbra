@@ -7,6 +7,7 @@ using Antumbra.Glow.ExtensionFramework;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ExampleGlowDriver
 {
@@ -17,11 +18,18 @@ namespace ExampleGlowDriver
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
+        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
 
         public override bool IsDefault
         {
             get { return false; }
+        }
+
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings.Show();
         }
         
         public override void AttachEvent(AntumbraColorObserver observer)
@@ -60,6 +68,8 @@ namespace ExampleGlowDriver
         public override bool Stop()
         {
             bool result = true;
+            if (this.settings != null)
+                this.settings.Dispose();
             if (this.driver != null) {
                 this.driver.Wait(1000);
                 if (!this.driver.IsCompleted)
