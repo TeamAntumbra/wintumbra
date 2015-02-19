@@ -1,0 +1,9 @@
+# Folders
+[Oo]bj/
+[Bb]in/
+
+# Files
+*.DS_Store
+*.suo
+*.DS_Store
+[Tt]humbs.db 

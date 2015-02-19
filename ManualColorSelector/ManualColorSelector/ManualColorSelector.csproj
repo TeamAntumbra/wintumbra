@@ -64,13 +64,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ColorPicker\ColorPicker\ColorPicker.csproj">
-      <Project>{4c680536-f558-4a6c-9c18-09f09c0b4024}</Project>
-      <Name>ColorPicker</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Antumbra\Antumbra.csproj">
       <Project>{b5887076-f914-4f71-8cb7-cf3cbf663ccf}</Project>
       <Name>Antumbra</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ColorPicker\ColorPicker\ColorPicker.csproj">
+      <Project>{4c680536-f558-4a6c-9c18-09f09c0b4024}</Project>
+      <Name>ColorPicker</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

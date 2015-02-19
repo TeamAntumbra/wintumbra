@@ -18,6 +18,7 @@ namespace ManualColorSelector
         private Color lastUpdate;
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
+        private AntumbraExtSettingsWindow settings;
         public override void AttachEvent(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
@@ -53,6 +54,12 @@ namespace ManualColorSelector
             get { throw new NotImplementedException(); }
         }
 
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings.Show();
+        }
+
         public override bool IsRunning
         {
             get { return this.running; }
@@ -83,6 +90,8 @@ namespace ManualColorSelector
         public override bool Stop()
         {
             bool result = true;//success?
+            if (this.settings != null)
+                this.settings.Dispose();
             if (this.picker != null)
                 this.picker.Close();
             this.running = false;
