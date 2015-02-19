@@ -7,6 +7,7 @@ using System.Drawing;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace FluxCompanion
 {
@@ -18,6 +19,7 @@ namespace FluxCompanion
         public override int id { get; set; }
         private bool running;
         private Task driver;
+        private AntumbraExtSettingsWindow settings;
 
         public override bool IsRunning
         {
@@ -45,6 +47,12 @@ namespace FluxCompanion
             this.driver = new Task(target);
             this.driver.Start();
             return true;
+        }
+
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings.Show();
         }
 
         public override void RecmmndCoreSettings()
@@ -133,6 +141,8 @@ namespace FluxCompanion
 
         public override bool Stop()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             this.running = false;
             return true;
         }
