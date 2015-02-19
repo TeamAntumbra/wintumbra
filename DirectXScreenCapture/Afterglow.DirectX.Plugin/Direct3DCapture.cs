@@ -19,6 +19,7 @@ namespace DirectXScreenCapture
     public class Direct3DCapture : GlowScreenGrabber
     {
         private bool running = false;
+        private DXSettingsWindow settings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public override int id { get; set; }
@@ -72,9 +73,9 @@ namespace DirectXScreenCapture
 
         public override void Settings()
         {
-            DXSettingsWindow settings = new DXSettingsWindow(this);
-            settings.Show();
-            settings.FormClosing += new System.Windows.Forms.FormClosingEventHandler(updateTarget);
+            this.settings = new DXSettingsWindow(this);
+            this.settings.Show();
+            this.settings.FormClosing += new System.Windows.Forms.FormClosingEventHandler(updateTarget);
         }
 
         public void updateTarget(object sender, EventArgs args)
@@ -178,6 +179,8 @@ namespace DirectXScreenCapture
         {
             _stopped = true;
             this.running = false;
+            if (this.settings != null)
+                this.settings.Dispose();
             this.driver.Wait(3000);
             this.driver.Dispose();
             if (_capturedProcess != null)
