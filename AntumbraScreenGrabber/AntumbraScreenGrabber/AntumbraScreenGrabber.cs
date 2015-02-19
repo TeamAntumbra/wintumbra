@@ -20,6 +20,7 @@ namespace AntumbraScreenDriver
         public event NewScreenAvail NewScreenAvailEvent;
         private List<IObserver<Bitmap>> observers;
         private bool running = false;
+        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -60,8 +61,16 @@ namespace AntumbraScreenDriver
             return true;
         }
 
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            settings.Show();
+        }
+
         public override bool Stop()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             this.NewScreenAvailEvent = null;
             if (null != this.driver && this.driver.IsAlive) {
                 this.driver.Abort();
