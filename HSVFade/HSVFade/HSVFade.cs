@@ -8,6 +8,7 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace HSVFade
 {
@@ -19,6 +20,7 @@ namespace HSVFade
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
+        private AntumbraExtSettingsWindow settings;
 
         public override bool IsRunning
         {
@@ -50,10 +52,14 @@ namespace HSVFade
             get { return false; }
         }
 
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings.Show();
+        }
+
         public override bool Start()
         {
-            if (this.stepSleep == null)
-                this.stepSleep = 0;
             this.running = true;
             this.driver = new Task(target);
             this.driver.Start();
@@ -80,6 +86,8 @@ namespace HSVFade
 
         public override bool Stop()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             this.running = false;
             if (this.driver != null) {
                 this.driver.Wait(1000);
