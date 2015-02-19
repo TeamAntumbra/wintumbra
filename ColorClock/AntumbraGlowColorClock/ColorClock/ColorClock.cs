@@ -8,6 +8,7 @@ using Antumbra.Glow.Utility;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
+using System.Windows.Forms;
 
 namespace ColorClock
 {
@@ -18,6 +19,7 @@ namespace ColorClock
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
+        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
 
         public override bool IsDefault
@@ -69,8 +71,16 @@ namespace ColorClock
             return true;
         }
 
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings.Show();
+        }
+
         public override bool Stop()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             if (null != this.driver) {
                 this.driver.Wait();
                 if (this.driver.IsCompleted)
