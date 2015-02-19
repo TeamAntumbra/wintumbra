@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
+using System.Windows.Forms;
 
 namespace AntumbraScreenProcessor
 {
@@ -17,6 +18,7 @@ namespace AntumbraScreenProcessor
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
+        private AntumbraExtSettingsWindow settings;//TODO replace with custom settings window
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -70,8 +72,16 @@ namespace AntumbraScreenProcessor
             return true;
         }
 
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings.Show();
+        }
+
         public override bool Stop()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             this.NewColorAvailEvent = null;
             this.running = false;
             return true;
