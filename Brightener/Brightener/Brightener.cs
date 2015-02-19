@@ -8,6 +8,7 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.Threading;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Brightener
 {
@@ -16,6 +17,7 @@ namespace Brightener
     {
         public override int id { get; set; }
         private bool running;
+        private AntumbraExtSettingsWindow settings;
         public override string Name
         {
             get { return "Brightener"; }
@@ -53,6 +55,8 @@ namespace Brightener
 
         public override bool Start()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             this.running = true;
             return true;
         }
@@ -68,6 +72,11 @@ namespace Brightener
             get { return new Version("0.0.1"); }
         }
 
+        public override void Settings()
+        {
+            this.settings = new AntumbraExtSettingsWindow(this);//TODO make this include the custom settings
+            this.settings.Show();
+        }
         public override string Website
         {
             get { throw new NotImplementedException(); }
