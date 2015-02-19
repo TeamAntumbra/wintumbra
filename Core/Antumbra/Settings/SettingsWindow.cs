@@ -176,37 +176,29 @@ namespace Antumbra.Glow.Settings
 
         private void decoratorToggle_Click(object sender, EventArgs e)
         {
-            if (null != decorators.SelectedItem) {
+            GlowDecorator dec = (GlowDecorator)decorators.SelectedItem;
+            if (null != dec) {
                 this.antumbra.StopCurrent();
-                GlowDecorator value = (GlowDecorator)decorators.SelectedItem;
-                if (this.currentDevice.ActiveDecorators.Contains(value)) {
-                    this.currentDevice.ActiveDecorators.Remove(value);
+                if (this.currentDevice.RemoveDecOrAddIfNew(dec))
                     this.antumbra.ShowMessage(3000, "Decorator Disabled",
-                        "The decorator, " + value.ToString() + ", has been disabled.", ToolTipIcon.Info);
-                }
-                else {
-                    this.currentDevice.ActiveDecorators.Add(value);
+                        "The decorator, " + dec.ToString() + ", has been disabled.", ToolTipIcon.Info);
+                else
                     this.antumbra.ShowMessage(3000, "Decorator Enabled",
-                        "The decorator, " + value.ToString() + ", has been enabled.", ToolTipIcon.Info);
-                }
+                        "The Decorator, " + dec.ToString() + ", has been enabled.", ToolTipIcon.Info);
             }
         }
 
         private void notifierToggle_Click(object sender, EventArgs e)
         {
-            if (null != notifiers.SelectedItem) {
+            GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
+            if (null != notf) {
                 this.antumbra.StopCurrent();
-                GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
-                if (this.currentDevice.ActiveNotifiers.Contains(notf)) {
-                    this.currentDevice.ActiveNotifiers.Remove(notf);
+                if (this.currentDevice.RemoveNotfOrAddIfNew(notf))
                     this.antumbra.ShowMessage(3000, "Notifier Disabled",
                         "The notifier, " + notf.ToString() + ", has been disabled.", ToolTipIcon.Info);
-                }
-                else {
-                    this.currentDevice.ActiveNotifiers.Add(notf);
+                else
                     this.antumbra.ShowMessage(3000, "Notifier Enabled",
                         "The notifier, " + notf.ToString() + ", has been enabled.", ToolTipIcon.Info);
-                }
             }
         }
 

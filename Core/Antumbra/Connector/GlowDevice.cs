@@ -74,10 +74,22 @@ namespace Antumbra.Glow.Connector
             {
                 return this.extMgr.ActiveDecorators;
             }
-            set
-            {
-                this.extMgr.ActiveDecorators = value;
+        }
+
+        public bool RemoveDecOrAddIfNew(GlowDecorator dec) {
+            GlowDecorator toRemove = null;
+            foreach (var d in this.ActiveDecorators) {
+                if (d.id == dec.id) {
+                    toRemove = d;
+                    break;
+                }
             }
+            if (toRemove != null) {
+                this.ActiveDecorators.Remove(toRemove);
+                return true;
+            }
+            this.ActiveDecorators.Add(dec);
+            return false;
         }
         public List<GlowNotifier> ActiveNotifiers
         {
@@ -85,11 +97,25 @@ namespace Antumbra.Glow.Connector
             {
                 return this.extMgr.ActiveNotifiers;
             }
-            set
-            {
-                this.extMgr.ActiveNotifiers = value;
-            }
         }
+
+        public bool RemoveNotfOrAddIfNew(GlowNotifier notf)
+        {
+            GlowNotifier toRemove = null;
+            foreach (var d in this.ActiveNotifiers) {
+                if (d.id == notf.id) {
+                    toRemove = d;
+                    break;
+                }
+            }
+            if (toRemove != null) {
+                this.ActiveNotifiers.Remove(toRemove);
+                return true;//removed
+            }
+            this.ActiveNotifiers.Add(notf);
+            return false;//added
+        }
+
         public int status { get; set; }
         /// <summary>
         /// Constructor
