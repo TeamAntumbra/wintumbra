@@ -18,7 +18,6 @@ namespace AntumbraScreenDriver
         private Thread driver;
         public delegate void NewScreenAvail(Bitmap image, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
-        private List<IObserver<Bitmap>> observers;
         private bool running = false;
         private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
@@ -54,7 +53,6 @@ namespace AntumbraScreenDriver
 
         public override bool Start()
         {
-            this.observers = new List<IObserver<Bitmap>>();
             this.driver = new Thread(new ThreadStart(captureTarget));
             this.driver.Start();
             this.running = true;
@@ -77,26 +75,7 @@ namespace AntumbraScreenDriver
             }
             this.running = false;
             this.driver = null;
-            this.observers = new List<IObserver<Bitmap>>();
             return true;
-        }
-
-        private class Unsubscriber : IDisposable
-        {
-            private List<IObserver<Bitmap>> _observers;
-            private IObserver<Bitmap> _observer;
-
-            public Unsubscriber(List<IObserver<Bitmap>> observers, IObserver<Bitmap> observer)
-            {
-                this._observers = observers;
-                this._observer = observer;
-            }
-
-            public void Dispose()
-            {
-                if (_observer != null && _observers.Contains(_observer))
-                    _observers.Remove(_observer);
-            }
         }
 
         public override void AttachEvent(AntumbraBitmapObserver observer)

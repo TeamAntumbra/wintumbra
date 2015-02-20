@@ -62,12 +62,6 @@ namespace Antumbra.Glow.ExtensionFramework
             return result;
         }
 
-        public void SendSetToRecommended()
-        {
-            this.ActiveDriver.RecmmndCoreSettings();
-            this.ActiveGrabber.RecmmndCoreSettings();
-        }
-
         public void AttachEvent(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += observer.NewColorAvail;
@@ -95,11 +89,6 @@ namespace Antumbra.Glow.ExtensionFramework
             }
             int count = ActiveDecorators.Count;
             NewColorAvailEvent(Color.FromArgb(r / count, g / count, b / count), args);
-        }
-
-        public bool LoadingFailed()
-        {
-            return this.MEFHelper.failed;
         }
 
         public bool Start()
