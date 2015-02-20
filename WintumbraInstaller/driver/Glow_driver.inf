@@ -38,14 +38,13 @@
 ; ========= START USER CONFIGURABLE SECTION ===========
 ; =====================================================
 
-;DeviceName = "Microsoft XBox Controller Type S"
 DeviceName = "Antumbra|Glow"
 ; Make sure "VID_" and "PID_" are always part of the strings below
 ;VendorID = "VID_045E"
 ;ProductID = "PID_0289"
 VendorID = "VID_16D0"
 ProductID = "PID_0A85"
-DeviceGUID = "{a937d333-d979-4f78-a4ec-72f9dbcc010a}"
+DeviceGUID = "{72C10D1B-195A-4EA7-8C94-13EBD5D6B05B}"
 DeviceClassGUID = "{78a1c341-4539-11d3-b88d-00c04fad5171}"
 ; Date MUST be in MM/DD/YYYY format
 Date = "02/19/2015"
