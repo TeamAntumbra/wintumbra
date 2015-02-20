@@ -10,6 +10,8 @@ Source: "..\DriverInstaller\Glow\amd64\*"; DestDir: {app}\DriverInstaller\amd64
 Source: "..\DriverInstaller\Glow\x86\*"; DestDir: {app}\DriverInstaller\x86
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
 Source: "dependencies\antumbra.exe"; DestDir: {app}
+Source: "libusb-1.0.dll"; DestDir: {app}
+Source: "libantumbra.dll"; DestDir: {app}
 Source: "../Licenses\*"; DestDir: {app}\Licences
 Source: "../README.md"; DestDir: {app}
 
