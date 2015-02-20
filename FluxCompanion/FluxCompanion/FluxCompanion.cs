@@ -19,7 +19,6 @@ namespace FluxCompanion
         public override int id { get; set; }
         private bool running;
         private Task driver;
-        private AntumbraExtSettingsWindow settings;
 
         public override bool IsRunning
         {
@@ -40,6 +39,11 @@ namespace FluxCompanion
             get { return false; }
         }
 
+        public override bool Setup()
+        {
+            return true;//no setup
+        }
+
         public override bool Start()
         {
             this.stepSleep = 2000;
@@ -49,10 +53,9 @@ namespace FluxCompanion
             return true;
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            this.settings.Show();
+            return false;
         }
 
         public override void RecmmndCoreSettings()
@@ -141,8 +144,6 @@ namespace FluxCompanion
 
         public override bool Stop()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
             this.running = false;
             return true;
         }
