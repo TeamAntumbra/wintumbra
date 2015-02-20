@@ -18,16 +18,16 @@ namespace AntumbraScreenProcessor
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
-        private AntumbraExtSettingsWindow settings;//TODO replace with custom settings window
+        private SmartProcSettingsWindow settings;
         public override int id { get; set; }
         public override bool IsDefault
         {
             get { return true; }
         }
 
-        private int useAllTol;//TODO make settings window
-        private int minMixPerc;
-        private int minBrightness;
+        private int useAllTol= 20;//min diff between each sum to use all of the sums
+        private int minMixPerc = 15;//min percent either sum of r, g, or b must be to be included if not the largest
+        private int minBrightness = 10;//min brightness a pixel must have to be included
 
         public override String Name
         {
@@ -65,17 +65,44 @@ namespace AntumbraScreenProcessor
 
         public override bool Start()
         {
-            this.minMixPerc = 15;
-            this.useAllTol = 20;
-            this.minBrightness = 10;
             this.running = true;
             return true;
         }
 
         public override void Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
+            this.settings = new SmartProcSettingsWindow(this);
             this.settings.Show();
+            this.settings.useAllTxt.Text = this.useAllTol.ToString();
+            this.settings.minMixTxt.Text = this.minMixPerc.ToString();
+            this.settings.minBrightTxt.Text = this.minBrightness.ToString();
+            this.settings.useAllTxt.TextChanged += new EventHandler(useAllChanged);
+            this.settings.minBrightTxt.TextChanged += new EventHandler(minMixChanged);
+            this.settings.minMixTxt.TextChanged += new EventHandler(minBrightChanged);
+        }
+
+        private void useAllChanged(object sender, EventArgs args)
+        {
+            int i;
+            TextBox box = (TextBox)sender;
+            if (int.TryParse(box.Text, out i))
+                this.useAllTol = i;
+        }
+
+        private void minMixChanged(object sender, EventArgs args)
+        {
+            int i;
+            TextBox box = (TextBox)sender;
+            if (int.TryParse(box.Text, out i))
+                this.minMixPerc = i;
+        }
+
+        private void minBrightChanged(object sender, EventArgs args)
+        {
+            int i;
+            TextBox box = (TextBox)sender;
+            if (int.TryParse(box.Text, out i))
+                this.minBrightness = i;
         }
 
         public override bool Stop()

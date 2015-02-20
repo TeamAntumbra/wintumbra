@@ -65,6 +65,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SmartProcSettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SmartProcSettingsWindow.Designer.cs">
+      <DependentUpon>SmartProcSettingsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="AntumbraSmartScreenProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,6 +79,11 @@
       <Project>{b5887076-f914-4f71-8cb7-cf3cbf663ccf}</Project>
       <Name>Antumbra</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartProcSettingsWindow.resx">
+      <DependentUpon>SmartProcSettingsWindow.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
