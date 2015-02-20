@@ -20,6 +20,7 @@ namespace DirectXScreenCapture
     {
         private bool running = false;
         private DXSettingsWindow settings;
+        private Dictionary<string, string> instanceSettings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public override int id { get; set; }
@@ -71,11 +72,22 @@ namespace DirectXScreenCapture
             //doesn't affect capture for DX
         }
 
-        public override void Settings()
+        public override bool Setup()
         {
+            this.instanceSettings = new Dictionary<string, string>();
+            this.instanceSettings["Target"] = "example.exe";
+            return true;
+        }
+
+        public override bool Settings()
+        {
+            if (this.instanceSettings == null)
+                if (!Setup())
+                    return false;//setup failed
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
             this.settings.FormClosing += new System.Windows.Forms.FormClosingEventHandler(updateTarget);
+            return true;
         }
 
         public void updateTarget(object sender, EventArgs args)
@@ -84,7 +96,7 @@ namespace DirectXScreenCapture
             var txtBx = window.processToCaptTxt;
             if (txtBx == null)
                 return;//no target entered
-            this.Target = window.processToCaptTxt.Text;
+            this.instanceSettings["Target"] = window.processToCaptTxt.Text;
         }
 
         public override bool IsRunning
@@ -99,7 +111,6 @@ namespace DirectXScreenCapture
         private global::Capture.Interface.Screenshot _currentResponse;
         private long _captures;
         private Task driver;
-        private string Target;
         
         public override bool Start()
         {
@@ -107,7 +118,7 @@ namespace DirectXScreenCapture
             _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
 
             // Inject to process
-            this.TargetProcess = this.Target;
+            this.TargetProcess = this.instanceSettings["Target"];
 
             if (String.IsNullOrEmpty(this.TargetProcess))
             {
