@@ -191,10 +191,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Antumbra_TemporaryKey.pfx" />
-    <None Include="Licenses\AfterGlow_LICENSE" />
-    <None Include="Licenses\MetroFramework_LICENSE.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -230,9 +226,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AntumbraA.ico" />
-    <Content Include="antumbraglowv3beta.inf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="FodyWeavers.xml" />
     <None Include="libusb-1.0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -240,7 +233,6 @@
     <None Include="libantumbra.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Licenses\charliecm_ColorPicker_LICENSE.txt" />
     <Content Include="Resources\AntumbraA.ico" />
     <Content Include="Resources\AntumbraA.png" />
     <Content Include="Resources\cellbackground.png" />
