@@ -67,9 +67,22 @@ namespace Antumbra.Glow.ExtensionFramework
         bool Stop();
 
         /// <summary>
-        /// Open the settings window for this extension if one exists
+        /// Try to open the settings window for this extension
         /// </summary>
-        void Settings();
+        /// <returns>return true if window opened, else false</returns>
+        bool Settings();
+
+        /// <summary>
+        /// Get ready to be used
+        /// </summary>
+        /// <returns>true if success, else false</returns>
+        bool Setup();
+
+        /// <summary>
+        /// Clean up and dispose of all used assets
+        /// </summary>
+        /// <returns>true if success, else false</returns>
+        bool CleanUp();
     }
 
     /// <summary>
@@ -129,17 +142,32 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// Ready/Start this extension
         /// </summary>
+        /// <returns>true if success, else false</returns>
         public abstract bool Start();
 
         /// <summary>
         /// Stop this extension, clean up
         /// </summary>
+        /// <returns>true if success, else false</returns>
         public abstract bool Stop();
 
         /// <summary>
-        /// Return the settings window for this extension, or null if none
+        /// Try to open the settings window for this extension
         /// </summary>
-        public abstract void Settings();
+        /// <returns>true if window opened, else false</returns>
+        public abstract bool Settings();
+
+        /// <summary>
+        /// Get ready to be used
+        /// </summary>
+        /// <returns>true if success, else false</returns>
+        public abstract bool Setup();
+
+        /// <summary>
+        /// Clean up all resources
+        /// </summary>
+        /// <returns>return true if success, else false</returns>
+        public abstract bool CleanUp();
     }
 
     public abstract class GlowDriver : GlowExtension
