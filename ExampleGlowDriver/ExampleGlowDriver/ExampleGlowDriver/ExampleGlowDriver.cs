@@ -26,15 +26,19 @@ namespace ExampleGlowDriver
             get { return false; }
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            this.settings.Show();
+            return false;//no custom window
         }
         
         public override void AttachEvent(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        public override bool Setup()
+        {
+            return true;//no settings obj to setup
         }
 
         public override bool Start()
