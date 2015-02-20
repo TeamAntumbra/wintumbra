@@ -19,7 +19,6 @@ namespace AntumbraFastScreenProcessor
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
-        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -35,10 +34,9 @@ namespace AntumbraFastScreenProcessor
             get { return "Antumbra Fast Screen Processor"; }
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            this.settings.Show();
+            return false;
         }
 
         public override string Author
@@ -70,7 +68,7 @@ namespace AntumbraFastScreenProcessor
         {
             Bitmap small = new Bitmap(1, 1);
             using (Graphics g = Graphics.FromImage(small))//resize to 1X1 Bitmap using GDI+ Graphics class
-                g.DrawImage(bm, 0, 0, 1, 1);
+                g.DrawImage(bm, 0, 0, 1, 1);//TODO add resizing to configured size to smart processor
             return small.GetPixel(0, 0);
         }
 
@@ -85,6 +83,11 @@ namespace AntumbraFastScreenProcessor
             bm.Dispose();
         }
 
+        public override bool Setup()
+        {
+            return true;//no settings to setup
+        }
+
         public override bool Start()
         {
             this.running = true;
@@ -93,8 +96,6 @@ namespace AntumbraFastScreenProcessor
 
         public override bool Stop()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
             this.running = false;
             return true;
         }
