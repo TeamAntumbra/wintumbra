@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
 
@@ -19,7 +18,6 @@ namespace ColorClock
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
-        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
 
         public override bool IsDefault
@@ -62,25 +60,26 @@ namespace ColorClock
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
+        public override bool Setup()
+        {
+            return true;//no setup
+        }
+
         public override bool Start()
         {
-            this.stepSleep = 1000;//1 second between updates
             this.driver = new Task(driverTarget);
             this.driver.Start();
             this.running = true;
             return true;
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            this.settings.Show();
+            return false;//no custom settings
         }
 
         public override bool Stop()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
             if (null != this.driver) {
                 this.driver.Wait();
                 if (this.driver.IsCompleted)
