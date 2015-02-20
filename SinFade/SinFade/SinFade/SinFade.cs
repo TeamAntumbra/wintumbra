@@ -18,7 +18,6 @@ namespace SinFade
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
-        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
 
         public override bool IsDefault
@@ -29,6 +28,11 @@ namespace SinFade
         public override void AttachEvent(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        public override bool Setup()
+        {
+            return true;//TODO add settings
         }
 
         public override bool Start()
@@ -44,10 +48,9 @@ namespace SinFade
             get { return this.running; }
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            this.settings.Show();
+            return false;
         }
 
         /// <summary>
@@ -80,8 +83,6 @@ namespace SinFade
         public override bool Stop()
         {
             bool result = true;
-            if (this.settings != null)
-                this.settings.Dispose();
             if (this.driver != null) {
                 this.driver.Wait(1000);
                 if (!this.driver.IsCompleted)
