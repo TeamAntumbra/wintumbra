@@ -20,7 +20,6 @@ namespace HSVFade
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
-        private AntumbraExtSettingsWindow settings;
 
         public override bool IsRunning
         {
@@ -52,10 +51,14 @@ namespace HSVFade
             get { return false; }
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            this.settings.Show();
+            return false;
+        }
+
+        public override bool Setup()
+        {
+            return true;//no setup
         }
 
         public override bool Start()
@@ -86,8 +89,6 @@ namespace HSVFade
 
         public override bool Stop()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
             this.running = false;
             if (this.driver != null) {
                 this.driver.Wait(3000);
