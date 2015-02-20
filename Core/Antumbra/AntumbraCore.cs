@@ -220,6 +220,7 @@ namespace Antumbra.Glow
 
         public void Start(int id)
         {
+            Stop(id);
             var dev = this.GlowManager.getDevice(id);
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)
