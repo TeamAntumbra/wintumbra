@@ -5,9 +5,9 @@ DefaultDirName = "Antumbra"
 
 [Files]
 Source: "dependencies\dotNetFx40_Full_x86_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: FrameworkIsNotInstalled
-Source: "driver\*"; DestDir: {app}\driver
-Source: "dependencies\libantumbra.dll"; DestDir: {app}
-Source: "dependencies\libusb-1.0.dll"; DestDir: {app}
+Source: "..\DriverInstaller\Glow\*"; DestDir: {app}\DriverInstaller
+Source: "..\DriverInstaller\Glow\amd64\*"; DestDir: {app}\DriverInstaller\amd64
+Source: "..\DriverInstaller\Glow\x86\*"; DestDir: {app}\DriverInstaller\x86
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
 Source: "dependencies\antumbra.exe"; DestDir: {app}
 Source: "../Licenses\*"; DestDir: {app}\Licences
@@ -15,7 +15,6 @@ Source: "../README.md"; DestDir: {app}
 
 [Run]
 Filename: "{tmp}\dotNetFx40_Full_setup.exe"; Check: FrameworkIsNotInstalled
-Filename: {sys}\rundll32.exe; Parameters: "setupapi, InstallHinfSection DefaultInstall 128 {app}\driver\Glow_driver.inf"; WorkingDir: {app}\driver; Flags: 32bit
 
 [code]
 function FrameworkIsNotInstalled: Boolean;
