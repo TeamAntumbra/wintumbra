@@ -9,29 +9,20 @@
 
 1) Plug in your Glow.
 
-2) Open Device Manager
+2) Run `setup.exe`
 
-![Open Device Manager](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/deviceMgr.png)
+3) Find the output directory
 
-3) Find your Glow Device (might have to wait for auto-install to fail), then right click and select `Update Driver Software...`
+![Find output directory](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/find.png)
 
-![Find and Right Click to Update](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/rightClick.png)
+4) Run the driver installer
 
-4) Select the Browse for Driver Option
+![Run the Driver Installer](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/run.png)
 
-![Select Browse Option](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/browse.png)
+5) Copy in the other `.dll` files
 
-5) Select Let Me Pick Option
+![Copy in .dll files](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/copyIn.png)
 
-![Let Me Pick](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/pick.png)
-
-6) Select the Antumbra|Glow driver, and click next
-
-![Select the Antumbra|Glow driver](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/select.png)
-
-7) Done!
-
-![All Done!](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/done.png)
 
 More will be here soon.
 
