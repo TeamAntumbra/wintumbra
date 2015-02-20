@@ -86,7 +86,7 @@ namespace Antumbra.Glow.Connector
         {
             this._active = false;
             if (this.outputLoopTask != null)
-                this.outputLoopTask.Wait(1000);
+                this.outputLoopTask.Wait(3000);
         }
 
         void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
@@ -100,7 +100,7 @@ namespace Antumbra.Glow.Connector
         public void Dispose()
         {
             this.Stop();
-            if (outputLoopTask != null)
+            if (outputLoopTask != null && outputLoopTask.IsCompleted)
                 outputLoopTask.Dispose();
             this.outputFPS = new FPSCalc();
         }

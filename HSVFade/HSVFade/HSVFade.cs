@@ -90,7 +90,7 @@ namespace HSVFade
                 this.settings.Dispose();
             this.running = false;
             if (this.driver != null) {
-                this.driver.Wait(1000);
+                this.driver.Wait(3000);
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
                 else
