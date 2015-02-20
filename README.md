@@ -27,7 +27,7 @@
 
 6) Select the Antumbra|Glow driver, and click next
 
-![Select the Antumbra|Glow driver](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/pick.png)
+![Select the Antumbra|Glow driver](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/select.png)
 
 7) Done!
 
