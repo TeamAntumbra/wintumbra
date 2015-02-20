@@ -17,8 +17,8 @@ namespace Brightener
     {
         public override int id { get; set; }
         private bool running;
-        private BrightenerSettings settings;
-        private double amountLighter = .15;
+        private BrightenerSettings settingsWin;
+        private Dictionary<string, double> instanceSettings;
         public override string Name
         {
             get { return "Brightener"; }
@@ -42,16 +42,23 @@ namespace Brightener
         public override Color Decorate(Color origColor)
         {
             HslColor hsl = new HslColor(origColor);
-            if (hsl.L > (1.0 - this.amountLighter))
+            if (hsl.L > (1.0 - this.instanceSettings["amountToLighten"]))
                 hsl.L = 1.0;
             else
-                hsl.L += this.amountLighter;
+                hsl.L += this.instanceSettings["amountToLighten"];
             return hsl.ToRgbColor();
         }
 
         public override bool IsRunning
         {
             get { return this.running; }
+        }
+
+        public override bool Setup()
+        {
+            this.instanceSettings = new Dictionary<string, double>();
+            this.instanceSettings["amountToLighten"] = .15;
+            return true;
         }
 
         public override bool Start()
@@ -62,8 +69,8 @@ namespace Brightener
 
         public override bool Stop()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
+            if (this.settingsWin != null)
+                this.settingsWin.Dispose();
             this.running = false;
             return true;
         }
@@ -73,19 +80,23 @@ namespace Brightener
             get { return new Version("0.0.1"); }
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new BrightenerSettings(this);
-            this.settings.Show();
-            this.settings.percBrightenTxt.Text = this.amountLighter.ToString();
-            this.settings.percBrightenTxt.TextChanged += new EventHandler(PercentChanged);
+            this.settingsWin = new BrightenerSettings(this);
+            this.settingsWin.Show();
+            if (this.instanceSettings == null)//needs to be setup
+                if (!this.Setup())
+                    return false;//setup failed
+            this.settingsWin.percBrightenTxt.Text = this.instanceSettings["amountToLighten"].ToString();
+            this.settingsWin.percBrightenTxt.TextChanged += new EventHandler(PercentChanged);
+            return true;
         }
 
         private void PercentChanged(object sender, EventArgs args)
         {
             TextBox bx = (TextBox)sender;
             try {
-                this.amountLighter = double.Parse(bx.Text);
+                this.instanceSettings["amountToLighten"] = double.Parse(bx.Text);
             }
             catch (Exception e) {
                 //invalid input
