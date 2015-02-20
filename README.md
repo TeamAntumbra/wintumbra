@@ -23,6 +23,7 @@
 
 ![Copy in .dll files](https://raw.githubusercontent.com/TeamAntumbra/wintumbra/master/Screenshots/copyIn.png)
 
+Run the App and enjoy!
 
 More will be here soon.
 
