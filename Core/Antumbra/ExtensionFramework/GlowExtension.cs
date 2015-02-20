@@ -62,7 +62,7 @@ namespace Antumbra.Glow.ExtensionFramework
         bool Start();
 
         /// <summary>
-        /// Stop this Extension
+        /// Stop/clean up after this Extension
         /// </summary>
         bool Stop();
 
@@ -77,12 +77,6 @@ namespace Antumbra.Glow.ExtensionFramework
         /// </summary>
         /// <returns>true if success, else false</returns>
         bool Setup();
-
-        /// <summary>
-        /// Clean up and dispose of all used assets
-        /// </summary>
-        /// <returns>true if success, else false</returns>
-        bool CleanUp();
     }
 
     /// <summary>
@@ -140,7 +134,7 @@ namespace Antumbra.Glow.ExtensionFramework
         public abstract bool IsDefault { get; }
 
         /// <summary>
-        /// Ready/Start this extension
+        /// Start this extension
         /// </summary>
         /// <returns>true if success, else false</returns>
         public abstract bool Start();
@@ -158,16 +152,10 @@ namespace Antumbra.Glow.ExtensionFramework
         public abstract bool Settings();
 
         /// <summary>
-        /// Get ready to be used
+        /// Get ready to be used / have settings modified
         /// </summary>
         /// <returns>true if success, else false</returns>
         public abstract bool Setup();
-
-        /// <summary>
-        /// Clean up all resources
-        /// </summary>
-        /// <returns>return true if success, else false</returns>
-        public abstract bool CleanUp();
     }
 
     public abstract class GlowDriver : GlowExtension

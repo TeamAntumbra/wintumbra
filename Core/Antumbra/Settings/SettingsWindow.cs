@@ -309,7 +309,11 @@ namespace Antumbra.Glow.Settings
                     ToolTipIcon.Warning);
                 return;
             }
-            ext.Settings();
+            if (!ext.Settings()) {
+                var win = new AntumbraExtSettingsWindow(ext);
+                win.Show();
+            }
+                
         }
 
         private void driverSettingsBtn_Click(object sender, EventArgs e)
