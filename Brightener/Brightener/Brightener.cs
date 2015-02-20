@@ -17,7 +17,8 @@ namespace Brightener
     {
         public override int id { get; set; }
         private bool running;
-        private AntumbraExtSettingsWindow settings;
+        private BrightenerSettings settings;
+        private double amountLighter = .15;
         public override string Name
         {
             get { return "Brightener"; }
@@ -41,10 +42,10 @@ namespace Brightener
         public override Color Decorate(Color origColor)
         {
             HslColor hsl = new HslColor(origColor);
-            if (hsl.L > (1.0 - .15))//TODO make the .15 (or amount lightness is upped) be configurable
+            if (hsl.L > (1.0 - this.amountLighter))
                 hsl.L = 1.0;
             else
-                hsl.L += .15;
+                hsl.L += this.amountLighter;
             return hsl.ToRgbColor();
         }
 
@@ -55,14 +56,14 @@ namespace Brightener
 
         public override bool Start()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
             this.running = true;
             return true;
         }
 
         public override bool Stop()
         {
+            if (this.settings != null)
+                this.settings.Dispose();
             this.running = false;
             return true;
         }
@@ -74,9 +75,23 @@ namespace Brightener
 
         public override void Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);//TODO make this include the custom settings
+            this.settings = new BrightenerSettings(this);
             this.settings.Show();
+            this.settings.percBrightenTxt.Text = this.amountLighter.ToString();
+            this.settings.percBrightenTxt.TextChanged += new EventHandler(PercentChanged);
         }
+
+        private void PercentChanged(object sender, EventArgs args)
+        {
+            TextBox bx = (TextBox)sender;
+            try {
+                this.amountLighter = double.Parse(bx.Text);
+            }
+            catch (Exception e) {
+                //invalid input
+            }
+        }
+
         public override string Website
         {
             get { throw new NotImplementedException(); }
