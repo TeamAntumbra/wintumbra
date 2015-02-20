@@ -19,15 +19,12 @@ namespace AntumbraScreenProcessor
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
         private SmartProcSettingsWindow settings;
+        private Dictionary<string, int> instanceSettings;
         public override int id { get; set; }
         public override bool IsDefault
         {
             get { return true; }
         }
-
-        private int useAllTol= 20;//min diff between each sum to use all of the sums
-        private int minMixPerc = 15;//min percent either sum of r, g, or b must be to be included if not the largest
-        private int minBrightness = 10;//min brightness a pixel must have to be included
 
         public override String Name
         {
@@ -63,22 +60,38 @@ namespace AntumbraScreenProcessor
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
+        public override bool Setup()
+        {
+            this.instanceSettings = new Dictionary<string,int>();
+            this.instanceSettings["useAllTol"] = 20;
+            this.instanceSettings["minMixPerc"] = 15;
+            this.instanceSettings["minBright"] = 10;
+            return true;
+        }
+
         public override bool Start()
         {
+            if (this.instanceSettings == null)//not ready
+                if (!this.Setup())
+                    return false;//failed to setup
             this.running = true;
             return true;
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
             this.settings = new SmartProcSettingsWindow(this);
             this.settings.Show();
-            this.settings.useAllTxt.Text = this.useAllTol.ToString();
-            this.settings.minMixTxt.Text = this.minMixPerc.ToString();
-            this.settings.minBrightTxt.Text = this.minBrightness.ToString();
+            if (this.instanceSettings == null)//not ready
+                if (!this.Setup())
+                    return false;//failed to setup
+            this.settings.useAllTxt.Text = this.instanceSettings["useAllTol"].ToString();
+            this.settings.minMixTxt.Text = this.instanceSettings["minMixPerc"].ToString();
+            this.settings.minBrightTxt.Text = this.instanceSettings["minBright"].ToString();
             this.settings.useAllTxt.TextChanged += new EventHandler(useAllChanged);
             this.settings.minBrightTxt.TextChanged += new EventHandler(minMixChanged);
             this.settings.minMixTxt.TextChanged += new EventHandler(minBrightChanged);
+            return true;
         }
 
         private void useAllChanged(object sender, EventArgs args)
@@ -86,7 +99,7 @@ namespace AntumbraScreenProcessor
             int i;
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
-                this.useAllTol = i;
+                this.instanceSettings["useAllTol"] = i;
         }
 
         private void minMixChanged(object sender, EventArgs args)
@@ -94,7 +107,7 @@ namespace AntumbraScreenProcessor
             int i;
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
-                this.minMixPerc = i;
+                this.instanceSettings["minMixPerc"] = i;
         }
 
         private void minBrightChanged(object sender, EventArgs args)
@@ -102,7 +115,7 @@ namespace AntumbraScreenProcessor
             int i;
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
-                this.minBrightness = i;
+                this.instanceSettings["minBright"] = i;
         }
 
         public override bool Stop()
@@ -131,10 +144,11 @@ namespace AntumbraScreenProcessor
                 //Console.WriteLine("null BitMap returned");
                 return Color.Empty;
             }
-            return SmartCalculateReprColor(screen, this.useAllTol, this.minMixPerc);
+            return SmartCalculateReprColor(screen, this.instanceSettings["useAllTol"], (int)this.instanceSettings["minMixPerc"],
+                this.instanceSettings["minBright"]);
         }
 
-        private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold)
+        private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness)
         {
             int width = bm.Width;
             int height = bm.Height;
@@ -161,7 +175,7 @@ namespace AntumbraScreenProcessor
                         red = p[idx + 2];
                         green = p[idx + 1];
                         blue = p[idx];
-                        if (red < this.minBrightness && green < this.minBrightness && blue < this.minBrightness)//skip pixel, too dark
+                        if (red < minBrightness && green < minBrightness && blue < minBrightness)//skip pixel, too dark
                             continue;
                         int max = Math.Max(blue, Math.Max(green, red));
                         if (blue == max) {//blue dominant
