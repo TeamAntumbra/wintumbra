@@ -19,7 +19,6 @@ namespace AntumbraScreenDriver
         public delegate void NewScreenAvail(Bitmap image, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         private bool running = false;
-        private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -51,6 +50,11 @@ namespace AntumbraScreenDriver
             get { return "https://antumbra.io/"; }
         }
 
+        public override bool Setup()
+        {
+            return true;//all handled through driver built-ins
+        }
+
         public override bool Start()
         {
             this.driver = new Thread(new ThreadStart(captureTarget));
@@ -59,16 +63,13 @@ namespace AntumbraScreenDriver
             return true;
         }
 
-        public override void Settings()
+        public override bool Settings()
         {
-            this.settings = new AntumbraExtSettingsWindow(this);
-            settings.Show();
+            return false;
         }
 
         public override bool Stop()
         {
-            if (this.settings != null)
-                this.settings.Dispose();
             this.NewScreenAvailEvent = null;
             if (null != this.driver && this.driver.IsAlive) {
                 this.driver.Abort();
