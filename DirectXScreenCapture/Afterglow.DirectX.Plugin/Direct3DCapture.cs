@@ -20,7 +20,6 @@ namespace DirectXScreenCapture
     {
         private bool running = false;
         private DXSettingsWindow settings;
-        private Dictionary<string, string> instanceSettings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public override int id { get; set; }
@@ -72,18 +71,8 @@ namespace DirectXScreenCapture
             //doesn't affect capture for DX
         }
 
-        public override bool Setup()
-        {
-            this.instanceSettings = new Dictionary<string, string>();
-            this.instanceSettings["Target"] = "example.exe";
-            return true;
-        }
-
         public override bool Settings()
         {
-            if (this.instanceSettings == null)
-                if (!Setup())
-                    return false;//setup failed
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
             this.settings.FormClosing += new System.Windows.Forms.FormClosingEventHandler(updateTarget);
@@ -96,7 +85,7 @@ namespace DirectXScreenCapture
             var txtBx = window.processToCaptTxt;
             if (txtBx == null)
                 return;//no target entered
-            this.instanceSettings["Target"] = window.processToCaptTxt.Text;
+            Properties.Settings.Default["Target"] = window.processToCaptTxt.Text;
         }
 
         public override bool IsRunning
@@ -118,7 +107,7 @@ namespace DirectXScreenCapture
             _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
 
             // Inject to process
-            this.TargetProcess = this.instanceSettings["Target"];
+            this.TargetProcess = (string)Properties.Settings.Default["Target"];
 
             if (String.IsNullOrEmpty(this.TargetProcess))
             {
