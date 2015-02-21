@@ -83,11 +83,6 @@ namespace AntumbraFastScreenProcessor
             bm.Dispose();
         }
 
-        public override bool Setup()
-        {
-            return true;//no settings to setup
-        }
-
         public override bool Start()
         {
             this.running = true;
