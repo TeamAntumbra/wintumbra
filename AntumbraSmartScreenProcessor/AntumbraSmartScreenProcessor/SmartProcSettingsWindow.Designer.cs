@@ -42,6 +42,8 @@
             this.useAllTxt = new System.Windows.Forms.TextBox();
             this.minMixTxt = new System.Windows.Forms.TextBox();
             this.minBrightTxt = new System.Windows.Forms.TextBox();
+            this.scaleFactorTxt = new System.Windows.Forms.TextBox();
+            this.scaleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -159,7 +161,7 @@
             // minBrightLabel
             // 
             this.minBrightLabel.AutoSize = true;
-            this.minBrightLabel.Location = new System.Drawing.Point(69, 593);
+            this.minBrightLabel.Location = new System.Drawing.Point(417, 545);
             this.minBrightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.minBrightLabel.Name = "minBrightLabel";
             this.minBrightLabel.Size = new System.Drawing.Size(118, 20);
@@ -191,17 +193,39 @@
             this.minBrightTxt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
             this.minBrightTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.minBrightTxt.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.minBrightTxt.Location = new System.Drawing.Point(250, 594);
+            this.minBrightTxt.Location = new System.Drawing.Point(598, 546);
             this.minBrightTxt.Name = "minBrightTxt";
             this.minBrightTxt.Size = new System.Drawing.Size(51, 19);
             this.minBrightTxt.TabIndex = 14;
+            // 
+            // scaleFactorTxt
+            // 
+            this.scaleFactorTxt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.scaleFactorTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.scaleFactorTxt.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.scaleFactorTxt.Location = new System.Drawing.Point(598, 495);
+            this.scaleFactorTxt.Name = "scaleFactorTxt";
+            this.scaleFactorTxt.Size = new System.Drawing.Size(51, 19);
+            this.scaleFactorTxt.TabIndex = 16;
+            // 
+            // scaleLabel
+            // 
+            this.scaleLabel.AutoSize = true;
+            this.scaleLabel.Location = new System.Drawing.Point(330, 495);
+            this.scaleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.scaleLabel.Name = "scaleLabel";
+            this.scaleLabel.Size = new System.Drawing.Size(238, 20);
+            this.scaleLabel.TabIndex = 15;
+            this.scaleLabel.Text = "Pre-Process Scale Down Factor:";
             // 
             // SmartProcSettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.ClientSize = new System.Drawing.Size(771, 647);
+            this.ClientSize = new System.Drawing.Size(771, 651);
+            this.Controls.Add(this.scaleFactorTxt);
+            this.Controls.Add(this.scaleLabel);
             this.Controls.Add(this.minBrightTxt);
             this.Controls.Add(this.minMixTxt);
             this.Controls.Add(this.useAllTxt);
@@ -246,5 +270,7 @@
         public System.Windows.Forms.TextBox useAllTxt;
         public System.Windows.Forms.TextBox minMixTxt;
         public System.Windows.Forms.TextBox minBrightTxt;
+        public System.Windows.Forms.TextBox scaleFactorTxt;
+        private System.Windows.Forms.Label scaleLabel;
     }
 }

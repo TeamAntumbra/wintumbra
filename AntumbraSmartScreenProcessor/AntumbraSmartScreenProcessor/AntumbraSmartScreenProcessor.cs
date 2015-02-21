@@ -73,6 +73,8 @@ namespace AntumbraSmartScreenProcessor
             this.settings.useAllTxt.Text = Properties.Settings.Default["useAllTol"].ToString();
             this.settings.minBrightTxt.Text = Properties.Settings.Default["minBright"].ToString();
             this.settings.minMixTxt.Text = Properties.Settings.Default["minMixPerc"].ToString();
+            this.settings.scaleFactorTxt.Text = Properties.Settings.Default["scaleFactor"].ToString();
+            this.settings.scaleFactorTxt.TextChanged += new EventHandler(scaleFactorChanged);
             this.settings.useAllTxt.TextChanged += new EventHandler(useAllChanged);
             this.settings.minBrightTxt.TextChanged += new EventHandler(minMixChanged);
             this.settings.minMixTxt.TextChanged += new EventHandler(minBrightChanged);
@@ -85,7 +87,6 @@ namespace AntumbraSmartScreenProcessor
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
                 Properties.Settings.Default["useAllTol"] = i;
-          //      this.instanceSettings["useAllTol"] = i;
         }
 
         private void minMixChanged(object sender, EventArgs args)
@@ -94,7 +95,6 @@ namespace AntumbraSmartScreenProcessor
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
                 Properties.Settings.Default["minMixPerc"] = i;
-       //         this.instanceSettings["minMixPerc"] = i;
         }
 
         private void minBrightChanged(object sender, EventArgs args)
@@ -103,7 +103,14 @@ namespace AntumbraSmartScreenProcessor
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
                 Properties.Settings.Default["minBright"] = i;
-           //     this.instanceSettings["minBright"] = i;
+        }
+
+        private void scaleFactorChanged(object sender, EventArgs args)
+        {
+            int i;
+            TextBox box = (TextBox)sender;
+            if (int.TryParse(box.Text, out i))
+                Properties.Settings.Default["scaleFactor"] = i;
         }
 
         public override bool Stop()
@@ -139,11 +146,17 @@ namespace AntumbraSmartScreenProcessor
                 return Color.Empty;
             }
             return SmartCalculateReprColor(screen, (int)Properties.Settings.Default["useAllTol"], (int)Properties.Settings.Default["minMixPerc"],
-                (int)Properties.Settings.Default["minBright"]);
+                (int)Properties.Settings.Default["minBright"], (int)Properties.Settings.Default["scaleFactor"]);
         }
 
-        private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness)
+        private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness, int scaleDownFactor)
         {
+            int newWidth = bm.Width / scaleDownFactor;
+            int newHeight = bm.Height / scaleDownFactor;
+            Bitmap small = new Bitmap(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(small))//resize to 1X1 Bitmap using GDI+ Graphics class
+                g.DrawImage(bm, 0, 0, newWidth, newHeight);//TODO add resizing to configured size to smart processor
+            bm = small;
             int width = bm.Width;
             int height = bm.Height;
             int red = 0;
