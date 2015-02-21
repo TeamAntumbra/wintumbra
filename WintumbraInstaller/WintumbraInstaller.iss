@@ -15,6 +15,7 @@ Source: "../README.md"; DestDir: {app}
 
 [Run]
 Filename: "{tmp}\dotNetFx40_Full_setup.exe"; Check: FrameworkIsNotInstalled
+Filename: "{app}\DriverInstaller\glowdrvinst.exe";
 
 [code]
 function FrameworkIsNotInstalled: Boolean;
