@@ -71,12 +71,6 @@ namespace Antumbra.Glow.ExtensionFramework
         /// </summary>
         /// <returns>return true if window opened, else false</returns>
         bool Settings();
-
-        /// <summary>
-        /// Get ready to be used
-        /// </summary>
-        /// <returns>true if success, else false</returns>
-        bool Setup();
     }
 
     /// <summary>
@@ -150,12 +144,6 @@ namespace Antumbra.Glow.ExtensionFramework
         /// </summary>
         /// <returns>true if window opened, else false</returns>
         public abstract bool Settings();
-
-        /// <summary>
-        /// Get ready to be used / have settings modified
-        /// </summary>
-        /// <returns>true if success, else false</returns>
-        public abstract bool Setup();
     }
 
     public abstract class GlowDriver : GlowExtension

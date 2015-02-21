@@ -63,12 +63,6 @@ namespace Antumbra.Glow.ExtensionFramework
             NewColorAvailEvent(newCol, args);//pass it up
         }
 
-        public override bool Setup()
-        {
-            //no setup required
-            return true;
-        }
-
         public override bool Start()
         {
             if (this.grabber != null && this.processor != null) {
