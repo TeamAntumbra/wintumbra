@@ -3,7 +3,7 @@
 
 ##Quick Start
 
-[Latest Release Download]()
+[Latest Release Download](https://github.com/TeamAntumbra/wintumbra/releases/latest)
 
 ####How to Install Glow Client and Driver
 
