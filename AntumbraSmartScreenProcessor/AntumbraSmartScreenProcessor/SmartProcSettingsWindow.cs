@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace AntumbraScreenProcessor
+namespace AntumbraSmartScreenProcessor
 {
     public partial class SmartProcSettingsWindow : Form
     {

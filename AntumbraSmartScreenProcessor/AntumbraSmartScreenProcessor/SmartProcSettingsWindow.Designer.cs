@@ -1,4 +1,4 @@
-﻿namespace AntumbraScreenProcessor
+﻿namespace AntumbraSmartScreenProcessor
 {
     partial class SmartProcSettingsWindow
     {

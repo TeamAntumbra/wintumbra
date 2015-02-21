@@ -10,7 +10,7 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.Windows.Forms;
 
-namespace AntumbraScreenProcessor
+namespace AntumbraSmartScreenProcessor
 {
     [Export(typeof(GlowExtension))]
     public class AntumbraSmartScreenProcessor : GlowScreenProcessor
@@ -19,7 +19,6 @@ namespace AntumbraScreenProcessor
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
         private SmartProcSettingsWindow settings;
-        private Dictionary<string, int> instanceSettings;
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -60,20 +59,9 @@ namespace AntumbraScreenProcessor
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override bool Setup()
-        {
-            this.instanceSettings = new Dictionary<string,int>();
-            this.instanceSettings["useAllTol"] = 20;
-            this.instanceSettings["minMixPerc"] = 15;
-            this.instanceSettings["minBright"] = 10;
-            return true;
-        }
-
         public override bool Start()
         {
-            if (this.instanceSettings == null)//not ready
-                if (!this.Setup())
-                    return false;//failed to setup
+            SaveSettings();
             this.running = true;
             return true;
         }
@@ -82,12 +70,9 @@ namespace AntumbraScreenProcessor
         {
             this.settings = new SmartProcSettingsWindow(this);
             this.settings.Show();
-            if (this.instanceSettings == null)//not ready
-                if (!this.Setup())
-                    return false;//failed to setup
-            this.settings.useAllTxt.Text = this.instanceSettings["useAllTol"].ToString();
-            this.settings.minMixTxt.Text = this.instanceSettings["minMixPerc"].ToString();
-            this.settings.minBrightTxt.Text = this.instanceSettings["minBright"].ToString();
+            this.settings.useAllTxt.Text = Properties.Settings.Default["useAllTol"].ToString();
+            this.settings.minBrightTxt.Text = Properties.Settings.Default["minBright"].ToString();
+            this.settings.minMixTxt.Text = Properties.Settings.Default["minMixPerc"].ToString();
             this.settings.useAllTxt.TextChanged += new EventHandler(useAllChanged);
             this.settings.minBrightTxt.TextChanged += new EventHandler(minMixChanged);
             this.settings.minMixTxt.TextChanged += new EventHandler(minBrightChanged);
@@ -99,7 +84,8 @@ namespace AntumbraScreenProcessor
             int i;
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
-                this.instanceSettings["useAllTol"] = i;
+                Properties.Settings.Default["useAllTol"] = i;
+          //      this.instanceSettings["useAllTol"] = i;
         }
 
         private void minMixChanged(object sender, EventArgs args)
@@ -107,7 +93,8 @@ namespace AntumbraScreenProcessor
             int i;
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
-                this.instanceSettings["minMixPerc"] = i;
+                Properties.Settings.Default["minMixPerc"] = i;
+       //         this.instanceSettings["minMixPerc"] = i;
         }
 
         private void minBrightChanged(object sender, EventArgs args)
@@ -115,11 +102,13 @@ namespace AntumbraScreenProcessor
             int i;
             TextBox box = (TextBox)sender;
             if (int.TryParse(box.Text, out i))
-                this.instanceSettings["minBright"] = i;
+                Properties.Settings.Default["minBright"] = i;
+           //     this.instanceSettings["minBright"] = i;
         }
 
         public override bool Stop()
         {
+            SaveSettings();
             if (this.settings != null)
                 this.settings.Dispose();
             this.NewColorAvailEvent = null;
@@ -130,6 +119,11 @@ namespace AntumbraScreenProcessor
         public override bool IsRunning
         {
             get { return this.running; }
+        }
+
+        private void SaveSettings()//TODO add settings bounding / verifictaion
+        {
+            Properties.Settings.Default.Save();
         }
 
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
@@ -144,8 +138,8 @@ namespace AntumbraScreenProcessor
                 //Console.WriteLine("null BitMap returned");
                 return Color.Empty;
             }
-            return SmartCalculateReprColor(screen, this.instanceSettings["useAllTol"], (int)this.instanceSettings["minMixPerc"],
-                this.instanceSettings["minBright"]);
+            return SmartCalculateReprColor(screen, (int)Properties.Settings.Default["useAllTol"], (int)Properties.Settings.Default["minMixPerc"],
+                (int)Properties.Settings.Default["minBright"]);
         }
 
         private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness)
