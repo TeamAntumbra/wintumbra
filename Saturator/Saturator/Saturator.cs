@@ -14,7 +14,7 @@ using System.Windows.Forms;
 namespace Saturator
 {
     [Export(typeof(GlowExtension))]
-    public class Saturator : GlowDecorator
+    public class Saturator : GlowDecorator //TODO add custom settings window
     {
         private bool running = false;
         public override int id { get; set; }
@@ -52,7 +52,7 @@ namespace Saturator
             HslColor boringHSL = new HslColor(origColor);
             if (boringHSL.S < .35) { }//skip low saturation colors
             else if (boringHSL.S <= .65)
-                boringHSL.S += .35;//(double)this.settings["Saturation Additive"]; //saturate
+                boringHSL.S += .35; //saturate
             else
                 boringHSL.S = 1.0;
             return boringHSL.ToRgbColor();
@@ -66,12 +66,6 @@ namespace Saturator
         public override bool Settings()
         {
             return false;//TODO make settings
-        }
-
-        public override bool Setup()
-        {
-
-            return true;
         }
 
         public override bool Start()

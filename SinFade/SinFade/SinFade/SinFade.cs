@@ -30,11 +30,6 @@ namespace SinFade
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override bool Setup()
-        {
-            return true;//TODO add settings
-        }
-
         public override bool Start()
         {
             this.running = true;

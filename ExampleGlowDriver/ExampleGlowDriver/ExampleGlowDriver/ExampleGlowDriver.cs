@@ -36,11 +36,6 @@ namespace ExampleGlowDriver
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override bool Setup()
-        {
-            return true;//no settings obj to setup
-        }
-
         public override bool Start()
         {
             this.driver = new Task(target);

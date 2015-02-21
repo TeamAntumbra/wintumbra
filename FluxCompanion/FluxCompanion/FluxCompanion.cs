@@ -39,11 +39,6 @@ namespace FluxCompanion
             get { return false; }
         }
 
-        public override bool Setup()
-        {
-            return true;//no setup
-        }
-
         public override bool Start()
         {
             this.stepSleep = 2000;

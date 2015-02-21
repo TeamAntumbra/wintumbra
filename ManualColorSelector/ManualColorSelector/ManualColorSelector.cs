@@ -63,11 +63,6 @@ namespace ManualColorSelector
             get { return this.running; }
         }
 
-        public override bool Setup()
-        {
-            return true;//no setup
-        }
-
         public override bool Start()
         {
             this.lastUpdate = Color.Empty;

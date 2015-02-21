@@ -60,11 +60,6 @@ namespace ColorClock
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override bool Setup()
-        {
-            return true;//no setup
-        }
-
         public override bool Start()
         {
             this.driver = new Task(driverTarget);

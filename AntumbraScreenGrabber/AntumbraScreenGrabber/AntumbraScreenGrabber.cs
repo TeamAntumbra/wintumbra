@@ -50,11 +50,6 @@ namespace AntumbraScreenDriver
             get { return "https://antumbra.io/"; }
         }
 
-        public override bool Setup()
-        {
-            return true;//all handled through driver built-ins
-        }
-
         public override bool Start()
         {
             this.driver = new Thread(new ThreadStart(captureTarget));
