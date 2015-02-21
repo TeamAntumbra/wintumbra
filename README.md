@@ -5,7 +5,7 @@
 
 [Latest Release Download]()
 
-####How to Install Glow Driver (to be replaced with auto-installer soon)
+####How to Install Glow Client and Driver
 
 1) Plug in your Glow.
 
