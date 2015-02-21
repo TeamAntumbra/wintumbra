@@ -63,20 +63,20 @@ namespace Antumbra.Glow.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        public static System.Drawing.Icon AntumbraA {
+        public static System.Drawing.Icon antumbra {
             get {
-                object obj = ResourceManager.GetObject("AntumbraA", resourceCulture);
+                object obj = ResourceManager.GetObject("antumbra", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        public static System.Drawing.Bitmap AntumbraA1 {
+        public static System.Drawing.Icon antumbra_color {
             get {
-                object obj = ResourceManager.GetObject("AntumbraA1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                object obj = ResourceManager.GetObject("antumbra_color", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

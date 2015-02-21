@@ -83,7 +83,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>AntumbraA.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\antumbra_color.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>FEF6F6E87BDC86BB6EE0AD3C5D0835A09EE0A029</ManifestCertificateThumbprint>
@@ -233,8 +233,10 @@
     <None Include="libantumbra.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\antumbra.ico" />
     <Content Include="Resources\AntumbraA.ico" />
     <Content Include="Resources\AntumbraA.png" />
+    <None Include="Resources\antumbra_color.ico" />
     <Content Include="Resources\cellbackground.png" />
     <None Include="Resources\Culture.ico" />
     <Content Include="Resources\eyedropper.cur">
@@ -243,6 +245,7 @@
     <None Include="Resources\eyedropper.ico" />
     <Content Include="Resources\eyedropper.png" />
     <Content Include="Resources\gear.png" />
+    <None Include="Resources\iconBW1024.png" />
     <Content Include="Resources\palette-load.png" />
     <Content Include="Resources\palette-save.png" />
   </ItemGroup>
