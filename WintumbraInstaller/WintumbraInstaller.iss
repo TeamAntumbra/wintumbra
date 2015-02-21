@@ -5,9 +5,7 @@ DefaultDirName = "Antumbra"
 
 [Files]
 Source: "dependencies\dotNetFx40_Full_x86_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: FrameworkIsNotInstalled
-Source: "..\DriverInstaller\Glow\*"; DestDir: {app}\DriverInstaller
-Source: "..\DriverInstaller\Glow\amd64\*"; DestDir: {app}\DriverInstaller\amd64
-Source: "..\DriverInstaller\Glow\x86\*"; DestDir: {app}\DriverInstaller\x86
+Source: "..\DriverInstaller\*"; DestDir: {app}\DriverInstaller\
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
 Source: "dependencies\antumbra.exe"; DestDir: {app}
 Source: "libusb-1.0.dll"; DestDir: {app}

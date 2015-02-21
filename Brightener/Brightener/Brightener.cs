@@ -41,6 +41,8 @@ namespace Brightener
 
         public override Color Decorate(Color origColor)
         {
+            this.instanceSettings = new Dictionary<string, double>();//TODO remove ugly temp fix
+            this.instanceSettings["amountToLighten"] = .15;
             HslColor hsl = new HslColor(origColor);
             if (hsl.L > (1.0 - this.instanceSettings["amountToLighten"]))
                 hsl.L = 1.0;
