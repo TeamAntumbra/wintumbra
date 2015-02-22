@@ -4,11 +4,14 @@ AppVersion = 0.1.0
 DefaultDirName = "{pf32}\Antumbra"
 UsePreviousAppDir = no
 
+[Icons]
+Name: "{commonprograms}\Antumbra"; Filename: "{app}\Antumbra.exe"
+
 [Files]
 Source: "dependencies\dotNetFx40_Full_x86_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: FrameworkIsNotInstalled
 Source: "..\DriverInstaller\*"; DestDir: {app}\DriverInstaller\
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
-Source: "dependencies\antumbra.exe"; DestDir: {app}
+Source: "dependencies\Antumbra.exe"; DestDir: {app}
 Source: "libusb-1.0.dll"; DestDir: {app}
 Source: "libantumbra.dll"; DestDir: {app}
 Source: "../Licenses\*"; DestDir: {app}\Licences
