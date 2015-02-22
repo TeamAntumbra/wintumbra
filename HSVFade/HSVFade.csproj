@@ -64,7 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Antumbra\Antumbra.csproj">
+    <ProjectReference Include="..\Core\Antumbra.csproj">
       <Project>{b5887076-f914-4f71-8cb7-cf3cbf663ccf}</Project>
       <Name>Antumbra</Name>
     </ProjectReference>
