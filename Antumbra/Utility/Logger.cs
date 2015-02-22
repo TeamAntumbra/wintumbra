@@ -16,9 +16,9 @@ namespace Antumbra.Glow.Utility
 
         public void Log(String lines)
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter(name, true);
-            file.WriteLine(lines);
-            file.Close();
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(name, true)) {
+                file.WriteLine(lines);
+            }
         }
     }
 }
