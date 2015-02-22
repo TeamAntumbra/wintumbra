@@ -242,7 +242,8 @@ namespace Antumbra.Glow
         public void Stop(int id)
         {
             var dev = this.GlowManager.getDevice(id);
-            dev.Stop();
+            if (!dev.Stop())
+                Console.WriteLine("Device did not stop correctly.");
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)
                 return;//nothing to stop
@@ -266,7 +267,8 @@ namespace Antumbra.Glow
             }
             ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
             foreach (var dev in this.GlowManager.Glows) {
-                dev.Stop();
+                if (!dev.Stop())
+                    Console.WriteLine("Device did not stop correctly.");
                 var loop = this.outManager.FindLoopOrReturnNull(dev.id);
                 if (loop != null)
                     loop.Dispose();//stop and dispose if exists
