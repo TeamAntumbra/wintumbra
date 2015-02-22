@@ -1,7 +1,8 @@
 [Setup]
-AppName = "WintumbraInstaller"
+AppName = "Antumbra"
 AppVersion = 0.1.0
-DefaultDirName = "Antumbra"
+DefaultDirName = "{pf32}\Antumbra"
+UsePreviousAppDir = no
 
 [Files]
 Source: "dependencies\dotNetFx40_Full_x86_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: FrameworkIsNotInstalled
