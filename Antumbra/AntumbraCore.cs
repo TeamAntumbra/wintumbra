@@ -172,7 +172,13 @@ namespace Antumbra.Glow
         {
             ShowMessage(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), ToolTipIcon.Info);
         }
-
+        /// <summary>
+        /// Show the passed message as a balloon of the applications NotifyIcon
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="title"></param>
+        /// <param name="msg"></param>
+        /// <param name="icon"></param>
         public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)//TODO somewhat replace with eventhandler and delegate for showing messages
         {
             this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
@@ -227,7 +233,10 @@ namespace Antumbra.Glow
             StopCurrent();
             Start(this.toolStripDeviceList.SelectedIndex);
         }
-
+        /// <summary>
+        /// Start the device (if found) with the id passed
+        /// </summary>
+        /// <param name="id"></param>
         public void Start(int id)
         {
             this.logger.Log("Starting device id: " + id);
@@ -253,7 +262,10 @@ namespace Antumbra.Glow
         {
             this.Stop(this.toolStripDeviceList.SelectedIndex);
         }
-
+        /// <summary>
+        /// Stop the device (if found) with the id passed
+        /// </summary>
+        /// <param name="id"></param>
         public void Stop(int id)
         {
             this.logger.Log("Stopping device id: " + id);
@@ -266,7 +278,11 @@ namespace Antumbra.Glow
             loop.Dispose();
             ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
         }
-
+        /// <summary>
+        /// Event handler for start button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.GlowManager.GlowsFound == 0)
@@ -274,7 +290,9 @@ namespace Antumbra.Glow
             else
                 this.StartCurrent();
         }
-
+        /// <summary>
+        /// Stop all found devices
+        /// </summary>
         public void StopAll()
         {
             if (this.GlowManager.GlowsFound == 0) {
@@ -291,7 +309,11 @@ namespace Antumbra.Glow
             }
             ShowMessage(3000, "Stopped", "Extensions Stopped.", ToolTipIcon.Info);
         }
-
+        /// <summary>
+        /// Event handler for stop button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.GlowManager.GlowsFound == 0)
@@ -300,7 +322,9 @@ namespace Antumbra.Glow
                 this.StopCurrent();
         }
     }
-
+    /// <summary>
+    /// Custom renderer for notifyicon contextMenu
+    /// </summary>
     public class CustomRenderer : ToolStripProfessionalRenderer
     {
         protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
