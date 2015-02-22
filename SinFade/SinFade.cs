@@ -77,14 +77,16 @@ namespace SinFade
 
         public override bool Stop()
         {
+            this.running = false;
             bool result = true;
             if (this.driver != null) {
-                this.driver.Wait(1000);
+                this.driver.Wait(3000);
                 if (!this.driver.IsCompleted)
                     result = false;
+                else
+                    this.driver.Dispose();
                 this.driver = null;
             }
-            this.running = false;
             return result;
         }
 
