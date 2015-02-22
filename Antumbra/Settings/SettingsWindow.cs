@@ -171,6 +171,7 @@ namespace Antumbra.Glow.Settings
             this.currentDevice.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
             this.currentDevice.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
             //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
+            this.updateValues();
             this.antumbra.AnnounceConfig();
         }
 
@@ -186,6 +187,7 @@ namespace Antumbra.Glow.Settings
                     this.antumbra.ShowMessage(3000, "Decorator Enabled",
                         "The Decorator, " + dec.ToString() + ", has been enabled.", ToolTipIcon.Info);
             }
+            this.updateValues();
         }
 
         private void notifierToggle_Click(object sender, EventArgs e)
@@ -200,6 +202,7 @@ namespace Antumbra.Glow.Settings
                     this.antumbra.ShowMessage(3000, "Notifier Enabled",
                         "The notifier, " + notf.ToString() + ", has been enabled.", ToolTipIcon.Info);
             }
+            this.updateValues();
         }
 
         private void SettingsWindow_MouseEnter(object sender, EventArgs e)
