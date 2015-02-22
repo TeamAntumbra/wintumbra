@@ -171,6 +171,7 @@ namespace Antumbra.Glow
 
         public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)//TODO somewhat replace with eventhandler and delegate for showing messages
         {
+            this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
         //replace with custom event handler as well TODO
@@ -225,6 +226,7 @@ namespace Antumbra.Glow
 
         public void Start(int id)
         {
+            this.logger.Log("Starting device id: " + id);
             Stop(id);
             var dev = this.GlowManager.getDevice(id);
             var loop = this.outManager.FindLoopOrReturnNull(id);
@@ -246,6 +248,7 @@ namespace Antumbra.Glow
 
         public void Stop(int id)
         {
+            this.logger.Log("Stopping device id: " + id);
             var dev = this.GlowManager.getDevice(id);
             if (!dev.Stop())
                 Console.WriteLine("Device did not stop correctly.");
