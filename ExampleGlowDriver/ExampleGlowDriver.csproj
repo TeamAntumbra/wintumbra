@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{88C97855-60A5-4436-97C8-B94C80436C35}</ProjectGuid>
+    <ProjectGuid>{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExampleGlowDriver</RootNamespace>
