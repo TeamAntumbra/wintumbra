@@ -31,12 +31,15 @@ namespace Antumbra.Glow
         private OutputLoopManager outManager;
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
+        private Logger logger;
         public bool goodStart { get; private set; }//start-up completion status
         /// <summary>
         /// AntumbraCore Constructor
         /// </summary>
         public AntumbraCore()
         {
+            this.logger = new Logger("WintumbraLog.txt");
+            this.logger.Log("Wintumbra Starting... @ " + DateTime.Now.ToString());
             this.goodStart = true;
             InitializeComponent();
             try {
@@ -46,13 +49,19 @@ namespace Antumbra.Glow
                 string msg = "";
                 foreach (var err in e.LoaderExceptions)
                     msg += err.Message;
+                this.logger.Log("Exception occured while loading exceptions. Exceptions following:");
+                this.logger.Log(msg);
                 ShowMessage(10000, "Exception Occured While Loading Extensions", msg, ToolTipIcon.Error);
                 this.goodStart = false;
                 Thread.Sleep(10000);//wait for message
                 return;//skip rest
             }
+            this.logger.Log("Creating DeviceManager");
             this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
+            this.logger.Log("Devices Found: " + this.GlowManager.GlowsFound);
+            this.logger.Log("Creating OutputLoopManager");
             this.outManager = new OutputLoopManager();
+            this.logger.Log("Creating OutputLoops");
             foreach (var dev in this.GlowManager.Glows) {//create output loop
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
                 this.toolStripDeviceList.Items.Add(dev);
@@ -62,6 +71,7 @@ namespace Antumbra.Glow
                 this.toolStripDeviceList.SelectedIndex = 0;
                 this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
             }
+            this.logger.Log("Core good start? - " + this.goodStart);
         }
         /// <summary>
         /// Event handler for when the menubar icon is clicked
@@ -199,12 +209,7 @@ namespace Antumbra.Glow
             ShowMessage(3000, "Starting All", "Extensions are being started. Please wait.", ToolTipIcon.Info);
 
             foreach (var dev in this.GlowManager.Glows) {//start each output loop
-                var loop = this.outManager.FindLoopOrReturnNull(dev.id);
-                if (loop == null)
-                    loop = this.outManager.CreateAndAddLoop(this.GlowManager, dev.id);
-                dev.AttachEventToExtMgr(loop);
-                dev.Start();
-                loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
+                this.Start(dev.id);
             }
             ShowMessage(3000, "Started", "Extensions have been started.", ToolTipIcon.Info);
         }
