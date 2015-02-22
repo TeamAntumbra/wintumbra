@@ -98,6 +98,7 @@ namespace Antumbra.Glow
                 return;
             }
             GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
+            this.logger.Log("Opening settings window for device id: " + current.id);
             SettingsWindow win;
             if (this.settingsWindows.Count > current.id) {//in range
                 win = this.settingsWindows.ElementAt<SettingsWindow>(current.id);
@@ -134,10 +135,13 @@ namespace Antumbra.Glow
         /// <param name="e"></param>
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
+            this.logger.Log("Wintumbra Quitting...");
             StopAll();
             this.notifyIcon.Visible = false;
             this.contextMenu.Visible = false;
+            this.logger.Log("GlowManager cleaning up.");
             this.GlowManager.CleanUp();
+            this.logger.Log("Cleaning up extension settings windows");
             foreach (var win in this.settingsWindows)
                 win.CleanUp();
             Application.Exit();
@@ -233,7 +237,11 @@ namespace Antumbra.Glow
             if (loop == null)
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, id);
             dev.AttachEventToExtMgr(loop);
-            dev.Start();
+            if (dev.Start()) {
+                this.logger.Log("Device id: " + dev.id + " started successfully.");
+                this.logger.Log("Current Configuration: " + dev.GetSetupDesc());
+
+            }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
             ShowMessage(3000, "Device " + id + " Started.", "The current device has been started.",
                 ToolTipIcon.Info);
@@ -243,7 +251,7 @@ namespace Antumbra.Glow
         /// </summary>
         public void StopCurrent()
         {
-            this.Stop(this.toolStripDeviceList.SelectedIndex);  
+            this.Stop(this.toolStripDeviceList.SelectedIndex);
         }
 
         public void Stop(int id)
