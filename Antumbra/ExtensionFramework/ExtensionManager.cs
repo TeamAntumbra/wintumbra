@@ -124,12 +124,16 @@ namespace Antumbra.Glow.ExtensionFramework
 
         public bool Stop()
         {
-            this.ActiveDriver.Stop();//coupler will stop grabber & processor
+            bool result = true;
+            if (!this.ActiveDriver.Stop())//coupler will stop grabber & processor
+                result = false;
             foreach (var dec in ActiveDecorators)
-                dec.Stop();
+                if (!dec.Stop())
+                    result = false;
             foreach (var notf in ActiveNotifiers)
-                notf.Stop();
-            return true;
+                if (!notf.Stop())
+                    result = false;
+            return result;
         }
     }
 }
