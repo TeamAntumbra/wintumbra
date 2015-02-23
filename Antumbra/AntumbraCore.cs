@@ -21,6 +21,7 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
 using System.Reflection;
+using Microsoft.Win32;
 
 namespace Antumbra.Glow
 {
@@ -40,6 +41,7 @@ namespace Antumbra.Glow
         {
             this.logger = new Logger("WintumbraLog.txt");
             this.logger.Log("Wintumbra Starting... @ " + DateTime.Now.ToString());
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             this.goodStart = true;
             InitializeComponent();
             try {
@@ -320,6 +322,23 @@ namespace Antumbra.Glow
                 ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
             else
                 this.StopCurrent();
+        }
+        /// <summary>
+        /// Event handler for session switching. Used for handling locking and unlocking of the system
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            switch (e.Reason) {
+                case SessionSwitchReason.SessionLock:
+                    this.StopAll();
+                    break;
+                case SessionSwitchReason.SessionUnlock:
+                    Thread.Sleep(1000);
+                    this.StartAll();
+                    break;
+            }
         }
     }
     /// <summary>
