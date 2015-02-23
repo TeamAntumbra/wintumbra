@@ -153,6 +153,9 @@ namespace AntumbraSmartScreenProcessor
                 this.Stop();
                 return Color.Empty;
             }
+            finally {
+                screen.Dispose();
+            }
         }
 
         private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness, int scaleDownFactor)
