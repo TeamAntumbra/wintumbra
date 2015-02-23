@@ -13,6 +13,8 @@ namespace Antumbra.Glow.Utility
         {
             if (prevColor == null)
                 prevColor = Color.Black;
+            if (prevColor.Equals(Color.Empty))
+                return newColor;
             double prevWeight = 1.00 - newWeight;
             int newR = (int)(prevColor.R * prevWeight) + (int)(newColor.R * newWeight);
             int newG = (int)(prevColor.G * prevWeight) + (int)(newColor.G * newWeight);

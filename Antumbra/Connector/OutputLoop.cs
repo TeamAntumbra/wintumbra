@@ -54,8 +54,8 @@ namespace Antumbra.Glow.Connector
         {
             this.weightingEnabled = weightEnabled;
             this.newColorWeight = newColorWeight;
-            this.weightedAvg = Color.Black;
-            this.color = Color.Black;
+            this.weightedAvg = Color.Empty;
+            this.color = Color.Empty;
             this._active = true;
             this.outputLoopTask = new Task(target);
             this.outputLoopTask.Start();
@@ -66,6 +66,8 @@ namespace Antumbra.Glow.Connector
         {
             try {
                 while (Active) {
+                    if (color.Equals(Color.Empty))//no values yet
+                        continue;
                     if (this.weightingEnabled) {
                         weightedAvg = Mixer.MixColorPercIn(color, weightedAvg, this.newColorWeight);
                         this.mgr.sendColor(weightedAvg, this.id);

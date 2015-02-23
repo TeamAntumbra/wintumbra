@@ -39,10 +39,6 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         public int lastTemp { get; private set; }
         /// <summary>
-        /// Last color this Device was successfully set to
-        /// </summary>
-        public Color lastColor { get; set; }
-        /// <summary>
         /// DeviceSettings obj for this device
         /// </summary>
         public DeviceSettings settings { get; private set; }

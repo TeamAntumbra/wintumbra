@@ -69,7 +69,6 @@ namespace Antumbra.Glow.Connector
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
             this.status = status;
-            activeDev.lastColor = Color.FromArgb(r, g, b);
         }
 
         public string GetDeviceSetupDecs()
