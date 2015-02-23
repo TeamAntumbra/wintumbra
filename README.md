@@ -43,6 +43,10 @@ A GlowDecorator decorates colors before they are sent to Glow.
 A GlowNotifier alerts Glow devices when it detects a notification occurs, and plays a 
 light sequence. This object has not been implemented fully yet.
 
+-----------------------
+
+###Some Built-ins
+
 ###AntumbraScreenGrabber
 
 This extension will capture the specified screen area as long as the content of that area
