@@ -66,11 +66,6 @@ namespace DirectXScreenCapture
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
         }
 
-        public override void RecmmndCoreSettings()
-        {
-            //doesn't affect capture for DX
-        }
-
         public override bool Settings()
         {
             this.settings = new DXSettingsWindow(this);

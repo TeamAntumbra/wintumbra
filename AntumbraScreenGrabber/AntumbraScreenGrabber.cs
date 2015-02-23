@@ -79,15 +79,6 @@ namespace AntumbraScreenDriver
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
         }
 
-        public override void RecmmndCoreSettings()
-        {
-            this.x = 0;
-            this.y = 0;
-            var bounds = Screen.PrimaryScreen.Bounds;
-            this.width = bounds.Width;
-            this.height = bounds.Height;
-        }
-
         private void captureTarget()
         {
             int runX = x;
