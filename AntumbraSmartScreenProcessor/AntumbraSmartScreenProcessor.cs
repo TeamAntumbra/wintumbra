@@ -145,8 +145,14 @@ namespace AntumbraSmartScreenProcessor
                 //Console.WriteLine("null BitMap returned");
                 return Color.Empty;
             }
-            return SmartCalculateReprColor(screen, (int)Properties.Settings.Default["useAllTol"], (int)Properties.Settings.Default["minMixPerc"],
-                (int)Properties.Settings.Default["minBright"], (int)Properties.Settings.Default["scaleFactor"]);
+            try {
+                return SmartCalculateReprColor(screen, (int)Properties.Settings.Default["useAllTol"], (int)Properties.Settings.Default["minMixPerc"],
+                    (int)Properties.Settings.Default["minBright"], (int)Properties.Settings.Default["scaleFactor"]);
+            }
+            catch (Exception) {
+                this.Stop();
+                return Color.Empty;
+            }
         }
 
         private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness, int scaleDownFactor)
