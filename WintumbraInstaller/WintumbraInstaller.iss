@@ -1,6 +1,7 @@
 [Setup]
 AppName = "Antumbra"
-AppVersion = 0.1.12
+AppVersion = 0.1.14
+AppId = "Wintumbra"
 DefaultDirName = "{pf32}\Antumbra"
 UsePreviousAppDir = no
 
