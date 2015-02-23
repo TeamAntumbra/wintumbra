@@ -60,7 +60,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         public void updateValues()
         {
-            this.versionLabel.Text = "V0.1.13-beta";
+            this.versionLabel.Text = "V0.1.14-beta";
             compoundDecorationCheck.Checked = this.currentDevice.settings.compoundDecoration;
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
