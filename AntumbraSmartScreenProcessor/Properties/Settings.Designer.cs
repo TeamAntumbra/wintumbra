@@ -49,7 +49,7 @@ namespace AntumbraSmartScreenProcessor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int minBright {
             get {
                 return ((int)(this["minBright"]));
@@ -61,7 +61,7 @@ namespace AntumbraSmartScreenProcessor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int scaleFactor {
             get {
                 return ((int)(this["scaleFactor"]));

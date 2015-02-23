@@ -25,7 +25,7 @@ namespace Brightener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.05")]
         public double amountToLighten {
             get {
                 return ((double)(this["amountToLighten"]));
