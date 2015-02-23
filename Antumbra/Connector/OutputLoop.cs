@@ -82,13 +82,18 @@ namespace Antumbra.Glow.Connector
                     Console.WriteLine("Exception in outputLoopTarget: " + e.Message);
                 }
             }
+            finally {
+                this.mgr.CleanUp();
+            }
         }
 
         private void Stop()
         {
             this._active = false;
-            if (this.outputLoopTask != null)
+            if (this.outputLoopTask != null) {
                 this.outputLoopTask.Wait(3000);
+                this.outputLoopTask.Dispose();
+            }
         }
 
         void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
