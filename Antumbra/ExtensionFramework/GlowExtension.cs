@@ -163,7 +163,6 @@ namespace Antumbra.Glow.ExtensionFramework
         //uses a GlowScreenProcessor to determine color to return
     {
         public abstract void AttachEvent(AntumbraBitmapObserver observer);
-        public abstract void RecmmndCoreSettings();
         public int x { get; set; }
         public int y { get; set; }
         public int width { get; set; }

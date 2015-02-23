@@ -90,8 +90,6 @@ namespace Antumbra.Glow.ExtensionFramework
         public override void RecmmndCoreSettings()
         {
             this.stepSleep = 0;
-            if (this.grabber != null)
-                this.grabber.RecmmndCoreSettings();
         }
 
         public override bool Settings()
