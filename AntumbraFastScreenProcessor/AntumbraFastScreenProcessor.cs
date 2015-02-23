@@ -79,8 +79,15 @@ namespace AntumbraFastScreenProcessor
 
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
-            NewColorAvailEvent(Process(bm), EventArgs.Empty);
-            bm.Dispose();
+            try {
+                NewColorAvailEvent(Process(bm), EventArgs.Empty);
+            }
+            catch (Exception) {
+                this.Stop();
+            }
+            finally {
+                bm.Dispose();
+            }
         }
 
         public override bool Start()
