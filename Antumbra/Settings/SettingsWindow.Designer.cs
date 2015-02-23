@@ -67,7 +67,6 @@
             this.deviceNameLabel = new System.Windows.Forms.Label();
             this.deviceName = new System.Windows.Forms.Label();
             this.driverRecBtn = new System.Windows.Forms.Button();
-            this.grabberRecBtn = new System.Windows.Forms.Button();
             this.currentSetupLabel = new System.Windows.Forms.Label();
             this.currentSetup = new System.Windows.Forms.Label();
             this.compoundDecorationCheck = new System.Windows.Forms.CheckBox();
@@ -563,21 +562,6 @@
             this.driverRecBtn.UseVisualStyleBackColor = false;
             this.driverRecBtn.Click += new System.EventHandler(this.driverRecBtn_Click);
             // 
-            // grabberRecBtn
-            // 
-            this.grabberRecBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.grabberRecBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.grabberRecBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.grabberRecBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.grabberRecBtn.Location = new System.Drawing.Point(759, 388);
-            this.grabberRecBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.grabberRecBtn.Name = "grabberRecBtn";
-            this.grabberRecBtn.Size = new System.Drawing.Size(154, 55);
-            this.grabberRecBtn.TabIndex = 82;
-            this.grabberRecBtn.Text = "Recommended Settings";
-            this.grabberRecBtn.UseVisualStyleBackColor = false;
-            this.grabberRecBtn.Click += new System.EventHandler(this.grabberRecBtn_Click);
-            // 
             // currentSetupLabel
             // 
             this.currentSetupLabel.AutoSize = true;
@@ -710,7 +694,6 @@
             this.Controls.Add(this.compoundDecorationCheck);
             this.Controls.Add(this.currentSetup);
             this.Controls.Add(this.currentSetupLabel);
-            this.Controls.Add(this.grabberRecBtn);
             this.Controls.Add(this.driverRecBtn);
             this.Controls.Add(this.deviceName);
             this.Controls.Add(this.deviceNameLabel);
@@ -812,7 +795,6 @@
         private System.Windows.Forms.Label deviceNameLabel;
         private System.Windows.Forms.Label deviceName;
         private System.Windows.Forms.Button driverRecBtn;
-        private System.Windows.Forms.Button grabberRecBtn;
         private System.Windows.Forms.Label currentSetupLabel;
         private System.Windows.Forms.Label currentSetup;
         private System.Windows.Forms.CheckBox compoundDecorationCheck;

@@ -283,17 +283,6 @@ namespace Antumbra.Glow.Settings
             updateValues();
         }
 
-        private void grabberRecBtn_Click(object sender, EventArgs e)
-        {
-            var grabber = this.currentDevice.ActiveGrabber;
-            grabber.RecmmndCoreSettings();
-            this.currentDevice.settings.x = grabber.x;
-            this.currentDevice.settings.y = grabber.y;
-            this.currentDevice.settings.height = grabber.height;
-            this.currentDevice.settings.width = grabber.width;
-            updateValues();
-        }
-
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Hide();
