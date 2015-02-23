@@ -14,9 +14,10 @@ using System.Windows.Forms;
 namespace Saturator
 {
     [Export(typeof(GlowExtension))]
-    public class Saturator : GlowDecorator //TODO add custom settings window
+    public class Saturator : GlowDecorator
     {
         private bool running = false;
+        private SaturatorSettings settingsWin;
         public override int id { get; set; }
         public override bool IsDefault
         {
@@ -50,9 +51,10 @@ namespace Saturator
         public override Color Decorate(Color origColor)
         {
             HslColor boringHSL = new HslColor(origColor);
-            if (boringHSL.S < .35) { }//skip low saturation colors
-            else if (boringHSL.S <= .65)
-                boringHSL.S += .35; //saturate
+            double satAmnt = (double)Properties.Settings.Default["saturationAmount"];
+            if (boringHSL.S < satAmnt) { }//skip low saturation colors
+            else if (boringHSL.S <= (1.0-satAmnt))
+                boringHSL.S += satAmnt; //saturate
             else
                 boringHSL.S = 1.0;
             return boringHSL.ToRgbColor();
@@ -65,9 +67,23 @@ namespace Saturator
 
         public override bool Settings()
         {
-            return false;//TODO make settings
+            this.settingsWin = new SaturatorSettings(this);
+            this.settingsWin.Show();
+            this.settingsWin.saturateAmtTxt.Text = Properties.Settings.Default["saturationAmount"].ToString();
+            return true;
         }
 
+        private void SaturationTxtChanged(object sender, EventArgs args)
+        {
+            TextBox bx = (TextBox)sender;
+            try {
+                Properties.Settings.Default["saturationAmount"] = double.Parse(bx.Text);
+            }
+            catch (Exception) { 
+                //bad input, ignore
+            }
+        }
+        
         public override bool Start()
         {
             this.running = true;
@@ -76,6 +92,8 @@ namespace Saturator
 
         public override bool Stop()
         {
+            if (this.settingsWin != null)
+                this.settingsWin.Dispose();
             this.running = false;
             return true;
         }
