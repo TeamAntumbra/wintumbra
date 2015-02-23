@@ -27,7 +27,7 @@ namespace AntumbraScreenDriver
 
         //DLL declaration
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+        private static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
         //BitBlt - used to get screen info
 
         public override String Name { get { return "Antumbra Screen Grabber (Default)"; } }
@@ -95,7 +95,6 @@ namespace AntumbraScreenDriver
             int runW = width;
             int runH = height;
             while (true) {
-                //Bitmap screen = getPixelBitBlt(this.width, this.height);
                 Bitmap screen = new Bitmap(runW, runH, PixelFormat.Format32bppArgb);
                 Graphics grphx = Graphics.FromImage(screen);
                 grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
@@ -104,7 +103,6 @@ namespace AntumbraScreenDriver
                 if (null != screen) {
                     NewScreenAvailEvent(screen, EventArgs.Empty);
                     screen.Dispose();
-                    grphx.Dispose();
                 }
             }
         }
