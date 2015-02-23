@@ -14,8 +14,17 @@ namespace Antumbra.Glow.Connector
     /// </summary>
     public class GlowDevice
     {
+        /// <summary>
+        /// Device pointer
+        /// </summary>
         public IntPtr dev {get; set;}
+        /// <summary>
+        /// Info pointer
+        /// </summary>
         public IntPtr info { get; private set; }
+        /// <summary>
+        /// LightInfo pointer
+        /// </summary>
         public IntPtr lightInfo { get; private set; }
         /// <summary>
         /// The id of this device as given by the manager upon creation
@@ -33,8 +42,21 @@ namespace Antumbra.Glow.Connector
         /// Last color this Device was successfully set to
         /// </summary>
         public Color lastColor { get; set; }
+        /// <summary>
+        /// DeviceSettings obj for this device
+        /// </summary>
         public DeviceSettings settings { get; private set; }
+        /// <summary>
+        /// ExtensionManager for this device
+        /// </summary>
         private ExtensionManager extMgr;
+        /// <summary>
+        /// Integer representation of the device's status
+        /// </summary>
+        public int status { get; set; }
+        /// <summary>
+        /// Active GlowDriver for this device
+        /// </summary>
         public GlowDriver ActiveDriver
         {
             get
@@ -46,6 +68,9 @@ namespace Antumbra.Glow.Connector
                 this.extMgr.ActiveDriver = value;
             }
         }
+        /// <summary>
+        /// Active GlowScreenGrabber for this device
+        /// </summary>
         public GlowScreenGrabber ActiveGrabber
         {
             get
@@ -57,6 +82,9 @@ namespace Antumbra.Glow.Connector
                 this.extMgr.ActiveGrabber = value;
             }
         }
+        /// <summary>
+        /// Active GlowScreenProcessor for this device
+        /// </summary>
         public GlowScreenProcessor ActiveProcessor
         {
             get
@@ -68,6 +96,9 @@ namespace Antumbra.Glow.Connector
                 this.extMgr.ActiveProcessor = value;
             }
         }
+        /// <summary>
+        /// Active GlowDecorators for this device
+        /// </summary>
         public List<GlowDecorator> ActiveDecorators
         {
             get
@@ -75,7 +106,12 @@ namespace Antumbra.Glow.Connector
                 return this.extMgr.ActiveDecorators;
             }
         }
-
+        /// <summary>
+        /// Remove the passed Decorator from the ActiveDecorators
+        /// or add it if not found.
+        /// </summary>
+        /// <param name="dec"></param>
+        /// <returns></returns>
         public bool RemoveDecOrAddIfNew(GlowDecorator dec) {
             GlowDecorator toRemove = null;
             foreach (var d in this.ActiveDecorators) {
@@ -91,6 +127,9 @@ namespace Antumbra.Glow.Connector
             this.ActiveDecorators.Add(dec);
             return false;
         }
+        /// <summary>
+        /// Active GlowNotifiers for this device
+        /// </summary>
         public List<GlowNotifier> ActiveNotifiers
         {
             get
@@ -98,7 +137,12 @@ namespace Antumbra.Glow.Connector
                 return this.extMgr.ActiveNotifiers;
             }
         }
-
+        /// <summary>
+        /// Remove the passed Notifier from ActiveNotifiers or add
+        /// it if not found.
+        /// </summary>
+        /// <param name="notf"></param>
+        /// <returns></returns>
         public bool RemoveNotfOrAddIfNew(GlowNotifier notf)
         {
             GlowNotifier toRemove = null;
@@ -115,8 +159,6 @@ namespace Antumbra.Glow.Connector
             this.ActiveNotifiers.Add(notf);
             return false;//added
         }
-
-        public int status { get; set; }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -131,27 +173,42 @@ namespace Antumbra.Glow.Connector
             this.settings = new DeviceSettings(id);
             this.extMgr = new ExtensionManager(path, id, settings);
         }
-
+        /// <summary>
+        /// Start the device's extensions
+        /// </summary>
+        /// <returns>True if successfully started, else false</returns>
         internal bool Start()
         {
             return this.extMgr.Start();
         }
-
+        /// <summary>
+        /// Attach an AntumbraColorObserver to the underlying extension manager
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachEventToExtMgr(AntumbraColorObserver observer)
         {
             this.extMgr.AttachEvent(observer);
         }
-
+        /// <summary>
+        /// Get a string representation of the extensions activated for this device
+        /// </summary>
+        /// <returns>String representation of active extensions.</returns>
         public string GetSetupDesc()
         {
             return extMgr.GetSetupDesc();
         }
-
+        /// <summary>
+        /// Return string representation of this device.
+        /// </summary>
+        /// <returns>String describing this GlowDevice</returns>
         public override string ToString()
         {
             return "Glow device, id: " + this.id;
         }
-
+        /// <summary>
+        /// Stop the extensions for this device
+        /// </summary>
+        /// <returns>True if successful, else false</returns>
         internal bool Stop()
         {
             return this.extMgr.Stop();

@@ -13,19 +13,55 @@ namespace Antumbra.Glow.ExtensionFramework
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver//TODO add observer for notifiers
     {
+        /// <summary>
+        /// Delegate for NewColorAvailEvent, handles a new Color being available
+        /// </summary>
+        /// <param name="newColor"></param>
+        /// <param name="args"></param>
         public delegate void NewColorAvail(Color newColor, EventArgs args);
+        /// <summary>
+        /// NewColorAvail Event, occurs when a new color is available
+        /// </summary>
         public event NewColorAvail NewColorAvailEvent;
         /// <summary>
         /// MEFHelper used to find and load the extensions.
         /// </summary>
         private MEFHelper MEFHelper;
+        /// <summary>
+        /// DeviceSettings obj for the GlowDevice relating to this ExtensionManager
+        /// </summary>
         private DeviceSettings settings;
+        /// <summary>
+        /// The id for the GlowDevice relating to this ExtensionManager
+        /// </summary>
         public int id { get; private set; }
+        /// <summary>
+        /// Active GlowDriver obj
+        /// </summary>
         public GlowDriver ActiveDriver { get; set; }
+        /// <summary>
+        /// Active GlowScreenGrabber obj
+        /// </summary>
         public GlowScreenGrabber ActiveGrabber { get; set; }
+        /// <summary>
+        /// Active GlowScreenProcessor obj
+        /// </summary>
         public GlowScreenProcessor ActiveProcessor { get; set; }
+        /// <summary>
+        /// List of Active GlowDecorators
+        /// </summary>
         public List<GlowDecorator> ActiveDecorators { get; set; }
+        /// <summary>
+        /// List of Active GlowNotifiers
+        /// </summary>
         public List<GlowNotifier> ActiveNotifiers { get; set; }
+        /// <summary>
+        /// Constructor - Creates a new ExtensionManager relating to the GlowDevice
+        /// with the same id as passed.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="id"></param>
+        /// <param name="settings"></param>
         public ExtensionManager(string path, int id, DeviceSettings settings)
         {
             this.settings = settings;
@@ -37,7 +73,10 @@ namespace Antumbra.Glow.ExtensionFramework
             this.ActiveDecorators = this.MEFHelper.GetDefaultDecorators();
             this.ActiveNotifiers = this.MEFHelper.GetDefaultNotifiers();
         }
-
+        /// <summary>
+        /// Return a string describing the current active extensions
+        /// </summary>
+        /// <returns></returns>
         public string GetSetupDesc()
         {
             if (this.ActiveDriver == null)
@@ -61,12 +100,19 @@ namespace Antumbra.Glow.ExtensionFramework
                 result += notf.ToString() + ' ';
             return result;
         }
-
+        /// <summary>
+        /// Attach an AntumbraColorObserver to the NewColorAvailEvent for this ExtensionManager
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachEvent(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += observer.NewColorAvail;
         }
-
+        /// <summary>
+        /// Event handler for the NewColorAvail event
+        /// </summary>
+        /// <param name="newColor"></param>
+        /// <param name="args"></param>
         void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
         {
             if (ActiveDecorators.Count == 0) {
@@ -90,7 +136,10 @@ namespace Antumbra.Glow.ExtensionFramework
             int count = ActiveDecorators.Count;
             NewColorAvailEvent(Color.FromArgb(r / count, g / count, b / count), args);
         }
-
+        /// <summary>
+        /// Start active extensions
+        /// </summary>
+        /// <returns>True if successful, else false</returns>
         public bool Start()
         {
             if (!Verify())
@@ -103,7 +152,10 @@ namespace Antumbra.Glow.ExtensionFramework
                 notf.Start();
             return true;
         }
-
+        /// <summary>
+        /// Verify the activated extensions
+        /// </summary>
+        /// <returns>True if verified, else false</returns>
         private bool Verify()
         {
             if (this.settings == null)
@@ -121,7 +173,10 @@ namespace Antumbra.Glow.ExtensionFramework
             ActiveDriver.stepSleep = settings.stepSleep;
             return true;
         }
-
+        /// <summary>
+        /// Stop the active extensions
+        /// </summary>
+        /// <returns>True if successful, else false</returns>
         public bool Stop()
         {
             bool result = true;
