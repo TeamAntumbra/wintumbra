@@ -15,6 +15,16 @@
 
 Run `Antumbra.exe` and enjoy!
 
+##Please Note
+
+The built-in settings of `stepSleep` and the weighted average checkbox will impact some
+drivers in unexpected ways. For example, a HSVFade with a `stepSleep` of 0ms will look white and jittery.
+It is recommended that after loading a driver extension you click the recommended settings button to the
+right of the selection box. This will set the `stepSleep` variable to the recommended value. As for the weighted
+average, you should disable this whenever you want the decorated driver output to be sent directly to Glow rather
+have output colors be weighted against the past values. 
+e.g. for a HSVFade, where averaging values together would warp the desired output
+
 ##Extension Notes
 
 ###Types
@@ -47,16 +57,43 @@ light sequence. This object has not been implemented fully yet.
 
 ###Some Built-ins
 
-###AntumbraScreenGrabber
+---------
+
+###GlowDrivers
+
+
+####AntumbraScreenDriverCoupler
+
+This is actually not an extension, but an internal type that partners a GlowScreenGrabber and
+GlowScreenProcessor to output colors in tandem.
+
+
+####ManualColorSelector
+
+When started opens a color selection window which will send the selected color whenever changed,
+and once closed will stay on the last selected color.
+
+
+####ColorClock
+
+--------
+
+###GlowScreenGrabbers
+
+####AntumbraScreenGrabber
 
 This extension will capture the specified screen area as long as the content of that area
 is not being rendered by DirectX (see DirectXScreenCapture).
 
-###AntumbraFastScreenProcessor
+------
+
+###GlowScreenProcessors
+
+####AntumbraFastScreenProcessor
 
 This extension will take a straight average of the captured screen.
 
-###AntumbraSmartScreenProcessor
+####AntumbraSmartScreenProcessor
 
 This extension will process the screen using a 'smarter' algorithm based off the following 
 configurable values. (To configure apply this extension and click the gear to the right of it)
@@ -102,6 +139,18 @@ Finally the average of the final color sum is returned as the found color.
 * **Min Mix Percentage** - Minimum percentage a component sum must be of the total to be included in the processing.
 
 * **Scale Factor** - Factor to scale the Bitmap down by before processing.
+
+-----
+
+###GlowDecorators
+
+-----
+
+###GlowNotifiers
+
+Currently none.
+
+------
 
 More will be here soon.
 
