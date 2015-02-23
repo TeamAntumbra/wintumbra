@@ -78,6 +78,16 @@ and once closed will stay on the last selected color.
 
 Outputs colors that are generated based off the time of day.
 
+
+####Flux Companion
+
+Outputs colors generated based off a kelvin temperature that is generated similarly to how F.lux generates
+it's current filter color.
+
+####HSV Fade
+
+Fades through an HSV color spectrum from Hue value 0 to 360 continuously.
+
 --------
 
 ###GlowScreenGrabbers
