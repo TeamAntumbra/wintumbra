@@ -163,8 +163,8 @@ namespace AntumbraSmartScreenProcessor
             int newWidth = bm.Width / scaleDownFactor;
             int newHeight = bm.Height / scaleDownFactor;
             Bitmap small = new Bitmap(newWidth, newHeight);
-            using (Graphics g = Graphics.FromImage(small))//resize to 1X1 Bitmap using GDI+ Graphics class
-                g.DrawImage(bm, 0, 0, newWidth, newHeight);//TODO add resizing to configured size to smart processor
+            using (Graphics g = Graphics.FromImage(small))
+                g.DrawImage(bm, 0, 0, newWidth, newHeight);
             bm = small;
             int width = bm.Width;
             int height = bm.Height;
@@ -280,6 +280,8 @@ namespace AntumbraSmartScreenProcessor
             int avgR = (int)(totals[2] / count);
             int avgG = (int)(totals[1] / count);
             int avgB = (int)(totals[0] / count);
+            small.Dispose();
+            bm.Dispose();
             return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
         }
     }
