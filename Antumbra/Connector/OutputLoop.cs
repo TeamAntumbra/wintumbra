@@ -64,26 +64,15 @@ namespace Antumbra.Glow.Connector
 
         private void target()
         {
-            try {
-                while (Active) {
-                    if (color.Equals(Color.Empty))//no values yet
-                        continue;
-                    if (this.weightingEnabled) {
-                        weightedAvg = Mixer.MixColorPercIn(color, weightedAvg, this.newColorWeight);
-                        this.mgr.sendColor(weightedAvg, this.id);
-                    }
-                    else
-                        this.mgr.sendColor(color, this.id);
+            while (Active) {
+                if (color.Equals(Color.Empty))//no values yet
+                    continue;
+                if (this.weightingEnabled) {
+                    weightedAvg = Mixer.MixColorPercIn(color, weightedAvg, this.newColorWeight);
+                    this.mgr.sendColor(weightedAvg, this.id);
                 }
-            }
-            catch (Exception e) {
-                lock (sync) {
-                    Active = false;
-                    Console.WriteLine("Exception in outputLoopTarget: " + e.Message);
-                }
-            }
-            finally {
-                this.mgr.CleanUp();
+                else
+                    this.mgr.sendColor(color, this.id);
             }
         }
 
