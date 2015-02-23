@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
@@ -62,9 +63,9 @@ namespace ColorClock
 
         public override bool Start()
         {
+            this.running = true;
             this.driver = new Task(driverTarget);
             this.driver.Start();
-            this.running = true;
             return true;
         }
 
@@ -75,12 +76,12 @@ namespace ColorClock
 
         public override bool Stop()
         {
+            this.running = false;
             if (null != this.driver) {
-                this.driver.Wait();
+                this.driver.Wait(2000);
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
             }
-            this.running = false;
             return true;
         }
 
@@ -95,7 +96,7 @@ namespace ColorClock
                 if (NewColorAvailEvent == null) {}//no one is listening, do nothing...
                 else
                     NewColorAvailEvent(getTimeColor(DateTime.Now), EventArgs.Empty);
-                Task.Delay(this.stepSleep);
+                Thread.Sleep(this.stepSleep);
             }
         }
 
