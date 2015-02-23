@@ -76,6 +76,7 @@
             this.processorSettingsBtn = new System.Windows.Forms.PictureBox();
             this.currentDecSettingsBtn = new System.Windows.Forms.PictureBox();
             this.currentNotfSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.versionLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
@@ -683,6 +684,15 @@
             this.currentNotfSettingsBtn.TabStop = false;
             this.currentNotfSettingsBtn.Click += new System.EventHandler(this.currentNotfSettingsBtn_Click);
             // 
+            // versionLabel
+            // 
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.Location = new System.Drawing.Point(568, 52);
+            this.versionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(0, 20);
+            this.versionLabel.TabIndex = 91;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -691,6 +701,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(963, 1088);
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.currentNotfSettingsBtn);
             this.Controls.Add(this.currentDecSettingsBtn);
             this.Controls.Add(this.processorSettingsBtn);
@@ -810,5 +821,6 @@
         private System.Windows.Forms.PictureBox processorSettingsBtn;
         private System.Windows.Forms.PictureBox currentDecSettingsBtn;
         private System.Windows.Forms.PictureBox currentNotfSettingsBtn;
+        private System.Windows.Forms.Label versionLabel;
     }
 }
