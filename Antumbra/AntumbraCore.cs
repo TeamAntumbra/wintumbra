@@ -42,6 +42,7 @@ namespace Antumbra.Glow
             this.logger = new Logger("WintumbraLog.txt");
             this.logger.Log("Wintumbra Starting... @ " + DateTime.Now.ToString());
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+            SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
             this.goodStart = true;
             InitializeComponent();
             try {
@@ -138,14 +139,17 @@ namespace Antumbra.Glow
         private void quitMenuItem_Click(object sender, EventArgs e)
         {
             this.logger.Log("Wintumbra Quitting...");
-            StopAll();
+            this.Off();
             this.notifyIcon.Visible = false;
+            this.notifyIcon.Dispose();
             this.contextMenu.Visible = false;
+            this.contextMenu.Dispose();
             this.logger.Log("GlowManager cleaning up.");
             this.GlowManager.CleanUp();
             this.logger.Log("Cleaning up extension settings windows");
             foreach (var win in this.settingsWindows)
                 win.CleanUp();
+            this.Dispose();
             Application.Exit();
         }
         /// <summary>
@@ -333,12 +337,37 @@ namespace Antumbra.Glow
             switch (e.Reason) {
                 case SessionSwitchReason.SessionLock:
                     this.StopAll();
+                    Console.WriteLine("locked");
                     break;
                 case SessionSwitchReason.SessionUnlock:
-                    Thread.Sleep(1000);
-                    this.StartAll();
+                    Console.WriteLine("unlocked");
+                    StartAllAfterDelay();
                     break;
             }
+        }
+        /// <summary>
+        /// Event handler for PowerModeChanged events
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            // User is putting the system into standby 
+            if (e.Mode == PowerModes.Suspend) {
+                this.Off();
+                Console.WriteLine("Suspended.");
+            }
+            // User is putting the system into resume from standby 
+            if (e.Mode == PowerModes.Resume) {
+                //this.StartAllAfterDelay();
+                Console.WriteLine("resumed...ignoring");
+            }
+        }
+
+        private void StartAllAfterDelay()
+        {
+            Thread.Sleep(2000);//wait for screen to be available
+            this.StartAll();
         }
     }
     /// <summary>
