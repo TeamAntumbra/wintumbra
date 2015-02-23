@@ -76,6 +76,8 @@ and once closed will stay on the last selected color.
 
 ####ColorClock
 
+Outputs colors that are generated based off the time of day.
+
 --------
 
 ###GlowScreenGrabbers
@@ -84,6 +86,12 @@ and once closed will stay on the last selected color.
 
 This extension will capture the specified screen area as long as the content of that area
 is not being rendered by DirectX (see DirectXScreenCapture).
+
+####DirectXScreenCapture
+
+Captures pixel information for a Direct3D application. To use select it, apply, open its settings, and
+enter the name of the exe you would like to capture (including the .exe). Then click start and start using the
+specified exe. This extension is unstable and under heavy development.
 
 ------
 
@@ -143,6 +151,14 @@ Finally the average of the final color sum is returned as the found color.
 -----
 
 ###GlowDecorators
+
+####Brightener
+
+Increases the output colors lightness value (in an HSL color space) by the specified value in its settings.
+
+####Saturator
+
+Increases the output colors saturation value (in an HSL color space) by the specified value in its settings;
 
 -----
 
