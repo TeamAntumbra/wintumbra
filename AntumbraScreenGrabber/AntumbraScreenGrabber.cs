@@ -104,6 +104,7 @@ namespace AntumbraScreenDriver
                 if (null != screen) {
                     NewScreenAvailEvent(screen, EventArgs.Empty);
                     screen.Dispose();
+                    grphx.Dispose();
                 }
             }
         }
