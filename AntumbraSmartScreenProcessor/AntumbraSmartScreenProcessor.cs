@@ -275,13 +275,13 @@ namespace AntumbraSmartScreenProcessor
             }
             else
                 Console.WriteLine("this should not happen! (in getReprColor) #2");
+            small.Dispose();
+            bm.Dispose();
             if (count == 0)//avoid dividing by zero
                 return Color.Empty;
             int avgR = (int)(totals[2] / count);
             int avgG = (int)(totals[1] / count);
             int avgB = (int)(totals[0] / count);
-            small.Dispose();
-            bm.Dispose();
             return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
         }
     }
