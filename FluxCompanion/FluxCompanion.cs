@@ -41,7 +41,6 @@ namespace FluxCompanion
 
         public override bool Start()
         {
-            this.stepSleep = 2000;
             this.running = true;
             this.driver = new Task(target);
             this.driver.Start();
@@ -55,7 +54,7 @@ namespace FluxCompanion
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 60000;//60 sec
+            this.stepSleep = 1000;
         }
 
         public override void AttachEvent(AntumbraColorObserver observer)
@@ -140,6 +139,11 @@ namespace FluxCompanion
         public override bool Stop()
         {
             this.running = false;
+            if (this.driver != null) {
+                this.driver.Wait(2000);
+                if (this.driver.IsCompleted)
+                    this.driver.Dispose();
+            }
             return true;
         }
 
