@@ -45,8 +45,43 @@ namespace Antumbra.Glow.Settings
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();
+            PopulateExtTable();
             //updateValues();
             this.Focus();
+        }
+
+        private void PopulateExtTable()
+        {
+            foreach (var dvr in this.library.AvailDrivers)
+                GenerateRowFromExt(dvr);
+            foreach (var gbr in this.library.AvailGrabbers)
+                GenerateRowFromExt(gbr);
+            foreach (var pcr in this.library.AvailProcessors)
+                GenerateRowFromExt(pcr);
+            foreach (var dec in this.library.AvailDecorators)
+                GenerateRowFromExt(dec);
+            foreach (var notf in this.library.AvailNotifiers)
+                GenerateRowFromExt(notf);
+        }
+
+        private DataGridViewRow GenerateRowFromExt(GlowExtension ext)
+        {
+            int i = extTable.Rows.Add();
+            DataGridViewRow row = extTable.Rows[i];
+            row.Cells["NameCol"].Value = ext.Name;
+            row.Cells["EnabledCol"].Value = ext.IsDefault;
+            DataGridViewCheckBoxCell check = (DataGridViewCheckBoxCell)row.Cells["EnabledCol"];
+            row.Cells["DescCol"].Value = ext.Description;
+            row.Cells["VersionCol"].Value = ext.Version.ToString();
+            row.Cells["AuthorCol"].Value = ext.Author;
+            row.Cells["idCol"].Value = ext.id;
+            DataGridViewImageCell settings = (DataGridViewImageCell)row.Cells["SettingsCol"];
+            Bitmap littleGear = new Bitmap(64,64);
+            using (Graphics g = Graphics.FromImage(littleGear)) {
+                g.DrawImage(global::Antumbra.Glow.Properties.Resources.gear, 0, 0, littleGear.Width, littleGear.Height);
+            }
+            settings.Value = littleGear;
+            return row;
         }
 
         public void CleanUp()
@@ -69,55 +104,9 @@ namespace Antumbra.Glow.Settings
             pollingWidth.Text = this.currentDevice.settings.width.ToString();
             pollingX.Text = this.currentDevice.settings.x.ToString();
             pollingY.Text = this.currentDevice.settings.y.ToString();
-            if (this.library.ready) {
-                foreach (var dvr in this.library.AvailDrivers)
-                    if (!driverExtensions.Items.Contains(dvr))
-                        driverExtensions.Items.Add(dvr);
-                foreach (var gbbr in this.library.AvailGrabbers)
-                    if (!screenGrabbers.Items.Contains(gbbr))
-                        screenGrabbers.Items.Add(gbbr);
-                foreach (var pcsr in this.library.AvailProcessors)
-                    if (!screenProcessors.Items.Contains(pcsr))
-                        screenProcessors.Items.Add(pcsr);
-                foreach (var dctr in this.library.AvailDecorators)
-                    if (!decorators.Items.Contains(dctr))
-                        decorators.Items.Add(dctr);
-                foreach (var notf in this.library.AvailNotifiers)
-                    if (!notifiers.Items.Contains(notf))
-                        notifiers.Items.Add(notf);
-            }
-            if (this.currentDevice.ActiveDriver != null) {
-                if (this.currentDevice.ActiveDriver is GlowScreenDriverCoupler)
-                    for (int i = 0; i < driverExtensions.Items.Count; i += 1) {
-                        if (driverExtensions.Items[i] is GlowScreenDriverCoupler) {
-                            driverExtensions.SelectedIndex = i;
-                            break;
-                        }
-                    }
-                else
-                    driverExtensions.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveDriver, driverExtensions);
-            }
-            if (this.currentDevice.ActiveGrabber != null)
-                screenGrabbers.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveGrabber, screenGrabbers);
-            if (this.currentDevice.ActiveProcessor != null)
-                screenProcessors.SelectedIndex = GetIndexOfExtInComboBox(this.currentDevice.ActiveProcessor, screenProcessors);
-            if (decorators.SelectedItem == null && decorators.Items.Count > 0)//no item selected & there are items
-                decorators.SelectedIndex = 0;
-            if (notifiers.SelectedItem == null && notifiers.Items.Count > 0)//no item selected & there are items
-                notifiers.SelectedIndex = 0;
             glowStatus.Text = GetStatusString(this.currentDevice.status);
             deviceName.Text = this.currentDevice.id.ToString();
-            currentSetup.Text = this.currentDevice.GetSetupDesc();
-        }
-
-        private int GetIndexOfExtInComboBox(GlowExtension ext, ComboBox combo)
-        {
-            var items = combo.Items;
-            for (var i = 0; i < items.Count; i += 1) {
-                if (((GlowExtension)items[i]).id == ext.id)
-                    return i;
-            }
-            return -1;//not found
+            //currentSetup.Text = this.currentDevice.GetSetupDesc();
         }
 
         /// <summary>
@@ -165,47 +154,6 @@ namespace Antumbra.Glow.Settings
             }
         }
 
-        private void apply_Click(object sender, EventArgs e)
-        {
-            this.antumbra.StopCurrent();
-            this.currentDevice.ActiveDriver = (GlowDriver)this.driverExtensions.SelectedItem;
-            this.currentDevice.ActiveGrabber = (GlowScreenGrabber)this.screenGrabbers.SelectedItem;
-            this.currentDevice.ActiveProcessor = (GlowScreenProcessor)this.screenProcessors.SelectedItem;
-            //decorators and notifiers are handled through their toggle button and active list in the ExtensionManager
-            this.updateValues();
-            this.antumbra.AnnounceConfig();
-        }
-
-        private void decoratorToggle_Click(object sender, EventArgs e)
-        {
-            GlowDecorator dec = (GlowDecorator)decorators.SelectedItem;
-            if (null != dec) {
-                this.antumbra.StopCurrent();
-                if (this.currentDevice.RemoveDecOrAddIfNew(dec))
-                    this.antumbra.ShowMessage(3000, "Decorator Disabled",
-                        "The decorator, " + dec.ToString() + ", has been disabled.", ToolTipIcon.Info);
-                else
-                    this.antumbra.ShowMessage(3000, "Decorator Enabled",
-                        "The Decorator, " + dec.ToString() + ", has been enabled.", ToolTipIcon.Info);
-            }
-            this.updateValues();
-        }
-
-        private void notifierToggle_Click(object sender, EventArgs e)
-        {
-            GlowNotifier notf = (GlowNotifier)notifiers.SelectedItem;
-            if (null != notf) {
-                this.antumbra.StopCurrent();
-                if (this.currentDevice.RemoveNotfOrAddIfNew(notf))
-                    this.antumbra.ShowMessage(3000, "Notifier Disabled",
-                        "The notifier, " + notf.ToString() + ", has been disabled.", ToolTipIcon.Info);
-                else
-                    this.antumbra.ShowMessage(3000, "Notifier Enabled",
-                        "The notifier, " + notf.ToString() + ", has been enabled.", ToolTipIcon.Info);
-            }
-            this.updateValues();
-        }
-
         private void SettingsWindow_MouseEnter(object sender, EventArgs e)
         {
             if (this.pollingAreaWindow == null || !this.pollingAreaWindow.Visible)
@@ -220,12 +168,12 @@ namespace Antumbra.Glow.Settings
                 this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, back);
                 this.antumbra.Stop(current);
                 this.antumbra.SendColor(current, back);
-                this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdateSelectionsEvent);
+                this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingAreaWindow.Show();
         }
 
-        private void UpdateSelectionsEvent(object sender, EventArgs args)
+        private void UpdatePollingSelectionsEvent(object sender, EventArgs args)
         {
             this.updateValues();
         }
@@ -309,29 +257,59 @@ namespace Antumbra.Glow.Settings
                 
         }
 
-        private void driverSettingsBtn_Click(object sender, EventArgs e)
+        private void extTable_CellContentClick(object sender, DataGridViewCellEventArgs e)//handle checkbox clicks
         {
-            AttemptToOpenSettingsWindow((GlowDriver)this.driverExtensions.SelectedItem);
+            DataGridViewRow row = extTable.Rows[e.RowIndex];
+            int id = Convert.ToInt32(row.Cells[6].Value);
+            GlowExtension ext = this.library.findExt(id);
+            switch (e.ColumnIndex) {
+                case 0://checkbox col
+                    if (this.currentDevice.isRunning())
+                        this.antumbra.Stop(this.currentDevice.id);
+                    if (ext is GlowDecorator) {
+                        GlowDecorator dec = (GlowDecorator)ext;
+                        GetRowByDeviceId(dec.id).Cells[0].Value = !this.currentDevice.RemoveDecOrAddIfNew(dec);
+                    }
+                    else if (ext is GlowNotifier) {
+                        GlowNotifier notf = (GlowNotifier)ext;
+                        GetRowByDeviceId(notf.id).Cells[0].Value = !this.currentDevice.RemoveNotfOrAddIfNew(notf);
+                    }
+                    if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue)) {//now checked
+                        if (this.currentDevice.ActiveDriver.id == id) { }//already selected
+                        else {//a different driver is selected
+                            if (ext is GlowDriver) {
+                                DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveDriver.id);
+                                current.Cells[0].Value = false;//uncheck
+                                this.currentDevice.ActiveDriver = (GlowDriver)ext;
+                            }
+                            else if (ext is GlowScreenGrabber) {
+                                DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveGrabber.id);
+                                current.Cells[0].Value = false;//uncheck
+                                this.currentDevice.ActiveGrabber = (GlowScreenGrabber)ext;
+                            }
+                            else if (ext is GlowScreenProcessor) {
+                                DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveProcessor.id);
+                                current.Cells[0].Value = false;//uncheck
+                                this.currentDevice.ActiveProcessor = (GlowScreenProcessor)ext;
+                            }
+                        }
+                    }
+                    else {//now unchecked
+
+                    }
+                    break;
+                case 4://settings button
+                    AttemptToOpenSettingsWindow(ext);
+                    break;
+            }
         }
 
-        private void grabberSettingsBtn_Click(object sender, EventArgs e)
+        private DataGridViewRow GetRowByDeviceId(int id)
         {
-            AttemptToOpenSettingsWindow((GlowScreenGrabber)this.screenGrabbers.SelectedItem);
-        }
-
-        private void processorSettingsBtn_Click(object sender, EventArgs e)
-        {
-            AttemptToOpenSettingsWindow((GlowScreenProcessor)this.screenProcessors.SelectedItem);
-        }
-
-        private void currentDecSettingsBtn_Click(object sender, EventArgs e)
-        {
-            AttemptToOpenSettingsWindow((GlowDecorator)this.decorators.SelectedItem);
-        }
-
-        private void currentNotfSettingsBtn_Click(object sender, EventArgs e)
-        {
-            AttemptToOpenSettingsWindow((GlowNotifier)this.notifiers.SelectedItem);
+            foreach (DataGridViewRow r in this.extTable.Rows)
+                if (Convert.ToInt32(r.Cells[6].Value) == id)
+                    return r;
+            return null;
         }
     }
 }
