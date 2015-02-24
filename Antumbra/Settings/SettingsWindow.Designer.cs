@@ -559,7 +559,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SettingsWindow_MouseDown);
-            this.MouseEnter += new System.EventHandler(this.SettingsWindow_MouseEnter);
             ((System.ComponentModel.ISupportInitialize)(this.extTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

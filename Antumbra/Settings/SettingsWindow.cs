@@ -154,12 +154,6 @@ namespace Antumbra.Glow.Settings
             }
         }
 
-        private void SettingsWindow_MouseEnter(object sender, EventArgs e)
-        {
-            if (this.pollingAreaWindow == null || !this.pollingAreaWindow.Visible)
-                this.Focus();
-        }
-
         private void pollingArea_Click(object sender, EventArgs e)
         {
             if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
