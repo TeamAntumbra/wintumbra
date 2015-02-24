@@ -2,7 +2,7 @@
 AppName = "Antumbra"
 AppVersion = 0.1.16
 AppId = "Wintumbra"
-DefaultDirName = "{pf32}\Antumbra"
+DefaultDirName = "{pf32}\Antumbra"  7
 UsePreviousAppDir = no
 
 [Icons]
