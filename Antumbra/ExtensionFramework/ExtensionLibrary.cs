@@ -22,6 +22,26 @@ namespace Antumbra.Glow.ExtensionFramework
             Update();
         }
 
+        public GlowExtension findExt(int id)
+        {
+            foreach (var e in AvailDrivers)
+                if (e.id == id)
+                    return e;
+            foreach (var e in AvailGrabbers)
+                if (e.id == id)
+                    return e;
+            foreach (var e in AvailProcessors)
+                if (e.id == id)
+                    return e;
+            foreach (var e in AvailDecorators)
+                if (e.id == id)
+                    return e;
+            foreach (var e in AvailNotifiers)
+                if (e.id == id)
+                    return e;
+            return null;
+        }
+
         private void Update()
         {
             var mef = new MEFHelper(extPath);
