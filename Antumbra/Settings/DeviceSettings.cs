@@ -27,7 +27,7 @@ namespace Antumbra.Glow.Settings
             var bounds = Screen.PrimaryScreen.Bounds;
             this.width = bounds.Width;
             this.height = bounds.Height;
-            this.stepSleep = 0;
+            this.stepSleep = 1;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
             this.compoundDecoration = true;
