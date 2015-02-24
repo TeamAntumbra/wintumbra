@@ -160,6 +160,8 @@ namespace AntumbraSmartScreenProcessor
 
         private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness, int scaleDownFactor)
         {
+            if (bm == null)//sanity check
+                return Color.Empty;
             int newWidth = bm.Width / scaleDownFactor;
             int newHeight = bm.Height / scaleDownFactor;
             Bitmap small = new Bitmap(newWidth, newHeight);
