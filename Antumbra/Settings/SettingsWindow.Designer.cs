@@ -419,7 +419,7 @@
             this.extTable.AllowUserToOrderColumns = true;
             this.extTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.extTable.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.extTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.extTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(88)))), ((int)(((byte)(88)))));
             this.extTable.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.extTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.extTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -452,7 +452,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.extTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.extTable.RowTemplate.Height = 28;
+            this.extTable.RowTemplate.Height = 38;
             this.extTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.extTable.ShowEditingIcon = false;
             this.extTable.Size = new System.Drawing.Size(1347, 544);
@@ -468,7 +468,6 @@
             dataGridViewCellStyle1.NullValue = false;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.WhiteSmoke;
             this.EnabledCol.DefaultCellStyle = dataGridViewCellStyle1;
-            this.EnabledCol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EnabledCol.HeaderText = "Enabled?";
             this.EnabledCol.Name = "EnabledCol";
             this.EnabledCol.Width = 81;
@@ -487,11 +486,12 @@
             // 
             // DescCol
             // 
-            this.DescCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DescCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.DescCol.FillWeight = 150F;
             this.DescCol.HeaderText = "Description";
             this.DescCol.Name = "DescCol";
             this.DescCol.ReadOnly = true;
-            this.DescCol.Width = 112;
+            this.DescCol.Width = 5;
             // 
             // SettingsCol
             // 
