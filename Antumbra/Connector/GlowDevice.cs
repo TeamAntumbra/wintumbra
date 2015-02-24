@@ -103,11 +103,19 @@ namespace Antumbra.Glow.Connector
             }
         }
         /// <summary>
+        /// Return if running
+        /// </summary>
+        /// <returns>true if running, else false</returns>
+        public bool isRunning()
+        {
+            return this.extMgr.ActiveDriver.IsRunning;
+        }
+        /// <summary>
         /// Remove the passed Decorator from the ActiveDecorators
         /// or add it if not found.
         /// </summary>
         /// <param name="dec"></param>
-        /// <returns></returns>
+        /// <returns>true if removed, else false</returns>
         public bool RemoveDecOrAddIfNew(GlowDecorator dec) {
             GlowDecorator toRemove = null;
             foreach (var d in this.ActiveDecorators) {
