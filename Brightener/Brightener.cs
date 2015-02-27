@@ -86,6 +86,7 @@ namespace Brightener
             TextBox bx = (TextBox)sender;
             try {
                 Properties.Settings.Default["amountToLighten"] = double.Parse(bx.Text);
+                Properties.Settings.Default.Save();
             }
             catch (Exception e) {
                 //invalid input
