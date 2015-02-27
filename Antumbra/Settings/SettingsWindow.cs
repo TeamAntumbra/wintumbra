@@ -253,6 +253,22 @@ namespace Antumbra.Glow.Settings
 
         private void extTable_CellContentClick(object sender, DataGridViewCellEventArgs e)//handle checkbox clicks
         {
+            if (e.RowIndex == -1) {//sort button for enabled checkboxes
+                int col = e.ColumnIndex;
+                if (col == 0) {
+                    if (extTable.SortedColumn == extTable.Columns[0] && extTable.SortOrder == SortOrder.Ascending)
+                        extTable.Sort(extTable.Columns[0], ListSortDirection.Descending);
+                    else
+                        extTable.Sort(extTable.Columns[0], ListSortDirection.Ascending);
+                }
+                else if (col == 6) {//id
+                    if (extTable.SortedColumn == extTable.Columns[6] && extTable.SortOrder == SortOrder.Ascending)
+                        extTable.Sort(extTable.Columns[6], ListSortDirection.Descending);
+                    else
+                        extTable.Sort(extTable.Columns[6], ListSortDirection.Ascending);
+                }
+                return;
+            }
             DataGridViewRow row = extTable.Rows[e.RowIndex];
             int id = Convert.ToInt32(row.Cells[6].Value);
             GlowExtension ext = this.library.findExt(id);
