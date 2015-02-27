@@ -9,6 +9,8 @@ using Antumbra.Glow.Utility;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Reflection;
 
 namespace Brightener
 {
@@ -41,10 +43,10 @@ namespace Brightener
         public override Color Decorate(Color origColor)
         {
             HslColor hsl = new HslColor(origColor);
-            if (hsl.L > (1.0 - (double)Properties.Settings.Default["amountToLighten"]))
+            if (hsl.L > (1.0 - (double)Properties.Settings.Default.amountToLighten))
                 hsl.L = 1.0;
             else
-                hsl.L += (double)Properties.Settings.Default["amountToLighten"];
+                hsl.L += (double)Properties.Settings.Default.amountToLighten;
             return hsl.ToRgbColor();
         }
 
@@ -69,24 +71,29 @@ namespace Brightener
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override bool Settings()
         {
             this.settingsWin = new BrightenerSettings(this);
             this.settingsWin.Show();
-            this.settingsWin.percBrightenTxt.Text = Properties.Settings.Default["amountToLighten"].ToString();
+            this.settingsWin.percBrightenTxt.Text = Properties.Settings.Default.amountToLighten.ToString();
             this.settingsWin.percBrightenTxt.TextChanged += new EventHandler(PercentChanged);
+            this.settingsWin.applyBtn.Click += new EventHandler(ApplyBtnClick);
             return true;
+        }
+
+        private void ApplyBtnClick(object sender, EventArgs args)
+        {
+            Properties.Settings.Default.Save();
         }
 
         private void PercentChanged(object sender, EventArgs args)
         {
             TextBox bx = (TextBox)sender;
             try {
-                Properties.Settings.Default["amountToLighten"] = double.Parse(bx.Text);
-                Properties.Settings.Default.Save();
+                Properties.Settings.Default.amountToLighten = double.Parse(bx.Text);
             }
             catch (Exception e) {
                 //invalid input
