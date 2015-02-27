@@ -80,7 +80,7 @@ namespace Brightener
             this.settingsWin.Show();
             this.settingsWin.percBrightenTxt.Text = Properties.Settings.Default.amountToLighten.ToString();
             this.settingsWin.percBrightenTxt.TextChanged += new EventHandler(PercentChanged);
-            this.settingsWin.applyBtn.Click += new EventHandler(ApplyBtnClick);
+            this.settingsWin.saveBtn.Click += new EventHandler(ApplyBtnClick);
             return true;
         }
 

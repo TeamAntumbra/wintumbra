@@ -72,7 +72,7 @@ namespace Saturator
             this.settingsWin.Show();
             this.settingsWin.saturateAmtTxt.Text = Properties.Settings.Default.saturationAmount.ToString();
             this.settingsWin.saturateAmtTxt.TextChanged += new EventHandler(SaturationTxtChanged);
-            this.settingsWin.applyBtn.Click += new EventHandler(ApplyBtnClick);
+            this.settingsWin.saveBtn.Click += new EventHandler(ApplyBtnClick);
             return true;
         }
 

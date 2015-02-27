@@ -44,7 +44,7 @@
             this.minBrightTxt = new System.Windows.Forms.TextBox();
             this.scaleFactorTxt = new System.Windows.Forms.TextBox();
             this.scaleLabel = new System.Windows.Forms.Label();
-            this.applyBtn = new System.Windows.Forms.Button();
+            this.saveBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -219,21 +219,21 @@
             this.scaleLabel.TabIndex = 15;
             this.scaleLabel.Text = "Pre-Process Scale Down Factor:";
             // 
-            // applyBtn
+            // saveBtn
             // 
-            this.applyBtn.AutoSize = true;
-            this.applyBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.applyBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.applyBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Blue;
-            this.applyBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Navy;
-            this.applyBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.applyBtn.Location = new System.Drawing.Point(598, 594);
-            this.applyBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.applyBtn.Name = "applyBtn";
-            this.applyBtn.Size = new System.Drawing.Size(60, 32);
-            this.applyBtn.TabIndex = 17;
-            this.applyBtn.Text = "Apply";
-            this.applyBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.AutoSize = true;
+            this.saveBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.saveBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.saveBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Blue;
+            this.saveBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Navy;
+            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveBtn.Location = new System.Drawing.Point(598, 594);
+            this.saveBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(57, 32);
+            this.saveBtn.TabIndex = 17;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
             // 
             // SmartProcSettingsWindow
             // 
@@ -241,7 +241,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(771, 651);
-            this.Controls.Add(this.applyBtn);
+            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.scaleFactorTxt);
             this.Controls.Add(this.scaleLabel);
             this.Controls.Add(this.minBrightTxt);
@@ -290,6 +290,6 @@
         public System.Windows.Forms.TextBox minBrightTxt;
         public System.Windows.Forms.TextBox scaleFactorTxt;
         private System.Windows.Forms.Label scaleLabel;
-        public System.Windows.Forms.Button applyBtn;
+        public System.Windows.Forms.Button saveBtn;
     }
 }
