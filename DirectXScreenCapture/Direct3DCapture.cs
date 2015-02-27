@@ -13,6 +13,7 @@ using Capture;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace DirectXScreenCapture
 {
@@ -72,23 +73,16 @@ namespace DirectXScreenCapture
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
             this.settings.processToCaptTxt.Text = Properties.Settings.Default["Target"].ToString();
-            this.settings.processToCaptTxt.TextChanged += new EventHandler(updateTarget);
             this.settings.saveBtn.Click += new EventHandler(applyBtnClick);
             return true;
         }
 
         private void applyBtnClick(object sender, EventArgs e)
         {
+            if (settings == null)
+                return;
+            Properties.Settings.Default.Target = settings.processToCaptTxt.Text;
             Properties.Settings.Default.Save();
-        }
-
-        public void updateTarget(object sender, EventArgs args)
-        {
-            DXSettingsWindow window = (DXSettingsWindow)sender;
-            var txtBx = window.processToCaptTxt;
-            if (txtBx == null)
-                return;//no target entered
-            Properties.Settings.Default.Target = window.processToCaptTxt.Text;
         }
 
         public override bool IsRunning
