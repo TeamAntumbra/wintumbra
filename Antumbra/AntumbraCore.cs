@@ -255,7 +255,11 @@ namespace Antumbra.Glow
             if (dev.Start()) {
                 this.logger.Log("Device id: " + dev.id + " started successfully.");
                 this.logger.Log("Current Configuration: " + dev.GetSetupDesc());
-
+            }
+            else {//starting failed
+                dev.Stop();
+                this.ShowMessage(3000, "Starting Failed", "Starting the selected extensions failed.", ToolTipIcon.Error);
+                return;
             }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
             ShowMessage(3000, "Device " + id + " Started.", "The current device has been started.",

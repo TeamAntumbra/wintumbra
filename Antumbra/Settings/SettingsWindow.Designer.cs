@@ -452,7 +452,8 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.extTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.extTable.RowTemplate.Height = 38;
+            this.extTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.extTable.RowTemplate.Height = 45;
             this.extTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.extTable.ShowEditingIcon = false;
             this.extTable.Size = new System.Drawing.Size(1347, 544);

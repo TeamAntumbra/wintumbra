@@ -145,11 +145,14 @@ namespace Antumbra.Glow.ExtensionFramework
             if (!Verify())
                 return false;
             this.ActiveDriver.AttachEvent(this);
-            this.ActiveDriver.Start();
+            if (!this.ActiveDriver.Start())
+                return false;
             foreach (var dec in ActiveDecorators)
-                dec.Start();
+                if (!dec.Start())
+                    return false;
             foreach (var notf in ActiveNotifiers)
-                notf.Start();
+                if (!notf.Start())
+                    return false;
             return true;
         }
         /// <summary>
