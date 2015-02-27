@@ -109,6 +109,8 @@ namespace DirectXScreenCapture
             {
                 return false;
             }
+            if (this.TargetProcess.Equals("example.exe"))
+                return false;//cannot be default
             Thread.Sleep(10000);//10 sec delay for user to get DX application setup and in foreground
             try {
                 Inject();
@@ -177,8 +179,10 @@ namespace DirectXScreenCapture
             this.running = false;
             if (this.settings != null)
                 this.settings.Dispose();
-            this.driver.Wait(3000);
-            this.driver.Dispose();
+            if (this.driver != null) {
+                this.driver.Wait(3000);
+                this.driver.Dispose();
+            }
             if (_capturedProcess != null)
             {
                 _capturedProcess.CaptureInterface.Disconnect();
