@@ -66,17 +66,16 @@ namespace ExampleGlowDriver
 
         public override bool Stop()
         {
-            bool result = true;
+            this.running = false;
             if (this.settings != null)
                 this.settings.Dispose();
             if (this.driver != null) {
                 this.driver.Wait(1000);
                 if (!this.driver.IsCompleted)
-                    result = false;
+                    return false;
                 this.driver = null;
             }
-            this.running = false;
-            return result;
+            return true;
         }
 
         public override string Name
