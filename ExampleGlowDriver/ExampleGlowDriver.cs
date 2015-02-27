@@ -53,7 +53,7 @@ namespace ExampleGlowDriver
         private void target()
         {
             Random rnd = new Random();
-            while (true) {
+            while (this.running) {
                 //do stuff (logic of driver)
                 Color result = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 //report new color event
