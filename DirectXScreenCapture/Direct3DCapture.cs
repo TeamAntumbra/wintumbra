@@ -71,7 +71,7 @@ namespace DirectXScreenCapture
         {
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
-            this.settings.Text = Properties.Settings.Default["Target"].ToString();
+            this.settings.processToCaptTxt.Text = Properties.Settings.Default["Target"].ToString();
             this.settings.processToCaptTxt.TextChanged += new EventHandler(updateTarget);
             this.settings.saveBtn.Click += new EventHandler(applyBtnClick);
             return true;
