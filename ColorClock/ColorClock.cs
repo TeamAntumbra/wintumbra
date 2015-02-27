@@ -9,6 +9,7 @@ using Antumbra.Glow.Utility;
 using System.Drawing;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace ColorClock
 {
@@ -48,7 +49,7 @@ namespace ColorClock
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override string Website
