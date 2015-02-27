@@ -9,6 +9,7 @@ using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace AntumbraFastScreenProcessor
 {
@@ -61,7 +62,7 @@ namespace AntumbraFastScreenProcessor
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         private Color Process(Bitmap bm)
