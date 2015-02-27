@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
 using Antumbra.Glow.Utility;
+using System.Reflection;
 
 namespace AntumbraScreenDriver
 {
@@ -44,7 +45,7 @@ namespace AntumbraScreenDriver
             get { return this.running; }
         }
         public override string Author { get { return "Team Antumbra"; } }
-        public override Version Version { get { return new Version("0.0.1"); } }
+        public override Version Version { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
         public override string Website
         {
             get { return "https://antumbra.io/"; }

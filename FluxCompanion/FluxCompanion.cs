@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using System.Threading;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace FluxCompanion
 {
@@ -155,7 +156,7 @@ namespace FluxCompanion
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override string Website

@@ -9,6 +9,7 @@ using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace HSVFade
 {
@@ -43,7 +44,7 @@ namespace HSVFade
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override bool IsDefault

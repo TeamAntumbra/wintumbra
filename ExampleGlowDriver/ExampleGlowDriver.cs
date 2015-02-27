@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace ExampleGlowDriver
 {
@@ -90,7 +91,7 @@ namespace ExampleGlowDriver
 
         public override Version Version
         {
-            get { return new Version("0.1.0"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override string Description
