@@ -61,7 +61,6 @@ namespace AntumbraSmartScreenProcessor
 
         public override bool Start()
         {
-            SaveSettings();
             this.running = true;
             return true;
         }
@@ -85,37 +84,44 @@ namespace AntumbraSmartScreenProcessor
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i))
+            if (int.TryParse(box.Text, out i)) {
                 Properties.Settings.Default["useAllTol"] = i;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void minMixChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i))
+            if (int.TryParse(box.Text, out i)) {
                 Properties.Settings.Default["minMixPerc"] = i;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void minBrightChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i))
+            if (int.TryParse(box.Text, out i)) {
                 Properties.Settings.Default["minBright"] = i;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void scaleFactorChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i))
+            if (int.TryParse(box.Text, out i)) {
                 Properties.Settings.Default["scaleFactor"] = i;
+                Properties.Settings.Default.Save();
+            }
         }
 
         public override bool Stop()
         {
-            SaveSettings();
             if (this.settings != null)
                 this.settings.Dispose();
             this.NewColorAvailEvent = null;
@@ -126,11 +132,6 @@ namespace AntumbraSmartScreenProcessor
         public override bool IsRunning
         {
             get { return this.running; }
-        }
-
-        private void SaveSettings()//TODO add settings bounding / verifictaion
-        {
-            Properties.Settings.Default.Save();
         }
 
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
