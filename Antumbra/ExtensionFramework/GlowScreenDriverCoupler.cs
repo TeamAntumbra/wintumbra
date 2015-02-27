@@ -46,7 +46,7 @@ namespace Antumbra.Glow.ExtensionFramework
             get { return true; }
         }
         public sealed override Version Version
-        { get { return new Version("0.0.1"); } }
+        { get { return new Version(0, 1, 0, 0); } }
 
         public sealed override string Website
         {
