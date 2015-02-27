@@ -38,6 +38,7 @@
             this.Description = new System.Windows.Forms.Label();
             this.processLabel = new System.Windows.Forms.Label();
             this.processToCaptTxt = new System.Windows.Forms.TextBox();
+            this.applyBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -48,9 +49,10 @@
             this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeBtn.Location = new System.Drawing.Point(418, -2);
+            this.closeBtn.Location = new System.Drawing.Point(627, -3);
+            this.closeBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.closeBtn.Name = "closeBtn";
-            this.closeBtn.Size = new System.Drawing.Size(26, 25);
+            this.closeBtn.Size = new System.Drawing.Size(32, 32);
             this.closeBtn.TabIndex = 0;
             this.closeBtn.Text = "X";
             this.closeBtn.UseVisualStyleBackColor = true;
@@ -59,92 +61,119 @@
             // extNameLabel
             // 
             this.extNameLabel.AutoSize = true;
-            this.extNameLabel.Location = new System.Drawing.Point(46, 73);
+            this.extNameLabel.Location = new System.Drawing.Point(69, 112);
+            this.extNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.extNameLabel.Name = "extNameLabel";
-            this.extNameLabel.Size = new System.Drawing.Size(38, 13);
+            this.extNameLabel.Size = new System.Drawing.Size(55, 20);
             this.extNameLabel.TabIndex = 1;
             this.extNameLabel.Text = "Name:";
             // 
             // AuthorLabel
             // 
             this.AuthorLabel.AutoSize = true;
-            this.AuthorLabel.Location = new System.Drawing.Point(46, 103);
+            this.AuthorLabel.Location = new System.Drawing.Point(69, 158);
+            this.AuthorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(41, 13);
+            this.AuthorLabel.Size = new System.Drawing.Size(61, 20);
             this.AuthorLabel.TabIndex = 2;
             this.AuthorLabel.Text = "Author:";
             // 
             // DescLabel
             // 
             this.DescLabel.AutoSize = true;
-            this.DescLabel.Location = new System.Drawing.Point(46, 171);
+            this.DescLabel.Location = new System.Drawing.Point(69, 263);
+            this.DescLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.DescLabel.Name = "DescLabel";
-            this.DescLabel.Size = new System.Drawing.Size(63, 13);
+            this.DescLabel.Size = new System.Drawing.Size(93, 20);
             this.DescLabel.TabIndex = 3;
             this.DescLabel.Text = "Description:";
             // 
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(46, 136);
+            this.VersionLabel.Location = new System.Drawing.Point(69, 209);
+            this.VersionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(45, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(67, 20);
             this.VersionLabel.TabIndex = 4;
             this.VersionLabel.Text = "Version:";
             // 
             // ExtName
             // 
             this.ExtName.AutoSize = true;
-            this.ExtName.Location = new System.Drawing.Point(111, 73);
+            this.ExtName.Location = new System.Drawing.Point(166, 112);
+            this.ExtName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ExtName.Name = "ExtName";
-            this.ExtName.Size = new System.Drawing.Size(0, 13);
+            this.ExtName.Size = new System.Drawing.Size(0, 20);
             this.ExtName.TabIndex = 5;
             // 
             // Author
             // 
             this.Author.AutoSize = true;
-            this.Author.Location = new System.Drawing.Point(111, 103);
+            this.Author.Location = new System.Drawing.Point(166, 158);
+            this.Author.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Author.Name = "Author";
-            this.Author.Size = new System.Drawing.Size(0, 13);
+            this.Author.Size = new System.Drawing.Size(0, 20);
             this.Author.TabIndex = 6;
             // 
             // Version
             // 
             this.Version.AutoSize = true;
-            this.Version.Location = new System.Drawing.Point(111, 136);
+            this.Version.Location = new System.Drawing.Point(166, 209);
+            this.Version.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Version.Name = "Version";
-            this.Version.Size = new System.Drawing.Size(0, 13);
+            this.Version.Size = new System.Drawing.Size(0, 20);
             this.Version.TabIndex = 7;
             // 
             // Description
             // 
-            this.Description.Location = new System.Drawing.Point(115, 171);
+            this.Description.Location = new System.Drawing.Point(172, 263);
+            this.Description.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Description.Name = "Description";
-            this.Description.Size = new System.Drawing.Size(329, 135);
+            this.Description.Size = new System.Drawing.Size(494, 208);
             this.Description.TabIndex = 8;
             // 
             // processLabel
             // 
             this.processLabel.AutoSize = true;
-            this.processLabel.Location = new System.Drawing.Point(46, 330);
+            this.processLabel.Location = new System.Drawing.Point(69, 508);
+            this.processLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.processLabel.Name = "processLabel";
-            this.processLabel.Size = new System.Drawing.Size(151, 13);
+            this.processLabel.Size = new System.Drawing.Size(224, 20);
             this.processLabel.TabIndex = 9;
             this.processLabel.Text = "Process to Capture (with .exe):";
             // 
             // processToCaptTxt
             // 
-            this.processToCaptTxt.Location = new System.Drawing.Point(204, 330);
+            this.processToCaptTxt.Location = new System.Drawing.Point(306, 508);
+            this.processToCaptTxt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.processToCaptTxt.Name = "processToCaptTxt";
-            this.processToCaptTxt.Size = new System.Drawing.Size(265, 20);
+            this.processToCaptTxt.Size = new System.Drawing.Size(396, 26);
             this.processToCaptTxt.TabIndex = 10;
+            // 
+            // applyBtn
+            // 
+            this.applyBtn.AutoSize = true;
+            this.applyBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.applyBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.applyBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Blue;
+            this.applyBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Navy;
+            this.applyBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.applyBtn.Location = new System.Drawing.Point(599, 627);
+            this.applyBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.applyBtn.Name = "applyBtn";
+            this.applyBtn.Size = new System.Drawing.Size(60, 32);
+            this.applyBtn.TabIndex = 11;
+            this.applyBtn.Text = "Apply";
+            this.applyBtn.UseVisualStyleBackColor = true;
             // 
             // DXSettingsWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.ClientSize = new System.Drawing.Size(507, 466);
+            this.ClientSize = new System.Drawing.Size(760, 717);
+            this.Controls.Add(this.applyBtn);
             this.Controls.Add(this.processToCaptTxt);
             this.Controls.Add(this.processLabel);
             this.Controls.Add(this.Description);
@@ -158,9 +187,10 @@
             this.Controls.Add(this.closeBtn);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(300, 300);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MinimumSize = new System.Drawing.Size(450, 462);
             this.Name = "DXSettingsWindow";
-            this.Padding = new System.Windows.Forms.Padding(5);
+            this.Padding = new System.Windows.Forms.Padding(8);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AntumbraExtSettingsWindow_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -180,5 +210,6 @@
         public System.Windows.Forms.Button closeBtn;
         private System.Windows.Forms.Label processLabel;
         public System.Windows.Forms.TextBox processToCaptTxt;
+        public System.Windows.Forms.Button applyBtn;
     }
 }

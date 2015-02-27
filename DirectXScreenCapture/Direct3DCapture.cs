@@ -12,6 +12,7 @@ using System.Drawing;
 using Capture;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
+using System.Reflection;
 
 namespace DirectXScreenCapture
 {
@@ -58,7 +59,7 @@ namespace DirectXScreenCapture
 
         public override Version Version
         {
-            get { return new Version(0, 1, 0); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override void AttachEvent(AntumbraBitmapObserver observer)
@@ -71,8 +72,14 @@ namespace DirectXScreenCapture
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
             this.settings.Text = Properties.Settings.Default["Target"].ToString();
-            this.settings.FormClosing += new System.Windows.Forms.FormClosingEventHandler(updateTarget);
+            this.settings.processToCaptTxt.TextChanged += new EventHandler(updateTarget);
+            this.settings.applyBtn.Click += new EventHandler(applyBtnClick);
             return true;
+        }
+
+        private void applyBtnClick(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Save();
         }
 
         public void updateTarget(object sender, EventArgs args)
@@ -81,8 +88,7 @@ namespace DirectXScreenCapture
             var txtBx = window.processToCaptTxt;
             if (txtBx == null)
                 return;//no target entered
-            Properties.Settings.Default["Target"] = window.processToCaptTxt.Text;
-            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Target = window.processToCaptTxt.Text;
         }
 
         public override bool IsRunning
