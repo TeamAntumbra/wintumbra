@@ -100,8 +100,9 @@ is not being rendered by DirectX (see DirectXScreenCapture).
 ####DirectXScreenCapture
 
 Captures pixel information for a Direct3D application. To use select it, apply, open its settings, and
-enter the name of the exe you would like to capture (including the .exe). Then click start and start using the
-specified exe. This extension is unstable and under heavy development.
+enter the name of the exe you would like to capture (including the .exe). Close the settings window, and
+then click start and start using the specified exe. There is a delay after you click start before the extension will
+attempt to hook into the specified process. This will soon have a message announced when waiting. This extension is unstable and under heavy development.
 
 ------
 
