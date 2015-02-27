@@ -70,6 +70,7 @@ namespace DirectXScreenCapture
         {
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
+            this.settings.Text = Properties.Settings.Default["Target"].ToString();
             this.settings.FormClosing += new System.Windows.Forms.FormClosingEventHandler(updateTarget);
             return true;
         }
@@ -119,7 +120,6 @@ namespace DirectXScreenCapture
                 Console.WriteLine(e.StackTrace);
                 return false;
             }
-            //this.driver = new Thread(new ThreadStart(target));
             this.running = true;
             this.driver = new Task(target);
             this.driver.Start();
