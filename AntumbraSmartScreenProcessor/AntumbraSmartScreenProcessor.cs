@@ -9,6 +9,7 @@ using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace AntumbraSmartScreenProcessor
 {
@@ -27,7 +28,7 @@ namespace AntumbraSmartScreenProcessor
 
         public override String Name
         {
-            get { return "Antumbra Screen Processor (Default)"; }
+            get { return "Antumbra Smart Screen Processor"; }
         }
 
         public override string Author
@@ -51,7 +52,7 @@ namespace AntumbraSmartScreenProcessor
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override void AttachEvent(AntumbraColorObserver observer)
@@ -69,55 +70,52 @@ namespace AntumbraSmartScreenProcessor
         {
             this.settings = new SmartProcSettingsWindow(this);
             this.settings.Show();
-            this.settings.useAllTxt.Text = Properties.Settings.Default["useAllTol"].ToString();
-            this.settings.minBrightTxt.Text = Properties.Settings.Default["minBright"].ToString();
-            this.settings.minMixTxt.Text = Properties.Settings.Default["minMixPerc"].ToString();
-            this.settings.scaleFactorTxt.Text = Properties.Settings.Default["scaleFactor"].ToString();
+            this.settings.useAllTxt.Text = Properties.Settings.Default.useAllTol.ToString();
+            this.settings.minBrightTxt.Text = Properties.Settings.Default.minBright.ToString();
+            this.settings.minMixTxt.Text = Properties.Settings.Default.minMixPerc.ToString();
+            this.settings.scaleFactorTxt.Text = Properties.Settings.Default.scaleFactor.ToString();
             this.settings.scaleFactorTxt.TextChanged += new EventHandler(scaleFactorChanged);
             this.settings.useAllTxt.TextChanged += new EventHandler(useAllChanged);
-            this.settings.minBrightTxt.TextChanged += new EventHandler(minMixChanged);
-            this.settings.minMixTxt.TextChanged += new EventHandler(minBrightChanged);
+            this.settings.minBrightTxt.TextChanged += new EventHandler(minBrightChanged);
+            this.settings.minMixTxt.TextChanged += new EventHandler(minMixChanged);
             return true;
+        }
+
+        private void ApplyBtnClick(object sender, EventArgs args)
+        {
+            Properties.Settings.Default.Save();
         }
 
         private void useAllChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i)) {
-                Properties.Settings.Default["useAllTol"] = i;
-                Properties.Settings.Default.Save();
-            }
+            if (int.TryParse(box.Text, out i))
+                Properties.Settings.Default.useAllTol = i;
         }
 
         private void minMixChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i)) {
-                Properties.Settings.Default["minMixPerc"] = i;
-                Properties.Settings.Default.Save();
-            }
+            if (int.TryParse(box.Text, out i))
+                Properties.Settings.Default.minMixPerc = i;
         }
 
         private void minBrightChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i)) {
-                Properties.Settings.Default["minBright"] = i;
-                Properties.Settings.Default.Save();
-            }
+            if (int.TryParse(box.Text, out i))
+                Properties.Settings.Default.minBright = i;
         }
 
         private void scaleFactorChanged(object sender, EventArgs args)
         {
             int i;
             TextBox box = (TextBox)sender;
-            if (int.TryParse(box.Text, out i)) {
-                Properties.Settings.Default["scaleFactor"] = i;
-                Properties.Settings.Default.Save();
-            }
+            if (int.TryParse(box.Text, out i))
+                Properties.Settings.Default.scaleFactor = i;
         }
 
         public override bool Stop()
