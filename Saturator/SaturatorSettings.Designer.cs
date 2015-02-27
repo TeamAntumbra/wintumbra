@@ -38,6 +38,7 @@
             this.Description = new System.Windows.Forms.Label();
             this.saturateAmtLabel = new System.Windows.Forms.Label();
             this.saturateAmtTxt = new System.Windows.Forms.TextBox();
+            this.applyBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -152,12 +153,29 @@
             this.saturateAmtTxt.Size = new System.Drawing.Size(90, 19);
             this.saturateAmtTxt.TabIndex = 10;
             // 
+            // applyBtn
+            // 
+            this.applyBtn.AutoSize = true;
+            this.applyBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.applyBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.applyBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Blue;
+            this.applyBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Navy;
+            this.applyBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.applyBtn.Location = new System.Drawing.Point(606, 516);
+            this.applyBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.applyBtn.Name = "applyBtn";
+            this.applyBtn.Size = new System.Drawing.Size(60, 32);
+            this.applyBtn.TabIndex = 11;
+            this.applyBtn.Text = "Apply";
+            this.applyBtn.UseVisualStyleBackColor = true;
+            // 
             // SaturatorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(742, 588);
+            this.Controls.Add(this.applyBtn);
             this.Controls.Add(this.saturateAmtTxt);
             this.Controls.Add(this.saturateAmtLabel);
             this.Controls.Add(this.Description);
@@ -194,5 +212,6 @@
         public System.Windows.Forms.Button closeBtn;
         private System.Windows.Forms.Label saturateAmtLabel;
         public System.Windows.Forms.TextBox saturateAmtTxt;
+        public System.Windows.Forms.Button applyBtn;
     }
 }

@@ -9,6 +9,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Saturator
@@ -35,7 +36,7 @@ namespace Saturator
 
         public override Version Version
         {
-            get { return new Version("0.0.1"); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public override string Description
@@ -51,7 +52,7 @@ namespace Saturator
         public override Color Decorate(Color origColor)
         {
             HslColor boringHSL = new HslColor(origColor);
-            double satAmnt = (double)Properties.Settings.Default["saturationAmount"];
+            double satAmnt = (double)Properties.Settings.Default.saturationAmount;
             if (boringHSL.S < satAmnt) { }//skip low saturation colors
             else if (boringHSL.S <= (1.0-satAmnt))
                 boringHSL.S += satAmnt; //saturate
@@ -69,17 +70,22 @@ namespace Saturator
         {
             this.settingsWin = new SaturatorSettings(this);
             this.settingsWin.Show();
-            this.settingsWin.saturateAmtTxt.Text = Properties.Settings.Default["saturationAmount"].ToString();
+            this.settingsWin.saturateAmtTxt.Text = Properties.Settings.Default.saturationAmount.ToString();
             this.settingsWin.saturateAmtTxt.TextChanged += new EventHandler(SaturationTxtChanged);
+            this.settingsWin.applyBtn.Click += new EventHandler(ApplyBtnClick);
             return true;
+        }
+
+        private void ApplyBtnClick(object sender, EventArgs args)
+        {
+            Properties.Settings.Default.Save();
         }
 
         private void SaturationTxtChanged(object sender, EventArgs args)
         {
             TextBox bx = (TextBox)sender;
             try {
-                Properties.Settings.Default["saturationAmount"] = double.Parse(bx.Text);
-                Properties.Settings.Default.Save();
+                Properties.Settings.Default.saturationAmount = double.Parse(bx.Text);
             }
             catch (Exception) { 
                 //bad input, ignore
