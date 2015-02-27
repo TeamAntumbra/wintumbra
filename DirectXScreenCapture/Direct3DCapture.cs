@@ -81,6 +81,7 @@ namespace DirectXScreenCapture
             if (txtBx == null)
                 return;//no target entered
             Properties.Settings.Default["Target"] = window.processToCaptTxt.Text;
+            Properties.Settings.Default.Save();
         }
 
         public override bool IsRunning
