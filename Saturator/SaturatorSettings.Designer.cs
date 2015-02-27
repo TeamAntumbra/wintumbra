@@ -152,7 +152,7 @@
             this.saturateAmtTxt.Size = new System.Drawing.Size(90, 19);
             this.saturateAmtTxt.TabIndex = 10;
             // 
-            // BrightenerSettings
+            // SaturatorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -173,7 +173,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(450, 462);
-            this.Name = "BrightenerSettings";
+            this.Name = "SaturatorSettings";
             this.Padding = new System.Windows.Forms.Padding(8);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AntumbraExtSettingsWindow_MouseDown);
             this.ResumeLayout(false);

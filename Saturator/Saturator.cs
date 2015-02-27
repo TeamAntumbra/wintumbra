@@ -70,6 +70,7 @@ namespace Saturator
             this.settingsWin = new SaturatorSettings(this);
             this.settingsWin.Show();
             this.settingsWin.saturateAmtTxt.Text = Properties.Settings.Default["saturationAmount"].ToString();
+            this.settingsWin.saturateAmtTxt.TextChanged += new EventHandler(SaturationTxtChanged);
             return true;
         }
 
@@ -78,6 +79,7 @@ namespace Saturator
             TextBox bx = (TextBox)sender;
             try {
                 Properties.Settings.Default["saturationAmount"] = double.Parse(bx.Text);
+                Properties.Settings.Default.Save();
             }
             catch (Exception) { 
                 //bad input, ignore
