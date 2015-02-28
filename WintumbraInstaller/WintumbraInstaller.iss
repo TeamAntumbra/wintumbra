@@ -17,7 +17,7 @@ Source: "dependencies\libusb-1.0.dll"; DestDir: {app}
 Source: "dependencies\libantumbra.dll"; DestDir: {app}
 Source: "dependencies\Antumbra.exe"; DestDir: {app}
 Source: "../Licenses\*"; DestDir: {app}\Licences
-Source: "README.txt"; DestDir: {app}
+Source: "..\README.md"; DestDir: {app}; DestName: "README.txt"
 
 [Run]
 Filename: "{tmp}\dotNetFx40_Full_setup.exe"; Check: FrameworkIsNotInstalled
