@@ -65,26 +65,26 @@
   <ItemGroup>
     <Reference Include="EasyHook, Version=2.5.0.0, Culture=neutral, PublicKeyToken=4b580fca19d0b0c5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>EasyHook.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\EasyHook.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>SharpDX.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.D3DCompiler">
-      <HintPath>SharpDX.D3DCompiler.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\SharpDX.D3DCompiler.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D10">
-      <HintPath>SharpDX.Direct3D10.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\SharpDX.Direct3D10.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\deps\wintumbra\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -146,20 +146,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Direct3DHook_license.txt" />
-    <Content Include="EasyHook.dll">
+    <Content Include="..\..\deps\wintumbra\EasyHook.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="easyhook.h" />
-    <Content Include="EasyHook32.dll">
+    <Content Include="..\..\deps\wintumbra\EasyHook32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="EasyHook32Svc.exe">
+    <Content Include="..\..\deps\wintumbra\EasyHook32Svc.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="EasyHook64.dll">
+    <Content Include="..\..\deps\wintumbra\EasyHook64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="EasyHook64Svc.exe">
+    <Content Include="..\..\deps\wintumbra\EasyHook64Svc.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="EasyHook_LICENSE.txt" />
@@ -170,22 +170,22 @@
     <Content Include="license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SharpDX.dll">
+    <Content Include="..\..\deps\wintumbra\SharpDX.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SharpDX.DXGI.dll">
+    <Content Include="..\..\deps\wintumbra\SharpDX.DXGI.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SharpDX.D3DCompiler.dll">
+    <Content Include="..\..\deps\wintumbra\SharpDX.D3DCompiler.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SharpDX.Direct3D9.dll">
+    <Content Include="..\..\deps\wintumbra\SharpDX.Direct3D9.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SharpDX.Direct3D10.dll">
+    <Content Include="..\..\deps\wintumbra\SharpDX.Direct3D10.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SharpDX.Direct3D11.dll">
+    <Content Include="..\..\deps\wintumbra\SharpDX.Direct3D11.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
