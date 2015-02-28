@@ -229,10 +229,13 @@
   <ItemGroup>
     <Content Include="AntumbraA.ico" />
     <Content Include="FodyWeavers.xml" />
-    <None Include="libusb-1.0.dll">
+    <None Include="..\deps\win32-libusb\libusb-1.0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="libantumbra.dll">
+    <None Include="..\deps\win32-libantumbra\libantumbra.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\deps\win32-libantumbra\antumbratool.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\antumbra.ico" />
