@@ -22,17 +22,5 @@ namespace DirectXScreenCapture.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("example.exe")]
-        public string Target {
-            get {
-                return ((string)(this["Target"]));
-            }
-            set {
-                this["Target"] = value;
-            }
-        }
     }
 }

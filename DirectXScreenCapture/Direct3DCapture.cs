@@ -72,17 +72,7 @@ namespace DirectXScreenCapture
         {
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
-            this.settings.processToCaptTxt.Text = Properties.Settings.Default.Target.ToString();
-            this.settings.saveBtn.Click += new EventHandler(applyBtnClick);
             return true;
-        }
-
-        private void applyBtnClick(object sender, EventArgs e)
-        {
-            if (settings == null)
-                return;
-            Properties.Settings.Default.Target = settings.processToCaptTxt.Text;
-            Properties.Settings.Default.Save();
         }
 
         public override bool IsRunning
@@ -92,7 +82,7 @@ namespace DirectXScreenCapture
 
         private Capture.Interface.CaptureInterface _captureInterface;
         private CaptureProcess _capturedProcess;
-        public string TargetProcess { get; set;  }
+        public Process TargetProcess { get; set; }
         private volatile bool _stopped = false;
         private global::Capture.Interface.Screenshot _currentResponse;
         private long _captures;
@@ -104,14 +94,10 @@ namespace DirectXScreenCapture
             _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
 
             // Inject to process
-            this.TargetProcess = (string)Properties.Settings.Default.Target;
-
-            if (String.IsNullOrEmpty(this.TargetProcess))
-            {
+            Thread.Sleep(3000);
+            this.TargetProcess = FindForegroundPrcs();
+            if (this.TargetProcess == null)
                 return false;
-            }
-            if (this.TargetProcess.Equals("example.exe"))
-                return false;//cannot be default
             Thread.Sleep(10000);//10 sec delay for user to get DX application setup and in foreground
             try {
                 Inject();
@@ -125,6 +111,16 @@ namespace DirectXScreenCapture
             this.driver.Start();
             _stopped = false;
             return true;
+        }
+
+        private Process FindForegroundPrcs()
+        {
+            foreach (Process prc in Process.GetProcesses()) {
+                IntPtr handle = prc.MainWindowHandle;
+                if (NativeMethods.IsWindowInForeground(handle))
+                    return prc;
+            }
+            return null;
         }
 
         private void target()
@@ -146,27 +142,15 @@ namespace DirectXScreenCapture
             while (!newInstanceFound)//looking
             {
                 if (_stopped) break;
-                Process[] processes = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(this.TargetProcess));
-                foreach (Process process in processes)
-                {
-                    // Simply attach to the first one found.
-                    // If the process doesn't have a mainwindowhandle yet, skip it (we need to be able to get the hwnd to set foreground etc)
-                    if (process.MainWindowHandle == IntPtr.Zero)
-                    {
-                        continue;
-                    }
-
-                    _processId = process.Id;
-                    _process = process;
-
-                    _capturedProcess = new CaptureProcess(process, new Capture.Interface.CaptureConfig{
-                        ShowOverlay = false, Direct3DVersion = global::Capture.Interface.Direct3DVersion.AutoDetect
-                    }, _captureInterface);
-
-                    newInstanceFound = true;
-                    break;
-                }
-                Thread.Sleep(10);
+                // If the process doesn't have a mainwindowhandle yet, skip it (we need to be able to get the hwnd to set foreground etc)
+                if (this.TargetProcess == null || this.TargetProcess.MainWindowHandle == IntPtr.Zero)
+                    continue;
+                _processId = this.TargetProcess.Id;
+                _process = this.TargetProcess;
+                _capturedProcess = new CaptureProcess(this.TargetProcess, new Capture.Interface.CaptureConfig{
+                    ShowOverlay = false, Direct3DVersion = global::Capture.Interface.Direct3DVersion.AutoDetect
+                }, _captureInterface);
+                newInstanceFound = true;
             }
         }
         

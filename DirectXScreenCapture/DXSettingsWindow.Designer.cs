@@ -36,9 +36,6 @@
             this.Author = new System.Windows.Forms.Label();
             this.Version = new System.Windows.Forms.Label();
             this.Description = new System.Windows.Forms.Label();
-            this.processLabel = new System.Windows.Forms.Label();
-            this.processToCaptTxt = new System.Windows.Forms.TextBox();
-            this.saveBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -133,49 +130,12 @@
             this.Description.Size = new System.Drawing.Size(494, 208);
             this.Description.TabIndex = 8;
             // 
-            // processLabel
-            // 
-            this.processLabel.AutoSize = true;
-            this.processLabel.Location = new System.Drawing.Point(69, 508);
-            this.processLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.processLabel.Name = "processLabel";
-            this.processLabel.Size = new System.Drawing.Size(224, 20);
-            this.processLabel.TabIndex = 9;
-            this.processLabel.Text = "Process to Capture (with .exe):";
-            // 
-            // processToCaptTxt
-            // 
-            this.processToCaptTxt.Location = new System.Drawing.Point(306, 508);
-            this.processToCaptTxt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.processToCaptTxt.Name = "processToCaptTxt";
-            this.processToCaptTxt.Size = new System.Drawing.Size(396, 26);
-            this.processToCaptTxt.TabIndex = 10;
-            // 
-            // saveBtn
-            // 
-            this.saveBtn.AutoSize = true;
-            this.saveBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.saveBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.saveBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Blue;
-            this.saveBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Navy;
-            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveBtn.Location = new System.Drawing.Point(599, 627);
-            this.saveBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(57, 32);
-            this.saveBtn.TabIndex = 11;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = true;
-            // 
             // DXSettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(760, 717);
-            this.Controls.Add(this.saveBtn);
-            this.Controls.Add(this.processToCaptTxt);
-            this.Controls.Add(this.processLabel);
             this.Controls.Add(this.Description);
             this.Controls.Add(this.Version);
             this.Controls.Add(this.Author);
@@ -208,8 +168,5 @@
         private System.Windows.Forms.Label Version;
         private System.Windows.Forms.Label Description;
         public System.Windows.Forms.Button closeBtn;
-        private System.Windows.Forms.Label processLabel;
-        public System.Windows.Forms.TextBox processToCaptTxt;
-        public System.Windows.Forms.Button saveBtn;
     }
 }
