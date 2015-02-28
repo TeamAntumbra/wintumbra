@@ -13,8 +13,6 @@ Source: "dependencies\dotNetFx40_Full_x86_x64.exe"; DestDir: {tmp}; Flags: delet
 Source: "..\DriverInstaller\*"; DestDir: {app}\DriverInstaller\
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
 Source: "dependencies\Antumbra.exe"; DestDir: {app}
-Source: "libusb-1.0.dll"; DestDir: {app}
-Source: "libantumbra.dll"; DestDir: {app}
 Source: "../Licenses\*"; DestDir: {app}\Licences
 Source: "README.txt"; DestDir: {app}
 
