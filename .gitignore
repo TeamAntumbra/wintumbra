@@ -158,3 +158,4 @@ packages/
 #*.dll
 WintumbraInstaller/dependencies/
 WintumbraInstaller/Output/
+WintumbraInstaller/dxdlls/
