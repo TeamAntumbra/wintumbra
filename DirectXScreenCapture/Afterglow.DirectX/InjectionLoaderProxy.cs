@@ -5,7 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using EasyHook;
 
-namespace Afterglow.DirectX
+namespace DirectXHelper
 {
     public class InjectionLoader
     {

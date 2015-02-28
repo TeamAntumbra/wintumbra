@@ -72,7 +72,7 @@ namespace DirectXScreenCapture
         {
             this.settings = new DXSettingsWindow(this);
             this.settings.Show();
-            this.settings.processToCaptTxt.Text = Properties.Settings.Default["Target"].ToString();
+            this.settings.processToCaptTxt.Text = Properties.Settings.Default.Target.ToString();
             this.settings.saveBtn.Click += new EventHandler(applyBtnClick);
             return true;
         }
@@ -104,7 +104,7 @@ namespace DirectXScreenCapture
             _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
 
             // Inject to process
-            this.TargetProcess = (string)Properties.Settings.Default["Target"];
+            this.TargetProcess = (string)Properties.Settings.Default.Target;
 
             if (String.IsNullOrEmpty(this.TargetProcess))
             {
@@ -143,14 +143,13 @@ namespace DirectXScreenCapture
         {
             bool newInstanceFound = false;
 
-            while (!newInstanceFound)
+            while (!newInstanceFound)//looking
             {
                 if (_stopped) break;
                 Process[] processes = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(this.TargetProcess));
                 foreach (Process process in processes)
                 {
                     // Simply attach to the first one found.
-
                     // If the process doesn't have a mainwindowhandle yet, skip it (we need to be able to get the hwnd to set foreground etc)
                     if (process.MainWindowHandle == IntPtr.Zero)
                     {
@@ -186,7 +185,6 @@ namespace DirectXScreenCapture
             if (_capturedProcess != null)
             {
                 _capturedProcess.CaptureInterface.Disconnect();
-                _capturedProcess.Process.Dispose();
                 _capturedProcess.Dispose();
             }
             ReleaseCapture();
