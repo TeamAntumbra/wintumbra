@@ -11,7 +11,7 @@ cp README.md stage
 mkdir stage/without-installer/{,DriverInstaller,Extensions}
 cp WintumbraInstaller/dependencies/{Antumbra.exe,libantumbra.dll,libusb-1.0.dll} stage/without-installer
 cp WintumbraInstaller/dependencies/!(libantumbra|libusb-1.0).dll stage/without-installer/Extensions
-cp DriverInstaller/* stage/without-installer/DriverInstaller
+cp deps/libwdi/*.dll deps/win32-libantumbra/glowdrvinst.exe stage/without-installer/DriverInstaller
 
 find stage -type f -print0 | xargs -0 chmod 0644
 find stage -type d -print0 | xargs -0 chmod 0755
