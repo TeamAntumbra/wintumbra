@@ -9,6 +9,7 @@ using SlimDX.Direct3D9;
 using System.Reflection;
 using Antumbra.Glow.ExtensionFramework;
 using System.Drawing;
+using SlimDX;
 
 namespace SlimDXCapture
 {
@@ -64,7 +65,7 @@ namespace SlimDXCapture
                     NewScreenAvailEvent(screen, EventArgs.Empty);
                     screen.Dispose();
                 }
-                catch (Exception) { }//swallow exceptions (TODO change once implemented log listener in core)
+                catch (SlimDX.Direct3D9.Direct3D9Exception) { }//swallow exceptions (TODO change once implemented log listener in core)
                 finally {
                     surf.Dispose();
                 }
@@ -73,7 +74,8 @@ namespace SlimDXCapture
 
         private Bitmap GetBitmapFromSurface(Surface s)
         {
-            return new Bitmap(SlimDX.Direct3D9.Surface.ToStream(s, SlimDX.Direct3D9.ImageFileFormat.Bmp));
+            return new Bitmap(Surface.ToStream(s, ImageFileFormat.Bmp));
+            //return new Bitmap(SlimDX.Direct3D9.Surface.ToStream(s, SlimDX.Direct3D9.ImageFileFormat.Bmp));
         }
 
         public override bool Stop()
