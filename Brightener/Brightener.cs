@@ -95,7 +95,7 @@ namespace Brightener
             try {
                 Properties.Settings.Default.amountToLighten = double.Parse(bx.Text);
             }
-            catch (Exception e) {
+            catch (Exception) {
                 //invalid input
             }
         }

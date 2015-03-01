@@ -22,6 +22,11 @@ namespace ExampleGlowDriver
         private AntumbraExtSettingsWindow settings;
         public override int id { get; set; }
 
+        public ExampleGlowDriver()
+        {
+            settings = null;
+        }
+
         public override bool IsDefault
         {
             get { return false; }
