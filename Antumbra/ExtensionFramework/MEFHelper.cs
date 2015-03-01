@@ -15,8 +15,10 @@ namespace Antumbra.Glow.ExtensionFramework
         private CompositionContainer container;
         private String path;
 
+#pragma warning disable 0649
         [ImportMany]
         private IEnumerable<GlowExtension> extensions;
+#pragma warning restore 0649
 
         //The Extension Bank
         public List<GlowDriver> AvailDrivers { get; private set; }

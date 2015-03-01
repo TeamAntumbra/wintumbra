@@ -7,7 +7,6 @@ using Antumbra.Glow.ExtensionFramework;
 using System.ComponentModel.Composition;
 using SlimDX.Direct3D9;
 using System.Reflection;
-using Antumbra.Glow.ExtensionFramework;
 using System.Drawing;
 using SlimDX;
 

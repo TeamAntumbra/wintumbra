@@ -259,7 +259,7 @@ namespace ManualColorSelector
                     TranslateColor();
                 }
             }
-            catch (FormatException fex)
+            catch (FormatException)
             {
                 sampleColor = Color.Black;
                 TranslateColor();
