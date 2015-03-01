@@ -80,8 +80,9 @@ namespace Antumbra.Glow.Connector
         {
             this._active = false;
             if (this.outputLoopTask != null) {
-                this.outputLoopTask.Wait(3000);
-                this.outputLoopTask.Dispose();
+                this.outputLoopTask.Wait(2000);
+                if (this.outputLoopTask.IsCompleted)
+                    this.outputLoopTask.Dispose();
             }
         }
 
@@ -95,10 +96,9 @@ namespace Antumbra.Glow.Connector
 
         public void Dispose()
         {
+            if (this.outputLoopTask != null)
+                this.outputLoopTask.Dispose();
             this.Stop();
-            if (outputLoopTask != null && outputLoopTask.IsCompleted)
-                outputLoopTask.Dispose();
-            this.outputFPS = new FPSCalc();
         }
     }
 }
