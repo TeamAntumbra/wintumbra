@@ -370,7 +370,7 @@ namespace Antumbra.Glow
 
         private void StartAllAfterDelay()
         {
-            Thread.Sleep(2000);//wait for screen to be available
+            Thread.Sleep(3000);//wait for screen to be available
             this.StartAll();
         }
     }
