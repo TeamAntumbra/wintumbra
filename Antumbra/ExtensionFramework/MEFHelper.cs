@@ -15,10 +15,8 @@ namespace Antumbra.Glow.ExtensionFramework
         private CompositionContainer container;
         private String path;
 
-#pragma warning disable 0649
         [ImportMany]
         private IEnumerable<GlowExtension> extensions;
-#pragma warning restore 0649
 
         //The Extension Bank
         public List<GlowDriver> AvailDrivers { get; private set; }
@@ -40,34 +38,26 @@ namespace Antumbra.Glow.ExtensionFramework
 
             Compose();
             if (null == extensions) {
-                Console.WriteLine("No extensions loaded, likely an extension loading exception occured.");
                 failed = true;
                 return;//no plugins loaded
             }
             foreach (var extension in extensions) {
-                Console.WriteLine("Extension Found: " + extension.Name);
                 if (extension is GlowDriver) {
-                    Console.WriteLine("Type: Driver");
                     this.AvailDrivers.Add((GlowDriver)extension);
                 }
                 else if (extension is GlowScreenGrabber) {
-                    Console.WriteLine("Type: Screen Grabber");
                     this.AvailScreenDrivers.Add((GlowScreenGrabber)extension);
                 }
                 else if (extension is GlowScreenProcessor) {
-                    Console.WriteLine("Type: Screen Processor");
                     this.AvailScreenProcessors.Add((GlowScreenProcessor)extension);
                 }
                 else if (extension is GlowDecorator) {
-                    Console.WriteLine("Type: Decorator");
                     this.AvailDecorators.Add((GlowDecorator)extension);
                 }
                 else if (extension is GlowNotifier) {
-                    Console.WriteLine("Type: Notifier");
                     this.AvailNotifiers.Add((GlowNotifier)extension);
                 }
                 else {
-                    Console.WriteLine("Ignoring Extension - invalid type");
                 }
             }
         }
