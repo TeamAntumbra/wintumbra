@@ -73,7 +73,7 @@ namespace ExampleGlowDriver
                 try {
                     NewColorAvailEvent(result, EventArgs.Empty);
                 }
-                catch (System.NullReferenceException e) {
+                catch (Exception e) {
                     NewLogMsgEvent(this.Name, e.StackTrace);
                 }
                 Thread.Sleep(this.stepSleep);
