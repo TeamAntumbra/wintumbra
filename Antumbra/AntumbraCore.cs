@@ -39,7 +39,7 @@ namespace Antumbra.Glow
         /// </summary>
         public AntumbraCore()
         {
-            this.logger = new Logger("WintumbraLog.txt");
+            this.logger = new Logger("wintumbra.log");
             this.logger.Log("Wintumbra Starting... @ " + DateTime.Now.ToString());
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
