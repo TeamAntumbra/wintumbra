@@ -134,10 +134,15 @@ namespace AntumbraSmartScreenProcessor
 
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
-            if (NewColorAvailEvent == null)
-                return;
-            NewColorAvailEvent(Process(bm), EventArgs.Empty);
-            bm.Dispose();
+            try {
+                NewColorAvailEvent(Process(bm), EventArgs.Empty);
+            }
+            catch (Exception e) {//TODO add logging and apply similar structure to all extensions
+
+            }
+            finally {
+                bm.Dispose();
+            }
         }
 
         public Color Process(Bitmap screen)
