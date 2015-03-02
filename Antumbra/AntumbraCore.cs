@@ -20,6 +20,7 @@ using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
+using Antumbra.Glow.Logging;
 using System.Reflection;
 using Microsoft.Win32;
 

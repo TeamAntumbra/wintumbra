@@ -138,8 +138,10 @@
     </Compile>
     <Compile Include="ExtensionFramework\ExtensionLibrary.cs" />
     <Compile Include="ExtensionFramework\ExtensionManager.cs" />
+    <Compile Include="Logging\Loggable.cs" />
+    <Compile Include="Logging\LogMsgObserver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
-    <Compile Include="Utility\Logger.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Utility\Mixer.cs" />
     <Compile Include="AntumbraCore.cs">
       <SubType>Form</SubType>

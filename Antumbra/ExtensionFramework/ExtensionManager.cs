@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Settings;
 using System.Drawing;
-using Antumbra.Glow.Utility;
+using Antumbra.Glow.Logging;
 
 namespace Antumbra.Glow.ExtensionFramework
 {

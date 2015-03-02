@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Utility;//TODO double check that the log observer should actually be here...seems to be causing coupling
+using Antumbra.Glow.Logging;
 
 namespace Antumbra.Glow.Connector
 {

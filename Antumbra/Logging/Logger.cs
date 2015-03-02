@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Utility
+namespace Antumbra.Glow.Logging
 {
     /// <summary>
     /// Allows easy logging to a specified file
@@ -33,15 +33,5 @@ namespace Antumbra.Glow.Utility
                 file.WriteLine(lines);
             }
         }
-    }
-
-    public interface LogMsgObserver//TODO move
-    {
-        void NewLogMsgAvail(String sourceName, String msg);
-    }
-
-    public interface Loggable//TODO move
-    {
-        void AttachEvent(LogMsgObserver observer);
     }
 }

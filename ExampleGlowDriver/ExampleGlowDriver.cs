@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
-using Antumbra.Glow.Utility;
+using Antumbra.Glow.Logging;
 
 namespace ExampleGlowDriver
 {
@@ -69,13 +69,12 @@ namespace ExampleGlowDriver
             while (this.running) {
                 //do stuff (logic of driver)
                 Color result = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                NewLogMsgEvent(this.Name, "test - " + result.ToString());
                 //report new color event
                 try {
                     NewColorAvailEvent(result, EventArgs.Empty);
                 }
                 catch (System.NullReferenceException e) {
-                    NewLogMsgEvent(this.Name, e.Message);
+                    NewLogMsgEvent(this.Name, e.StackTrace);
                 }
                 Thread.Sleep(this.stepSleep);
             }
