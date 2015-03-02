@@ -93,7 +93,7 @@ namespace Antumbra.Glow
         {
             this.logger.Log("Found " + type + ":");
             foreach (var ext in exts)
-                this.logger.Log(ext.ToString());
+                this.logger.Log("\t" + ext.ToString());
         }
 
         public void NewLogMsgAvail(String sourceName, String msg)
