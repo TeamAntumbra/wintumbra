@@ -97,7 +97,8 @@ namespace Antumbra.Glow.Connector
         public void Dispose()
         {
             if (this.outputLoopTask != null)
-                this.outputLoopTask.Dispose();
+                if (this.outputLoopTask.IsCompleted)
+                    this.outputLoopTask.Dispose();
             this.Stop();
         }
     }
