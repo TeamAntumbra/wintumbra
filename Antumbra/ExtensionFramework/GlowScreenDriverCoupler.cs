@@ -15,7 +15,7 @@ namespace Antumbra.Glow.ExtensionFramework
         public event NewColorAvail NewColorAvailEvent;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
 
         public GlowScreenDriverCoupler(GlowScreenGrabber grab, GlowScreenProcessor proc)
         {

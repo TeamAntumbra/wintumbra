@@ -19,7 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// The id for the extension. Assigned at runtime.
         /// </summary>
-        int id { get; set; }
+        Guid id { get; set; }
 
         /// <summary>
         /// The name of the extension.
@@ -86,7 +86,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// The id of the current extension
         /// </summary>
-        public abstract int id { get; set; }
+        public abstract Guid id { get; set; }
 
         /// <summary>
         /// The name of the current extension
