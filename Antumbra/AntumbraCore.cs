@@ -348,7 +348,7 @@ namespace Antumbra.Glow
             switch (e.Reason) {
                 case SessionSwitchReason.SessionLogoff:
                 case SessionSwitchReason.SessionLock:
-                    this.StopAll();
+                    this.Off();
                     Console.WriteLine("locked/logged off");
                     break;
                 case SessionSwitchReason.SessionLogon:
