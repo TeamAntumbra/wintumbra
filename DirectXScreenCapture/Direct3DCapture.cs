@@ -21,7 +21,6 @@ namespace DirectXScreenCapture
     [Export(typeof(GlowExtension))]
     public class Direct3DCapture : GlowScreenGrabber, Loggable
     {
-        private bool running = false;
         private DXSettingsWindow settings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
@@ -80,7 +79,7 @@ namespace DirectXScreenCapture
 
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { return !this._stopped; }
         }
 
         public void AttachEvent(LogMsgObserver observer)
@@ -99,21 +98,16 @@ namespace DirectXScreenCapture
         public override bool Start()
         {
             _captureInterface = new Capture.Interface.CaptureInterface();
-            _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
-
-            // Inject to process
-            Thread.Sleep(5000);
-            this.TargetProcess = FindForegroundPrcs();
-            if (this.TargetProcess == null)
-                return false;
-            Inject();
-            this.running = true;
+            _captureInterface.RemoteMessage += (message) => NewLogMsgEvent(this.Name, message.ToString());
+            _stopped = false;
             this.driver = new Task(target);
             this.driver.Start();
-            _stopped = false;
             return true;
         }
-
+        /// <summary>
+        /// Find process that is in the foreground or return null if none found
+        /// </summary>
+        /// <returns>Process in foreground or null</returns>
         private Process FindForegroundPrcs()
         {
             foreach (Process prc in Process.GetProcesses()) {
@@ -126,10 +120,23 @@ namespace DirectXScreenCapture
 
         private void target()
         {
-            while (this.running) {
-                Capture();
-                if (null != _capturedImage)
-                    NewScreenAvailEvent(_capturedImage, EventArgs.Empty);
+            try {
+                Thread.Sleep(5000);
+                this.TargetProcess = FindForegroundPrcs();
+                Inject();
+            }
+            catch (Exception e) {
+                NewLogMsgEvent(this.ToString(), e.ToString());
+            }
+            while (this.IsRunning) {
+                try {
+                    Capture();
+                    if (null != _capturedImage)
+                        NewScreenAvailEvent(_capturedImage, EventArgs.Empty);
+                }
+                catch (Exception e) {
+                    NewLogMsgEvent(this.ToString(), e.ToString());
+                }
             }
         }
 
@@ -144,7 +151,7 @@ namespace DirectXScreenCapture
             {
                 if (_stopped) break;
                 // If the process doesn't have a mainwindowhandle yet, skip it (we need to be able to get the hwnd to set foreground etc)
-                if (this.TargetProcess == null || this.TargetProcess.MainWindowHandle == IntPtr.Zero)
+                if (this.TargetProcess.MainWindowHandle == IntPtr.Zero)
                     continue;
                 _processId = this.TargetProcess.Id;
                 _process = this.TargetProcess;
@@ -160,7 +167,6 @@ namespace DirectXScreenCapture
         public override bool Stop()
         {
             _stopped = true;
-            this.running = false;
             if (this.settings != null)
                 this.settings.Dispose();
             if (this.driver != null) {
