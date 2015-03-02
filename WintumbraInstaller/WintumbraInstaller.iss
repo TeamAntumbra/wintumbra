@@ -20,6 +20,11 @@ Source: "../Licenses\*"; DestDir: {app}\Licences
 Source: "..\README.md"; DestDir: {app}; DestName: "README.txt"
 Source: "..\deps\wintumbra\*.dll"; DestDir: {app}
 
+[InstallDelete]
+Type: files; Name: "{app}\*.exe"
+Type: files; Name: "{app}\*.dll"
+Type: files; Name: "{app}\Extensions\*.dll"
+
 [Run]
 Filename: "{tmp}\dotNetFx40_Full_setup.exe"; Check: FrameworkIsNotInstalled
 Filename: "{app}\DriverInstaller\glowdrvinst.exe"; Parameters: "batch"
