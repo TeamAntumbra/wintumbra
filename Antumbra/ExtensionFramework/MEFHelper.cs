@@ -45,7 +45,6 @@ namespace Antumbra.Glow.ExtensionFramework
                 return;//no plugins loaded
             }
             foreach (var extension in extensions) {
-                extension.id = Guid.NewGuid();
                 Console.WriteLine("Extension Found: " + extension.Name);
                 if (extension is GlowDriver) {
                     Console.WriteLine("Type: Driver");

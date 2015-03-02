@@ -14,12 +14,75 @@ namespace Antumbra.Glow.ExtensionFramework
         public List<GlowDecorator> AvailDecorators { get; private set; }
         public List<GlowNotifier> AvailNotifiers { get; private set; }
         public bool ready { get; private set; }
-        private string extPath;
         public ExtensionLibrary(string path)
         {
-            this.extPath = path;
-            this.ready = false;
-            Update();
+            MEFHelper helper = new MEFHelper(path);
+            if (helper.failed) {
+                this.ready = false;
+                return;//cannot continue
+            }
+            List<GlowExtension> extensions = new List<GlowExtension>();
+            this.AvailDrivers = helper.AvailDrivers;
+            extensions.AddRange(this.AvailDrivers);
+            this.AvailGrabbers = helper.AvailScreenDrivers;
+            extensions.AddRange(this.AvailGrabbers);
+            this.AvailProcessors = helper.AvailScreenProcessors;
+            extensions.AddRange(this.AvailProcessors);
+            this.AvailDecorators = helper.AvailDecorators;
+            extensions.AddRange(this.AvailDecorators);
+            this.AvailNotifiers = helper.AvailNotifiers;
+            extensions.AddRange(this.AvailNotifiers);
+            helper.Dispose();
+            AssignGuids(extensions);
+            this.ready = true;
+        }
+
+        public GlowDriver GetDefaultDriver()
+        {
+            foreach (GlowDriver dvr in this.AvailDrivers)
+                if (dvr.IsDefault)
+                    return dvr;
+            return null;
+        }
+
+        public GlowScreenGrabber GetDefaultGrabber()
+        {
+            foreach (GlowScreenGrabber gbr in this.AvailGrabbers)
+                if (gbr.IsDefault)
+                    return gbr;
+            return null;
+        }
+
+        public GlowScreenProcessor GetDefaultProcessor()
+        {
+            foreach (GlowScreenProcessor pcr in this.AvailProcessors)
+                if (pcr.IsDefault)
+                    return pcr;
+            return null;
+        }
+
+        public List<GlowDecorator> GetDefaultDecorators()
+        {
+            List<GlowDecorator> result = new List<GlowDecorator>();
+            foreach (GlowDecorator dec in this.AvailDecorators)
+                if (dec.IsDefault)
+                    result.Add(dec);
+            return result;
+        }
+
+        public List<GlowNotifier> GetDefaultNotifiers()
+        {
+            List<GlowNotifier> result = new List<GlowNotifier>();
+            foreach (GlowNotifier notf in this.AvailNotifiers)
+                if (notf.IsDefault)
+                    result.Add(notf);
+            return result;
+        }
+
+        private void AssignGuids(List<GlowExtension> exts)
+        {
+            foreach (var ext in exts)
+                ext.id = Guid.NewGuid();
         }
 
         public GlowExtension findExt(Guid id)
@@ -40,22 +103,6 @@ namespace Antumbra.Glow.ExtensionFramework
                 if (e.id.Equals(id))
                     return e;
             return null;
-        }
-
-        private void Update()
-        {
-            this.ready = false;
-            var mef = new MEFHelper(extPath);
-            if (mef.failed) {
-                return;
-            }
-            this.AvailDrivers = mef.AvailDrivers;
-            this.AvailGrabbers = mef.AvailScreenDrivers;
-            this.AvailProcessors = mef.AvailScreenProcessors;
-            this.AvailDecorators = mef.AvailDecorators;
-            this.AvailNotifiers = mef.AvailNotifiers;
-            mef.Dispose();
-            this.ready = true;
         }
     }
 }

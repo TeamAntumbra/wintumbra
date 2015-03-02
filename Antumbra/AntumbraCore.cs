@@ -46,7 +46,7 @@ namespace Antumbra.Glow
             this.goodStart = true;
             InitializeComponent();
             try {
-                this.extLibrary = new ExtensionLibrary(extPath);
+                this.extLibrary = new ExtensionLibrary(extPath);//load extensions and assign GUIDs
             }
             catch (System.Reflection.ReflectionTypeLoadException e) {
                 string msg = "";
@@ -60,7 +60,7 @@ namespace Antumbra.Glow
                 return;//skip rest
             }
             this.logger.Log("Creating DeviceManager");
-            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, extPath);//find devices
+            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, this.extLibrary);//find devices
             this.logger.Log("Devices Found: " + this.GlowManager.GlowsFound);
             this.logger.Log("Creating OutputLoopManager");
             this.outManager = new OutputLoopManager();

@@ -74,7 +74,6 @@ namespace Antumbra.Glow.Settings
             row.Cells["DescCol"].Value = ext.Description;
             row.Cells["VersionCol"].Value = ext.Version.ToString();
             row.Cells["AuthorCol"].Value = ext.Author;
-            row.Cells["idCol"].Value = ext.id;
             row.Tag = ext.id;
             DataGridViewImageCell settings = (DataGridViewImageCell)row.Cells["SettingsCol"];
             Bitmap littleGear = new Bitmap(64,64);
@@ -280,27 +279,27 @@ namespace Antumbra.Glow.Settings
                         this.antumbra.Stop(this.currentDevice.id);
                     if (ext is GlowDecorator) {
                         GlowDecorator dec = (GlowDecorator)ext;
-                        GetRowByDeviceId(dec.id).Cells[0].Value = !this.currentDevice.RemoveDecOrAddIfNew(dec);
+                        GetRowByExtId(dec.id).Cells[0].Value = !this.currentDevice.RemoveDecOrAddIfNew(dec);
                     }
                     else if (ext is GlowNotifier) {
                         GlowNotifier notf = (GlowNotifier)ext;
-                        GetRowByDeviceId(notf.id).Cells[0].Value = !this.currentDevice.RemoveNotfOrAddIfNew(notf);
+                        GetRowByExtId(notf.id).Cells[0].Value = !this.currentDevice.RemoveNotfOrAddIfNew(notf);
                     }
                     if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue)) {//now checked
                         if (this.currentDevice.ActiveDriver.id.Equals(id)) { }//already selected
                         else {//a different driver is selected
                             if (ext is GlowDriver) {
-                                DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveDriver.id);
+                                DataGridViewRow current = GetRowByExtId(this.currentDevice.ActiveDriver.id);
                                 current.Cells[0].Value = false;//uncheck
                                 this.currentDevice.ActiveDriver = (GlowDriver)ext;
                             }
                             else if (ext is GlowScreenGrabber) {
-                                DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveGrabber.id);
+                                DataGridViewRow current = GetRowByExtId(this.currentDevice.ActiveGrabber.id);
                                 current.Cells[0].Value = false;//uncheck
                                 this.currentDevice.ActiveGrabber = (GlowScreenGrabber)ext;
                             }
                             else if (ext is GlowScreenProcessor) {
-                                DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveProcessor.id);
+                                DataGridViewRow current = GetRowByExtId(this.currentDevice.ActiveProcessor.id);
                                 current.Cells[0].Value = false;//uncheck
                                 this.currentDevice.ActiveProcessor = (GlowScreenProcessor)ext;
                             }
@@ -316,7 +315,7 @@ namespace Antumbra.Glow.Settings
             }
         }
 
-        private DataGridViewRow GetRowByDeviceId(Guid id)
+        private DataGridViewRow GetRowByExtId(Guid id)
         {
             foreach (DataGridViewRow r in this.extTable.Rows)
                 if (((Guid)r.Tag).Equals(id))

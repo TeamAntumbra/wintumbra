@@ -66,7 +66,6 @@
             this.DescCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SettingsCol = new System.Windows.Forms.DataGridViewImageColumn();
             this.VersionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.extTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -405,8 +404,7 @@
             this.AuthorCol,
             this.DescCol,
             this.SettingsCol,
-            this.VersionCol,
-            this.idCol});
+            this.VersionCol});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -483,14 +481,6 @@
             this.VersionCol.HeaderText = "Version";
             this.VersionCol.Name = "VersionCol";
             this.VersionCol.ReadOnly = true;
-            // 
-            // idCol
-            // 
-            this.idCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.idCol.HeaderText = "id";
-            this.idCol.Name = "idCol";
-            this.idCol.ReadOnly = true;
-            this.idCol.Width = 38;
             // 
             // SettingsWindow
             // 
@@ -582,6 +572,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DescCol;
         private System.Windows.Forms.DataGridViewImageColumn SettingsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn VersionCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idCol;
     }
 }

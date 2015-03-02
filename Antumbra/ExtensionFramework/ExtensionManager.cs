@@ -9,7 +9,7 @@ using System.Drawing;
 namespace Antumbra.Glow.ExtensionFramework
 {
     /// <summary>
-    /// Manages (through use of MEFHelper) the Extensions for use with Glow(s)
+    /// Manages the Extensions for use with a Glow device
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver//TODO add observer for notifiers
     {
@@ -23,10 +23,6 @@ namespace Antumbra.Glow.ExtensionFramework
         /// NewColorAvail Event, occurs when a new color is available
         /// </summary>
         public event NewColorAvail NewColorAvailEvent;
-        /// <summary>
-        /// MEFHelper used to find and load the extensions.
-        /// </summary>
-        private MEFHelper MEFHelper;
         /// <summary>
         /// DeviceSettings obj for the GlowDevice relating to this ExtensionManager
         /// </summary>
@@ -62,16 +58,15 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <param name="path"></param>
         /// <param name="id"></param>
         /// <param name="settings"></param>
-        public ExtensionManager(string path, int id, DeviceSettings settings)
+        public ExtensionManager(ExtensionLibrary extLib, int id, DeviceSettings settings)
         {
             this.settings = settings;
             this.id = id;
-            this.MEFHelper = new MEFHelper(path);
-            this.ActiveDriver = this.MEFHelper.GetDefaultDriver();
-            this.ActiveGrabber = this.MEFHelper.GetDefaultGrabber();
-            this.ActiveProcessor = this.MEFHelper.GetDefaultProcessor();
-            this.ActiveDecorators = this.MEFHelper.GetDefaultDecorators();
-            this.ActiveNotifiers = this.MEFHelper.GetDefaultNotifiers();
+            this.ActiveDriver = extLib.GetDefaultDriver();
+            this.ActiveGrabber = extLib.GetDefaultGrabber();
+            this.ActiveProcessor = extLib.GetDefaultProcessor();
+            this.ActiveDecorators = extLib.GetDefaultDecorators();
+            this.ActiveNotifiers = extLib.GetDefaultNotifiers();
         }
         /// <summary>
         /// Return a string describing the current active extensions
@@ -171,7 +166,9 @@ namespace Antumbra.Glow.ExtensionFramework
                 ActiveGrabber.y = this.settings.y;
                 ActiveGrabber.width = this.settings.width;
                 ActiveGrabber.height = this.settings.height;
+                Guid placeHolder = ActiveDriver.id;
                 ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessor);
+                ActiveDriver.id = placeHolder;
             }
             ActiveDriver.stepSleep = settings.stepSleep;
             return true;

@@ -168,14 +168,14 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         /// <param name="beta"></param>
         /// <param name="id"></param>
-        public GlowDevice(bool beta, int id, IntPtr info, string path)
+        public GlowDevice(bool beta, int id, IntPtr info, ExtensionLibrary lib)
         {
             this.info = info;
             this.beta = beta;
             this.id = id;
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
-            this.extMgr = new ExtensionManager(path, id, settings);
+            this.extMgr = new ExtensionManager(lib, id, settings);
         }
         /// <summary>
         /// Start the device's extensions

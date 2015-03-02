@@ -21,7 +21,7 @@ namespace Antumbra.Glow.Connector
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
 
-        public DeviceManager(int vid, int pid, string path)
+        public DeviceManager(int vid, int pid, ExtensionLibrary lib)
         {
             this.status = 0;
             this.GlowsFound = 0;
@@ -29,7 +29,7 @@ namespace Antumbra.Glow.Connector
             this.Glows = new List<GlowDevice>();
             int len = this.Connector.UpdateDeviceList();
             for (var i = 0; i < len; i += 1) {
-                this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), path));
+                this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), lib));
             }
             this.GlowsFound = this.Glows.Count;
         }
