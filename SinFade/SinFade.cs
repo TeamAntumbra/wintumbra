@@ -110,7 +110,7 @@ namespace SinFade
         {
             get
             {
-                return "A simle sin fade.";
+                return "A simple sin fade.";
             }
         }
 
@@ -121,7 +121,7 @@ namespace SinFade
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 1000;
+            this.stepSleep = 100;
         }
     }
 }

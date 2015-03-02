@@ -98,7 +98,7 @@ namespace HSVFade
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 1000;
+            this.stepSleep = 300;
         }
 
         public override string Website
