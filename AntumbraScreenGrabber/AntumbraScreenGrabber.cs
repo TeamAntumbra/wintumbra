@@ -20,7 +20,7 @@ namespace AntumbraScreenDriver
         public delegate void NewScreenAvail(Bitmap image, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         private bool running = false;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return true; }

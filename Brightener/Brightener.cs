@@ -17,7 +17,7 @@ namespace Brightener
     [Export(typeof(GlowExtension))]
     public class Brightener : GlowDecorator
     {
-        public override int id { get; set; }
+        public override Guid id { get; set; }
         private bool running;
         private BrightenerSettings settingsWin;
         public override string Name

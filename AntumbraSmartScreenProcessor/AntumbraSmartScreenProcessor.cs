@@ -20,7 +20,7 @@ namespace AntumbraSmartScreenProcessor
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
         private SmartProcSettingsWindow settings;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return true; }

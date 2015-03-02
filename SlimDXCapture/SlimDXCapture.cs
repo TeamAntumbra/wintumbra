@@ -20,7 +20,7 @@ namespace SlimDXCapture
         private Surface surf;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
         public override string Name
         {
             get { return "SlimDX Capture"; }

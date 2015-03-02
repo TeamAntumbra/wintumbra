@@ -75,6 +75,7 @@ namespace Antumbra.Glow.Settings
             row.Cells["VersionCol"].Value = ext.Version.ToString();
             row.Cells["AuthorCol"].Value = ext.Author;
             row.Cells["idCol"].Value = ext.id;
+            row.Tag = ext.id;
             DataGridViewImageCell settings = (DataGridViewImageCell)row.Cells["SettingsCol"];
             Bitmap littleGear = new Bitmap(64,64);
             using (Graphics g = Graphics.FromImage(littleGear)) {
@@ -270,7 +271,8 @@ namespace Antumbra.Glow.Settings
                 return;
             }
             DataGridViewRow row = extTable.Rows[e.RowIndex];
-            int id = Convert.ToInt32(row.Cells[6].Value);
+            Guid id = (Guid)row.Tag;
+            //int id = Convert.ToInt32(row.Cells[6].Value);
             GlowExtension ext = this.library.findExt(id);
             switch (e.ColumnIndex) {
                 case 0://checkbox col
@@ -285,7 +287,7 @@ namespace Antumbra.Glow.Settings
                         GetRowByDeviceId(notf.id).Cells[0].Value = !this.currentDevice.RemoveNotfOrAddIfNew(notf);
                     }
                     if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue)) {//now checked
-                        if (this.currentDevice.ActiveDriver.id == id) { }//already selected
+                        if (this.currentDevice.ActiveDriver.id.Equals(id)) { }//already selected
                         else {//a different driver is selected
                             if (ext is GlowDriver) {
                                 DataGridViewRow current = GetRowByDeviceId(this.currentDevice.ActiveDriver.id);
@@ -314,10 +316,10 @@ namespace Antumbra.Glow.Settings
             }
         }
 
-        private DataGridViewRow GetRowByDeviceId(int id)
+        private DataGridViewRow GetRowByDeviceId(Guid id)
         {
             foreach (DataGridViewRow r in this.extTable.Rows)
-                if (Convert.ToInt32(r.Cells[6].Value) == id)
+                if (((Guid)r.Tag).Equals(id))
                     return r;
             return null;
         }

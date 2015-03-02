@@ -20,7 +20,7 @@ namespace ExampleGlowDriver
         private Task driver;
         private bool running;
         private AntumbraExtSettingsWindow settings;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
 
         public ExampleGlowDriver()
         {

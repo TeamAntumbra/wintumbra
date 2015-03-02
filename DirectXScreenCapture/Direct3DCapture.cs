@@ -24,7 +24,7 @@ namespace DirectXScreenCapture
         private DXSettingsWindow settings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return false; }
@@ -55,7 +55,7 @@ namespace DirectXScreenCapture
 
         public override string Website
         {
-            get { return "https://github.com/FrozenPickle/Afterglow"; }//TODO change and include reference to afterglow for credit
+            get { return "https://github.com/FrozenPickle/Afterglow"; }//TODO change and include reference to afterglow for credit, as well as others
         }
 
         public override Version Version
@@ -94,11 +94,10 @@ namespace DirectXScreenCapture
             _captureInterface.RemoteMessage += (message) => Debug.WriteLine(message.ToString());
 
             // Inject to process
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             this.TargetProcess = FindForegroundPrcs();
             if (this.TargetProcess == null)
                 return false;
-            Thread.Sleep(10000);//10 sec delay for user to get DX application setup and in foreground
             try {
                 Inject();
             }

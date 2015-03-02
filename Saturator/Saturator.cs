@@ -19,7 +19,7 @@ namespace Saturator
     {
         private bool running = false;
         private SaturatorSettings settingsWin;
-        public override int id { get; set; }
+        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return true; }
@@ -53,7 +53,7 @@ namespace Saturator
         {
             HslColor boringHSL = new HslColor(origColor);
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;
-            if (boringHSL.S < satAmnt) { }//skip low saturation colors
+            if (boringHSL.S < satAmnt) { }//skip low saturation colors TODO make this its own value
             else if (boringHSL.S <= (1.0-satAmnt))
                 boringHSL.S += satAmnt; //saturate
             else
