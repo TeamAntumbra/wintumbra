@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using Antumbra.Glow;
+using Antumbra.Glow.Logging;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
-    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver
+    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver, Loggable, LogMsgObserver
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
         public delegate void NewColorAvail(Color newCol, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
+        public delegate void NewLogMsg(String source, String msg);
+        public event NewLogMsg NewLogMsgAvailEvent;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
         public override Guid id { get; set; }
@@ -21,6 +23,16 @@ namespace Antumbra.Glow.ExtensionFramework
         {
             this.grabber = grab;
             this.processor = proc;
+        }
+
+        public void AttachEvent(LogMsgObserver observer)
+        {
+            NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+        }
+
+        public void NewLogMsgAvail(String source, String msg)
+        {
+            NewLogMsgAvailEvent(source, msg);
         }
 
         public override bool IsRunning
@@ -66,10 +78,18 @@ namespace Antumbra.Glow.ExtensionFramework
         public override bool Start()
         {
             if (this.grabber != null && this.processor != null) {
+                if (this.processor is Loggable) {
+                    Loggable log = (Loggable)this.processor;
+                    log.AttachEvent(this);
+                }
                 if (this.processor.Start()) {
                     if (this.processor is AntumbraBitmapObserver)
                         this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
                     this.processor.AttachEvent(this);
+                    if (this.grabber is Loggable) {
+                        Loggable log = (Loggable)this.grabber;
+                        log.AttachEvent(this);
+                    }
                     if (this.grabber.Start()) {
                         return true;
                     }
