@@ -11,8 +11,6 @@
 
 2) Run `setup.exe`
 
-3) Press enter in console window that opens once prompted.
-
 Run `Antumbra.exe` and enjoy!
 
 ##Please Note
