@@ -74,7 +74,7 @@ namespace ExampleGlowDriver
                     NewColorAvailEvent(result, EventArgs.Empty);
                 }
                 catch (Exception e) {
-                    NewLogMsgEvent(this.Name, e.StackTrace);
+                    NewLogMsgEvent(this.Name, e.ToString());
                 }
                 Thread.Sleep(this.stepSleep);
             }

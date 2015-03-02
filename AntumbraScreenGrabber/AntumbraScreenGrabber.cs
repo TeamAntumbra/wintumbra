@@ -8,17 +8,19 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
-using Antumbra.Glow.Utility;
 using System.Reflection;
+using Antumbra.Glow.Logging;
 
 namespace AntumbraScreenDriver
 {
     [Export(typeof(GlowExtension))]
-    public class AntumbraScreenGrabber : GlowScreenGrabber
+    public class AntumbraScreenGrabber : GlowScreenGrabber, Loggable
     {
-        private Thread driver;
         public delegate void NewScreenAvail(Bitmap image, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
+        public delegate void NewLogMsg(String source, String msg);
+        public event NewLogMsg NewLogMsgEvent;
+        private Thread driver;
         private bool running = false;
         public override Guid id { get; set; }
         public override bool IsDefault
@@ -49,6 +51,11 @@ namespace AntumbraScreenDriver
         public override string Website
         {
             get { return "https://antumbra.io/"; }
+        }
+
+        public void AttachEvent(LogMsgObserver observer)
+        {
+            this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
         public override bool Start()
@@ -87,14 +94,25 @@ namespace AntumbraScreenDriver
             int runW = width;
             int runH = height;
             while (true) {
-                Bitmap screen = new Bitmap(runW, runH, PixelFormat.Format32bppArgb);
-                Graphics grphx = Graphics.FromImage(screen);
-                grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
-                grphx.Save();
-                grphx.Dispose();
-                if (null != screen) {
-                    NewScreenAvailEvent(screen, EventArgs.Empty);
-                    screen.Dispose();
+                Bitmap screen = null;
+                Graphics grphx = null;
+                try {
+                    screen = new Bitmap(runW, runH, PixelFormat.Format32bppArgb);
+                    grphx = Graphics.FromImage(screen);
+                    grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
+                    grphx.Save();
+                    if (null != screen && NewScreenAvailEvent != null) {
+                        NewScreenAvailEvent(screen, EventArgs.Empty);
+                    }
+                }
+                catch (Exception e) {
+                    NewLogMsgEvent(this.Name, e.ToString());
+                }
+                finally {
+                    if (screen != null)
+                        screen.Dispose();
+                    if (grphx != null)
+                        grphx.Dispose();
                 }
             }
         }

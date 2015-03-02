@@ -7,15 +7,17 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Utility;
 using System.Windows.Forms;
 using System.Reflection;
+using Antumbra.Glow.Logging;
 
 namespace AntumbraSmartScreenProcessor
 {
     [Export(typeof(GlowExtension))]
-    public class AntumbraSmartScreenProcessor : GlowScreenProcessor
+    public class AntumbraSmartScreenProcessor : GlowScreenProcessor, Loggable
     {
+        public delegate void NewLogMsg(String source, String msg);
+        public event NewLogMsg NewLogMsgEvent;
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
@@ -64,6 +66,11 @@ namespace AntumbraSmartScreenProcessor
         {
             this.running = true;
             return true;
+        }
+
+        public void AttachEvent(LogMsgObserver observer)
+        {
+            this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
         public override bool Settings()
@@ -137,8 +144,8 @@ namespace AntumbraSmartScreenProcessor
             try {
                 NewColorAvailEvent(Process(bm), EventArgs.Empty);
             }
-            catch (Exception e) {//TODO add logging and apply similar structure to all extensions
-
+            catch (Exception e) {
+                NewLogMsgEvent(this.Name, e.ToString());
             }
             finally {
                 bm.Dispose();
@@ -148,15 +155,15 @@ namespace AntumbraSmartScreenProcessor
         public Color Process(Bitmap screen)
         {
             if (screen == null) {
-                //Console.WriteLine("null BitMap returned");
+                NewLogMsgEvent(this.Name, "Null bitmap passed to process.");
                 return Color.Empty;
             }
             try {
                 return SmartCalculateReprColor(screen, (int)Properties.Settings.Default["useAllTol"], (int)Properties.Settings.Default["minMixPerc"],
                     (int)Properties.Settings.Default["minBright"], (int)Properties.Settings.Default["scaleFactor"]);
             }
-            catch (Exception) {
-                this.Stop();
+            catch (Exception e) {
+                NewLogMsgEvent(this.Name, e.ToString());
                 return Color.Empty;
             }
             finally {

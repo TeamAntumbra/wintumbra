@@ -14,16 +14,19 @@ using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using System.Reflection;
 using System.Windows.Forms;
+using Antumbra.Glow.Logging;
 
 namespace DirectXScreenCapture
 {
     [Export(typeof(GlowExtension))]
-    public class Direct3DCapture : GlowScreenGrabber
+    public class Direct3DCapture : GlowScreenGrabber, Loggable
     {
         private bool running = false;
         private DXSettingsWindow settings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
+        public delegate void NewLogMsg(String source, String msg);
+        public event NewLogMsg NewLogMsgEvent;
         public override Guid id { get; set; }
         public override bool IsDefault
         {
@@ -80,6 +83,11 @@ namespace DirectXScreenCapture
             get { return this.running; }
         }
 
+        public void AttachEvent(LogMsgObserver observer)
+        {
+            this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
+        }
+
         private Capture.Interface.CaptureInterface _captureInterface;
         private CaptureProcess _capturedProcess;
         public Process TargetProcess { get; set; }
@@ -98,13 +106,7 @@ namespace DirectXScreenCapture
             this.TargetProcess = FindForegroundPrcs();
             if (this.TargetProcess == null)
                 return false;
-            try {
-                Inject();
-            }
-            catch (InjectionFailedException e) {
-                Console.WriteLine(e.StackTrace);
-                return false;
-            }
+            Inject();
             this.running = true;
             this.driver = new Task(target);
             this.driver.Start();
