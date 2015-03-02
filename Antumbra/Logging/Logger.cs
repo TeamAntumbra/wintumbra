@@ -11,6 +11,7 @@ namespace Antumbra.Glow.Logging
     /// </summary>
     public class Logger
     {
+        public object sync = new object();
         /// <summary>
         /// Name of the log file for this Logger
         /// </summary>
@@ -29,8 +30,10 @@ namespace Antumbra.Glow.Logging
         /// <param name="lines"></param>
         public void Log(String lines)
         {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(name, true)) {
-                file.WriteLine(lines);
+            lock (sync) {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(name, true)) {
+                    file.WriteLine(lines);
+                }
             }
         }
     }
