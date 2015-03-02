@@ -339,12 +339,14 @@ namespace Antumbra.Glow
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
             switch (e.Reason) {
+                case SessionSwitchReason.SessionLogoff:
                 case SessionSwitchReason.SessionLock:
                     this.StopAll();
-                    Console.WriteLine("locked");
+                    Console.WriteLine("locked/logged off");
                     break;
+                case SessionSwitchReason.SessionLogon:
                 case SessionSwitchReason.SessionUnlock:
-                    Console.WriteLine("unlocked");
+                    Console.WriteLine("unlocked/logged on");
                     StartAllAfterDelay();
                     break;
             }
@@ -364,7 +366,7 @@ namespace Antumbra.Glow
             // User is putting the system into resume from standby 
             if (e.Mode == PowerModes.Resume) {
                 //this.StartAllAfterDelay();
-                Console.WriteLine("resumed...ignoring");
+                Console.WriteLine("resumed...ignoring");//ignore because it is still at unlock screen
             }
         }
 
