@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Settings;
 using System.Drawing;
+using Antumbra.Glow.Utility;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
     /// <summary>
     /// Manages the Extensions for use with a Glow device
     /// </summary>
-    public class ExtensionManager : AntumbraColorObserver//TODO add observer for notifiers
+    public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable//TODO add observer for notifiers
     {
         /// <summary>
         /// Delegate for NewColorAvailEvent, handles a new Color being available
@@ -23,6 +24,8 @@ namespace Antumbra.Glow.ExtensionFramework
         /// NewColorAvail Event, occurs when a new color is available
         /// </summary>
         public event NewColorAvail NewColorAvailEvent;
+        public delegate void NewLogMsg(String source, String msg);
+        public event NewLogMsg NewLogMsgAvailEvent;
         /// <summary>
         /// DeviceSettings obj for the GlowDevice relating to this ExtensionManager
         /// </summary>
@@ -103,6 +106,16 @@ namespace Antumbra.Glow.ExtensionFramework
         {
             NewColorAvailEvent += observer.NewColorAvail;
         }
+
+        public void AttachEvent(LogMsgObserver observer)
+        {
+            NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+        }
+
+        public void NewLogMsgAvail(String source, String msg)
+        {
+            NewLogMsgAvailEvent(source, msg);
+        }
         /// <summary>
         /// Event handler for the NewColorAvail event
         /// </summary>
@@ -140,6 +153,10 @@ namespace Antumbra.Glow.ExtensionFramework
             if (!Verify())
                 return false;
             this.ActiveDriver.AttachEvent(this);
+            if (this.ActiveDriver is Loggable) {
+                Loggable log = (Loggable)this.ActiveDriver;
+                log.AttachEvent(this);
+            }
             if (!this.ActiveDriver.Start())
                 return false;
             foreach (var dec in ActiveDecorators)

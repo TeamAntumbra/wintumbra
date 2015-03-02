@@ -9,14 +9,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using Antumbra.Glow.Utility;
 
 namespace ExampleGlowDriver
 {
     [Export(typeof(GlowExtension))]
-    public class ExampleGlowDriver : GlowIndependentDriver
+    public class ExampleGlowDriver : GlowIndependentDriver, Loggable
     {
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
+        public delegate void NewLogMsg(String source, String msg);
+        public event NewLogMsg NewLogMsgEvent;
         private Task driver;
         private bool running;
         private AntumbraExtSettingsWindow settings;
@@ -42,6 +45,11 @@ namespace ExampleGlowDriver
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
+        public void AttachEvent(LogMsgObserver observer)
+        {
+            this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
+        }
+
         public override bool Start()
         {
             this.driver = new Task(target);
@@ -61,11 +69,14 @@ namespace ExampleGlowDriver
             while (this.running) {
                 //do stuff (logic of driver)
                 Color result = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                NewLogMsgEvent(this.Name, "test - " + result.ToString());
                 //report new color event
                 try {
                     NewColorAvailEvent(result, EventArgs.Empty);
                 }
-                catch (System.NullReferenceException) { }
+                catch (System.NullReferenceException e) {
+                    NewLogMsgEvent(this.Name, e.Message);
+                }
                 Thread.Sleep(this.stepSleep);
             }
         }
@@ -77,9 +88,10 @@ namespace ExampleGlowDriver
                 this.settings.Dispose();
             if (this.driver != null) {
                 this.driver.Wait(1000);
-                if (!this.driver.IsCompleted)
+                if (this.driver.IsCompleted)
+                    this.driver.Dispose();
+                else
                     return false;
-                this.driver = null;
             }
             return true;
         }

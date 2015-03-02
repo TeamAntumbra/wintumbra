@@ -34,4 +34,14 @@ namespace Antumbra.Glow.Utility
             }
         }
     }
+
+    public interface LogMsgObserver//TODO move
+    {
+        void NewLogMsgAvail(String sourceName, String msg);
+    }
+
+    public interface Loggable//TODO move
+    {
+        void AttachEvent(LogMsgObserver observer);
+    }
 }

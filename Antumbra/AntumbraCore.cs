@@ -25,7 +25,7 @@ using Microsoft.Win32;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : Form
+    public partial class AntumbraCore : Form, LogMsgObserver
     {
         private DeviceManager GlowManager;
         private List<SettingsWindow> settingsWindows;
@@ -75,6 +75,12 @@ namespace Antumbra.Glow
                 this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
             }
             this.logger.Log("Core good start? - " + this.goodStart);
+        }
+
+        public void NewLogMsgAvail(String sourceName, String msg)
+        {
+            this.logger.Log(sourceName + ": " + msg);
+            Console.WriteLine(sourceName + ": " + msg);
         }
         /// <summary>
         /// Event handler for when the menubar icon is clicked
@@ -251,6 +257,7 @@ namespace Antumbra.Glow
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, id);
+            dev.AttachLogObserverToExtMgr(this);
             dev.AttachEventToExtMgr(loop);
             if (dev.Start()) {
                 this.logger.Log("Device id: " + dev.id + " started successfully.");
