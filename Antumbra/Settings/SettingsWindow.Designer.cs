@@ -74,10 +74,10 @@
             // 
             this.stepSleepLabel.AutoSize = true;
             this.stepSleepLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSleepLabel.Location = new System.Drawing.Point(141, 863);
-            this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.stepSleepLabel.Location = new System.Drawing.Point(94, 561);
+            this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
-            this.stepSleepLabel.Size = new System.Drawing.Size(127, 20);
+            this.stepSleepLabel.Size = new System.Drawing.Size(84, 13);
             this.stepSleepLabel.TabIndex = 17;
             this.stepSleepLabel.Text = "Step Sleep: (ms)";
             // 
@@ -86,10 +86,10 @@
             this.sleepSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.sleepSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sleepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.sleepSize.Location = new System.Drawing.Point(365, 854);
-            this.sleepSize.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.sleepSize.Location = new System.Drawing.Point(243, 555);
+            this.sleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sleepSize.Name = "sleepSize";
-            this.sleepSize.Size = new System.Drawing.Size(152, 26);
+            this.sleepSize.Size = new System.Drawing.Size(102, 20);
             this.sleepSize.TabIndex = 22;
             this.sleepSize.TextChanged += new System.EventHandler(this.sleepSize_TextChanged);
             // 
@@ -109,10 +109,9 @@
             this.pollingArea.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.pollingArea.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pollingArea.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingArea.Location = new System.Drawing.Point(987, 191);
-            this.pollingArea.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pollingArea.Location = new System.Drawing.Point(658, 124);
             this.pollingArea.Name = "pollingArea";
-            this.pollingArea.Size = new System.Drawing.Size(207, 54);
+            this.pollingArea.Size = new System.Drawing.Size(138, 35);
             this.pollingArea.TabIndex = 51;
             this.pollingArea.Text = "Set Screen Grabber Area";
             this.pollingArea.UseVisualStyleBackColor = false;
@@ -123,10 +122,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(352, 107);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(235, 70);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(155, 25);
+            this.label1.Size = new System.Drawing.Size(112, 17);
             this.label1.TabIndex = 52;
             this.label1.Text = "Polling Location:";
             // 
@@ -134,10 +132,9 @@
             // 
             this.pollingXLabel.AutoSize = true;
             this.pollingXLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingXLabel.Location = new System.Drawing.Point(283, 173);
-            this.pollingXLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingXLabel.Location = new System.Drawing.Point(189, 112);
             this.pollingXLabel.Name = "pollingXLabel";
-            this.pollingXLabel.Size = new System.Drawing.Size(24, 20);
+            this.pollingXLabel.Size = new System.Drawing.Size(17, 13);
             this.pollingXLabel.TabIndex = 53;
             this.pollingXLabel.Text = "X:";
             // 
@@ -145,20 +142,18 @@
             // 
             this.pollingX.AutoSize = true;
             this.pollingX.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingX.Location = new System.Drawing.Point(317, 173);
-            this.pollingX.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingX.Location = new System.Drawing.Point(211, 112);
             this.pollingX.Name = "pollingX";
-            this.pollingX.Size = new System.Drawing.Size(0, 20);
+            this.pollingX.Size = new System.Drawing.Size(0, 13);
             this.pollingX.TabIndex = 54;
             // 
             // pollingYLabel
             // 
             this.pollingYLabel.AutoSize = true;
             this.pollingYLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingYLabel.Location = new System.Drawing.Point(283, 223);
-            this.pollingYLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingYLabel.Location = new System.Drawing.Point(189, 145);
             this.pollingYLabel.Name = "pollingYLabel";
-            this.pollingYLabel.Size = new System.Drawing.Size(24, 20);
+            this.pollingYLabel.Size = new System.Drawing.Size(17, 13);
             this.pollingYLabel.TabIndex = 55;
             this.pollingYLabel.Text = "Y:";
             // 
@@ -166,20 +161,18 @@
             // 
             this.pollingY.AutoSize = true;
             this.pollingY.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingY.Location = new System.Drawing.Point(317, 223);
-            this.pollingY.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingY.Location = new System.Drawing.Point(211, 145);
             this.pollingY.Name = "pollingY";
-            this.pollingY.Size = new System.Drawing.Size(0, 20);
+            this.pollingY.Size = new System.Drawing.Size(0, 13);
             this.pollingY.TabIndex = 56;
             // 
             // pollingWidthLabel
             // 
             this.pollingWidthLabel.AutoSize = true;
             this.pollingWidthLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingWidthLabel.Location = new System.Drawing.Point(417, 173);
-            this.pollingWidthLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingWidthLabel.Location = new System.Drawing.Point(278, 112);
             this.pollingWidthLabel.Name = "pollingWidthLabel";
-            this.pollingWidthLabel.Size = new System.Drawing.Size(54, 20);
+            this.pollingWidthLabel.Size = new System.Drawing.Size(38, 13);
             this.pollingWidthLabel.TabIndex = 57;
             this.pollingWidthLabel.Text = "Width:";
             // 
@@ -187,10 +180,9 @@
             // 
             this.pollingHeightLabel.AutoSize = true;
             this.pollingHeightLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingHeightLabel.Location = new System.Drawing.Point(417, 223);
-            this.pollingHeightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingHeightLabel.Location = new System.Drawing.Point(278, 145);
             this.pollingHeightLabel.Name = "pollingHeightLabel";
-            this.pollingHeightLabel.Size = new System.Drawing.Size(60, 20);
+            this.pollingHeightLabel.Size = new System.Drawing.Size(41, 13);
             this.pollingHeightLabel.TabIndex = 58;
             this.pollingHeightLabel.Text = "Height:";
             // 
@@ -198,30 +190,27 @@
             // 
             this.pollingHeight.AutoSize = true;
             this.pollingHeight.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingHeight.Location = new System.Drawing.Point(487, 223);
-            this.pollingHeight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingHeight.Location = new System.Drawing.Point(325, 145);
             this.pollingHeight.Name = "pollingHeight";
-            this.pollingHeight.Size = new System.Drawing.Size(0, 20);
+            this.pollingHeight.Size = new System.Drawing.Size(0, 13);
             this.pollingHeight.TabIndex = 60;
             // 
             // pollingWidth
             // 
             this.pollingWidth.AutoSize = true;
             this.pollingWidth.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.pollingWidth.Location = new System.Drawing.Point(483, 173);
-            this.pollingWidth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.pollingWidth.Location = new System.Drawing.Point(322, 112);
             this.pollingWidth.Name = "pollingWidth";
-            this.pollingWidth.Size = new System.Drawing.Size(0, 20);
+            this.pollingWidth.Size = new System.Drawing.Size(0, 13);
             this.pollingWidth.TabIndex = 61;
             // 
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.statusLabel.Location = new System.Drawing.Point(973, 915);
-            this.statusLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.statusLabel.Location = new System.Drawing.Point(649, 595);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(100, 20);
+            this.statusLabel.Size = new System.Drawing.Size(67, 13);
             this.statusLabel.TabIndex = 64;
             this.statusLabel.Text = "Glow Status:";
             // 
@@ -229,10 +218,9 @@
             // 
             this.glowStatus.AutoSize = true;
             this.glowStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.glowStatus.Location = new System.Drawing.Point(1077, 916);
-            this.glowStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.glowStatus.Location = new System.Drawing.Point(718, 595);
             this.glowStatus.Name = "glowStatus";
-            this.glowStatus.Size = new System.Drawing.Size(0, 20);
+            this.glowStatus.Size = new System.Drawing.Size(0, 13);
             this.glowStatus.TabIndex = 65;
             // 
             // startBtn
@@ -241,10 +229,9 @@
             this.startBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.startBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.startBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.startBtn.Location = new System.Drawing.Point(560, 990);
-            this.startBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.startBtn.Location = new System.Drawing.Point(373, 643);
             this.startBtn.Name = "startBtn";
-            this.startBtn.Size = new System.Drawing.Size(114, 45);
+            this.startBtn.Size = new System.Drawing.Size(76, 29);
             this.startBtn.TabIndex = 66;
             this.startBtn.Text = "Start";
             this.startBtn.UseVisualStyleBackColor = false;
@@ -256,10 +243,9 @@
             this.offBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.offBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.offBtn.Location = new System.Drawing.Point(806, 990);
-            this.offBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.offBtn.Location = new System.Drawing.Point(537, 643);
             this.offBtn.Name = "offBtn";
-            this.offBtn.Size = new System.Drawing.Size(114, 45);
+            this.offBtn.Size = new System.Drawing.Size(76, 29);
             this.offBtn.TabIndex = 67;
             this.offBtn.Text = "Off";
             this.offBtn.UseVisualStyleBackColor = false;
@@ -271,10 +257,9 @@
             this.stopBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.stopBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stopBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stopBtn.Location = new System.Drawing.Point(683, 990);
-            this.stopBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.stopBtn.Location = new System.Drawing.Point(455, 643);
             this.stopBtn.Name = "stopBtn";
-            this.stopBtn.Size = new System.Drawing.Size(114, 45);
+            this.stopBtn.Size = new System.Drawing.Size(76, 29);
             this.stopBtn.TabIndex = 68;
             this.stopBtn.Text = "Stop";
             this.stopBtn.UseVisualStyleBackColor = false;
@@ -288,10 +273,9 @@
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.closeBtn.Location = new System.Drawing.Point(1310, -3);
-            this.closeBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.closeBtn.Location = new System.Drawing.Point(873, -2);
             this.closeBtn.Name = "closeBtn";
-            this.closeBtn.Size = new System.Drawing.Size(32, 32);
+            this.closeBtn.Size = new System.Drawing.Size(26, 25);
             this.closeBtn.TabIndex = 72;
             this.closeBtn.Text = "X";
             this.closeBtn.UseVisualStyleBackColor = false;
@@ -303,10 +287,9 @@
             this.settingsTitle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.settingsTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.settingsTitle.Location = new System.Drawing.Point(693, 34);
-            this.settingsTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.settingsTitle.Location = new System.Drawing.Point(462, 22);
             this.settingsTitle.Name = "settingsTitle";
-            this.settingsTitle.Size = new System.Drawing.Size(135, 38);
+            this.settingsTitle.Size = new System.Drawing.Size(91, 26);
             this.settingsTitle.TabIndex = 73;
             this.settingsTitle.Text = "Settings";
             this.settingsTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -316,10 +299,9 @@
             this.newColorWeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.newColorWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.newColorWeight.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.newColorWeight.Location = new System.Drawing.Point(365, 907);
-            this.newColorWeight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.newColorWeight.Location = new System.Drawing.Point(243, 590);
             this.newColorWeight.Name = "newColorWeight";
-            this.newColorWeight.Size = new System.Drawing.Size(152, 26);
+            this.newColorWeight.Size = new System.Drawing.Size(102, 20);
             this.newColorWeight.TabIndex = 77;
             this.newColorWeight.TextChanged += new System.EventHandler(this.newColorWeight_TextChanged);
             // 
@@ -327,10 +309,9 @@
             // 
             this.weightingLabel.AutoSize = true;
             this.weightingLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingLabel.Location = new System.Drawing.Point(92, 918);
-            this.weightingLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.weightingLabel.Location = new System.Drawing.Point(61, 597);
             this.weightingLabel.Name = "weightingLabel";
-            this.weightingLabel.Size = new System.Drawing.Size(208, 20);
+            this.weightingLabel.Size = new System.Drawing.Size(140, 13);
             this.weightingLabel.TabIndex = 76;
             this.weightingLabel.Text = "New Color Weight: (0-100%)";
             // 
@@ -342,10 +323,9 @@
             this.weightingEnabled.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.weightingEnabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.weightingEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingEnabled.Location = new System.Drawing.Point(986, 956);
-            this.weightingEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.weightingEnabled.Location = new System.Drawing.Point(657, 621);
             this.weightingEnabled.Name = "weightingEnabled";
-            this.weightingEnabled.Size = new System.Drawing.Size(233, 24);
+            this.weightingEnabled.Size = new System.Drawing.Size(160, 17);
             this.weightingEnabled.TabIndex = 78;
             this.weightingEnabled.Text = "Weighted Average Enabled?";
             this.weightingEnabled.UseVisualStyleBackColor = false;
@@ -354,20 +334,18 @@
             // deviceNameLabel
             // 
             this.deviceNameLabel.AutoSize = true;
-            this.deviceNameLabel.Location = new System.Drawing.Point(982, 142);
-            this.deviceNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.deviceNameLabel.Location = new System.Drawing.Point(655, 92);
             this.deviceNameLabel.Name = "deviceNameLabel";
-            this.deviceNameLabel.Size = new System.Drawing.Size(82, 20);
+            this.deviceNameLabel.Size = new System.Drawing.Size(58, 13);
             this.deviceNameLabel.TabIndex = 79;
             this.deviceNameLabel.Text = "Device ID:";
             // 
             // deviceName
             // 
             this.deviceName.AutoSize = true;
-            this.deviceName.Location = new System.Drawing.Point(1103, 142);
-            this.deviceName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.deviceName.Location = new System.Drawing.Point(735, 92);
             this.deviceName.Name = "deviceName";
-            this.deviceName.Size = new System.Drawing.Size(0, 20);
+            this.deviceName.Size = new System.Drawing.Size(0, 13);
             this.deviceName.TabIndex = 80;
             // 
             // driverRecBtn
@@ -377,10 +355,10 @@
             this.driverRecBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.driverRecBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.driverRecBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.driverRecBtn.Location = new System.Drawing.Point(206, 995);
+            this.driverRecBtn.Location = new System.Drawing.Point(137, 647);
             this.driverRecBtn.Margin = new System.Windows.Forms.Padding(0);
             this.driverRecBtn.Name = "driverRecBtn";
-            this.driverRecBtn.Size = new System.Drawing.Size(281, 35);
+            this.driverRecBtn.Size = new System.Drawing.Size(192, 25);
             this.driverRecBtn.TabIndex = 81;
             this.driverRecBtn.Text = "Apply Driver Recommended Settings";
             this.driverRecBtn.UseVisualStyleBackColor = false;
@@ -394,10 +372,9 @@
             this.compoundDecorationCheck.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.compoundDecorationCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.compoundDecorationCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.compoundDecorationCheck.Location = new System.Drawing.Point(986, 992);
-            this.compoundDecorationCheck.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.compoundDecorationCheck.Location = new System.Drawing.Point(657, 645);
             this.compoundDecorationCheck.Name = "compoundDecorationCheck";
-            this.compoundDecorationCheck.Size = new System.Drawing.Size(399, 44);
+            this.compoundDecorationCheck.Size = new System.Drawing.Size(270, 30);
             this.compoundDecorationCheck.TabIndex = 85;
             this.compoundDecorationCheck.Text = "Compound Decoration \r\n(Each Decorator Acts on the Output of the Previous)";
             this.compoundDecorationCheck.UseVisualStyleBackColor = false;
@@ -406,10 +383,9 @@
             // versionLabel
             // 
             this.versionLabel.AutoSize = true;
-            this.versionLabel.Location = new System.Drawing.Point(828, 52);
-            this.versionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.versionLabel.Location = new System.Drawing.Point(552, 34);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(0, 20);
+            this.versionLabel.Size = new System.Drawing.Size(0, 13);
             this.versionLabel.TabIndex = 91;
             // 
             // extTable
@@ -440,7 +416,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.extTable.DefaultCellStyle = dataGridViewCellStyle2;
             this.extTable.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.extTable.Location = new System.Drawing.Point(48, 275);
+            this.extTable.Location = new System.Drawing.Point(32, 179);
             this.extTable.Margin = new System.Windows.Forms.Padding(0);
             this.extTable.Name = "extTable";
             this.extTable.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -456,7 +432,7 @@
             this.extTable.RowTemplate.Height = 45;
             this.extTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.extTable.ShowEditingIcon = false;
-            this.extTable.Size = new System.Drawing.Size(1347, 544);
+            this.extTable.Size = new System.Drawing.Size(898, 354);
             this.extTable.TabIndex = 92;
             this.extTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.extTable_CellContentClick);
             // 
@@ -471,37 +447,39 @@
             this.EnabledCol.DefaultCellStyle = dataGridViewCellStyle1;
             this.EnabledCol.HeaderText = "Enabled?";
             this.EnabledCol.Name = "EnabledCol";
-            this.EnabledCol.Width = 81;
+            this.EnabledCol.Width = 56;
             // 
             // NameCol
             // 
+            this.NameCol.FillWeight = 25.25253F;
             this.NameCol.HeaderText = "Name";
             this.NameCol.Name = "NameCol";
             this.NameCol.ReadOnly = true;
             // 
             // AuthorCol
             // 
+            this.AuthorCol.FillWeight = 25.25253F;
             this.AuthorCol.HeaderText = "Author";
             this.AuthorCol.Name = "AuthorCol";
             this.AuthorCol.ReadOnly = true;
             // 
             // DescCol
             // 
-            this.DescCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
             this.DescCol.FillWeight = 150F;
             this.DescCol.HeaderText = "Description";
+            this.DescCol.MinimumWidth = 150;
             this.DescCol.Name = "DescCol";
             this.DescCol.ReadOnly = true;
-            this.DescCol.Width = 5;
             // 
             // SettingsCol
             // 
+            this.SettingsCol.FillWeight = 25.25253F;
             this.SettingsCol.HeaderText = "Settings";
             this.SettingsCol.Name = "SettingsCol";
-            this.SettingsCol.ReadOnly = true;
             // 
             // VersionCol
             // 
+            this.VersionCol.FillWeight = 25.25253F;
             this.VersionCol.HeaderText = "Version";
             this.VersionCol.Name = "VersionCol";
             this.VersionCol.ReadOnly = true;
@@ -512,16 +490,16 @@
             this.idCol.HeaderText = "id";
             this.idCol.Name = "idCol";
             this.idCol.ReadOnly = true;
-            this.idCol.Width = 44;
+            this.idCol.Width = 38;
             // 
             // SettingsWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.ClientSize = new System.Drawing.Size(1443, 1088);
+            this.ClientSize = new System.Drawing.Size(962, 707);
             this.Controls.Add(this.extTable);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.compoundDecorationCheck);
@@ -553,9 +531,9 @@
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SettingsWindow";
-            this.Padding = new System.Windows.Forms.Padding(45, 142, 45, 48);
+            this.Padding = new System.Windows.Forms.Padding(30, 92, 30, 31);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
