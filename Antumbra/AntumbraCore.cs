@@ -60,6 +60,7 @@ namespace Antumbra.Glow
                 Thread.Sleep(10000);//wait for message
                 return;//skip rest
             }
+            LogFoundExtensions();
             this.logger.Log("Creating DeviceManager");
             this.GlowManager = new DeviceManager(0x16D0, 0x0A85, this.extLibrary);//find devices
             this.logger.Log("Devices Found: " + this.GlowManager.GlowsFound);
@@ -76,6 +77,23 @@ namespace Antumbra.Glow
                 this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
             }
             this.logger.Log("Core good start? - " + this.goodStart);
+        }
+
+        private void LogFoundExtensions()
+        {
+            this.logger.Log("Found Extensions:");
+            LogExtensions("Drivers", this.extLibrary.AvailDrivers.ToList<GlowExtension>());
+            LogExtensions("Screen Grabbers", this.extLibrary.AvailGrabbers.ToList<GlowExtension>());
+            LogExtensions("Screen Processors", this.extLibrary.AvailProcessors.ToList<GlowExtension>());
+            LogExtensions("Decorators", this.extLibrary.AvailDecorators.ToList<GlowExtension>());
+            LogExtensions("Notifiers", this.extLibrary.AvailNotifiers.ToList<GlowExtension>());
+        }
+
+        private void LogExtensions(String type, List<GlowExtension> exts)
+        {
+            this.logger.Log("Found " + type + ":");
+            foreach (var ext in exts)
+                this.logger.Log(ext.ToString());
         }
 
         public void NewLogMsgAvail(String sourceName, String msg)
