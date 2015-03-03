@@ -332,10 +332,12 @@ namespace Capture.Hook
                             //    height = (int)Math.Round((renderTargetTemp.Description.Height * (1280.0 / renderTargetTemp.Description.Width)));
                             //}
                             //else
-                            {
-                                width = renderTargetTemp.Description.Width;
-                                height = renderTargetTemp.Description.Height;
-                            }
+                            //{
+                            //    width = renderTargetTemp.Description.Width;
+                            //    height = renderTargetTemp.Description.Height;
+                            //}
+                            width = 1;
+                            height = 1;//TODO make configurable
 
                             // First ensure we have a Surface to the render target data into
                             if (_renderTarget == null)
@@ -374,40 +376,6 @@ namespace Capture.Hook
                 }
 
                 #endregion
-
-                if (this.Config.ShowOverlay)
-                {
-                    #region Draw frame rate
-
-                    // TODO: font needs to be created and then reused, not created each frame!
-                    using (SharpDX.Direct3D9.Font font = new SharpDX.Direct3D9.Font(device, new FontDescription()
-                                    {
-                                        Height = 16,
-                                        FaceName = "Arial",
-                                        Italic = false,
-                                        Width = 0,
-                                        MipLevels = 1,
-                                        CharacterSet = FontCharacterSet.Default,
-                                        OutputPrecision = FontPrecision.Default,
-                                        Quality = FontQuality.Antialiased,
-                                        PitchAndFamily = FontPitchAndFamily.Default | FontPitchAndFamily.DontCare,
-                                        Weight = FontWeight.Bold
-                                    }))
-                    {
-
-                        if (this.FPS.GetFPS() >= 1)
-                        {
-                            font.DrawText(null, String.Format("{0:N0} fps", this.FPS.GetFPS()), 5, 5, SharpDX.Color.Red);
-                        }
-
-                        if (this.TextDisplay != null && this.TextDisplay.Display)
-                        {
-                            font.DrawText(null, this.TextDisplay.Text, 5, 25, new SharpDX.ColorBGRA(255, 0, 0, (byte)Math.Round((Math.Abs(1.0f - TextDisplay.Remaining) * 255f))));
-                        }
-                    }
-
-                    #endregion
-                }
             }
             catch (Exception e)
             {

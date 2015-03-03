@@ -382,43 +382,6 @@ namespace Capture.Hook
 
                 }
                 #endregion
-
-                #region Example: Draw overlay (after screenshot so we don't capture overlay as well)
-                if (this.Config.ShowOverlay)
-                {
-                    using (Texture2D texture = Texture2D.FromSwapChain<SharpDX.Direct3D10.Texture2D>(swapChain, 0))
-                    {
-                        if (FPS.GetFPS() >= 1)
-                        {
-                            FontDescription fd = new SharpDX.Direct3D10.FontDescription()
-                            {
-                                Height = 16,
-                                FaceName = "Arial",
-                                Italic = false,
-                                Width = 0,
-                                MipLevels = 1,
-                                CharacterSet = SharpDX.Direct3D10.FontCharacterSet.Default,
-                                OutputPrecision = SharpDX.Direct3D10.FontPrecision.Default,
-                                Quality = SharpDX.Direct3D10.FontQuality.Antialiased,
-                                PitchAndFamily = FontPitchAndFamily.Default | FontPitchAndFamily.DontCare,
-                                Weight = FontWeight.Bold
-                            };
-
-                            // TODO: Font should not be created every frame!
-                            using (Font font = new Font(texture.Device, fd))
-                            {
-                                DrawText(font, new Vector2(5, 5), String.Format("{0:N0} fps", FPS.GetFPS()), new Color4(SharpDX.Color.Red.ToColor3()));
-
-                                if (this.TextDisplay != null && this.TextDisplay.Display)
-                                {
-                                    DrawText(font, new Vector2(5, 25), this.TextDisplay.Text, new Color4(Color.Red.ToColor3(), (Math.Abs(1.0f - TextDisplay.Remaining))));
-                                }
-                            }
-                        }
-
-                    }
-                }
-                #endregion
             }
             catch (Exception e)
             {
