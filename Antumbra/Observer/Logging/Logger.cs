@@ -34,7 +34,6 @@ namespace Antumbra.Glow.Observer.Logging
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(name, true)) {
                     file.WriteLine(lines);
                 }
-                Console.WriteLine(lines);//Debug print
             }
         }
     }
