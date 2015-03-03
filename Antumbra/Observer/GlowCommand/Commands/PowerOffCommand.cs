@@ -16,7 +16,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         public override void ExecuteCommand(AntumbraCore core)
         {
-            core.Off();//TODO add id for specific device
+            core.Off(this.id);//TODO add id for specific device
         }
     }
 }

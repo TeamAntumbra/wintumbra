@@ -246,13 +246,24 @@ namespace Antumbra.Glow
             this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
-        //replace with custom event handler as well TODO
-        public void Off()
+
+        public void Off(int id)
+        {
+            if (id == -1) {
+                this.StopAll();
+                this.GlowManager.sendColor(Color.Black);
+            }
+            else {
+                this.Stop(id);
+                this.GlowManager.sendColor(Color.Black, id);
+            }
+        }
+
+        private void Off()
         {
             this.StopAll();
             this.GlowManager.sendColor(Color.Black);
         }
-        //TODO replace with custom event handler from dev mgr
         public void SendColor(int id, Color col)
         {
             this.GlowManager.sendColor(col, id);
@@ -272,7 +283,7 @@ namespace Antumbra.Glow
         /// <summary>
         /// Start all found Glows
         /// </summary>
-        public void StartAll()
+        private void StartAll()
         {
             if (this.GlowManager.GlowsFound == 0) {
                 ShowMessage(3000, "No Devices Found", "No devices were found to start.", ToolTipIcon.Error);
@@ -289,7 +300,7 @@ namespace Antumbra.Glow
         /// <summary>
         /// Start only the selected Glow
         /// </summary>
-        public void StartCurrent()
+        private void StartCurrent()
         {
             StopCurrent();
             Start(this.toolStripDeviceList.SelectedIndex);
