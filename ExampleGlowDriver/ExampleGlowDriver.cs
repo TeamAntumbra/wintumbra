@@ -45,7 +45,7 @@ namespace ExampleGlowDriver
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public void AttachEvent(LogMsgObserver observer)
+        public void AttachLogObserver(LogMsgObserver observer)
         {
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
