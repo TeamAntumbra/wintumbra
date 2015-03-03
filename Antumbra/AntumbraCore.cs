@@ -106,11 +106,7 @@ namespace Antumbra.Glow
 
         public void NewGlowCommandAvail(GlowCommand command)
         {
-<<<<<<< HEAD
             command.ExecuteCommand(this);
-=======
-            
->>>>>>> 9a82225f84c51ed5d528395ce2e400e30c841381
         }
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
