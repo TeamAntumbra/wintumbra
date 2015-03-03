@@ -138,6 +138,14 @@
     </Compile>
     <Compile Include="ExtensionFramework\ExtensionLibrary.cs" />
     <Compile Include="ExtensionFramework\ExtensionManager.cs" />
+    <Compile Include="GlowCommand\Commands\PowerOffCommand.cs" />
+    <Compile Include="GlowCommand\Commands\SendColorCommand.cs" />
+    <Compile Include="GlowCommand\Commands\StartCommand.cs" />
+    <Compile Include="GlowCommand\Commands\StopCommand.cs" />
+    <Compile Include="GlowCommand\GlowCommand.cs" />
+    <Compile Include="GlowCommand\IGlowCommand.cs" />
+    <Compile Include="GlowCommand\GlowCommandObserver.cs" />
+    <Compile Include="GlowCommand\GlowCommandSender.cs" />
     <Compile Include="Logging\Loggable.cs" />
     <Compile Include="Logging\LogMsgObserver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />

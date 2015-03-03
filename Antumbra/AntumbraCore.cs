@@ -22,12 +22,13 @@ using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Logging;
 using Antumbra.Glow.ToolbarNotifications;
+using Antumbra.Glow.GlowCommands;
 using System.Reflection;
 using Microsoft.Win32;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : Form, LogMsgObserver, ToolbarNotificationObserver
+    public partial class AntumbraCore : Form, LogMsgObserver, ToolbarNotificationObserver, GlowCommandObserver
     {
         private DeviceManager GlowManager;
         private List<SettingsWindow> settingsWindows;
@@ -75,7 +76,7 @@ namespace Antumbra.Glow
             this.settingsWindows = new List<SettingsWindow>();
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
-                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this));
+                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this.ProductVersion));
             }
             this.logger.Log("Core good start? - " + this.goodStart);
         }
@@ -101,6 +102,11 @@ namespace Antumbra.Glow
         {
             this.logger.Log(sourceName + ": " + msg);
             Console.WriteLine(sourceName + ": " + msg);
+        }
+
+        public void NewGlowCommandAvail(GlowCommand command)
+        {
+            command.ExecuteCommand(this);
         }
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
@@ -150,7 +156,7 @@ namespace Antumbra.Glow
                 win = this.settingsWindows.ElementAt<SettingsWindow>(current.id);
             }
             else {
-                win = new SettingsWindow(current, this.extLibrary, this);
+                win = new SettingsWindow(current, this.extLibrary, this.ProductVersion);
                 this.settingsWindows.Add(win);
             }
             win.updateValues();
@@ -228,7 +234,7 @@ namespace Antumbra.Glow
         /// <param name="title"></param>
         /// <param name="msg"></param>
         /// <param name="icon"></param>
-        public void ShowMessage(int time, string title, string msg, ToolTipIcon icon)//TODO somewhat replace with eventhandler and delegate for showing messages
+        private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)//TODO somewhat replace with eventhandler and delegate for showing messages
         {
             this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
