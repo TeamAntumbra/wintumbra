@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.ComponentModel.Composition;
@@ -68,7 +69,7 @@ namespace AntumbraSmartScreenProcessor
             return true;
         }
 
-        public void AttachEvent(LogMsgObserver observer)
+        public void AttachLogObserver(LogMsgObserver observer)
         {
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
@@ -145,7 +146,9 @@ namespace AntumbraSmartScreenProcessor
                 NewColorAvailEvent(Process(bm), EventArgs.Empty);
             }
             catch (Exception e) {
-                NewLogMsgEvent(this.Name, e.ToString());
+                if (e is ThreadAbortException) { }//swallow exception
+                else
+                    NewLogMsgEvent(this.Name, e.ToString());
             }
             finally {
                 bm.Dispose();
@@ -163,7 +166,10 @@ namespace AntumbraSmartScreenProcessor
                     (int)Properties.Settings.Default["minBright"], (int)Properties.Settings.Default["scaleFactor"]);
             }
             catch (Exception e) {
-                NewLogMsgEvent(this.Name, e.ToString());
+                if (e is ThreadAbortException) { }//swallow, cause clutter in logs
+                else {
+                    NewLogMsgEvent(this.Name, e.ToString());
+                }
                 return Color.Empty;
             }
             finally {
