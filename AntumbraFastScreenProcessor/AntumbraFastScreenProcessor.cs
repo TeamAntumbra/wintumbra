@@ -71,7 +71,7 @@ namespace AntumbraFastScreenProcessor
         {
             Bitmap small = new Bitmap(1, 1);
             using (Graphics g = Graphics.FromImage(small))//resize to 1X1 Bitmap using GDI+ Graphics class
-                g.DrawImage(bm, 0, 0, 1, 1);//TODO add resizing to configured size to smart processor
+                g.DrawImage(bm, 0, 0, 1, 1);
             return small.GetPixel(0, 0);
         }
 
