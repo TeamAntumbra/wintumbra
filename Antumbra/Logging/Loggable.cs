@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Antumbra.Glow.Logging
 {
-    public interface Loggable//TODO move
+    public interface Loggable
     {
         void AttachEvent(LogMsgObserver observer);
     }

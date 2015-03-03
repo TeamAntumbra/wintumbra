@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Antumbra.Glow.Logging
 {
-    public interface LogMsgObserver//TODO move
+    public interface LogMsgObserver
     {
         void NewLogMsgAvail(String sourceName, String msg);
     }
