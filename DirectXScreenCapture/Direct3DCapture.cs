@@ -12,23 +12,28 @@ using System.Drawing;
 using Capture;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
-using System.Reflection;
-using System.Windows.Forms;
 using Antumbra.Glow.Logging;
 using Antumbra.Glow.ToolbarNotifications;
+using Antumbra.Glow.GlowCommands.Commands;
+using Antumbra.Glow.GlowCommands;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace DirectXScreenCapture
 {
     [Export(typeof(GlowExtension))]
-    public class Direct3DCapture : GlowScreenGrabber, Loggable, ToolbarNotificationSource
+    public class Direct3DCapture : GlowScreenGrabber, Loggable, ToolbarNotificationSource, GlowCommandSender
     {
-        private DXSettingsWindow settings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
         public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
         public event NewToolbarNotif NewToolbarNotifEvent;
+        public delegate void NewGlowCommand(GlowCommand command);
+        public event NewGlowCommand NewGlowCommandEvent;
+        private DXSettingsWindow settings;
+        private int devId;
         public override Guid id { get; set; }
         public override bool IsDefault
         {
@@ -85,9 +90,24 @@ namespace DirectXScreenCapture
             get { return !this._stopped; }
         }
 
-        public void AttachEvent(LogMsgObserver observer)
+        public void AttachLogObserver(LogMsgObserver observer)
         {
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
+        }
+
+        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
+        {
+            this.NewToolbarNotifEvent += observer.NewToolbarNotifAvail;
+        }
+
+        public void AttachGlowCommandObserver(GlowCommandObserver observer)
+        {
+            this.NewGlowCommandEvent += observer.NewGlowCommandAvail;
+        }
+
+        public void RegisterDevice(int id)
+        {
+            this.devId = id;
         }
 
         private Capture.Interface.CaptureInterface _captureInterface;
@@ -137,6 +157,7 @@ namespace DirectXScreenCapture
                     "A " + e.Message + " occured when attempting to find the foreground process"
                 + "and hook into it for screen capture. Stopping Glow device.", 2);
                 NewLogMsgEvent(this.ToString(), e.ToString());
+                NewGlowCommandEvent(new StopCommand(this.devId));
             }
             while (this.IsRunning) {
                 try {
