@@ -15,17 +15,20 @@ using Antumbra.Glow.ExtensionFramework;
 using System.Reflection;
 using System.Windows.Forms;
 using Antumbra.Glow.Logging;
+using Antumbra.Glow.ToolbarNotifications;
 
 namespace DirectXScreenCapture
 {
     [Export(typeof(GlowExtension))]
-    public class Direct3DCapture : GlowScreenGrabber, Loggable
+    public class Direct3DCapture : GlowScreenGrabber, Loggable, ToolbarNotificationSource
     {
         private DXSettingsWindow settings;
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
+        public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
+        public event NewToolbarNotif NewToolbarNotifEvent;
         public override Guid id { get; set; }
         public override bool IsDefault
         {
@@ -121,11 +124,18 @@ namespace DirectXScreenCapture
         private void target()
         {
             try {
-                Thread.Sleep(5000);
+                NewToolbarNotifEvent(4000, "Open DX App",
+                    "Please open your desired DX application."
+                  + "In 10 seconds time the foreground application will attempt "
+                  + "to be hooked for screen capture.", 0);
+                Thread.Sleep(10000);
                 this.TargetProcess = FindForegroundPrcs();
                 Inject();
             }
             catch (Exception e) {
+                NewToolbarNotifEvent(3000, "Exception Occured", 
+                    "A " + e.Message + " occured when attempting to find the foreground process"
+                + "and hook into it for screen capture. Stopping Glow device.", 2);
                 NewLogMsgEvent(this.ToString(), e.ToString());
             }
             while (this.IsRunning) {
