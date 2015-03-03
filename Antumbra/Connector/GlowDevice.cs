@@ -8,6 +8,7 @@ using Antumbra.Glow.Settings;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Logging;
 using Antumbra.Glow.ToolbarNotifications;
+using Antumbra.Glow.GlowCommands;
 
 namespace Antumbra.Glow.Connector
 {
@@ -191,19 +192,25 @@ namespace Antumbra.Glow.Connector
         /// Attach an AntumbraColorObserver to the underlying extension manager
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachEventToExtMgr(AntumbraColorObserver observer)
+        public void AttachColorObserverToExtMgr(AntumbraColorObserver observer)
         {
             this.extMgr.AttachEvent(observer);
         }
 
         public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)
         {
-            
+            this.extMgr.AttachToolbarNotifObserver(observer);
         }
 
         public void AttachLogObserverToExtMgr(LogMsgObserver observer)
         {
-            this.extMgr.AttachEvent(observer);
+            this.extMgr.AttachLogObserver(observer);
+        }
+
+        public void AttachGlowCommandObserverToExtMgr(GlowCommandObserver observer)
+        {
+            this.extMgr.RegisterDevice(this.id);
+            this.extMgr.AttachGlowCommandObserver(observer);
         }
         /// <summary>
         /// Get a string representation of the extensions activated for this device

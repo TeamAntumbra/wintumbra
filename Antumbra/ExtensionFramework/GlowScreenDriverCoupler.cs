@@ -25,7 +25,7 @@ namespace Antumbra.Glow.ExtensionFramework
             this.processor = proc;
         }
 
-        public void AttachEvent(LogMsgObserver observer)
+        public void AttachLogObserver(LogMsgObserver observer)
         {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
@@ -80,7 +80,7 @@ namespace Antumbra.Glow.ExtensionFramework
             if (this.grabber != null && this.processor != null) {
                 if (this.processor is Loggable) {
                     Loggable log = (Loggable)this.processor;
-                    log.AttachEvent(this);
+                    log.AttachLogObserver(this);
                 }
                 if (this.processor.Start()) {
                     if (this.processor is AntumbraBitmapObserver)
@@ -88,7 +88,7 @@ namespace Antumbra.Glow.ExtensionFramework
                     this.processor.AttachEvent(this);
                     if (this.grabber is Loggable) {
                         Loggable log = (Loggable)this.grabber;
-                        log.AttachEvent(this);
+                        log.AttachLogObserver(this);
                     }
                     if (this.grabber.Start()) {
                         return true;

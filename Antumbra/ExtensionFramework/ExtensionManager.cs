@@ -7,6 +7,7 @@ using Antumbra.Glow.Settings;
 using System.Drawing;
 using Antumbra.Glow.Logging;
 using Antumbra.Glow.ToolbarNotifications;
+using Antumbra.Glow.GlowCommands;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
@@ -14,7 +15,8 @@ namespace Antumbra.Glow.ExtensionFramework
     /// Manages the Extensions for use with a Glow device
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable,
-                                    ToolbarNotificationObserver, ToolbarNotificationSource//TODO add observer for notifiers
+                                    ToolbarNotificationObserver, ToolbarNotificationSource,
+                                    GlowCommandObserver, GlowCommandSender//TODO add observer for notifiers
     {
         /// <summary>
         /// Delegate for NewColorAvailEvent, handles a new Color being available
@@ -30,6 +32,8 @@ namespace Antumbra.Glow.ExtensionFramework
         public event NewLogMsg NewLogMsgAvailEvent;
         public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
+        public delegate void NewGlowCommand(GlowCommand command);
+        public event NewGlowCommand NewGlowCommandEvent;
         /// <summary>
         /// DeviceSettings obj for the GlowDevice relating to this ExtensionManager
         /// </summary>
@@ -111,14 +115,26 @@ namespace Antumbra.Glow.ExtensionFramework
             NewColorAvailEvent += observer.NewColorAvail;
         }
 
-        public void AttachEvent(LogMsgObserver observer)
+        public void AttachLogObserver(LogMsgObserver observer)
         {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
-        public void AttachEvent(ToolbarNotificationObserver observer)
+        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
         {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
+        }
+
+        public void AttachGlowCommandObserver(GlowCommandObserver observer)
+        {
+            NewGlowCommandEvent += observer.NewGlowCommandAvail;
+        }
+
+        public void RegisterDevice(int id)
+        {
+            //ignore, already have id
+            if (this.id != id)
+                throw new Exception("137 ext mgr");
         }
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
@@ -129,6 +145,11 @@ namespace Antumbra.Glow.ExtensionFramework
         public void NewLogMsgAvail(String source, String msg)
         {
             NewLogMsgAvailEvent(source, msg);
+        }
+
+        public void NewGlowCommandAvail(GlowCommand command)
+        {
+            NewGlowCommandEvent(command);//pass it up to core
         }
         /// <summary>
         /// Event handler for the NewColorAvail event
@@ -169,7 +190,11 @@ namespace Antumbra.Glow.ExtensionFramework
             this.ActiveDriver.AttachEvent(this);
             if (this.ActiveDriver is Loggable) {
                 Loggable log = (Loggable)this.ActiveDriver;
-                log.AttachEvent(this);
+                log.AttachLogObserver(this);
+            }
+            if (this.ActiveDriver is GlowCommandSender) {
+                GlowCommandSender sender = (GlowCommandSender)this.ActiveDriver;
+                sender.AttachGlowCommandObserver(this);
             }
             if (!this.ActiveDriver.Start())
                 return false;

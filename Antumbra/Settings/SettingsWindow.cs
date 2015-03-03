@@ -19,7 +19,7 @@ using Antumbra.Glow.GlowCommands;
 
 namespace Antumbra.Glow.Settings
 {
-    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender
+    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender//TODO decouple out GlowDevice and ExtensionLibrary with observer pattern
     {
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
@@ -27,6 +27,7 @@ namespace Antumbra.Glow.Settings
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private Color[] PollingWindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
         private String antumbraVersion;
+        private int devId;
         /// <summary>
         /// GlowDevice object for the device whose settings are being rendered currently
         /// </summary>
@@ -52,7 +53,6 @@ namespace Antumbra.Glow.Settings
             this.currentDevice = device;
             InitializeComponent();
             PopulateExtTable();
-            //updateValues();
             this.Focus();
         }
 
@@ -90,14 +90,19 @@ namespace Antumbra.Glow.Settings
             return row;
         }
 
-        public void AttachEvent(ToolbarNotificationObserver observer)
+        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
         {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
-        public void AttachEvent(GlowCommandObserver observer)
+        public void AttachGlowCommandObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
+        }
+
+        public void RegisterDevice(int id)
+        {
+            this.devId = id;
         }
 
         public void CleanUp()
@@ -121,7 +126,7 @@ namespace Antumbra.Glow.Settings
             pollingX.Text = this.currentDevice.settings.x.ToString();
             pollingY.Text = this.currentDevice.settings.y.ToString();
             glowStatus.Text = GetStatusString(this.currentDevice.status);
-            deviceName.Text = this.currentDevice.id.ToString();
+            deviceName.Text = this.devId.ToString();
             //currentSetup.Text = this.currentDevice.GetSetupDesc();
         }
 
@@ -173,7 +178,7 @@ namespace Antumbra.Glow.Settings
         private void pollingArea_Click(object sender, EventArgs e)
         {
             if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
-                var current = this.currentDevice.id;
+                var current = this.devId;
                 var back = PollingWindowColors[current % 8];
                 this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, back);
                 //this.antumbra.Stop(current);
@@ -192,12 +197,12 @@ namespace Antumbra.Glow.Settings
 
         private void startBtn_Click(object sender, EventArgs e)
         {
-            NewGlowCommandAvailEvent(new StartCommand(this.currentDevice.id));
+            NewGlowCommandAvailEvent(new StartCommand(this.devId));
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
-            NewGlowCommandAvailEvent(new StopCommand(this.currentDevice.id));
+            NewGlowCommandAvailEvent(new StopCommand(this.devId));
         }
 
         private void offBtn_Click(object sender, EventArgs e)
@@ -292,7 +297,7 @@ namespace Antumbra.Glow.Settings
             switch (e.ColumnIndex) {
                 case 0://checkbox col
                     if (this.currentDevice.isRunning())
-                        NewGlowCommandAvailEvent(new StopCommand(this.currentDevice.id));
+                        NewGlowCommandAvailEvent(new StopCommand(this.devId));
                     if (ext is GlowDecorator) {
                         GlowDecorator dec = (GlowDecorator)ext;
                         GetRowByExtId(dec.id).Cells[0].Value = !this.currentDevice.RemoveDecOrAddIfNew(dec);

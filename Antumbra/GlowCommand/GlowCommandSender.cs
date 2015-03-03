@@ -8,6 +8,7 @@ namespace Antumbra.Glow.GlowCommands
 {
     public interface GlowCommandSender
     {
-        void AttachEvent(GlowCommandObserver observer);
+        void AttachGlowCommandObserver(GlowCommandObserver observer);
+        void RegisterDevice(int id);
     }
 }

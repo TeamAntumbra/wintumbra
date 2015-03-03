@@ -76,7 +76,11 @@ namespace Antumbra.Glow
             this.settingsWindows = new List<SettingsWindow>();
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
-                this.settingsWindows.Add(new SettingsWindow(this.GlowManager.getDevice(0), this.extLibrary, this.ProductVersion));
+                GlowDevice dev = this.GlowManager.getDevice(0);
+                SettingsWindow win = new SettingsWindow(dev, this.extLibrary, this.ProductVersion);
+                win.AttachToolbarNotifObserver(this);
+                win.AttachGlowCommandObserver(this);
+                this.settingsWindows.Add(win);
             }
             this.logger.Log("Core good start? - " + this.goodStart);
         }
@@ -157,6 +161,8 @@ namespace Antumbra.Glow
             }
             else {
                 win = new SettingsWindow(current, this.extLibrary, this.ProductVersion);
+                win.AttachToolbarNotifObserver(this);
+                win.AttachGlowCommandObserver(this);
                 this.settingsWindows.Add(win);
             }
             win.updateValues();
@@ -302,7 +308,8 @@ namespace Antumbra.Glow
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, id);
             dev.AttachLogObserverToExtMgr(this);
             dev.AttachToolbarNotifObserverToExtMgr(this);
-            dev.AttachEventToExtMgr(loop);
+            dev.AttachGlowCommandObserverToExtMgr(this);
+            dev.AttachColorObserverToExtMgr(loop);
             if (dev.Start()) {
                 this.logger.Log("Device id: " + dev.id + " started successfully.");
                 this.logger.Log("Current Configuration: " + dev.GetSetupDesc());
