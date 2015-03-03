@@ -7,20 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Antumbra.Glow;
 using Antumbra.Glow.ExtensionFramework;
 using System.Threading;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Antumbra.Glow.Connector;
+using Antumbra.Glow.ToolbarNotifications;
+using Antumbra.Glow.GlowCommands.Commands;
+using Antumbra.Glow.GlowCommands;
 
 namespace Antumbra.Glow.Settings
 {
-    public partial class SettingsWindow : Form
+    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender
     {
+        public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
+        public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
+        public delegate void NewGlowCommandAvail(GlowCommand command);
+        public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private Color[] PollingWindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
-        private AntumbraCore antumbra;
+        private String antumbraVersion;
         /// <summary>
         /// GlowDevice object for the device whose settings are being rendered currently
         /// </summary>
@@ -39,9 +45,9 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, ExtensionLibrary library, AntumbraCore core)
+        public SettingsWindow(GlowDevice device, ExtensionLibrary library, String version)
         {
-            this.antumbra = core;
+            this.antumbraVersion = version;
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();
@@ -84,6 +90,16 @@ namespace Antumbra.Glow.Settings
             return row;
         }
 
+        public void AttachEvent(ToolbarNotificationObserver observer)
+        {
+            NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
+        }
+
+        public void AttachEvent(GlowCommandObserver observer)
+        {
+            NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
+        }
+
         public void CleanUp()
         {
             this.Close();
@@ -95,7 +111,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         public void updateValues()
         {
-            this.versionLabel.Text = this.antumbra.ProductVersion;
+            this.versionLabel.Text = this.antumbraVersion;
             compoundDecorationCheck.Checked = this.currentDevice.settings.compoundDecoration;
             newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
@@ -160,8 +176,10 @@ namespace Antumbra.Glow.Settings
                 var current = this.currentDevice.id;
                 var back = PollingWindowColors[current % 8];
                 this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, back);
-                this.antumbra.Stop(current);
-                this.antumbra.SendColor(current, back);
+                //this.antumbra.Stop(current);
+                NewGlowCommandAvailEvent(new StopCommand(current));
+                //this.antumbra.SendColor(current, back);
+                NewGlowCommandAvailEvent(new SendColorCommand(current, back));
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingAreaWindow.Show();
@@ -174,17 +192,17 @@ namespace Antumbra.Glow.Settings
 
         private void startBtn_Click(object sender, EventArgs e)
         {
-            this.antumbra.Start(this.currentDevice.id);
+            NewGlowCommandAvailEvent(new StartCommand(this.currentDevice.id));
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
-            this.antumbra.Stop(this.currentDevice.id);
+            NewGlowCommandAvailEvent(new StopCommand(this.currentDevice.id));
         }
 
         private void offBtn_Click(object sender, EventArgs e)
         {
-            this.antumbra.Off();
+            NewGlowCommandAvailEvent(new PowerOffCommand(-1));
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -239,9 +257,8 @@ namespace Antumbra.Glow.Settings
         private void AttemptToOpenSettingsWindow(GlowExtension ext)
         {
             if (ext == null) {
-                this.antumbra.ShowMessage(3000, "No Selected Extension",
-                    "There is no extension to open the settings of.",
-                    ToolTipIcon.Warning);
+                NewToolbarNotifAvailEvent(3000, "No Selected Extension",
+                    "There is no extension to open the settings of.", 1);
                 return;
             }
             if (!ext.Settings()) {
@@ -271,12 +288,11 @@ namespace Antumbra.Glow.Settings
             }
             DataGridViewRow row = extTable.Rows[e.RowIndex];
             Guid id = (Guid)row.Tag;
-            //int id = Convert.ToInt32(row.Cells[6].Value);
             GlowExtension ext = this.library.findExt(id);
             switch (e.ColumnIndex) {
                 case 0://checkbox col
                     if (this.currentDevice.isRunning())
-                        this.antumbra.Stop(this.currentDevice.id);
+                        NewGlowCommandAvailEvent(new StopCommand(this.currentDevice.id));
                     if (ext is GlowDecorator) {
                         GlowDecorator dec = (GlowDecorator)ext;
                         GetRowByExtId(dec.id).Cells[0].Value = !this.currentDevice.RemoveDecOrAddIfNew(dec);
