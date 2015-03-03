@@ -142,6 +142,8 @@
     <Compile Include="Logging\LogMsgObserver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Logging\Logger.cs" />
+    <Compile Include="ToolbarNotifications\ToolbarNotificationObserver.cs" />
+    <Compile Include="ToolbarNotifications\ToolbarNotificationSource.cs" />
     <Compile Include="Utility\Mixer.cs" />
     <Compile Include="AntumbraCore.cs">
       <SubType>Form</SubType>

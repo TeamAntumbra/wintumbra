@@ -21,12 +21,13 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Logging;
+using Antumbra.Glow.ToolbarNotifications;
 using System.Reflection;
 using Microsoft.Win32;
 
 namespace Antumbra.Glow
 {
-    public partial class AntumbraCore : Form, LogMsgObserver
+    public partial class AntumbraCore : Form, LogMsgObserver, ToolbarNotificationObserver
     {
         private DeviceManager GlowManager;
         private List<SettingsWindow> settingsWindows;
@@ -100,6 +101,23 @@ namespace Antumbra.Glow
         {
             this.logger.Log(sourceName + ": " + msg);
             Console.WriteLine(sourceName + ": " + msg);
+        }
+
+        public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
+        {
+            ToolTipIcon notifIcon = ToolTipIcon.None;//default
+            switch (icon) {
+                case 0:
+                    notifIcon = ToolTipIcon.Info;
+                    break;
+                case 1:
+                    notifIcon = ToolTipIcon.Warning;
+                    break;
+                case 2:
+                    notifIcon = ToolTipIcon.Error;
+                    break;
+            }
+            this.ShowMessage(time, title, msg, notifIcon);
         }
         /// <summary>
         /// Event handler for when the menubar icon is clicked
@@ -277,6 +295,7 @@ namespace Antumbra.Glow
             if (loop == null)
                 loop = this.outManager.CreateAndAddLoop(this.GlowManager, id);
             dev.AttachLogObserverToExtMgr(this);
+            dev.AttachToolbarNotifObserverToExtMgr(this);
             dev.AttachEventToExtMgr(loop);
             if (dev.Start()) {
                 this.logger.Log("Device id: " + dev.id + " started successfully.");

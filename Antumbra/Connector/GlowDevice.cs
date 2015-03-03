@@ -7,6 +7,7 @@ using System.Drawing;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Logging;
+using Antumbra.Glow.ToolbarNotifications;
 
 namespace Antumbra.Glow.Connector
 {
@@ -193,6 +194,11 @@ namespace Antumbra.Glow.Connector
         public void AttachEventToExtMgr(AntumbraColorObserver observer)
         {
             this.extMgr.AttachEvent(observer);
+        }
+
+        public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)
+        {
+            
         }
 
         public void AttachLogObserverToExtMgr(LogMsgObserver observer)
