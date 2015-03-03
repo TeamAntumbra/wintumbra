@@ -241,7 +241,7 @@ namespace Antumbra.Glow
         /// <param name="title"></param>
         /// <param name="msg"></param>
         /// <param name="icon"></param>
-        private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)//TODO somewhat replace with eventhandler and delegate for showing messages
+        private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
         {
             this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
@@ -273,12 +273,12 @@ namespace Antumbra.Glow
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void offToolStripMenuItem_Click(object sender, EventArgs e)//TODO make offCurrent
+        private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.GlowManager.GlowsFound == 0)
                 ShowMessage(3000, "No Devices Found", "No devices were found to turn off.", ToolTipIcon.Error);
             else
-                this.Off();
+                this.Off(this.toolStripDeviceList.SelectedIndex);
         }
         /// <summary>
         /// Start all found Glows
@@ -295,15 +295,6 @@ namespace Antumbra.Glow
             foreach (var dev in this.GlowManager.Glows) {//start each output loop
                 this.Start(dev.id);
             }
-        }
-
-        /// <summary>
-        /// Start only the selected Glow
-        /// </summary>
-        private void StartCurrent()
-        {
-            StopCurrent();
-            Start(this.toolStripDeviceList.SelectedIndex);
         }
         /// <summary>
         /// Start the device (if found) with the id passed
@@ -335,13 +326,6 @@ namespace Antumbra.Glow
                 ToolTipIcon.Info);
         }
         /// <summary>
-        /// Stop the currently selected Glow
-        /// </summary>
-        public void StopCurrent()
-        {
-            this.Stop(this.toolStripDeviceList.SelectedIndex);
-        }
-        /// <summary>
         /// Stop the device (if found) with the id passed
         /// </summary>
         /// <param name="id"></param>
@@ -367,7 +351,7 @@ namespace Antumbra.Glow
             if (this.GlowManager.GlowsFound == 0)
                 ShowMessage(3000, "No Devices Found", "No devices were found to start.", ToolTipIcon.Error);
             else
-                this.StartCurrent();
+                this.Start(this.toolStripDeviceList.SelectedIndex);
         }
         /// <summary>
         /// Stop all found devices
@@ -398,7 +382,7 @@ namespace Antumbra.Glow
             if (this.GlowManager.GlowsFound == 0)
                 ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
             else
-                this.StopCurrent();
+                this.Stop(this.toolStripDeviceList.SelectedIndex);
         }
         /// <summary>
         /// Event handler for session switching. Used for handling locking and unlocking of the system
