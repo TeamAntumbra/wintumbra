@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.GlowCommands
+namespace Antumbra.Glow.Observer.GlowCommands
 {
     public abstract class GlowCommand : IGlowCommand
     {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;

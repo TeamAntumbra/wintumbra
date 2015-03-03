@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.Settings;
-using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Logging;
-using Antumbra.Glow.ToolbarNotifications;
-using Antumbra.Glow.GlowCommands;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.ExtensionFramework.Management;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Connector
 {
@@ -194,7 +196,7 @@ namespace Antumbra.Glow.Connector
         /// <param name="observer"></param>
         public void AttachColorObserverToExtMgr(AntumbraColorObserver observer)
         {
-            this.extMgr.AttachEvent(observer);
+            this.extMgr.AttachColorObserver(observer);
         }
 
         public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)

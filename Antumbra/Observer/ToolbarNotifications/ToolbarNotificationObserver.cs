@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Antumbra.Glow.ToolbarNotifications
+namespace Antumbra.Glow.Observer.ToolbarNotifications
 {
     public interface ToolbarNotificationObserver
     {

@@ -136,22 +136,35 @@
     <Compile Include="ExtensionFramework\AntumbraExtSettingsWindow.Designer.cs">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionFramework\ExtensionLibrary.cs" />
-    <Compile Include="ExtensionFramework\ExtensionManager.cs" />
-    <Compile Include="GlowCommand\Commands\PowerOffCommand.cs" />
-    <Compile Include="GlowCommand\Commands\SendColorCommand.cs" />
-    <Compile Include="GlowCommand\Commands\StartCommand.cs" />
-    <Compile Include="GlowCommand\Commands\StopCommand.cs" />
-    <Compile Include="GlowCommand\GlowCommand.cs" />
-    <Compile Include="GlowCommand\IGlowCommand.cs" />
-    <Compile Include="GlowCommand\GlowCommandObserver.cs" />
-    <Compile Include="GlowCommand\GlowCommandSender.cs" />
-    <Compile Include="Logging\Loggable.cs" />
-    <Compile Include="Logging\LogMsgObserver.cs" />
+    <Compile Include="ExtensionFramework\Management\ExtensionLibrary.cs" />
+    <Compile Include="ExtensionFramework\Management\ExtensionManager.cs" />
+    <Compile Include="ExtensionFramework\IGlowExtension.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowDecorator.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowDriver.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowIndependentDriver.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowNotifier.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowScreenGrabber.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowScreenProcessor.cs" />
+    <Compile Include="ExtensionFramework\Types\Notifiications\Notification.cs" />
+    <Compile Include="Observer\Bitmaps\AntumbraBitmapObserver.cs" />
+    <Compile Include="Observer\Bitmaps\AntumbraBitmapSource.cs" />
+    <Compile Include="Observer\Colors\AntumbraColorObserver.cs" />
+    <Compile Include="Observer\Colors\AntumbraColorSource.cs" />
+    <Compile Include="Observer\GlowCommand\Commands\PowerOffCommand.cs" />
+    <Compile Include="Observer\GlowCommand\Commands\SendColorCommand.cs" />
+    <Compile Include="Observer\GlowCommand\Commands\StartCommand.cs" />
+    <Compile Include="Observer\GlowCommand\Commands\StopCommand.cs" />
+    <Compile Include="Observer\GlowCommand\GlowCommand.cs" />
+    <Compile Include="Observer\GlowCommand\IGlowCommand.cs" />
+    <Compile Include="Observer\GlowCommand\GlowCommandObserver.cs" />
+    <Compile Include="Observer\GlowCommand\GlowCommandSender.cs" />
+    <Compile Include="Observer\Logging\Loggable.cs" />
+    <Compile Include="Observer\Logging\LogMsgObserver.cs" />
+    <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
-    <Compile Include="Logging\Logger.cs" />
-    <Compile Include="ToolbarNotifications\ToolbarNotificationObserver.cs" />
-    <Compile Include="ToolbarNotifications\ToolbarNotificationSource.cs" />
+    <Compile Include="Observer\Logging\Logger.cs" />
+    <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />
+    <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationSource.cs" />
     <Compile Include="Utility\Mixer.cs" />
     <Compile Include="AntumbraCore.cs">
       <SubType>Form</SubType>
@@ -159,8 +172,8 @@
     <Compile Include="AntumbraCore.Designer.cs">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionFramework\GlowScreenDriverCoupler.cs" />
-    <Compile Include="ExtensionFramework\MEFHelper.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowScreenDriverCoupler.cs" />
+    <Compile Include="ExtensionFramework\Management\MEFHelper.cs" />
     <Compile Include="Utility\FPSCalc.cs" />
     <Compile Include="Settings\pollingAreaSetter.cs">
       <SubType>Form</SubType>
@@ -265,6 +278,7 @@
     <Content Include="Resources\palette-load.png" />
     <Content Include="Resources\palette-save.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

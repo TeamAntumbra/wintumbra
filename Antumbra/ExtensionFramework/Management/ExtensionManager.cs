@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Settings;
 using System.Drawing;
-using Antumbra.Glow.Logging;
-using Antumbra.Glow.ToolbarNotifications;
-using Antumbra.Glow.GlowCommands;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.ExtensionFramework.Types;
 
-namespace Antumbra.Glow.ExtensionFramework
+namespace Antumbra.Glow.ExtensionFramework.Management
 {
     /// <summary>
     /// Manages the Extensions for use with a Glow device
@@ -110,7 +112,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// Attach an AntumbraColorObserver to the NewColorAvailEvent for this ExtensionManager
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachEvent(AntumbraColorObserver observer)
+        public void AttachColorObserver(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += observer.NewColorAvail;
         }
@@ -133,8 +135,6 @@ namespace Antumbra.Glow.ExtensionFramework
         public void RegisterDevice(int id)
         {
             //ignore, already have id
-            if (this.id != id)
-                throw new Exception("137 ext mgr");
         }
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
@@ -187,7 +187,7 @@ namespace Antumbra.Glow.ExtensionFramework
         {
             if (!Verify())
                 return false;
-            this.ActiveDriver.AttachEvent(this);
+            this.ActiveDriver.AttachColorObserver(this);
             if (this.ActiveDriver is Loggable) {
                 Loggable log = (Loggable)this.ActiveDriver;
                 log.AttachLogObserver(this);
@@ -195,6 +195,10 @@ namespace Antumbra.Glow.ExtensionFramework
             if (this.ActiveDriver is GlowCommandSender) {
                 GlowCommandSender sender = (GlowCommandSender)this.ActiveDriver;
                 sender.AttachGlowCommandObserver(this);
+            }
+            if (this.ActiveDriver is ToolbarNotificationSource) {
+                ToolbarNotificationSource src = (ToolbarNotificationSource)this.ActiveDriver;
+                src.AttachToolbarNotifObserver(this);
             }
             if (!this.ActiveDriver.Start())
                 return false;

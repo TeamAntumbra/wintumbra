@@ -13,9 +13,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Antumbra.Glow.Connector;
-using Antumbra.Glow.ToolbarNotifications;
-using Antumbra.Glow.GlowCommands.Commands;
-using Antumbra.Glow.GlowCommands;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands.Commands;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.ExtensionFramework.Management;
+using Antumbra.Glow.ExtensionFramework.Types;
 
 namespace Antumbra.Glow.Settings
 {

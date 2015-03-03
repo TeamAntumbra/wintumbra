@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
 
 namespace Brightener
 {

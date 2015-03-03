@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Utility;
 using System.Drawing;
 using System.ComponentModel.Composition;
@@ -57,7 +59,7 @@ namespace ColorClock
             get { return "https://antumbra.io/docs/extensions/drivers/colorClock"; }
         }
 
-        public override void AttachEvent(AntumbraColorObserver observer)
+        public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.GlowCommands.Commands
+namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
-    public class StopCommand : GlowCommand
+    public class PowerOffCommand : GlowCommand
     {
-        public StopCommand(int devId)
+        public PowerOffCommand(int devId)
             : base(devId)
         {
 
@@ -16,7 +16,7 @@ namespace Antumbra.Glow.GlowCommands.Commands
 
         public override void ExecuteCommand(AntumbraCore core)
         {
-            core.Stop(this.id);
+            core.Off();//TODO add id for specific device
         }
     }
 }

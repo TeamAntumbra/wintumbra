@@ -12,10 +12,12 @@ using System.Drawing;
 using Capture;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Logging;
-using Antumbra.Glow.ToolbarNotifications;
-using Antumbra.Glow.GlowCommands.Commands;
-using Antumbra.Glow.GlowCommands;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands.Commands;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Bitmaps;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -153,7 +155,7 @@ namespace DirectXScreenCapture
                 Inject();
             }
             catch (Exception e) {
-                NewToolbarNotifEvent(3000, "Exception Occured", 
+                NewToolbarNotifEvent(3000, "Exception Occured",
                     "A " + e.Message + " occured when attempting to find the foreground process"
                 + "and hook into it for screen capture. Stopping Glow device.", 2);
                 NewLogMsgEvent(this.ToString(), e.ToString());
@@ -201,8 +203,10 @@ namespace DirectXScreenCapture
             if (this.settings != null)
                 this.settings.Dispose();
             if (this.driver != null) {
-                this.driver.Wait(3000);
-                this.driver.Dispose();
+                if (!this.driver.IsCompleted)
+                    this.driver.Wait(3000);
+                if (this.driver.IsCompleted)
+                    this.driver.Dispose();
             }
             if (_capturedProcess != null)
             {

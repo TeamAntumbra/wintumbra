@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.GlowCommands.Commands
+namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
-    public class StartCommand : GlowCommand
+    public class StopCommand : GlowCommand
     {
-        public StartCommand(int devId)
+        public StopCommand(int devId)
             : base(devId)
         {
 
         }
+
         public override void ExecuteCommand(AntumbraCore core)
         {
-            core.Start(this.id);
+            core.Stop(this.id);
         }
-
     }
 }

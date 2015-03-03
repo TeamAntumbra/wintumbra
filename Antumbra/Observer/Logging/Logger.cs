@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Logging
+namespace Antumbra.Glow.Observer.Logging
 {
     /// <summary>
     /// Allows easy logging to a specified file

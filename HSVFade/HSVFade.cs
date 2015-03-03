@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
 using System.Drawing;
@@ -78,7 +80,7 @@ namespace HSVFade
             }
         }
 
-        public override void AttachEvent(AntumbraColorObserver observer)
+        public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
-using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Management;
 
 namespace Antumbra.Glow.Connector
 {

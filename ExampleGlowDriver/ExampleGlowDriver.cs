@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Colors;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
-using Antumbra.Glow.Logging;
+using Antumbra.Glow.Observer.Logging;
 
 namespace ExampleGlowDriver
 {
@@ -40,7 +42,7 @@ namespace ExampleGlowDriver
             return false;//no custom window
         }
         
-        public override void AttachEvent(AntumbraColorObserver observer)
+        public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }

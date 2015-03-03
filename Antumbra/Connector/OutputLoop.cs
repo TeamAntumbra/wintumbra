@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.Observer.Colors;
 using System.Drawing;
 
 namespace Antumbra.Glow.Connector

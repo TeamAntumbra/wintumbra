@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using Antumbra.Glow.Logging;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Bitmaps;
 
-namespace Antumbra.Glow.ExtensionFramework
+namespace Antumbra.Glow.ExtensionFramework.Types
 {
-    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver, Loggable, LogMsgObserver
+    public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver, Loggable, LogMsgObserver,
+                                           ToolbarNotificationSource, ToolbarNotificationObserver,
+                                           GlowCommandObserver, GlowCommandSender
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
@@ -15,6 +21,11 @@ namespace Antumbra.Glow.ExtensionFramework
         public event NewColorAvail NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
+        public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
+        public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
+        public delegate void NewGlowCommandAvail(GlowCommand cmd);
+        public event NewGlowCommandAvail NewGlowCommandAvailEvent;
+        private int devId;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
         public override Guid id { get; set; }
@@ -33,6 +44,31 @@ namespace Antumbra.Glow.ExtensionFramework
         public void NewLogMsgAvail(String source, String msg)
         {
             NewLogMsgAvailEvent(source, msg);
+        }
+
+        void ToolbarNotificationObserver.NewToolbarNotifAvail(int time, String title, String msg, int icon)
+        {
+            NewToolbarNotifAvailEvent(time, title, msg, icon);//pass it up
+        }
+
+        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
+        {
+            NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
+        }
+
+        public void AttachGlowCommandObserver(GlowCommandObserver observer)
+        {
+            NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
+        }
+
+        public void RegisterDevice(int devId)
+        {
+            this.devId = devId;
+        }
+
+        void GlowCommandObserver.NewGlowCommandAvail(GlowCommand cmd)
+        {
+            NewGlowCommandAvailEvent(cmd);//pass it up
         }
 
         public override bool IsRunning
@@ -65,7 +101,7 @@ namespace Antumbra.Glow.ExtensionFramework
             get { return "https://antumbra.io/docs/extensions/framework/GlowScreenDriverCoupler"; }//TODO make docs and change this accordingly
         }
 
-        public override void AttachEvent(AntumbraColorObserver observer)
+        public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
@@ -78,24 +114,34 @@ namespace Antumbra.Glow.ExtensionFramework
         public override bool Start()
         {
             if (this.grabber != null && this.processor != null) {
-                if (this.processor is Loggable) {
-                    Loggable log = (Loggable)this.processor;
-                    log.AttachLogObserver(this);
-                }
+                AttemptToAttachSelfToExt(this.processor);
                 if (this.processor.Start()) {
                     if (this.processor is AntumbraBitmapObserver)
                         this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
-                    this.processor.AttachEvent(this);
-                    if (this.grabber is Loggable) {
-                        Loggable log = (Loggable)this.grabber;
-                        log.AttachLogObserver(this);
-                    }
+                    this.processor.AttachColorObserver(this);
+                    AttemptToAttachSelfToExt(this.grabber);
                     if (this.grabber.Start()) {
                         return true;
                     }
                 }
             }
             return false;
+        }
+
+        private void AttemptToAttachSelfToExt(GlowExtension ext)//TODO make a utility / static function / move elsewhere?
+        {
+            if (ext is Loggable) {
+                Loggable log = (Loggable)ext;
+                log.AttachLogObserver(this);
+            }
+            if (ext is ToolbarNotificationSource) {
+                ToolbarNotificationSource src = (ToolbarNotificationSource)ext;
+                src.AttachToolbarNotifObserver(this);
+            }
+            if (ext is GlowCommandSender) {
+                GlowCommandSender sender = (GlowCommandSender)ext;
+                sender.AttachGlowCommandObserver(this);
+            }
         }
 
         public override bool Stop()

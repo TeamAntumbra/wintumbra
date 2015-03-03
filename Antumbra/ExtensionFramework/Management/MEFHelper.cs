@@ -6,8 +6,9 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Collections;
 using System.Drawing;
+using Antumbra.Glow.ExtensionFramework.Types;
 
-namespace Antumbra.Glow.ExtensionFramework
+namespace Antumbra.Glow.ExtensionFramework.Management
 {
     public class MEFHelper : IDisposable
     {

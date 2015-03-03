@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.GlowCommands
+namespace Antumbra.Glow.Observer.Logging
 {
-    public interface IGlowCommand
+    public interface Loggable
     {
-        void ExecuteCommand(AntumbraCore core);
+        void AttachLogObserver(LogMsgObserver observer);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.ToolbarNotifications
+namespace Antumbra.Glow.Observer.ToolbarNotifications
 {
     public interface ToolbarNotificationSource
     {

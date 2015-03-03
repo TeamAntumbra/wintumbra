@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace Antumbra.Glow.GlowCommands.Commands
+namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
     public class SendColorCommand : GlowCommand
     {

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Colors;
 using System.Threading;
 using System.Windows.Forms;
 using System.Reflection;
@@ -58,7 +60,7 @@ namespace FluxCompanion
             this.stepSleep = 1000;
         }
 
-        public override void AttachEvent(AntumbraColorObserver observer)
+        public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }

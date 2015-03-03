@@ -18,11 +18,12 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
-using Antumbra.Glow.Logging;
-using Antumbra.Glow.ToolbarNotifications;
-using Antumbra.Glow.GlowCommands;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands;
 using System.Reflection;
 using Microsoft.Win32;
 
@@ -283,7 +284,6 @@ namespace Antumbra.Glow
             foreach (var dev in this.GlowManager.Glows) {//start each output loop
                 this.Start(dev.id);
             }
-            ShowMessage(3000, "Started", "Extensions have been started.", ToolTipIcon.Info);
         }
 
         /// <summary>

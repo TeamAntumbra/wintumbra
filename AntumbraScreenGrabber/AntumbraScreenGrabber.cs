@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.Composition;
 using System.Drawing;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Bitmaps;
 using System;
 using Antumbra.Glow;
 using System.Drawing.Imaging;
@@ -9,7 +11,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
 using System.Reflection;
-using Antumbra.Glow.Logging;
+using Antumbra.Glow.Observer.Logging;
 
 namespace AntumbraScreenDriver
 {
