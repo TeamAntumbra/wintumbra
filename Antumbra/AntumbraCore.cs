@@ -322,8 +322,6 @@ namespace Antumbra.Glow
                 return;
             }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
-            ShowMessage(3000, "Device " + id + " Started.", "The current device has been started.",
-                ToolTipIcon.Info);
         }
         /// <summary>
         /// Stop the device (if found) with the id passed
