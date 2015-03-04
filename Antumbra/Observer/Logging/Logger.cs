@@ -24,7 +24,10 @@ namespace Antumbra.Glow.Observer.Logging
         public Logger(string name)
         {
             this.name = name;
-            this.path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + '\\' + name;
+            this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                "\\Antumbra\\";
+            if (!System.IO.Directory.Exists(this.path))
+                System.IO.Directory.CreateDirectory(this.path);
         }
         /// <summary>
         /// Write the passed lines to the log file
@@ -33,7 +36,7 @@ namespace Antumbra.Glow.Observer.Logging
         public void Log(String lines)
         {
             lock (sync) {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path, true)) {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + name, true)) {
                     file.WriteLine(lines);
                 }
             }
