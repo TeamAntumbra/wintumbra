@@ -19,9 +19,12 @@ namespace Antumbra.Glow.Utility
             int newR = (int)(prevColor.R * prevWeight) + (int)(newColor.R * newWeight);
             int newG = (int)(prevColor.G * prevWeight) + (int)(newColor.G * newWeight);
             int newB = (int)(prevColor.B * prevWeight) + (int)(newColor.B * newWeight);
-            newR %= 255;
-            newG %= 255;
-            newB %= 255;
+            if (newR > 255)
+                newR = 255;
+            if (newG > 255)
+                newG = 255;
+            if (newB > 255)
+                newB = 255;
             return Color.FromArgb(newR, newG, newB);
         }
 
