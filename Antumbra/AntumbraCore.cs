@@ -313,7 +313,8 @@ namespace Antumbra.Glow
             dev.AttachGlowCommandObserverToExtMgr(this);
             dev.AttachColorObserverToExtMgr(loop);
             if (dev.Start()) {
-                this.logger.Log("Device id: " + dev.id + " started successfully.");
+                this.ShowMessage(3000, "Device id: " + dev.id + " Started.", 
+                    "Device id: " + dev.id + " started successfully.", ToolTipIcon.Info);
                 this.logger.Log("Current Configuration: " + dev.GetSetupDesc());
             }
             else {//starting failed
