@@ -158,7 +158,7 @@ namespace DirectXScreenCapture
                 NewToolbarNotifEvent(3000, "Exception Occured",
                     "A " + e.Message + " occured when attempting to find the foreground process"
                 + "and hook into it for screen capture. Stopping Glow device.", 2);
-                NewLogMsgEvent(this.ToString(), e.ToString());
+                NewLogMsgEvent(this.ToString(), this.TargetProcess.ToString() + " - " + e.ToString());
                 NewGlowCommandEvent(new StopCommand(this.devId));
             }
             while (this.IsRunning) {
@@ -168,7 +168,7 @@ namespace DirectXScreenCapture
                         NewScreenAvailEvent(_capturedImage, EventArgs.Empty);
                 }
                 catch (Exception e) {
-                    NewLogMsgEvent(this.ToString(), e.ToString());
+                    NewLogMsgEvent(this.ToString(), this.TargetProcess.ToString() + " - " + e.ToString());
                 }
             }
         }
