@@ -226,7 +226,10 @@ namespace Capture.Hook
                 }
 #endif
 
-                swapChain.ResizeTarget(ref newTargetParameters);
+                try {
+                    swapChain.ResizeTarget(ref newTargetParameters);
+                }
+                catch (SharpDXException) { }//swallow it TODO pass this up
                 return SharpDX.Result.Ok.Code;
             }
         }
