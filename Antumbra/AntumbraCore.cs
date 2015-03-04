@@ -333,11 +333,13 @@ namespace Antumbra.Glow
                 " please wait.", ToolTipIcon.Info);
             var dev = this.GlowManager.getDevice(id);
             if (!dev.Stop())
-                Console.WriteLine("Device did not stop correctly.");
+                ShowMessage(3000, "Device " + id + " Did Not Stop Correctly",
+                    "Device " + id + " reported that it did not stop correctly.",
+                    ToolTipIcon.Warning);
             var loop = this.outManager.FindLoopOrReturnNull(id);
-            if (loop == null)
-                return;//nothing to stop
-            loop.Dispose();
+            if (loop != null) {
+                loop.Dispose();
+            }
             ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
         }
         /// <summary>
@@ -361,15 +363,9 @@ namespace Antumbra.Glow
                 ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
                 return;
             }
-            ShowMessage(3000, "Stopping All", "Extensions Stopping. Please wait.", ToolTipIcon.Info);
             foreach (var dev in this.GlowManager.Glows) {
-                if (!dev.Stop())
-                    Console.WriteLine("Device did not stop correctly.");
-                var loop = this.outManager.FindLoopOrReturnNull(dev.id);
-                if (loop != null)
-                    loop.Dispose();//stop and dispose if exists
+                this.Stop(dev.id);
             }
-            ShowMessage(3000, "Stopped", "Extensions Stopped.", ToolTipIcon.Info);
         }
         /// <summary>
         /// Event handler for stop button
