@@ -339,7 +339,7 @@ namespace Antumbra.Glow
                     ToolTipIcon.Warning);
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop != null) {
-                loop.Stop();
+                loop.Dispose();
             }
             ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
         }

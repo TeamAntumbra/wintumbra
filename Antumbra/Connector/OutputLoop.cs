@@ -77,7 +77,7 @@ namespace Antumbra.Glow.Connector
             }
         }
 
-        public void Stop()
+        private void Stop()
         {
             this._active = false;
             if (this.outputLoopTask != null) {
@@ -89,6 +89,11 @@ namespace Antumbra.Glow.Connector
                         this.outputLoopTask.Dispose();
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            this.Stop();
         }
 
         void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
