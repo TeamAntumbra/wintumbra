@@ -81,9 +81,13 @@ namespace ColorClock
         {
             this.running = false;
             if (null != this.driver) {
-                this.driver.Wait(2000);
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
+                else {
+                    this.driver.Wait(2000);
+                    if (this.driver.IsCompleted)
+                        this.driver.Dispose();
+                }
             }
             return true;
         }

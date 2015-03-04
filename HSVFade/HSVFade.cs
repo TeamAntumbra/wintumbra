@@ -89,11 +89,15 @@ namespace HSVFade
         {
             this.running = false;
             if (this.driver != null) {
-                this.driver.Wait(3000);
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
-                else
-                    return false;
+                else {
+                    this.driver.Wait(3000);
+                    if (this.driver.IsCompleted)
+                        this.driver.Dispose();
+                    else
+                        return false;
+                }
             }
             return true;
         }

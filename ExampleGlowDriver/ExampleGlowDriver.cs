@@ -88,11 +88,15 @@ namespace ExampleGlowDriver
             if (this.settings != null)
                 this.settings.Dispose();
             if (this.driver != null) {
-                this.driver.Wait(1000);
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
-                else
-                    return false;
+                else {
+                    this.driver.Wait(1000);
+                    if (this.driver.IsCompleted)
+                        this.driver.Dispose();
+                    else
+                        return false;
+                }
             }
             return true;
         }

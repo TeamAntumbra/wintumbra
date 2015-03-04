@@ -77,13 +77,17 @@ namespace Antumbra.Glow.Connector
             }
         }
 
-        private void Stop()
+        public void Stop()
         {
             this._active = false;
             if (this.outputLoopTask != null) {
-                this.outputLoopTask.Wait(2000);
                 if (this.outputLoopTask.IsCompleted)
                     this.outputLoopTask.Dispose();
+                else {
+                    this.outputLoopTask.Wait(2000);
+                    if (this.outputLoopTask.IsCompleted)
+                        this.outputLoopTask.Dispose();
+                }
             }
         }
 
@@ -93,14 +97,6 @@ namespace Antumbra.Glow.Connector
             lock (sync) {
                 color = newColor;
             }
-        }
-
-        public void Dispose()
-        {
-            if (this.outputLoopTask != null)
-                if (this.outputLoopTask.IsCompleted)
-                    this.outputLoopTask.Dispose();
-            this.Stop();
         }
     }
 }

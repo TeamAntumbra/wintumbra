@@ -76,10 +76,10 @@ namespace AntumbraScreenDriver
         public override bool Stop()
         {
             this.NewScreenAvailEvent = null;
+            this.running = false;
             if (null != this.driver && this.driver.IsAlive) {
                 this.driver.Abort();
             }
-            this.running = false;
             this.driver = null;
             return true;
         }
@@ -95,7 +95,7 @@ namespace AntumbraScreenDriver
             int runY = y;
             int runW = width;
             int runH = height;
-            while (true) {
+            while (this.running) {
                 Bitmap screen = null;
                 Graphics grphx = null;
                 try {

@@ -143,9 +143,13 @@ namespace FluxCompanion
         {
             this.running = false;
             if (this.driver != null) {
-                this.driver.Wait(2000);
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
+                else {
+                    this.driver.Wait(2000);
+                    if (this.driver.IsCompleted)
+                        this.driver.Dispose();
+                }
             }
             return true;
         }
