@@ -16,14 +16,18 @@ Source: "dependencies\*.dll"; DestDir: {app}\Extensions
 Source: "dependencies\libusb-1.0.dll"; DestDir: {app}
 Source: "dependencies\libantumbra.dll"; DestDir: {app}
 Source: "dependencies\Antumbra.exe"; DestDir: {app}
-Source: "../Licenses\*"; DestDir: {app}\Licences
+Source: "..\Licenses\*"; DestDir: {app}\Licences
 Source: "..\README.md"; DestDir: {app}; DestName: "README.txt"
 Source: "..\deps\wintumbra\*.dll"; DestDir: {app}
+Source: "..\deps\wintumbra\EasyHook32Svc.exe"; DestDir: {app}
+Source: "..\deps\wintumbra\EasyHook64Svc.exe"; DestDir: {app}
+Source: "dependencies\DirectXHelper.dll"; DestDir: {app}
 
 [InstallDelete]
 Type: files; Name: "{app}\*.exe"
 Type: files; Name: "{app}\*.dll"
 Type: files; Name: "{app}\Extensions\*.dll"
+Type: files; Name: "%appdata%\Antumbra\wintumbra.log"
 
 [Run]
 Filename: "{tmp}\dotNetFx40_Full_setup.exe"; Check: FrameworkIsNotInstalled
