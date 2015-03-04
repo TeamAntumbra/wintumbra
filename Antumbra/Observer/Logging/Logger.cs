@@ -20,9 +20,11 @@ namespace Antumbra.Glow.Observer.Logging
         /// Constructor - Create a new logger with the logfile at path as passed
         /// </summary>
         /// <param name="name"></param>
+        private string path;
         public Logger(string name)
         {
             this.name = name;
+            this.path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + '\\' + name;
         }
         /// <summary>
         /// Write the passed lines to the log file
@@ -31,7 +33,7 @@ namespace Antumbra.Glow.Observer.Logging
         public void Log(String lines)
         {
             lock (sync) {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(name, true)) {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path, true)) {
                     file.WriteLine(lines);
                 }
             }

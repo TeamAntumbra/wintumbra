@@ -329,7 +329,8 @@ namespace Antumbra.Glow
         /// <param name="id"></param>
         public void Stop(int id)
         {
-            this.logger.Log("Stopping device id: " + id);
+            this.ShowMessage(3000, "Stopping device id: " + id, "Stopping device id " + id +
+                " please wait.", ToolTipIcon.Info);
             var dev = this.GlowManager.getDevice(id);
             if (!dev.Stop())
                 Console.WriteLine("Device did not stop correctly.");
