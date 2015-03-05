@@ -150,6 +150,8 @@
     <Compile Include="Observer\Bitmaps\AntumbraBitmapSource.cs" />
     <Compile Include="Observer\Colors\AntumbraColorObserver.cs" />
     <Compile Include="Observer\Colors\AntumbraColorSource.cs" />
+    <Compile Include="Observer\Extensions\GlowExtCollection.cs" />
+    <Compile Include="Observer\Extensions\GlowExtCollectionObserver.cs" />
     <Compile Include="Observer\GlowCommand\Commands\PowerOffCommand.cs" />
     <Compile Include="Observer\GlowCommand\Commands\SendColorCommand.cs" />
     <Compile Include="Observer\GlowCommand\Commands\StartCommand.cs" />
