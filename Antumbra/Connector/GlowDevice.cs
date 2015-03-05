@@ -106,6 +106,17 @@ namespace Antumbra.Glow.Connector
                 return this.extMgr.ActiveDecorators;
             }
         }
+
+        public bool GetDecOrNotfStatus(Guid id)
+        {
+            foreach (GlowDecorator dec in this.ActiveDecorators)
+                if (dec.id.Equals(id))
+                    return true;
+            foreach (GlowNotifier notf in this.ActiveNotifiers)
+                if (notf.id.Equals(id))
+                    return true;
+            return false;
+        }
         /// <summary>
         /// Return if running
         /// </summary>

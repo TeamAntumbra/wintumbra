@@ -69,6 +69,7 @@
             this.driverComboBox = new System.Windows.Forms.ComboBox();
             this.driverLabel = new System.Windows.Forms.Label();
             this.decoratorPage = new System.Windows.Forms.TabPage();
+            this.toggleActiveBtn = new System.Windows.Forms.Button();
             this.currentDecStatus = new System.Windows.Forms.Label();
             this.currentDecStatusLabel = new System.Windows.Forms.Label();
             this.decoratorSettingsBtn = new System.Windows.Forms.PictureBox();
@@ -76,7 +77,6 @@
             this.decoratorLabel = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
-            this.toggleActiveBtn = new System.Windows.Forms.Button();
             this.aboutPage.SuspendLayout();
             this.driverPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
@@ -591,6 +591,18 @@
             this.decoratorPage.TabIndex = 1;
             this.decoratorPage.Text = "Decorators";
             // 
+            // toggleActiveBtn
+            // 
+            this.toggleActiveBtn.AutoSize = true;
+            this.toggleActiveBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.toggleActiveBtn.Location = new System.Drawing.Point(435, 142);
+            this.toggleActiveBtn.Name = "toggleActiveBtn";
+            this.toggleActiveBtn.Size = new System.Drawing.Size(102, 26);
+            this.toggleActiveBtn.TabIndex = 8;
+            this.toggleActiveBtn.Text = "Toggle Active";
+            this.toggleActiveBtn.UseVisualStyleBackColor = true;
+            this.toggleActiveBtn.Click += new System.EventHandler(this.ToggleDecorator);
+            // 
             // currentDecStatus
             // 
             this.currentDecStatus.AutoSize = true;
@@ -629,6 +641,7 @@
             this.decoratorComboBx.Name = "decoratorComboBx";
             this.decoratorComboBx.Size = new System.Drawing.Size(345, 23);
             this.decoratorComboBx.TabIndex = 4;
+            this.decoratorComboBx.SelectedIndexChanged += new System.EventHandler(this.decoratorComboBx_SelectedIndexChanged);
             // 
             // decoratorLabel
             // 
@@ -659,18 +672,6 @@
             this.label3.Size = new System.Drawing.Size(92, 16);
             this.label3.TabIndex = 0;
             this.label3.Text = "Coming Soon!";
-            // 
-            // toggleActiveBtn
-            // 
-            this.toggleActiveBtn.AutoSize = true;
-            this.toggleActiveBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.toggleActiveBtn.Location = new System.Drawing.Point(435, 142);
-            this.toggleActiveBtn.Name = "toggleActiveBtn";
-            this.toggleActiveBtn.Size = new System.Drawing.Size(102, 26);
-            this.toggleActiveBtn.TabIndex = 8;
-            this.toggleActiveBtn.Text = "Toggle Active";
-            this.toggleActiveBtn.UseVisualStyleBackColor = true;
-            this.toggleActiveBtn.Click += new System.EventHandler(this.ToggleDecorator);
             // 
             // SettingsWindow
             // 

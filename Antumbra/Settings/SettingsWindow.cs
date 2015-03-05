@@ -343,5 +343,12 @@ namespace Antumbra.Glow.Settings
             else
                 currentDecStatus.Text = "False";
         }
+
+        private void decoratorComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GlowDecorator dec = (GlowDecorator)this.decoratorComboBx.SelectedItem;
+            if (dec != null)
+                this.currentDecStatus.Text = this.currentDevice.GetDecOrNotfStatus(dec.id).ToString();
+        }
     }
 }
