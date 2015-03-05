@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Extensions;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
 {
-    public class ExtensionLibrary
+    public class ExtensionLibrary : GlowExtCollection
     {
+        public delegate void CollectionUpdate(List<GlowExtension> exts);
+        public event CollectionUpdate CollectionUpdateEvent;
         public List<GlowDriver> AvailDrivers { get; private set; }
         public List<GlowScreenGrabber> AvailGrabbers { get; private set; }
         public List<GlowScreenProcessor> AvailProcessors { get; private set; }
@@ -36,6 +39,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             helper.Dispose();
             AssignGuids(extensions);
             this.ready = true;
+        }
+
+        public void AttachGlowExtCollectionObserver(GlowExtCollectionObserver observer)
+        {
+            CollectionUpdateEvent += observer.LibraryUpdate;
         }
 
         public GlowDriver GetDefaultDriver()
