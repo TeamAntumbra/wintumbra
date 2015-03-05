@@ -17,6 +17,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public List<GlowScreenProcessor> AvailProcessors { get; private set; }
         public List<GlowDecorator> AvailDecorators { get; private set; }
         public List<GlowNotifier> AvailNotifiers { get; private set; }
+        public List<GlowExtension> AvailExtensions { get; private set; }
         public bool ready { get; private set; }
         public ExtensionLibrary(string path)
         {
@@ -25,20 +26,27 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.ready = false;
                 return;//cannot continue
             }
-            List<GlowExtension> extensions = new List<GlowExtension>();
+            this.AvailExtensions = new List<GlowExtension>();
             this.AvailDrivers = helper.AvailDrivers;
-            extensions.AddRange(this.AvailDrivers);
+            this.AvailExtensions.AddRange(this.AvailDrivers);
             this.AvailGrabbers = helper.AvailScreenDrivers;
-            extensions.AddRange(this.AvailGrabbers);
+            this.AvailExtensions.AddRange(this.AvailGrabbers);
             this.AvailProcessors = helper.AvailScreenProcessors;
-            extensions.AddRange(this.AvailProcessors);
+            this.AvailExtensions.AddRange(this.AvailProcessors);
             this.AvailDecorators = helper.AvailDecorators;
-            extensions.AddRange(this.AvailDecorators);
+            this.AvailExtensions.AddRange(this.AvailDecorators);
             this.AvailNotifiers = helper.AvailNotifiers;
-            extensions.AddRange(this.AvailNotifiers);
+            this.AvailExtensions.AddRange(this.AvailNotifiers);
             helper.Dispose();
-            AssignGuids(extensions);
+            AssignGuids(this.AvailExtensions);
+            if (CollectionUpdateEvent != null)
+                CollectionUpdateEvent(this.AvailExtensions);
             this.ready = true;
+        }
+
+        public void NotifyObservers()
+        {
+            CollectionUpdateEvent(this.AvailExtensions);
         }
 
         public void AttachGlowExtCollectionObserver(GlowExtCollectionObserver observer)

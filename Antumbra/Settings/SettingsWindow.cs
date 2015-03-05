@@ -16,13 +16,14 @@ using Antumbra.Glow.Connector;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Extensions;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.ExtensionFramework.Types;
 using FlatTabControl;
 
 namespace Antumbra.Glow.Settings
 {
-    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender//TODO decouple out GlowDevice and ExtensionLibrary with observer pattern
+    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender, GlowExtCollectionObserver//TODO decouple out GlowDevice and ExtensionLibrary with observer pattern
     {
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
@@ -39,7 +40,6 @@ namespace Antumbra.Glow.Settings
         /// Form used to set the screen grabber polling area
         /// </summary>
         private Form pollingAreaWindow;
-        private ExtensionLibrary library;
         /// <summary>
         /// Move form dependencies
         /// </summary>
@@ -49,10 +49,9 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, ExtensionLibrary library, String version)//TODO move to views folder
+        public SettingsWindow(GlowDevice device, String version)//TODO move to views folder
         {
             this.antumbraVersion = version;
-            this.library = library;
             this.currentDevice = device;
             InitializeComponent();
             this.Focus();
@@ -71,6 +70,50 @@ namespace Antumbra.Glow.Settings
         public void RegisterDevice(int id)
         {
             this.devId = id;
+        }
+
+        public void LibraryUpdate(List<GlowExtension> exts)
+        {
+            List<GlowExtension> current = new List<GlowExtension>();
+            foreach (GlowExtension ext in this.driverComboBox.Items)
+                current.Add(ext);
+            foreach (GlowExtension ext in this.grabberComboBx.Items)
+                current.Add(ext);
+            foreach (GlowExtension ext in this.processorComboBx.Items)
+                current.Add(ext);
+            foreach (GlowExtension ext in this.decoratorComboBx.Items)
+                current.Add(ext);
+            foreach (GlowExtension ext in exts) {
+                if (CheckForExtInList(ext, current))//already have it
+                    continue;
+                //else add it
+                if (ext is GlowDriver) {
+                    bool screenBased = (ext is GlowScreenDriverCoupler);
+                    this.grabberComboBx.Enabled = screenBased;
+                    this.processorComboBx.Enabled = screenBased;
+                    this.driverComboBox.Items.Add(ext);
+                }
+                else if (ext is GlowScreenGrabber) {
+                    this.grabberComboBx.Items.Add(ext);
+                }
+                else if (ext is GlowScreenProcessor) {
+                    this.processorComboBx.Items.Add(ext);
+                }
+                else if (ext is GlowDecorator) {
+                    this.decoratorComboBx.Items.Add(ext);
+                }
+                else if (ext is GlowNotifier) {
+                    //TODO
+                }
+            }
+        }
+
+        private bool CheckForExtInList(GlowExtension ext, List<GlowExtension> list)
+        {
+            foreach (GlowExtension item in list)
+                if (item.id.Equals(ext.id))
+                    return true;
+            return false;
         }
 
         public void CleanUp()
