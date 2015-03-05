@@ -95,7 +95,68 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.ActiveGrabber = (GlowScreenGrabber)ext;
             else if (ext is GlowScreenProcessor)
                 this.ActiveProcessor = (GlowScreenProcessor)ext;
-            //TODO decorators and notifiers cases
+            //decorators and notifiers are handeled through their toggler
+        }
+
+        public bool ToggleDecOrNotf(Guid id)
+        {
+            GlowExtension ext = this.lib.findExt(id);
+            if (ext == null)
+                throw new Exception("Invalid extension id when toggling extension");
+            bool isActive = false;
+            if (ext is GlowDecorator) {
+                GlowDecorator dec = (GlowDecorator)ext;
+                isActive = CheckForActiveDec(dec.id);
+                if (isActive)
+                    RemoveDec(dec.id);
+                else
+                    this.ActiveDecorators.Add(dec);
+            }
+            else if (ext is GlowNotifier) {
+                GlowNotifier notf = (GlowNotifier)ext;
+                isActive = CheckForActiveNotf(notf.id);
+                if (isActive)
+                    RemoveNotf(notf.id);
+                else
+                    this.ActiveNotifiers.Add(notf);
+            }
+            return !isActive;
+        }
+
+        private bool CheckForActiveDec(Guid id)
+        {
+            foreach (GlowDecorator dec in this.ActiveDecorators)
+                if (dec.id.Equals(id))
+                    return true;
+            return false;
+        }
+
+        private void RemoveDec(Guid id)
+        {
+            GlowDecorator holder = null;
+            foreach (GlowDecorator dec in this.ActiveDecorators)
+                if (dec.id.Equals(id))
+                    holder = dec;
+            if (holder != null)
+                this.ActiveDecorators.Remove(holder);
+        }
+
+        private bool CheckForActiveNotf(Guid id)
+        {
+            foreach (GlowNotifier notf in this.ActiveNotifiers)
+                if (notf.id.Equals(id))
+                    return true;
+            return false;
+        }
+
+        private void RemoveNotf(Guid id)
+        {
+            GlowNotifier holder = null;
+            foreach (GlowNotifier notf in this.ActiveNotifiers)
+                if (notf.id.Equals(id))
+                    holder = notf;
+            if (holder != null)
+                this.ActiveNotifiers.Remove(holder);
         }
         /// <summary>
         /// Return a string describing the current active extensions

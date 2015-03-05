@@ -283,7 +283,6 @@ namespace Antumbra.Glow.Settings
                 var win = new AntumbraExtSettingsWindow(ext);
                 win.Show();
             }
-                
         }
 
         private void driverComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -299,7 +298,7 @@ namespace Antumbra.Glow.Settings
                 return;
             if (NewGlowCommandAvailEvent != null)
                 NewGlowCommandAvailEvent(new StopCommand(this.devId));
-            this.currentDevice.SetExt(ext.id);
+            this.currentDevice.SetDvrGbbrOrPrcsrExt(ext.id);
             bool screenBased = (ext is GlowScreenDriverCoupler);
             this.grabberSettingsBtn.Enabled = screenBased;
             this.grabberComboBx.Enabled = screenBased;
@@ -307,30 +306,42 @@ namespace Antumbra.Glow.Settings
             this.processorComboBx.Enabled = screenBased;
         }
 
-        private void UpdateNonDriverChoice(object sender)
+        private GlowExtension GetExtFromSender(object sender)
         {
             ComboBox box = (ComboBox)sender;
-            GlowExtension ext = (GlowExtension)box.SelectedItem;
-            if (ext == null)
-                return;
+            return (GlowExtension)box.SelectedItem;
+        }
+
+        private void SendStopCommand()
+        {
             if (NewGlowCommandAvailEvent != null)
                 NewGlowCommandAvailEvent(new StopCommand(this.devId));
-            this.currentDevice.SetExt(ext.id);
         }
 
-        private void grabberComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        private void UpdateGrabberProcessorChoice(object sender, EventArgs args)
         {
-            UpdateNonDriverChoice(sender);
+            GlowExtension ext = GetExtFromSender(sender);
+            if (ext == null)
+                return;
+            SendStopCommand();
+            this.currentDevice.SetDvrGbbrOrPrcsrExt(ext.id);
         }
 
-        private void processorComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        private bool HandleToggle(ComboBox box)
         {
-            UpdateNonDriverChoice(sender);
+            GlowExtension ext = (GlowExtension)box.SelectedItem;
+            if (ext == null)
+                return false;
+            SendStopCommand();
+            return this.currentDevice.SetDecOrNotf(ext.id);
         }
 
-        private void decoratorComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        private void ToggleDecorator(object sender, System.EventArgs e)
         {
-            UpdateNonDriverChoice(sender);
+            if (HandleToggle(this.decoratorComboBx))
+                currentDecStatus.Text = "True";
+            else
+                currentDecStatus.Text = "False";
         }
     }
 }

@@ -76,6 +76,7 @@
             this.decoratorLabel = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
+            this.toggleActiveBtn = new System.Windows.Forms.Button();
             this.aboutPage.SuspendLayout();
             this.driverPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
@@ -495,7 +496,7 @@
             this.processorComboBx.Name = "processorComboBx";
             this.processorComboBx.Size = new System.Drawing.Size(345, 23);
             this.processorComboBx.TabIndex = 7;
-            this.processorComboBx.SelectedIndexChanged += new System.EventHandler(this.processorComboBx_SelectedIndexChanged);
+            this.processorComboBx.SelectedIndexChanged += new System.EventHandler(this.UpdateGrabberProcessorChoice);
             // 
             // processorLabel
             // 
@@ -528,7 +529,7 @@
             this.grabberComboBx.Name = "grabberComboBx";
             this.grabberComboBx.Size = new System.Drawing.Size(345, 23);
             this.grabberComboBx.TabIndex = 4;
-            this.grabberComboBx.SelectedIndexChanged += new System.EventHandler(this.grabberComboBx_SelectedIndexChanged);
+            this.grabberComboBx.SelectedIndexChanged += new System.EventHandler(this.UpdateGrabberProcessorChoice);
             // 
             // grabberLabel
             // 
@@ -576,6 +577,7 @@
             // decoratorPage
             // 
             this.decoratorPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.decoratorPage.Controls.Add(this.toggleActiveBtn);
             this.decoratorPage.Controls.Add(this.currentDecStatus);
             this.decoratorPage.Controls.Add(this.currentDecStatusLabel);
             this.decoratorPage.Controls.Add(this.decoratorSettingsBtn);
@@ -627,7 +629,6 @@
             this.decoratorComboBx.Name = "decoratorComboBx";
             this.decoratorComboBx.Size = new System.Drawing.Size(345, 23);
             this.decoratorComboBx.TabIndex = 4;
-            this.decoratorComboBx.SelectedIndexChanged += new System.EventHandler(this.decoratorComboBx_SelectedIndexChanged);
             // 
             // decoratorLabel
             // 
@@ -658,6 +659,18 @@
             this.label3.Size = new System.Drawing.Size(92, 16);
             this.label3.TabIndex = 0;
             this.label3.Text = "Coming Soon!";
+            // 
+            // toggleActiveBtn
+            // 
+            this.toggleActiveBtn.AutoSize = true;
+            this.toggleActiveBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.toggleActiveBtn.Location = new System.Drawing.Point(435, 142);
+            this.toggleActiveBtn.Name = "toggleActiveBtn";
+            this.toggleActiveBtn.Size = new System.Drawing.Size(102, 26);
+            this.toggleActiveBtn.TabIndex = 8;
+            this.toggleActiveBtn.Text = "Toggle Active";
+            this.toggleActiveBtn.UseVisualStyleBackColor = true;
+            this.toggleActiveBtn.Click += new System.EventHandler(this.ToggleDecorator);
             // 
             // SettingsWindow
             // 
@@ -772,5 +785,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label currentDecStatus;
         private System.Windows.Forms.Label currentDecStatusLabel;
+        private System.Windows.Forms.Button toggleActiveBtn;
     }
 }

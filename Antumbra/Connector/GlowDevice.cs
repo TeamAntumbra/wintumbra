@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.Settings;
+using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.Logging;
@@ -66,9 +67,14 @@ namespace Antumbra.Glow.Connector
             }
         }
 
-        public void SetExt(Guid id)
+        public void SetDvrGbbrOrPrcsrExt(Guid id)
         {
             this.extMgr.UpdateExtension(id);
+        }
+
+        public bool SetDecOrNotf(Guid id)
+        {
+            return this.extMgr.ToggleDecOrNotf(id);
         }
         /// <summary>
         /// Active GlowScreenGrabber for this device
@@ -108,6 +114,7 @@ namespace Antumbra.Glow.Connector
         {
             return this.extMgr.ActiveDriver.IsRunning;
         }
+
         /// <summary>
         /// Remove the passed Decorator from the ActiveDecorators
         /// or add it if not found.
