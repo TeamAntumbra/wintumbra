@@ -278,7 +278,12 @@
     <Content Include="Resources\palette-load.png" />
     <Content Include="Resources\palette-save.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FlatTabControl\FlatTabControl.csproj">
+      <Project>{96002ca1-d295-4ed5-9b08-92346c1bfa18}</Project>
+      <Name>FlatTabControl</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
