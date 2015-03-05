@@ -55,7 +55,7 @@ namespace Antumbra.Glow.Settings
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();
-            tabControl.myBackColor = Color.FromArgb(22, 22, 22);
+            aboutPage.myBackColor = Color.FromArgb(22, 22, 22);
             this.Focus();
         }
 
