@@ -70,11 +70,20 @@
             this.processorComboBx = new System.Windows.Forms.ComboBox();
             this.processorLabel = new System.Windows.Forms.Label();
             this.instructions = new System.Windows.Forms.Label();
+            this.decoratorSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.decoratorComboBx = new System.Windows.Forms.ComboBox();
+            this.decoratorLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.currentDecStatusLabel = new System.Windows.Forms.Label();
+            this.currentDecStatus = new System.Windows.Forms.Label();
             this.aboutPage.SuspendLayout();
             this.driverPage.SuspendLayout();
+            this.decoratorPage.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -426,7 +435,7 @@
             this.aboutPage.HotTrack = true;
             this.aboutPage.Location = new System.Drawing.Point(55, 192);
             this.aboutPage.Margin = new System.Windows.Forms.Padding(2);
-            this.aboutPage.myBackColor = System.Drawing.SystemColors.Control;
+            this.aboutPage.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.aboutPage.Name = "aboutPage";
             this.aboutPage.SelectedIndex = 0;
             this.aboutPage.Size = new System.Drawing.Size(839, 380);
@@ -458,21 +467,27 @@
             // decoratorPage
             // 
             this.decoratorPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.decoratorPage.Controls.Add(this.currentDecStatus);
+            this.decoratorPage.Controls.Add(this.currentDecStatusLabel);
+            this.decoratorPage.Controls.Add(this.decoratorSettingsBtn);
+            this.decoratorPage.Controls.Add(this.decoratorComboBx);
+            this.decoratorPage.Controls.Add(this.decoratorLabel);
             this.decoratorPage.Location = new System.Drawing.Point(4, 25);
             this.decoratorPage.Margin = new System.Windows.Forms.Padding(2);
             this.decoratorPage.Name = "decoratorPage";
             this.decoratorPage.Padding = new System.Windows.Forms.Padding(2);
-            this.decoratorPage.Size = new System.Drawing.Size(831, 239);
+            this.decoratorPage.Size = new System.Drawing.Size(831, 351);
             this.decoratorPage.TabIndex = 1;
             this.decoratorPage.Text = "Decorators";
             // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(831, 239);
+            this.tabPage3.Size = new System.Drawing.Size(831, 351);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Notifiers";
             // 
@@ -582,6 +597,64 @@
             this.instructions.TabIndex = 9;
             this.instructions.Text = "Select which extension you would like to control your Glow device.";
             // 
+            // decoratorSettingsBtn
+            // 
+            this.decoratorSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.decoratorSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.decoratorSettingsBtn.Location = new System.Drawing.Point(599, 81);
+            this.decoratorSettingsBtn.Name = "decoratorSettingsBtn";
+            this.decoratorSettingsBtn.Size = new System.Drawing.Size(24, 21);
+            this.decoratorSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.decoratorSettingsBtn.TabIndex = 5;
+            this.decoratorSettingsBtn.TabStop = false;
+            // 
+            // decoratorComboBx
+            // 
+            this.decoratorComboBx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.decoratorComboBx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.decoratorComboBx.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.decoratorComboBx.FormattingEnabled = true;
+            this.decoratorComboBx.Location = new System.Drawing.Point(244, 79);
+            this.decoratorComboBx.Name = "decoratorComboBx";
+            this.decoratorComboBx.Size = new System.Drawing.Size(345, 23);
+            this.decoratorComboBx.TabIndex = 4;
+            // 
+            // decoratorLabel
+            // 
+            this.decoratorLabel.AutoSize = true;
+            this.decoratorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.decoratorLabel.Location = new System.Drawing.Point(110, 82);
+            this.decoratorLabel.Name = "decoratorLabel";
+            this.decoratorLabel.Size = new System.Drawing.Size(128, 16);
+            this.decoratorLabel.TabIndex = 3;
+            this.decoratorLabel.Text = "Selected Decorator:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(380, 140);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 16);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Coming Soon!";
+            // 
+            // currentDecStatusLabel
+            // 
+            this.currentDecStatusLabel.AutoSize = true;
+            this.currentDecStatusLabel.Location = new System.Drawing.Point(187, 148);
+            this.currentDecStatusLabel.Name = "currentDecStatusLabel";
+            this.currentDecStatusLabel.Size = new System.Drawing.Size(58, 16);
+            this.currentDecStatusLabel.TabIndex = 6;
+            this.currentDecStatusLabel.Text = "Active?: ";
+            // 
+            // currentDecStatus
+            // 
+            this.currentDecStatus.AutoSize = true;
+            this.currentDecStatus.Location = new System.Drawing.Point(244, 148);
+            this.currentDecStatus.Name = "currentDecStatus";
+            this.currentDecStatus.Size = new System.Drawing.Size(0, 16);
+            this.currentDecStatus.TabIndex = 7;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -631,9 +704,14 @@
             this.aboutPage.ResumeLayout(false);
             this.driverPage.ResumeLayout(false);
             this.driverPage.PerformLayout();
+            this.decoratorPage.ResumeLayout(false);
+            this.decoratorPage.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -684,5 +762,11 @@
         private System.Windows.Forms.Label grabberLabel;
         private System.Windows.Forms.PictureBox driverSettingsBtn;
         private System.Windows.Forms.Label instructions;
+        private System.Windows.Forms.PictureBox decoratorSettingsBtn;
+        private System.Windows.Forms.ComboBox decoratorComboBx;
+        private System.Windows.Forms.Label decoratorLabel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label currentDecStatus;
+        private System.Windows.Forms.Label currentDecStatusLabel;
     }
 }

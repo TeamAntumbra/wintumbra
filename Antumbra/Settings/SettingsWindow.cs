@@ -55,43 +55,7 @@ namespace Antumbra.Glow.Settings
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();
-            aboutPage.myBackColor = Color.FromArgb(22, 22, 22);
             this.Focus();
-        }
-
-        private void PopulateExtTable()
-        {
-            foreach (var dvr in this.library.AvailDrivers)
-                GenerateRowFromExt(dvr);
-            foreach (var gbr in this.library.AvailGrabbers)
-                GenerateRowFromExt(gbr);
-            foreach (var pcr in this.library.AvailProcessors)
-                GenerateRowFromExt(pcr);
-            foreach (var dec in this.library.AvailDecorators)
-                GenerateRowFromExt(dec);
-            foreach (var notf in this.library.AvailNotifiers)
-                GenerateRowFromExt(notf);
-        }
-
-        private DataGridViewRow GenerateRowFromExt(GlowExtension ext)
-        {
-         /*   int i = extTable.Rows.Add();
-            DataGridViewRow row = extTable.Rows[i];
-            row.Cells["NameCol"].Value = ext.Name;
-            row.Cells["EnabledCol"].Value = ext.IsDefault;
-            DataGridViewCheckBoxCell check = (DataGridViewCheckBoxCell)row.Cells["EnabledCol"];
-            row.Cells["DescCol"].Value = ext.Description;
-            row.Cells["VersionCol"].Value = ext.Version.ToString();
-            row.Cells["AuthorCol"].Value = ext.Author;
-            row.Tag = ext.id;
-            DataGridViewImageCell settings = (DataGridViewImageCell)row.Cells["SettingsCol"];
-            Bitmap littleGear = new Bitmap(64,64);
-            using (Graphics g = Graphics.FromImage(littleGear)) {
-                g.DrawImage(global::Antumbra.Glow.Properties.Resources.gear, 0, 0, littleGear.Width, littleGear.Height);
-            }
-            settings.Value = littleGear;
-            return row;*/
-            return null;
         }
 
         public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
@@ -185,9 +149,7 @@ namespace Antumbra.Glow.Settings
                 var current = this.devId;
                 var back = PollingWindowColors[current % 8];
                 this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, back);
-                //this.antumbra.Stop(current);
                 NewGlowCommandAvailEvent(new StopCommand(current));
-                //this.antumbra.SendColor(current, back);
                 NewGlowCommandAvailEvent(new SendColorCommand(current, back));
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
@@ -275,77 +237,6 @@ namespace Antumbra.Glow.Settings
                 win.Show();
             }
                 
-        }
-
-        private void extTable_CellContentClick(object sender, DataGridViewCellEventArgs e)//handle checkbox clicks
-        {
-       /*     if (e.RowIndex == -1) {//sort button for enabled checkboxes
-                int col = e.ColumnIndex;
-                if (col == 0) {
-                    if (extTable.SortedColumn == extTable.Columns[0] && extTable.SortOrder == SortOrder.Ascending)
-                        extTable.Sort(extTable.Columns[0], ListSortDirection.Descending);
-                    else
-                        extTable.Sort(extTable.Columns[0], ListSortDirection.Ascending);
-                }
-                else if (col == 6) {//id
-                    if (extTable.SortedColumn == extTable.Columns[6] && extTable.SortOrder == SortOrder.Ascending)
-                        extTable.Sort(extTable.Columns[6], ListSortDirection.Descending);
-                    else
-                        extTable.Sort(extTable.Columns[6], ListSortDirection.Ascending);
-                }
-                return;
-            }
-            DataGridViewRow row = extTable.Rows[e.RowIndex];
-            Guid id = (Guid)row.Tag;
-            GlowExtension ext = this.library.findExt(id);
-            switch (e.ColumnIndex) {
-                case 0://checkbox col
-                    if (this.currentDevice.isRunning())
-                        NewGlowCommandAvailEvent(new StopCommand(this.devId));
-                    if (ext is GlowDecorator) {
-                        GlowDecorator dec = (GlowDecorator)ext;
-                        GetRowByExtId(dec.id).Cells[0].Value = !this.currentDevice.RemoveDecOrAddIfNew(dec);
-                    }
-                    else if (ext is GlowNotifier) {
-                        GlowNotifier notf = (GlowNotifier)ext;
-                        GetRowByExtId(notf.id).Cells[0].Value = !this.currentDevice.RemoveNotfOrAddIfNew(notf);
-                    }
-                    if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue)) {//now checked
-                        if (this.currentDevice.ActiveDriver.id.Equals(id)) { }//already selected
-                        else {//a different driver is selected
-                            if (ext is GlowDriver) {
-                                DataGridViewRow current = GetRowByExtId(this.currentDevice.ActiveDriver.id);
-                                current.Cells[0].Value = false;//uncheck
-                                this.currentDevice.ActiveDriver = (GlowDriver)ext;
-                            }
-                            else if (ext is GlowScreenGrabber) {
-                                DataGridViewRow current = GetRowByExtId(this.currentDevice.ActiveGrabber.id);
-                                current.Cells[0].Value = false;//uncheck
-                                this.currentDevice.ActiveGrabber = (GlowScreenGrabber)ext;
-                            }
-                            else if (ext is GlowScreenProcessor) {
-                                DataGridViewRow current = GetRowByExtId(this.currentDevice.ActiveProcessor.id);
-                                current.Cells[0].Value = false;//uncheck
-                                this.currentDevice.ActiveProcessor = (GlowScreenProcessor)ext;
-                            }
-                        }
-                    }
-                    else {//now unchecked
-
-                    }
-                    break;
-                case 4://settings button
-                    AttemptToOpenSettingsWindow(ext);
-                    break;
-            }*/
-        }
-
-        private DataGridViewRow GetRowByExtId(Guid id)
-        {
-       /*     foreach (DataGridViewRow r in this.extTable.Rows)
-                if (((Guid)r.Tag).Equals(id))
-                    return r;*/
-            return null;
         }
     }
 }
