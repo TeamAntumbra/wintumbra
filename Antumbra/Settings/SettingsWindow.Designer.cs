@@ -58,32 +58,32 @@
             this.versionLabel = new System.Windows.Forms.Label();
             this.aboutPage = new FlatTabControl.FlatTabControl();
             this.driverPage = new System.Windows.Forms.TabPage();
-            this.decoratorPage = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.driverLabel = new System.Windows.Forms.Label();
-            this.driverComboBox = new System.Windows.Forms.ComboBox();
-            this.driverSettingsBtn = new System.Windows.Forms.PictureBox();
-            this.grabberSettingsBtn = new System.Windows.Forms.PictureBox();
-            this.grabberComboBx = new System.Windows.Forms.ComboBox();
-            this.grabberLabel = new System.Windows.Forms.Label();
+            this.instructions = new System.Windows.Forms.Label();
             this.processorSettingsBtn = new System.Windows.Forms.PictureBox();
             this.processorComboBx = new System.Windows.Forms.ComboBox();
             this.processorLabel = new System.Windows.Forms.Label();
-            this.instructions = new System.Windows.Forms.Label();
+            this.grabberSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.grabberComboBx = new System.Windows.Forms.ComboBox();
+            this.grabberLabel = new System.Windows.Forms.Label();
+            this.driverSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.driverComboBox = new System.Windows.Forms.ComboBox();
+            this.driverLabel = new System.Windows.Forms.Label();
+            this.decoratorPage = new System.Windows.Forms.TabPage();
+            this.currentDecStatus = new System.Windows.Forms.Label();
+            this.currentDecStatusLabel = new System.Windows.Forms.Label();
             this.decoratorSettingsBtn = new System.Windows.Forms.PictureBox();
             this.decoratorComboBx = new System.Windows.Forms.ComboBox();
             this.decoratorLabel = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
-            this.currentDecStatusLabel = new System.Windows.Forms.Label();
-            this.currentDecStatus = new System.Windows.Forms.Label();
             this.aboutPage.SuspendLayout();
             this.driverPage.SuspendLayout();
-            this.decoratorPage.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).BeginInit();
+            this.decoratorPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -464,96 +464,15 @@
             this.driverPage.TabIndex = 0;
             this.driverPage.Text = "Driver";
             // 
-            // decoratorPage
+            // instructions
             // 
-            this.decoratorPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.decoratorPage.Controls.Add(this.currentDecStatus);
-            this.decoratorPage.Controls.Add(this.currentDecStatusLabel);
-            this.decoratorPage.Controls.Add(this.decoratorSettingsBtn);
-            this.decoratorPage.Controls.Add(this.decoratorComboBx);
-            this.decoratorPage.Controls.Add(this.decoratorLabel);
-            this.decoratorPage.Location = new System.Drawing.Point(4, 25);
-            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2);
-            this.decoratorPage.Name = "decoratorPage";
-            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2);
-            this.decoratorPage.Size = new System.Drawing.Size(831, 351);
-            this.decoratorPage.TabIndex = 1;
-            this.decoratorPage.Text = "Decorators";
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(831, 351);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Notifiers";
-            // 
-            // driverLabel
-            // 
-            this.driverLabel.AutoSize = true;
-            this.driverLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.driverLabel.Location = new System.Drawing.Point(166, 85);
-            this.driverLabel.Name = "driverLabel";
-            this.driverLabel.Size = new System.Drawing.Size(50, 16);
-            this.driverLabel.TabIndex = 0;
-            this.driverLabel.Text = "Driver: ";
-            // 
-            // driverComboBox
-            // 
-            this.driverComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.driverComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.driverComboBox.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.driverComboBox.FormattingEnabled = true;
-            this.driverComboBox.Location = new System.Drawing.Point(222, 84);
-            this.driverComboBox.Name = "driverComboBox";
-            this.driverComboBox.Size = new System.Drawing.Size(345, 23);
-            this.driverComboBox.TabIndex = 1;
-            // 
-            // driverSettingsBtn
-            // 
-            this.driverSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
-            this.driverSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
-            this.driverSettingsBtn.Location = new System.Drawing.Point(573, 84);
-            this.driverSettingsBtn.Name = "driverSettingsBtn";
-            this.driverSettingsBtn.Size = new System.Drawing.Size(24, 21);
-            this.driverSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.driverSettingsBtn.TabIndex = 2;
-            this.driverSettingsBtn.TabStop = false;
-            // 
-            // grabberSettingsBtn
-            // 
-            this.grabberSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
-            this.grabberSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
-            this.grabberSettingsBtn.Location = new System.Drawing.Point(573, 125);
-            this.grabberSettingsBtn.Name = "grabberSettingsBtn";
-            this.grabberSettingsBtn.Size = new System.Drawing.Size(24, 21);
-            this.grabberSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.grabberSettingsBtn.TabIndex = 5;
-            this.grabberSettingsBtn.TabStop = false;
-            // 
-            // grabberComboBx
-            // 
-            this.grabberComboBx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.grabberComboBx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.grabberComboBx.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.grabberComboBx.FormattingEnabled = true;
-            this.grabberComboBx.Location = new System.Drawing.Point(222, 125);
-            this.grabberComboBx.Name = "grabberComboBx";
-            this.grabberComboBx.Size = new System.Drawing.Size(345, 23);
-            this.grabberComboBx.TabIndex = 4;
-            // 
-            // grabberLabel
-            // 
-            this.grabberLabel.AutoSize = true;
-            this.grabberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grabberLabel.Location = new System.Drawing.Point(109, 126);
-            this.grabberLabel.Name = "grabberLabel";
-            this.grabberLabel.Size = new System.Drawing.Size(107, 16);
-            this.grabberLabel.TabIndex = 3;
-            this.grabberLabel.Text = "Screen Grabber:";
+            this.instructions.AutoSize = true;
+            this.instructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.instructions.Location = new System.Drawing.Point(196, 32);
+            this.instructions.Name = "instructions";
+            this.instructions.Size = new System.Drawing.Size(395, 16);
+            this.instructions.TabIndex = 9;
+            this.instructions.Text = "Select which extension you would like to control your Glow device.";
             // 
             // processorSettingsBtn
             // 
@@ -576,6 +495,7 @@
             this.processorComboBx.Name = "processorComboBx";
             this.processorComboBx.Size = new System.Drawing.Size(345, 23);
             this.processorComboBx.TabIndex = 7;
+            this.processorComboBx.SelectedIndexChanged += new System.EventHandler(this.processorComboBx_SelectedIndexChanged);
             // 
             // processorLabel
             // 
@@ -587,15 +507,104 @@
             this.processorLabel.TabIndex = 6;
             this.processorLabel.Text = "Screen Processor:";
             // 
-            // instructions
+            // grabberSettingsBtn
             // 
-            this.instructions.AutoSize = true;
-            this.instructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.instructions.Location = new System.Drawing.Point(196, 32);
-            this.instructions.Name = "instructions";
-            this.instructions.Size = new System.Drawing.Size(395, 16);
-            this.instructions.TabIndex = 9;
-            this.instructions.Text = "Select which extension you would like to control your Glow device.";
+            this.grabberSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.grabberSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.grabberSettingsBtn.Location = new System.Drawing.Point(573, 125);
+            this.grabberSettingsBtn.Name = "grabberSettingsBtn";
+            this.grabberSettingsBtn.Size = new System.Drawing.Size(24, 21);
+            this.grabberSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.grabberSettingsBtn.TabIndex = 5;
+            this.grabberSettingsBtn.TabStop = false;
+            // 
+            // grabberComboBx
+            // 
+            this.grabberComboBx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.grabberComboBx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.grabberComboBx.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.grabberComboBx.FormattingEnabled = true;
+            this.grabberComboBx.Location = new System.Drawing.Point(222, 125);
+            this.grabberComboBx.Name = "grabberComboBx";
+            this.grabberComboBx.Size = new System.Drawing.Size(345, 23);
+            this.grabberComboBx.TabIndex = 4;
+            this.grabberComboBx.SelectedIndexChanged += new System.EventHandler(this.grabberComboBx_SelectedIndexChanged);
+            // 
+            // grabberLabel
+            // 
+            this.grabberLabel.AutoSize = true;
+            this.grabberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grabberLabel.Location = new System.Drawing.Point(109, 126);
+            this.grabberLabel.Name = "grabberLabel";
+            this.grabberLabel.Size = new System.Drawing.Size(107, 16);
+            this.grabberLabel.TabIndex = 3;
+            this.grabberLabel.Text = "Screen Grabber:";
+            // 
+            // driverSettingsBtn
+            // 
+            this.driverSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.driverSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.driverSettingsBtn.Location = new System.Drawing.Point(573, 84);
+            this.driverSettingsBtn.Name = "driverSettingsBtn";
+            this.driverSettingsBtn.Size = new System.Drawing.Size(24, 21);
+            this.driverSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.driverSettingsBtn.TabIndex = 2;
+            this.driverSettingsBtn.TabStop = false;
+            // 
+            // driverComboBox
+            // 
+            this.driverComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.driverComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.driverComboBox.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.driverComboBox.FormattingEnabled = true;
+            this.driverComboBox.Location = new System.Drawing.Point(222, 84);
+            this.driverComboBox.Name = "driverComboBox";
+            this.driverComboBox.Size = new System.Drawing.Size(345, 23);
+            this.driverComboBox.TabIndex = 1;
+            this.driverComboBox.SelectedIndexChanged += new System.EventHandler(this.driverComboBox_SelectedIndexChanged);
+            // 
+            // driverLabel
+            // 
+            this.driverLabel.AutoSize = true;
+            this.driverLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.driverLabel.Location = new System.Drawing.Point(166, 85);
+            this.driverLabel.Name = "driverLabel";
+            this.driverLabel.Size = new System.Drawing.Size(50, 16);
+            this.driverLabel.TabIndex = 0;
+            this.driverLabel.Text = "Driver: ";
+            // 
+            // decoratorPage
+            // 
+            this.decoratorPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.decoratorPage.Controls.Add(this.currentDecStatus);
+            this.decoratorPage.Controls.Add(this.currentDecStatusLabel);
+            this.decoratorPage.Controls.Add(this.decoratorSettingsBtn);
+            this.decoratorPage.Controls.Add(this.decoratorComboBx);
+            this.decoratorPage.Controls.Add(this.decoratorLabel);
+            this.decoratorPage.Location = new System.Drawing.Point(4, 25);
+            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2);
+            this.decoratorPage.Name = "decoratorPage";
+            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2);
+            this.decoratorPage.Size = new System.Drawing.Size(831, 351);
+            this.decoratorPage.TabIndex = 1;
+            this.decoratorPage.Text = "Decorators";
+            // 
+            // currentDecStatus
+            // 
+            this.currentDecStatus.AutoSize = true;
+            this.currentDecStatus.Location = new System.Drawing.Point(244, 148);
+            this.currentDecStatus.Name = "currentDecStatus";
+            this.currentDecStatus.Size = new System.Drawing.Size(0, 16);
+            this.currentDecStatus.TabIndex = 7;
+            // 
+            // currentDecStatusLabel
+            // 
+            this.currentDecStatusLabel.AutoSize = true;
+            this.currentDecStatusLabel.Location = new System.Drawing.Point(187, 148);
+            this.currentDecStatusLabel.Name = "currentDecStatusLabel";
+            this.currentDecStatusLabel.Size = new System.Drawing.Size(58, 16);
+            this.currentDecStatusLabel.TabIndex = 6;
+            this.currentDecStatusLabel.Text = "Active?: ";
             // 
             // decoratorSettingsBtn
             // 
@@ -618,6 +627,7 @@
             this.decoratorComboBx.Name = "decoratorComboBx";
             this.decoratorComboBx.Size = new System.Drawing.Size(345, 23);
             this.decoratorComboBx.TabIndex = 4;
+            this.decoratorComboBx.SelectedIndexChanged += new System.EventHandler(this.decoratorComboBx_SelectedIndexChanged);
             // 
             // decoratorLabel
             // 
@@ -629,6 +639,17 @@
             this.decoratorLabel.TabIndex = 3;
             this.decoratorLabel.Text = "Selected Decorator:";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(831, 351);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Notifiers";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -637,23 +658,6 @@
             this.label3.Size = new System.Drawing.Size(92, 16);
             this.label3.TabIndex = 0;
             this.label3.Text = "Coming Soon!";
-            // 
-            // currentDecStatusLabel
-            // 
-            this.currentDecStatusLabel.AutoSize = true;
-            this.currentDecStatusLabel.Location = new System.Drawing.Point(187, 148);
-            this.currentDecStatusLabel.Name = "currentDecStatusLabel";
-            this.currentDecStatusLabel.Size = new System.Drawing.Size(58, 16);
-            this.currentDecStatusLabel.TabIndex = 6;
-            this.currentDecStatusLabel.Text = "Active?: ";
-            // 
-            // currentDecStatus
-            // 
-            this.currentDecStatus.AutoSize = true;
-            this.currentDecStatus.Location = new System.Drawing.Point(244, 148);
-            this.currentDecStatus.Name = "currentDecStatus";
-            this.currentDecStatus.Size = new System.Drawing.Size(0, 16);
-            this.currentDecStatus.TabIndex = 7;
             // 
             // SettingsWindow
             // 
@@ -704,14 +708,14 @@
             this.aboutPage.ResumeLayout(false);
             this.driverPage.ResumeLayout(false);
             this.driverPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).EndInit();
             this.decoratorPage.ResumeLayout(false);
             this.decoratorPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

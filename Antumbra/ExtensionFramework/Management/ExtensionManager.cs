@@ -47,23 +47,24 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <summary>
         /// Active GlowDriver obj
         /// </summary>
-        public GlowDriver ActiveDriver { get; set; }
+        public GlowDriver ActiveDriver { get; private set; }
         /// <summary>
         /// Active GlowScreenGrabber obj
         /// </summary>
-        public GlowScreenGrabber ActiveGrabber { get; set; }
+        public GlowScreenGrabber ActiveGrabber { get; private set; }
         /// <summary>
         /// Active GlowScreenProcessor obj
         /// </summary>
-        public GlowScreenProcessor ActiveProcessor { get; set; }
+        public GlowScreenProcessor ActiveProcessor { get; private set; }
         /// <summary>
         /// List of Active GlowDecorators
         /// </summary>
-        public List<GlowDecorator> ActiveDecorators { get; set; }
+        public List<GlowDecorator> ActiveDecorators { get; private set; }
         /// <summary>
         /// List of Active GlowNotifiers
         /// </summary>
-        public List<GlowNotifier> ActiveNotifiers { get; set; }
+        public List<GlowNotifier> ActiveNotifiers { get; private set; }
+        private ExtensionLibrary lib;
         /// <summary>
         /// Constructor - Creates a new ExtensionManager relating to the GlowDevice
         /// with the same id as passed.
@@ -74,12 +75,27 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public ExtensionManager(ExtensionLibrary extLib, int id, DeviceSettings settings)
         {
             this.settings = settings;
+            this.lib = extLib;
             this.id = id;
             this.ActiveDriver = extLib.GetDefaultDriver();
             this.ActiveGrabber = extLib.GetDefaultGrabber();
             this.ActiveProcessor = extLib.GetDefaultProcessor();
             this.ActiveDecorators = extLib.GetDefaultDecorators();
             this.ActiveNotifiers = extLib.GetDefaultNotifiers();
+        }
+
+        public void UpdateExtension(Guid id)
+        {
+            GlowExtension ext = this.lib.findExt(id);
+            if (ext == null)
+                throw new Exception("Invalid Guid found while updating extension");
+            if (ext is GlowDriver)
+                this.ActiveDriver = (GlowDriver)ext;
+            else if (ext is GlowScreenGrabber)
+                this.ActiveGrabber = (GlowScreenGrabber)ext;
+            else if (ext is GlowScreenProcessor)
+                this.ActiveProcessor = (GlowScreenProcessor)ext;
+            //TODO decorators and notifiers cases
         }
         /// <summary>
         /// Return a string describing the current active extensions

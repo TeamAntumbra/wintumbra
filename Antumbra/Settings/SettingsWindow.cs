@@ -17,7 +17,6 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Extensions;
-using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.ExtensionFramework.Types;
 using FlatTabControl;
 
@@ -88,19 +87,24 @@ namespace Antumbra.Glow.Settings
                     continue;
                 //else add it
                 if (ext is GlowDriver) {
-                    bool screenBased = (ext is GlowScreenDriverCoupler);
-                    this.grabberComboBx.Enabled = screenBased;
-                    this.processorComboBx.Enabled = screenBased;
                     this.driverComboBox.Items.Add(ext);
+                    if (this.driverComboBox.SelectedItem == null)
+                        this.driverComboBox.SelectedIndex = 0;
                 }
                 else if (ext is GlowScreenGrabber) {
                     this.grabberComboBx.Items.Add(ext);
+                    if (this.grabberComboBx.SelectedItem == null)
+                        this.grabberComboBx.SelectedIndex = 0;
                 }
                 else if (ext is GlowScreenProcessor) {
                     this.processorComboBx.Items.Add(ext);
+                    if (this.processorComboBx.SelectedItem == null)
+                        this.processorComboBx.SelectedIndex = 0;
                 }
                 else if (ext is GlowDecorator) {
                     this.decoratorComboBx.Items.Add(ext);
+                    if (this.decoratorComboBx.SelectedItem == null)
+                        this.decoratorComboBx.SelectedIndex = 0;
                 }
                 else if (ext is GlowNotifier) {
                     //TODO
@@ -280,6 +284,53 @@ namespace Antumbra.Glow.Settings
                 win.Show();
             }
                 
+        }
+
+        private void driverComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox box = (ComboBox)sender;
+            GlowDriver ext = (GlowDriver)box.SelectedItem;
+            UpdateDriverChoice(ext);
+        }
+
+        private void UpdateDriverChoice(GlowDriver ext)
+        {
+            if (ext == null)
+                return;
+            if (NewGlowCommandAvailEvent != null)
+                NewGlowCommandAvailEvent(new StopCommand(this.devId));
+            this.currentDevice.SetExt(ext.id);
+            bool screenBased = (ext is GlowScreenDriverCoupler);
+            this.grabberSettingsBtn.Enabled = screenBased;
+            this.grabberComboBx.Enabled = screenBased;
+            this.processorSettingsBtn.Enabled = screenBased;
+            this.processorComboBx.Enabled = screenBased;
+        }
+
+        private void UpdateNonDriverChoice(object sender)
+        {
+            ComboBox box = (ComboBox)sender;
+            GlowExtension ext = (GlowExtension)box.SelectedItem;
+            if (ext == null)
+                return;
+            if (NewGlowCommandAvailEvent != null)
+                NewGlowCommandAvailEvent(new StopCommand(this.devId));
+            this.currentDevice.SetExt(ext.id);
+        }
+
+        private void grabberComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateNonDriverChoice(sender);
+        }
+
+        private void processorComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateNonDriverChoice(sender);
+        }
+
+        private void decoratorComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateNonDriverChoice(sender);
         }
     }
 }

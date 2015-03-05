@@ -104,19 +104,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public GlowExtension findExt(Guid id)
         {
-            foreach (var e in AvailDrivers)
-                if (e.id.Equals(id))
-                    return e;
-            foreach (var e in AvailGrabbers)
-                if (e.id.Equals(id))
-                    return e;
-            foreach (var e in AvailProcessors)
-                if (e.id.Equals(id))
-                    return e;
-            foreach (var e in AvailDecorators)
-                if (e.id.Equals(id))
-                    return e;
-            foreach (var e in AvailNotifiers)
+            foreach (var e in AvailExtensions)
                 if (e.id.Equals(id))
                     return e;
             return null;

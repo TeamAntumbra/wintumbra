@@ -64,10 +64,11 @@ namespace Antumbra.Glow.Connector
             {
                 return this.extMgr.ActiveDriver;
             }
-            set
-            {
-                this.extMgr.ActiveDriver = value;
-            }
+        }
+
+        public void SetExt(Guid id)
+        {
+            this.extMgr.UpdateExtension(id);
         }
         /// <summary>
         /// Active GlowScreenGrabber for this device
@@ -78,10 +79,6 @@ namespace Antumbra.Glow.Connector
             {
                 return this.extMgr.ActiveGrabber;
             }
-            set
-            {
-                this.extMgr.ActiveGrabber = value;
-            }
         }
         /// <summary>
         /// Active GlowScreenProcessor for this device
@@ -91,10 +88,6 @@ namespace Antumbra.Glow.Connector
             get
             {
                 return this.extMgr.ActiveProcessor;
-            }
-            set
-            {
-                this.extMgr.ActiveProcessor = value;
             }
         }
         /// <summary>
