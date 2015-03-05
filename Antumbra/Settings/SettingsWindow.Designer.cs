@@ -27,9 +27,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.stepSleepLabel = new System.Windows.Forms.Label();
             this.sleepSize = new System.Windows.Forms.TextBox();
@@ -59,21 +56,17 @@
             this.driverRecBtn = new System.Windows.Forms.Button();
             this.compoundDecorationCheck = new System.Windows.Forms.CheckBox();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.extTable = new System.Windows.Forms.DataGridView();
-            this.EnabledCol = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AuthorCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DescCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SettingsCol = new System.Windows.Forms.DataGridViewImageColumn();
-            this.VersionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.extTable)).BeginInit();
+            this.tabControl = new FlatTabControl.FlatTabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepSleepLabel
             // 
             this.stepSleepLabel.AutoSize = true;
             this.stepSleepLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.stepSleepLabel.Location = new System.Drawing.Point(94, 561);
+            this.stepSleepLabel.Location = new System.Drawing.Point(378, 596);
             this.stepSleepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.stepSleepLabel.Name = "stepSleepLabel";
             this.stepSleepLabel.Size = new System.Drawing.Size(84, 13);
@@ -85,7 +78,7 @@
             this.sleepSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.sleepSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sleepSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.sleepSize.Location = new System.Drawing.Point(243, 555);
+            this.sleepSize.Location = new System.Drawing.Point(471, 593);
             this.sleepSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sleepSize.Name = "sleepSize";
             this.sleepSize.Size = new System.Drawing.Size(102, 20);
@@ -298,7 +291,7 @@
             this.newColorWeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.newColorWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.newColorWeight.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.newColorWeight.Location = new System.Drawing.Point(243, 590);
+            this.newColorWeight.Location = new System.Drawing.Point(228, 595);
             this.newColorWeight.Name = "newColorWeight";
             this.newColorWeight.Size = new System.Drawing.Size(102, 20);
             this.newColorWeight.TabIndex = 77;
@@ -308,7 +301,7 @@
             // 
             this.weightingLabel.AutoSize = true;
             this.weightingLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.weightingLabel.Location = new System.Drawing.Point(61, 597);
+            this.weightingLabel.Location = new System.Drawing.Point(84, 597);
             this.weightingLabel.Name = "weightingLabel";
             this.weightingLabel.Size = new System.Drawing.Size(140, 13);
             this.weightingLabel.TabIndex = 76;
@@ -387,100 +380,42 @@
             this.versionLabel.Size = new System.Drawing.Size(0, 13);
             this.versionLabel.TabIndex = 91;
             // 
-            // extTable
+            // tabControl
             // 
-            this.extTable.AllowUserToAddRows = false;
-            this.extTable.AllowUserToDeleteRows = false;
-            this.extTable.AllowUserToOrderColumns = true;
-            this.extTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.extTable.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.extTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(88)))), ((int)(((byte)(88)))));
-            this.extTable.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.extTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.extTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.extTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.EnabledCol,
-            this.NameCol,
-            this.AuthorCol,
-            this.DescCol,
-            this.SettingsCol,
-            this.VersionCol});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.extTable.DefaultCellStyle = dataGridViewCellStyle2;
-            this.extTable.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.extTable.Location = new System.Drawing.Point(32, 179);
-            this.extTable.Margin = new System.Windows.Forms.Padding(0);
-            this.extTable.Name = "extTable";
-            this.extTable.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.extTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.extTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.extTable.RowTemplate.Height = 45;
-            this.extTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.extTable.ShowEditingIcon = false;
-            this.extTable.Size = new System.Drawing.Size(898, 354);
-            this.extTable.TabIndex = 92;
-            this.extTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.extTable_CellContentClick);
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tabControl.HotTrack = true;
+            this.tabControl.Location = new System.Drawing.Point(55, 192);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(839, 380);
+            this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl.TabIndex = 92;
             // 
-            // EnabledCol
+            // tabPage1
             // 
-            this.EnabledCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle1.NullValue = false;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.WhiteSmoke;
-            this.EnabledCol.DefaultCellStyle = dataGridViewCellStyle1;
-            this.EnabledCol.HeaderText = "Enabled?";
-            this.EnabledCol.Name = "EnabledCol";
-            this.EnabledCol.Width = 56;
+            this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.tabPage1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Size = new System.Drawing.Size(831, 354);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
             // 
-            // NameCol
+            // tabPage2
             // 
-            this.NameCol.FillWeight = 25.25253F;
-            this.NameCol.HeaderText = "Name";
-            this.NameCol.Name = "NameCol";
-            this.NameCol.ReadOnly = true;
-            // 
-            // AuthorCol
-            // 
-            this.AuthorCol.FillWeight = 25.25253F;
-            this.AuthorCol.HeaderText = "Author";
-            this.AuthorCol.Name = "AuthorCol";
-            this.AuthorCol.ReadOnly = true;
-            // 
-            // DescCol
-            // 
-            this.DescCol.FillWeight = 150F;
-            this.DescCol.HeaderText = "Description";
-            this.DescCol.MinimumWidth = 150;
-            this.DescCol.Name = "DescCol";
-            this.DescCol.ReadOnly = true;
-            // 
-            // SettingsCol
-            // 
-            this.SettingsCol.FillWeight = 25.25253F;
-            this.SettingsCol.HeaderText = "Settings";
-            this.SettingsCol.Name = "SettingsCol";
-            // 
-            // VersionCol
-            // 
-            this.VersionCol.FillWeight = 25.25253F;
-            this.VersionCol.HeaderText = "Version";
-            this.VersionCol.Name = "VersionCol";
-            this.VersionCol.ReadOnly = true;
+            this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Size = new System.Drawing.Size(831, 354);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
             // 
             // SettingsWindow
             // 
@@ -490,7 +425,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(962, 707);
-            this.Controls.Add(this.extTable);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.compoundDecorationCheck);
             this.Controls.Add(this.driverRecBtn);
@@ -528,7 +463,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SettingsWindow_MouseDown);
-            ((System.ComponentModel.ISupportInitialize)(this.extTable)).EndInit();
+            this.tabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -565,12 +500,8 @@
         private System.Windows.Forms.Button driverRecBtn;
         private System.Windows.Forms.CheckBox compoundDecorationCheck;
         private System.Windows.Forms.Label versionLabel;
-        private System.Windows.Forms.DataGridView extTable;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn EnabledCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AuthorCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DescCol;
-        private System.Windows.Forms.DataGridViewImageColumn SettingsCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VersionCol;
+        private FlatTabControl.FlatTabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }

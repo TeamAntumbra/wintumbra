@@ -18,6 +18,7 @@ using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.ExtensionFramework.Types;
+using FlatTabControl;
 
 namespace Antumbra.Glow.Settings
 {
@@ -48,13 +49,13 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, ExtensionLibrary library, String version)
+        public SettingsWindow(GlowDevice device, ExtensionLibrary library, String version)//TODO move to views folder
         {
             this.antumbraVersion = version;
             this.library = library;
             this.currentDevice = device;
             InitializeComponent();
-            PopulateExtTable();
+            tabControl.myBackColor = Color.FromArgb(22, 22, 22);
             this.Focus();
         }
 
@@ -74,7 +75,7 @@ namespace Antumbra.Glow.Settings
 
         private DataGridViewRow GenerateRowFromExt(GlowExtension ext)
         {
-            int i = extTable.Rows.Add();
+         /*   int i = extTable.Rows.Add();
             DataGridViewRow row = extTable.Rows[i];
             row.Cells["NameCol"].Value = ext.Name;
             row.Cells["EnabledCol"].Value = ext.IsDefault;
@@ -89,7 +90,8 @@ namespace Antumbra.Glow.Settings
                 g.DrawImage(global::Antumbra.Glow.Properties.Resources.gear, 0, 0, littleGear.Width, littleGear.Height);
             }
             settings.Value = littleGear;
-            return row;
+            return row;*/
+            return null;
         }
 
         public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
@@ -277,7 +279,7 @@ namespace Antumbra.Glow.Settings
 
         private void extTable_CellContentClick(object sender, DataGridViewCellEventArgs e)//handle checkbox clicks
         {
-            if (e.RowIndex == -1) {//sort button for enabled checkboxes
+       /*     if (e.RowIndex == -1) {//sort button for enabled checkboxes
                 int col = e.ColumnIndex;
                 if (col == 0) {
                     if (extTable.SortedColumn == extTable.Columns[0] && extTable.SortOrder == SortOrder.Ascending)
@@ -335,14 +337,14 @@ namespace Antumbra.Glow.Settings
                 case 4://settings button
                     AttemptToOpenSettingsWindow(ext);
                     break;
-            }
+            }*/
         }
 
         private DataGridViewRow GetRowByExtId(Guid id)
         {
-            foreach (DataGridViewRow r in this.extTable.Rows)
+       /*     foreach (DataGridViewRow r in this.extTable.Rows)
                 if (((Guid)r.Tag).Equals(id))
-                    return r;
+                    return r;*/
             return null;
         }
     }
