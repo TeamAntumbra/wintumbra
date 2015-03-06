@@ -266,8 +266,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\antumbra.ico" />
-    <Content Include="Resources\AntumbraA.ico" />
-    <Content Include="Resources\AntumbraA.png" />
     <None Include="Resources\antumbra_color.ico" />
     <Content Include="Resources\cellbackground.png" />
     <None Include="Resources\Culture.ico" />
