@@ -18,6 +18,7 @@ using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Extensions;
 using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.ExtensionFramework.Management;
 using FlatTabControl;
 
 namespace Antumbra.Glow.Settings
@@ -31,6 +32,7 @@ namespace Antumbra.Glow.Settings
         private Color[] PollingWindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
         private String antumbraVersion;
         private int devId;
+        private BasicExtSettingsWinFactory settingsFactory;
         /// <summary>
         /// GlowDevice object for the device whose settings are being rendered currently
         /// </summary>
@@ -48,10 +50,11 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, String version)//TODO move to views folder
+        public SettingsWindow(GlowDevice device, String version, BasicExtSettingsWinFactory factory)//TODO move to views folder
         {
             this.antumbraVersion = version;
             this.currentDevice = device;
+            this.settingsFactory = factory;
             InitializeComponent();
             this.Focus();
         }
@@ -142,7 +145,6 @@ namespace Antumbra.Glow.Settings
             pollingY.Text = this.currentDevice.settings.y.ToString();
             glowStatus.Text = GetStatusString(this.currentDevice.status);
             deviceName.Text = this.devId.ToString();
-            //currentSetup.Text = this.currentDevice.GetSetupDesc();
         }
 
         /// <summary>
@@ -272,16 +274,17 @@ namespace Antumbra.Glow.Settings
             this.currentDevice.settings.compoundDecoration = compoundDecorationCheck.Checked;
         }
 
-        private void AttemptToOpenSettingsWindow(GlowExtension ext)
+        private void AttemptToOpenSettingsWindow(Guid id)
         {
-            if (ext == null) {
+            try {
+                if (!this.currentDevice.GetExtSettingsWin(id)) {
+                    var win = this.settingsFactory.GenerateWindow(id);
+                    win.Show();
+                }
+            }
+            catch (Exception) {
                 NewToolbarNotifAvailEvent(3000, "No Selected Extension",
                     "There is no extension to open the settings of.", 1);
-                return;
-            }
-            if (!ext.Settings()) {
-                var win = new AntumbraExtSettingsWindow(ext);
-                win.Show();
             }
         }
 
@@ -349,6 +352,38 @@ namespace Antumbra.Glow.Settings
             GlowDecorator dec = (GlowDecorator)this.decoratorComboBx.SelectedItem;
             if (dec != null)
                 this.currentDecStatus.Text = this.currentDevice.GetDecOrNotfStatus(dec.id).ToString();
+        }
+
+        private void driverSettingsBtn_Click(object sender, EventArgs e)
+        {
+            GlowExtension ext = this.currentDevice.ActiveDriver;
+            if (ext == null)
+                return;
+            AttemptToOpenSettingsWindow(ext.id);
+        }
+
+        private void grabberSettingsBtn_Click(object sender, EventArgs e)
+        {
+            GlowExtension ext = this.currentDevice.ActiveGrabber;
+            if (ext == null)
+                return;
+            AttemptToOpenSettingsWindow(ext.id);
+        }
+
+        private void processorSettingsBtn_Click(object sender, EventArgs e)
+        {
+            GlowExtension ext = this.currentDevice.ActiveProcessor;
+            if (ext == null)
+                return;
+            AttemptToOpenSettingsWindow(ext.id);
+        }
+
+        private void decoratorSettingsBtn_Click(object sender, EventArgs e)
+        {
+            GlowExtension ext = (GlowExtension)this.decoratorComboBx.SelectedItem;
+            if (ext == null)
+                return;
+            AttemptToOpenSettingsWindow(ext.id);
         }
     }
 }

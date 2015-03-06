@@ -485,6 +485,7 @@
             this.processorSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.processorSettingsBtn.TabIndex = 8;
             this.processorSettingsBtn.TabStop = false;
+            this.processorSettingsBtn.Click += new System.EventHandler(this.processorSettingsBtn_Click);
             // 
             // processorComboBx
             // 
@@ -518,6 +519,7 @@
             this.grabberSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.grabberSettingsBtn.TabIndex = 5;
             this.grabberSettingsBtn.TabStop = false;
+            this.grabberSettingsBtn.Click += new System.EventHandler(this.grabberSettingsBtn_Click);
             // 
             // grabberComboBx
             // 
@@ -551,6 +553,7 @@
             this.driverSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.driverSettingsBtn.TabIndex = 2;
             this.driverSettingsBtn.TabStop = false;
+            this.driverSettingsBtn.Click += new System.EventHandler(this.driverSettingsBtn_Click);
             // 
             // driverComboBox
             // 
@@ -630,6 +633,7 @@
             this.decoratorSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.decoratorSettingsBtn.TabIndex = 5;
             this.decoratorSettingsBtn.TabStop = false;
+            this.decoratorSettingsBtn.Click += new System.EventHandler(this.decoratorSettingsBtn_Click);
             // 
             // decoratorComboBx
             // 

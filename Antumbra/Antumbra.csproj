@@ -163,6 +163,7 @@
     <Compile Include="Observer\Logging\Loggable.cs" />
     <Compile Include="Observer\Logging\LogMsgObserver.cs" />
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
+    <Compile Include="Settings\BasicExtSettingsWinFactory.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Observer\Logging\Logger.cs" />
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />

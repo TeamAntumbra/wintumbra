@@ -118,36 +118,6 @@ namespace Antumbra.Glow.Connector
             return false;
         }
         /// <summary>
-        /// Return if running
-        /// </summary>
-        /// <returns>true if running, else false</returns>
-        public bool isRunning()
-        {
-            return this.extMgr.ActiveDriver.IsRunning;
-        }
-
-        /// <summary>
-        /// Remove the passed Decorator from the ActiveDecorators
-        /// or add it if not found.
-        /// </summary>
-        /// <param name="dec"></param>
-        /// <returns>true if removed, else false</returns>
-        public bool RemoveDecOrAddIfNew(GlowDecorator dec) {
-            GlowDecorator toRemove = null;
-            foreach (var d in this.ActiveDecorators) {
-                if (d.id == dec.id) {
-                    toRemove = d;
-                    break;
-                }
-            }
-            if (toRemove != null) {
-                this.ActiveDecorators.Remove(toRemove);
-                return true;
-            }
-            this.ActiveDecorators.Add(dec);
-            return false;
-        }
-        /// <summary>
         /// Active GlowNotifiers for this device
         /// </summary>
         public List<GlowNotifier> ActiveNotifiers
@@ -156,28 +126,6 @@ namespace Antumbra.Glow.Connector
             {
                 return this.extMgr.ActiveNotifiers;
             }
-        }
-        /// <summary>
-        /// Remove the passed Notifier from ActiveNotifiers or add
-        /// it if not found.
-        /// </summary>
-        /// <param name="notf"></param>
-        /// <returns></returns>
-        public bool RemoveNotfOrAddIfNew(GlowNotifier notf)
-        {
-            GlowNotifier toRemove = null;
-            foreach (var d in this.ActiveNotifiers) {
-                if (d.id == notf.id) {
-                    toRemove = d;
-                    break;
-                }
-            }
-            if (toRemove != null) {
-                this.ActiveNotifiers.Remove(toRemove);
-                return true;//removed
-            }
-            this.ActiveNotifiers.Add(notf);
-            return false;//added
         }
         /// <summary>
         /// Constructor
@@ -191,7 +139,7 @@ namespace Antumbra.Glow.Connector
             this.id = id;
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
-            this.extMgr = new ExtensionManager(lib, id, settings);
+            this.extMgr = new ExtensionManager(lib, id, this.settings);
         }
         /// <summary>
         /// Start the device's extensions
@@ -248,6 +196,11 @@ namespace Antumbra.Glow.Connector
         internal bool Stop()
         {
             return this.extMgr.Stop();
+        }
+
+        public bool GetExtSettingsWin(Guid id)
+        {
+            return this.extMgr.GetExtSettingsWin(id);
         }
     }
 }

@@ -123,6 +123,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return !isActive;
         }
 
+        public bool GetExtSettingsWin(Guid id)
+        {
+            GlowExtension ext = this.lib.findExt(id);
+            if (ext == null)
+                throw new Exception("TODO make this a custom exception and catch it to open the default window");
+            return ext.Settings();
+        }
+
         private bool CheckForActiveDec(Guid id)
         {
             foreach (GlowDecorator dec in this.ActiveDecorators)

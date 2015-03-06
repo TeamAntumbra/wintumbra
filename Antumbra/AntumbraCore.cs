@@ -78,7 +78,7 @@ namespace Antumbra.Glow
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
                 GlowDevice dev = this.GlowManager.getDevice(0);
-                SettingsWindow win = new SettingsWindow(dev, this.ProductVersion);
+                SettingsWindow win = new SettingsWindow(dev, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
                 this.extLibrary.AttachGlowExtCollectionObserver(win);
                 this.extLibrary.NotifyObservers();
                 win.AttachToolbarNotifObserver(this);
@@ -163,7 +163,7 @@ namespace Antumbra.Glow
                 win = this.settingsWindows.ElementAt<SettingsWindow>(current.id);
             }
             else {
-                win = new SettingsWindow(current, this.ProductVersion);
+                win = new SettingsWindow(current, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
                 this.extLibrary.AttachGlowExtCollectionObserver(win);
                 this.extLibrary.NotifyObservers();
                 win.AttachToolbarNotifObserver(this);

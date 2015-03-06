@@ -20,6 +20,7 @@ namespace Antumbra.Glow.Connector
         public List<GlowDevice> Glows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
+        private List<ExtensionManager> Managers;
 
         public DeviceManager(int vid, int pid, ExtensionLibrary lib)
         {
