@@ -75,6 +75,7 @@
             this.contextMenu.ShowItemToolTips = false;
             this.contextMenu.Size = new System.Drawing.Size(256, 271);
             this.contextMenu.Text = "Antumbra|Glow";
+            this.contextMenu.MouseLeave += new System.EventHandler(this.contextMenu_MouseLeave);
             // 
             // whatsMyConfig
             // 

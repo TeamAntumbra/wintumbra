@@ -426,6 +426,12 @@ namespace Antumbra.Glow
             Thread.Sleep(3000);//wait for screen to be available
             this.StartAll();
         }
+
+        private void contextMenu_MouseLeave(object sender, EventArgs e)
+        {
+            if (!contextMenu.Bounds.Contains(Cursor.Position))
+                contextMenu.Hide();
+        }
     }
     /// <summary>
     /// Custom renderer for notifyicon contextMenu
