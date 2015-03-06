@@ -1,7 +1,12 @@
 [Setup]
 AppName = "Antumbra"
-AppVersion = 0.1.21-beta
+AppVersion = 0.1.22-beta
 AppId = "Wintumbra"
+SetupIconFile = Antumbra.ico
+AppPublisher = "Antumbra Technologies Inc."
+AppPublisherURL = "https://antumbra.io"
+AppSupportURL = "https://github.com/TeamAntumbra/wintumbra"
+AppUpdatesURL = "https://github.com/TeamAntumbra/wintumbra"
 DefaultDirName = "{pf32}\Antumbra"
 UsePreviousAppDir = no
 
@@ -15,6 +20,7 @@ Source: "..\deps\win32-libantumbra\glowdrvinst.exe"; DestDir: {app}\DriverInstal
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
 Source: "dependencies\libusb-1.0.dll"; DestDir: {app}
 Source: "dependencies\libantumbra.dll"; DestDir: {app}
+Source: "dependencies\flatTabControl.dll"; DestDir: {app}
 Source: "dependencies\Antumbra.exe"; DestDir: {app}
 Source: "..\Licenses\*"; DestDir: {app}\Licences
 Source: "..\README.md"; DestDir: {app}; DestName: "README.txt"
