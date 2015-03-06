@@ -598,9 +598,12 @@
             // 
             this.toggleActiveBtn.AutoSize = true;
             this.toggleActiveBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.toggleActiveBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.toggleActiveBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.toggleActiveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.toggleActiveBtn.Location = new System.Drawing.Point(435, 142);
             this.toggleActiveBtn.Name = "toggleActiveBtn";
-            this.toggleActiveBtn.Size = new System.Drawing.Size(102, 26);
+            this.toggleActiveBtn.Size = new System.Drawing.Size(104, 28);
             this.toggleActiveBtn.TabIndex = 8;
             this.toggleActiveBtn.Text = "Toggle Active";
             this.toggleActiveBtn.UseVisualStyleBackColor = true;
