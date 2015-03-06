@@ -139,10 +139,8 @@ namespace Antumbra.Glow
         /// <param name="e"></param>
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (contextMenu.Visible)
-                contextMenu.Hide();
-            else
-                contextMenu.Show(Cursor.Position);
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+                    contextMenu.Show(Cursor.Position);
         }
         /// <summary>
         /// Event handler for the settings menu item
