@@ -84,7 +84,7 @@ namespace AntumbraScreenDriver
             return true;
         }
 
-        public override void AttachEvent(AntumbraBitmapObserver observer)
+        public override void AttachBitmapObserver(AntumbraBitmapObserver observer)
         {
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
         }

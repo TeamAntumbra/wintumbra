@@ -117,7 +117,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
                 AttemptToAttachSelfToExt(this.processor);
                 if (this.processor.Start()) {
                     if (this.processor is AntumbraBitmapObserver)
-                        this.grabber.AttachEvent((AntumbraBitmapObserver)this.processor);
+                        this.grabber.AttachBitmapObserver((AntumbraBitmapObserver)this.processor);
                     this.processor.AttachColorObserver(this);
                     AttemptToAttachSelfToExt(this.grabber);
                     if (this.grabber.Start()) {
