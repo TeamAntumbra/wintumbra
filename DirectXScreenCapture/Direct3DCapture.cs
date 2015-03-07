@@ -75,7 +75,7 @@ namespace DirectXScreenCapture
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
-        public override void AttachEvent(AntumbraBitmapObserver observer)
+        public override void AttachBitmapObserver(AntumbraBitmapObserver observer)
         {
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
         }
@@ -170,6 +170,10 @@ namespace DirectXScreenCapture
                 catch (Exception e) {
                     NewLogMsgEvent(this.ToString(), this.TargetProcess.ToString() + " - " + e.ToString());
                 }
+                finally {
+                    ReleaseCapture();
+                }
+                Task.Delay(10);//throttle capture
             }
         }
 
@@ -238,7 +242,8 @@ namespace DirectXScreenCapture
                 using (System.IO.MemoryStream ms = new System.IO.MemoryStream(_currentResponse.CapturedBitmap))
                     _capturedImage = new Bitmap(ms);
             }
-            return _capturedImage; //dictionary;
+            response.Dispose();
+            return _capturedImage;
         }
 
         public void ReleaseCapture()

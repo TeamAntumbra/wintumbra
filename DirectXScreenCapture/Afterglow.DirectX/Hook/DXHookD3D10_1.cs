@@ -264,22 +264,17 @@ namespace Capture.Hook
             this.Frame();
             SwapChain swapChain = (SharpDX.DXGI.SwapChain)swapChainPtr;
             {
-                try
-                {
+                try {
                     #region Screenshot Request
-                    if (this.Request != null)
-                    {
-                        try
-                        {
+                    if (this.Request != null) {
+                        try {
                             this.DebugMessage("PresentHook: Request Start");
                             DateTime startTime = DateTime.Now;
-                            using (Texture2D texture = Texture2D.FromSwapChain<SharpDX.Direct3D10.Texture2D>(swapChain, 0))
-                            {
+                            using (Texture2D texture = Texture2D.FromSwapChain<SharpDX.Direct3D10.Texture2D>(swapChain, 0)) {
                                 #region Determine region to capture
                                 System.Drawing.Rectangle regionToCapture = new System.Drawing.Rectangle(0, 0, texture.Description.Width, texture.Description.Height);
 
-                                if (this.Request.RegionToCapture.Width > 0)
-                                {
+                                if (this.Request.RegionToCapture.Width > 0) {
                                     regionToCapture = this.Request.RegionToCapture;
                                 }
                                 #endregion
@@ -288,8 +283,7 @@ namespace Capture.Hook
 
                                 // If texture is multisampled, then we can use ResolveSubresource to copy it into a non-multisampled texture
                                 Texture2D textureResolved = null;
-                                if (texture.Description.SampleDescription.Count > 1)
-                                {
+                                if (texture.Description.SampleDescription.Count > 1) {
                                     this.DebugMessage("PresentHook: resolving multi-sampled texture");
                                     // texture is multi-sampled, lets resolve it down to single sample
                                     textureResolved = new Texture2D(texture.Device, new Texture2DDescription()
@@ -348,8 +342,7 @@ namespace Capture.Hook
                                     //Texture2D.ToStream(testSubResourceCopy, ImageFileFormat.Bmp, fs);
 
                                     DateTime startCopyToSystemMemory = DateTime.Now;
-                                    using (MemoryStream ms = new MemoryStream())
-                                    {
+                                    using (MemoryStream ms = new MemoryStream()) {
                                         Texture2D.ToStream(textureDest, ImageFileFormat.Bmp, ms);
                                         ms.Position = 0;
                                         this.DebugMessage("PresentHook: Copy to System Memory time: " + (DateTime.Now - startCopyToSystemMemory).ToString());
@@ -366,8 +359,7 @@ namespace Capture.Hook
                                 });
 
                                 // Make sure we free up the resolved texture if it was created
-                                if (textureResolved != null)
-                                {
+                                if (textureResolved != null) {
                                     textureResolved.Dispose();
                                     textureResolved = null;
                                 }
@@ -376,8 +368,7 @@ namespace Capture.Hook
                             this.DebugMessage("PresentHook: Copy BackBuffer time: " + (DateTime.Now - startTime).ToString());
                             this.DebugMessage("PresentHook: Request End");
                         }
-                        finally
-                        {
+                        finally {
                             // Prevent the request from being processed a second time
                             this.Request = null;
                         }
@@ -385,8 +376,7 @@ namespace Capture.Hook
                     }
                     #endregion
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     // If there is an error we do not want to crash the hooked application, so swallow the exception
                     this.DebugMessage("PresentHook: Exeception: " + e.GetType().FullName + ": " + e.Message);
                 }

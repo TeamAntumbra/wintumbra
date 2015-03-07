@@ -355,40 +355,6 @@ namespace Capture.Hook
                     this.DebugMessage("PresentHook: Request End");
                 }
                 #endregion
-
-#if OVERLAYENGINE
-                #region Draw overlay (after screenshot so we don't capture overlay as well)
-                if (this.Config.ShowOverlay)
-                {
-                    // Initialise Overlay Engine
-                    if (_swapChainPointer != swapChain.NativePointer || _overlayEngine == null)
-                    {
-                        if (_overlayEngine != null)
-                            _overlayEngine.Dispose();
-
-                        _overlayEngine = new DX11.DXOverlayEngine();
-                        _overlayEngine.Overlays.Add(new Capture.Hook.Common.Overlay
-                        {
-                            Elements =
-                            {
-                                //new Capture.Hook.Common.TextElement(new System.Drawing.Font("Times New Roman", 22)) { Text = "Test", Location = new System.Drawing.Point(200, 200), Color = System.Drawing.Color.Yellow, AntiAliased = false},
-                                new Capture.Hook.Common.FramesPerSecond(new System.Drawing.Font("Arial", 16)) { Location = new System.Drawing.Point(5,5), Color = System.Drawing.Color.Red, AntiAliased = true }
-                            }
-                        });
-                        _overlayEngine.Initialise(swapChain);
-
-                        _swapChainPointer = swapChain.NativePointer;
-                    }
-                    // Draw Overlay(s)
-                    else if (_overlayEngine != null)
-                    {
-                        foreach (var overlay in _overlayEngine.Overlays)
-                            overlay.Frame();
-                        _overlayEngine.Draw();
-                    }
-                }
-                #endregion
-#endif
             }
             catch (Exception e)
             {
@@ -402,9 +368,6 @@ namespace Capture.Hook
             swapChain.Present(syncInterval, flags);
             return SharpDX.Result.Ok.Code;
         }
-#if OVERLAYENGINE
-        Capture.Hook.DX11.DXOverlayEngine _overlayEngine;
-#endif
         IntPtr _swapChainPointer = IntPtr.Zero;
         
     }

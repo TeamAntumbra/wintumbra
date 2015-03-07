@@ -394,10 +394,5 @@ namespace Capture.Hook
             swapChain.Present(syncInterval, flags);
             return SharpDX.Result.Ok.Code;
         }
-
-        private void DrawText(Font font, Vector2 pos, string text, Color4 color)
-        {
-            font.DrawText(null, text, new SharpDX.Rectangle((int)pos.X, (int)pos.Y, 0, 0), SharpDX.Direct3D10.FontDrawFlags.NoClip, color);
-        }
     }
 }
