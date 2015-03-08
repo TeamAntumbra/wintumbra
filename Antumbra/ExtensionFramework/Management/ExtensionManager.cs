@@ -9,6 +9,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Settings;
 using Antumbra.Glow.ExtensionFramework.Types;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
@@ -18,7 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable,
                                     ToolbarNotificationObserver, ToolbarNotificationSource,
-                                    GlowCommandObserver, GlowCommandSender//TODO add observer for notifiers
+                                    GlowCommandObserver, GlowCommandSender, Savable, SavableObserver//TODO add observer for notifiers
     {
         /// <summary>
         /// Delegate for NewColorAvailEvent, handles a new Color being available
@@ -36,6 +37,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommand(GlowCommand command);
         public event NewGlowCommand NewGlowCommandEvent;
+        public delegate void NewSettingsUpdateAvail(Guid id, String settings);
+        public event NewSettingsUpdateAvail NewSettingsUpdateEvent;
         /// <summary>
         /// DeviceSettings obj for the GlowDevice relating to this ExtensionManager
         /// </summary>
@@ -207,6 +210,16 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
+        public void AttachSavableObserver(SavableObserver observer)
+        {
+            NewSettingsUpdateEvent += observer.NewSettingsUpdate;
+        }
+
+        public void NewSettingsUpdate(Guid id, String settings)
+        {
+            NewSettingsUpdateEvent(id, settings);
+        }
+
         public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
         {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
@@ -284,6 +297,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             if (this.ActiveDriver is ToolbarNotificationSource) {
                 ToolbarNotificationSource src = (ToolbarNotificationSource)this.ActiveDriver;
                 src.AttachToolbarNotifObserver(this);
+            }
+            if (this.ActiveDriver is Savable) {
+                Savable savable = (Savable)this.ActiveDriver;
+                savable.AttachSavableObserver(this);
             }
             if (!this.ActiveDriver.Start())
                 return false;
