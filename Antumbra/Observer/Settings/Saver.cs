@@ -10,25 +10,23 @@ namespace Antumbra.Glow.Observer.Settings
     {
         private object sync = new Object();
         private string path;
-        private string name;
-        public Saver(String name)
+        public Saver()
         {
             this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                 "\\Antumbra\\";
             if (!System.IO.Directory.Exists(this.path))
                 System.IO.Directory.CreateDirectory(this.path);
-            this.name = name;
         }
 
         public void NewSettingsUpdate(Guid id, String settings)
         {
-            Save(id, settings);
+            this.Save(id, settings);
         }
 
         private void Save(Guid id, String serializedSettings)
         {
             lock (sync) {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + name, true)) {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + id.ToString(), false)) {
                     file.WriteLine(id.ToString() + "-" + serializedSettings);
                 }
             }
@@ -37,7 +35,7 @@ namespace Antumbra.Glow.Observer.Settings
         public String Load(Guid id)
         {
             lock (sync) {
-                using (System.IO.StreamReader file = new System.IO.StreamReader(this.path + this.name, true)) {
+                using (System.IO.StreamReader file = new System.IO.StreamReader(this.path + id.ToString(), true)) {
                     String line = file.ReadLine();
                     if (line.StartsWith(id.ToString()))
                         return line;
