@@ -30,6 +30,11 @@ namespace ExampleGlowDriver
             get { return false; }
         }
 
+        public override Guid id
+        {
+            get { return Guid.Parse("2c186c2f-3464-49b5-8737-50830231ff20"); }
+        }
+
         public override bool Settings()
         {
             return false;//no custom window

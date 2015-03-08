@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Antumbra")]
 [assembly: AssemblyProduct("ExampleGlowDriver")]
-[assembly: AssemblyCopyright("Copyright © Antumbra 2015")]
+[assembly: AssemblyCopyright("Copyright © Antumbra Technologies Inc., 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -23,6 +23,11 @@ namespace HSVFade
         private Task driver;
         private bool running;
 
+        public override Guid id
+        {
+            get { return Guid.Parse("8360550b-d599-4f0f-8806-bc323f9ce547"); }
+        }
+
         public override bool IsRunning
         {
             get { return this.running; }

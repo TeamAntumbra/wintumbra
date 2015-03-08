@@ -29,6 +29,11 @@ namespace AntumbraScreenDriver
             get { return true; }
         }
 
+        public override Guid id
+        {
+            get { return Guid.Parse("15115e91-ed5c-49e6-b7a8-4ebbd4dabb2e"); }
+        }
+
         //DLL declaration
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         private static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);

@@ -22,6 +22,11 @@ namespace FluxCompanion
         private bool running;
         private Task driver;
 
+        public override Guid id
+        {
+            get { return Guid.Parse("9d8efbe1-e33d-4047-a687-001883d5a124"); }
+        }
+
         public override bool IsRunning
         {
             get { return this.running; }

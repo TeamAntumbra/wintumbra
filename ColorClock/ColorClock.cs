@@ -28,6 +28,11 @@ namespace ColorClock
             get { return false; }
         }
 
+        public override Guid id
+        {
+            get { return Guid.Parse("53f16938-2642-44a2-8d6e-954a1a9e2ac7"); }
+        }
+
         public override bool IsRunning
         {
             get { return this.running; }

@@ -26,15 +26,8 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// The id of the current extension
         /// </summary>
-        public Guid id
-        {
-            get
-            {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                var attribute = (GuidAttribute)assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
-                return Guid.Parse(attribute.Value);
-            }
-        }
+        [ReadOnly(true)]
+        public abstract Guid id { get; }
 
         /// <summary>
         /// The name of the current extension

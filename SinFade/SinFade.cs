@@ -22,6 +22,11 @@ namespace SinFade
         private Task driver;
         private bool running;
 
+        public override Guid id
+        {
+            get { return Guid.Parse("2c186c2f-3464-49b5-8737-50830231ff20"); }
+        }
+
         public override bool IsDefault
         {
             get { return false; }

@@ -46,6 +46,11 @@ namespace AntumbraFastScreenProcessor
             get { return "Team Antumbra"; }
         }
 
+        public override Guid id
+        {
+            get { return Guid.Parse("07eda8bc-28e6-4d57-a085-7f204785630f"); }
+        }
+
         public override string Description
         {
             get

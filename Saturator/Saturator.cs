@@ -20,6 +20,12 @@ namespace Saturator
     {
         private bool running = false;
         private SaturatorSettings settingsWin;
+
+        public override Guid id
+        {
+            get { return Guid.Parse("2acba4a6-af21-47a9-9551-964a750fea06"); }
+        }
+
         public override bool IsDefault
         {
             get { return true; }

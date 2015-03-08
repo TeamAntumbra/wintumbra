@@ -88,6 +88,11 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             }
         }
 
+        public override Guid id
+        {
+            get { return Guid.Parse("70987576-1a00-4a34-b787-4c08516cd1b8"); }
+        }
+
         public sealed override bool IsDefault
         {
             get { return true; }

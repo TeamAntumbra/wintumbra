@@ -24,6 +24,12 @@ namespace ThumbnailGrabber
         private IntPtr window;
         private Task driver;
         private bool running;
+
+        public override Guid id
+        {
+            get { return Guid.Parse("9d315678-9f18-4460-b317-2b3052c659f3"); }
+        }
+
         public override string Name
         {
             get { return "Thumbnail Grabber"; }

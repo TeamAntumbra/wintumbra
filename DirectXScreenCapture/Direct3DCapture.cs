@@ -40,6 +40,11 @@ namespace DirectXScreenCapture
         {
             get { return false; }
         }
+
+        public override Guid id
+        {
+            get { return Guid.Parse("ae53796b-ac50-4cef-a335-2d75dea9f1ea"); }
+        }
         /// <summary>
         /// The name of the current plugin
         /// </summary>

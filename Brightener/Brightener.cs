@@ -24,6 +24,10 @@ namespace Brightener
         {
             get { return "Brightener"; }
         }
+        public override Guid id
+        {
+            get { return Guid.Parse("1a271e63-5f7e-43c0-bbb1-7d80d23d8db7"); }
+        }
 
         public override string Author
         {

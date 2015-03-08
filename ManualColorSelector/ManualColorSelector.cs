@@ -21,6 +21,12 @@ namespace ManualColorSelector
         private Color lastUpdate;
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
+
+        public override Guid id
+        {
+            get { return Guid.Parse("2305e75c-4b36-4a5c-9b03-0884e4361b4e"); }
+        }
+
         public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);

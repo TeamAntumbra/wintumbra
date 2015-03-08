@@ -30,6 +30,11 @@ namespace AntumbraSmartScreenProcessor
             get { return true; }
         }
 
+        public override Guid id
+        {
+            get { return Guid.Parse("f4f3692d-a405-4dca-82fd-a9f3e9f93afe"); }
+        }
+
         public override String Name
         {
             get { return "Antumbra Smart Screen Processor"; }
