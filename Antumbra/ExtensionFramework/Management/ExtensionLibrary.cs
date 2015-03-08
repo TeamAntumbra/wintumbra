@@ -38,7 +38,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.AvailNotifiers = helper.AvailNotifiers;
             this.AvailExtensions.AddRange(this.AvailNotifiers);
             helper.Dispose();
-            AssignGuids(this.AvailExtensions);
             if (CollectionUpdateEvent != null)
                 CollectionUpdateEvent(this.AvailExtensions);
             this.ready = true;
@@ -94,12 +93,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 if (notf.IsDefault)
                     result.Add(notf);
             return result;
-        }
-
-        private void AssignGuids(List<GlowExtension> exts)
-        {
-            foreach (var ext in exts)
-                ext.id = Guid.NewGuid();
         }
 
         public GlowExtension findExt(Guid id)

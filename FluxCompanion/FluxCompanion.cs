@@ -19,7 +19,6 @@ namespace FluxCompanion
     {
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
-        public override Guid id { get; set; }
         private bool running;
         private Task driver;
 

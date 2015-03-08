@@ -22,7 +22,6 @@ namespace AntumbraFastScreenProcessor
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
-        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return false; }

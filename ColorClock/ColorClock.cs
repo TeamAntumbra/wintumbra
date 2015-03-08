@@ -22,7 +22,6 @@ namespace ColorClock
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
-        public override Guid id { get; set; }
 
         public override bool IsDefault
         {

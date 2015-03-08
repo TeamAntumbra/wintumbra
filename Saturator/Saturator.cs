@@ -20,7 +20,6 @@ namespace Saturator
     {
         private bool running = false;
         private SaturatorSettings settingsWin;
-        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return true; }

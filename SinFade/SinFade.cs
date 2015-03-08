@@ -21,7 +21,6 @@ namespace SinFade
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
-        public override Guid id { get; set; }
 
         public override bool IsDefault
         {

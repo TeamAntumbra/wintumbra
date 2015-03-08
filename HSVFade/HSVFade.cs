@@ -18,7 +18,6 @@ namespace HSVFade
     [Export(typeof(GlowExtension))]
     public class HSVFade : GlowIndependentDriver
     {
-        public override Guid id { get; set; }
         public delegate void NewColorAvail(Color newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;

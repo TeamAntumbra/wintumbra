@@ -24,7 +24,6 @@ namespace AntumbraScreenDriver
         public event NewLogMsg NewLogMsgEvent;
         private Thread driver;
         private bool running = false;
-        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return true; }

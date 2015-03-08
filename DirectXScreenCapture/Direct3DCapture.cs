@@ -36,7 +36,6 @@ namespace DirectXScreenCapture
         public event NewGlowCommand NewGlowCommandEvent;
         private DXSettingsWindow settings;
         private int devId;
-        public override Guid id { get; set; }
         public override bool IsDefault
         {
             get { return false; }

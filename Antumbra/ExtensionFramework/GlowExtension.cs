@@ -8,6 +8,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
@@ -24,7 +26,15 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// The id of the current extension
         /// </summary>
-        public abstract Guid id { get; set; }
+        public Guid id
+        {
+            get
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                var attribute = (GuidAttribute)assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
+                return Guid.Parse(attribute.Value);
+            }
+        }
 
         /// <summary>
         /// The name of the current extension

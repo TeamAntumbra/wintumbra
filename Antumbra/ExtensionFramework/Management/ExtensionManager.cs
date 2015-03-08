@@ -311,9 +311,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 ActiveGrabber.y = this.settings.y;
                 ActiveGrabber.width = this.settings.width;
                 ActiveGrabber.height = this.settings.height;
-                Guid placeHolder = ActiveDriver.id;
                 ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessor);
-                ActiveDriver.id = placeHolder;
             }
             ActiveDriver.stepSleep = settings.stepSleep;
             return true;

@@ -28,7 +28,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         private int devId;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
-        public override Guid id { get; set; }
 
         public GlowScreenDriverCoupler(GlowScreenGrabber grab, GlowScreenProcessor proc)
         {
