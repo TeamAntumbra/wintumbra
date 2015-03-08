@@ -38,6 +38,7 @@ namespace Antumbra.Glow
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
         private Logger logger;
+        private Saver saver;
         public bool goodStart { get; private set; }//start-up completion status
         /// <summary>
         /// AntumbraCore Constructor
@@ -45,6 +46,7 @@ namespace Antumbra.Glow
         public AntumbraCore()
         {
             this.logger = new Logger("wintumbra.log");
+            this.saver = new Saver();
             this.logger.Log("Wintumbra Starting... @ " + DateTime.Now.ToString());
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
@@ -79,6 +81,7 @@ namespace Antumbra.Glow
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
                 GlowDevice dev = this.GlowManager.getDevice(0);
+                dev.AttachSavableObserverToExtMgr(this.saver);
                 SettingsWindow win = new SettingsWindow(dev, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
                 this.extLibrary.AttachGlowExtCollectionObserver(win);
                 this.extLibrary.NotifyObservers();
@@ -315,6 +318,7 @@ namespace Antumbra.Glow
             dev.AttachToolbarNotifObserverToExtMgr(this);
             dev.AttachGlowCommandObserverToExtMgr(this);
             dev.AttachColorObserverToExtMgr(loop);
+            dev.AttachSavableObserverToExtMgr(this.saver);
             if (dev.Start()) {
                 this.ShowMessage(3000, "Device id: " + dev.id + " Started.", 
                     "Device id: " + dev.id + " started successfully.", ToolTipIcon.Info);
