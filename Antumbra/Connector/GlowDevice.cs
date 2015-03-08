@@ -12,6 +12,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Settings;
 
 namespace Antumbra.Glow.Connector
 {
@@ -172,6 +173,11 @@ namespace Antumbra.Glow.Connector
         {
             this.extMgr.RegisterDevice(this.id);
             this.extMgr.AttachGlowCommandObserver(observer);
+        }
+
+        public void AttachSavableObserverToExtMgr(SavableObserver observer)
+        {
+            this.extMgr.AttachSavableObserver(observer);
         }
         /// <summary>
         /// Get a string representation of the extensions activated for this device
