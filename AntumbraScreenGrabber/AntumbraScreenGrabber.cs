@@ -12,16 +12,19 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Reflection;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.Settings;
 
 namespace AntumbraScreenDriver
 {
     [Export(typeof(GlowExtension))]
-    public class AntumbraScreenGrabber : GlowScreenGrabber, Loggable
+    public class AntumbraScreenGrabber : GlowScreenGrabber, Loggable, Savable, AntumbraBitmapSource
     {
         public delegate void NewScreenAvail(Bitmap image, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
+        public delegate void NewSettingsUpdateAvail(Guid id, String settings);
+        public event NewSettingsUpdateAvail NewSettingsUpdateEvent;
         private Thread driver;
         private bool running = false;
         public override bool IsDefault
@@ -59,10 +62,17 @@ namespace AntumbraScreenDriver
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
+        public void AttachSavableObserver(SavableObserver observer)
+        {
+            this.NewSettingsUpdateEvent += observer.NewSettingsUpdate;
+        }
+
         public override bool Start()
         {
             this.driver = new Thread(new ThreadStart(captureTarget));
             this.driver.Start();
+            if (NewSettingsUpdateEvent != null)
+                NewSettingsUpdateEvent(this.id, SerializeSettings());
             this.running = true;
             return true;
         }
@@ -81,6 +91,16 @@ namespace AntumbraScreenDriver
             }
             this.driver = null;
             return true;
+        }
+
+        private String SerializeSettings()
+        {
+            String result = "";
+            result += this.x.ToString() + ',';
+            result += this.y.ToString() + ',';
+            result += this.width.ToString() + ',';
+            result += this.height.ToString() + '\n';
+            return result;
         }
 
         public override void AttachBitmapObserver(AntumbraBitmapObserver observer)
