@@ -24,6 +24,7 @@ using Antumbra.Glow.Settings;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Settings;
 using System.Reflection;
 using Microsoft.Win32;
 
@@ -232,7 +233,7 @@ namespace Antumbra.Glow
         /// <summary>
         /// Announce the current devices extension configuration
         /// </summary>
-        public void AnnounceConfig()
+        private void AnnounceConfig()
         {
             ShowMessage(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), ToolTipIcon.Info);
         }
@@ -360,7 +361,7 @@ namespace Antumbra.Glow
         /// <summary>
         /// Stop all found devices
         /// </summary>
-        public void StopAll()
+        private void StopAll()
         {
             if (this.GlowManager.GlowsFound == 0) {
                 ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
