@@ -21,7 +21,6 @@ namespace ThumbnailGrabber
     {
         public delegate void NewBitMapAvail(Bitmap bm, EventArgs args);
         public event NewBitMapAvail NewBitMapAvailEvent;
-        public override Guid id { get; set; }
         private IntPtr window;
         private Task driver;
         private bool running;
