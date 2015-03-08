@@ -9,6 +9,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Utility.Settings;
 using Antumbra.Glow.ExtensionFramework.Types;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
@@ -18,7 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable,
                                     ToolbarNotificationObserver, ToolbarNotificationSource,
-                                    GlowCommandObserver, GlowCommandSender//TODO add observer for notifiers
+                                    GlowCommandObserver, GlowCommandSender, Savable//TODO add observer for notifiers
     {
         /// <summary>
         /// Delegate for NewColorAvailEvent, handles a new Color being available
@@ -82,6 +83,56 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.ActiveProcessor = extLib.GetDefaultProcessor();
             this.ActiveDecorators = extLib.GetDefaultDecorators();
             this.ActiveNotifiers = extLib.GetDefaultNotifiers();
+        }
+
+        public void SaveSettings()
+        {
+            Saver saver = Saver.GetInstance();
+            saver.Save("ExtMgr", SerializeActiveExts());
+        }
+
+        public void LoadSettings(String settings)
+        {
+            String[] parts = settings.Split(',');
+            this.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
+            this.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
+            this.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
+            this.ActiveDecorators.Clear();
+            foreach (String dec in parts[3].Split(' '))
+                this.ActiveDecorators.Add((GlowDecorator)this.lib.findExt(Guid.Parse(dec)));
+            this.ActiveNotifiers.Clear();
+            foreach (String notf in parts[4].Split(' '))
+                this.ActiveNotifiers.Add((GlowNotifier)this.lib.findExt(Guid.Parse(notf)));
+        }
+
+        public void ResetSettings()
+        {
+            //TODO load defaults
+        }
+
+        private String SerializeActiveExts()
+        {
+            String result = "";
+            result += this.ActiveDriver.id.ToString() + ',';
+            result += this.ActiveGrabber.id.ToString() + ',';
+            result += this.ActiveProcessor.id.ToString() + ',';
+            int count = this.ActiveDecorators.Count;
+            for (int i = 0; i < count; i += 1) {
+                GlowDecorator dec = this.ActiveDecorators[i];
+                result += dec.id.ToString();
+                if (i != count - 1)//not the last one
+                    result += ' ';
+            }
+            result += ',';
+            count = this.ActiveNotifiers.Count;
+            for (int i = 0; i < count; i += 1) {
+                GlowNotifier notf = this.ActiveNotifiers[i];
+                result += notf.id.ToString();
+                if (i != count - 1)//not the last one
+                    result += ' ';
+            }
+            result += ',';
+            return result;
         }
 
         public void UpdateExtension(Guid id)

@@ -148,7 +148,6 @@ namespace Antumbra.Glow.Connector
         /// <returns>True if successfully started, else false</returns>
         internal bool Start()
         {
-            this.SaveSettings();
             return this.extMgr.Start();
         }
 
@@ -156,11 +155,13 @@ namespace Antumbra.Glow.Connector
         {
             Saver saver = Saver.GetInstance();
             this.settings.LoadSettings(saver.Load(this.id.ToString()));
+            this.extMgr.LoadSettings(saver.Load("ExtMgr"));
         }
 
         public void SaveSettings()
         {
             this.settings.SaveSettings();
+            this.extMgr.SaveSettings();
         }
         /// <summary>
         /// Attach an AntumbraColorObserver to the underlying extension manager
