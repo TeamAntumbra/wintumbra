@@ -43,7 +43,6 @@ namespace Antumbra.Glow.Utility.Settings
                     return contents;
                 }
             }
-            return null;
         }
     }
 }
