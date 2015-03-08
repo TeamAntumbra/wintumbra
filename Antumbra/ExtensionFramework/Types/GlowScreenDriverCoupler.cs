@@ -8,13 +8,12 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Bitmaps;
-using Antumbra.Glow.Observer.Settings;
 
 namespace Antumbra.Glow.ExtensionFramework.Types
 {
     public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver, Loggable, LogMsgObserver,
                                            ToolbarNotificationSource, ToolbarNotificationObserver,
-                                           GlowCommandObserver, GlowCommandSender, Savable, SavableObserver
+                                           GlowCommandObserver, GlowCommandSender
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
@@ -26,8 +25,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
-        public delegate void NewSettingsUpdateAvail(Guid id, String settings);
-        public event NewSettingsUpdateAvail NewSettingsUpdateEvent;
         private int devId;
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
@@ -108,19 +105,9 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public void AttachSavableObserver(SavableObserver observer)
-        {
-            this.NewSettingsUpdateEvent += observer.NewSettingsUpdate;
-        }
-
         void AntumbraColorObserver.NewColorAvail(Color newCol, EventArgs args)
         {
             NewColorAvailEvent(newCol, args);//pass it up
-        }
-
-        public void NewSettingsUpdate(Guid id, String settings)
-        {
-            NewSettingsUpdateEvent(id, settings);//pass through
         }
 
         public override bool Start()
@@ -153,10 +140,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             if (ext is GlowCommandSender) {
                 GlowCommandSender sender = (GlowCommandSender)ext;
                 sender.AttachGlowCommandObserver(this);
-            }
-            if (ext is Savable) {
-                Savable save = (Savable)ext;
-                save.AttachSavableObserver(this);
             }
         }
 
