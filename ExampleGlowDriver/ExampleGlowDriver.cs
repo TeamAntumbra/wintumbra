@@ -24,12 +24,6 @@ namespace ExampleGlowDriver
         public event NewLogMsg NewLogMsgEvent;
         private Task driver;
         private bool running;
-        private AntumbraExtSettingsWindow settings;
-
-        public ExampleGlowDriver()
-        {
-            settings = null;
-        }
 
         public override bool IsDefault
         {
@@ -84,8 +78,6 @@ namespace ExampleGlowDriver
         public override bool Stop()
         {
             this.running = false;
-            if (this.settings != null)
-                this.settings.Dispose();
             if (this.driver != null) {
                 if (this.driver.IsCompleted)
                     this.driver.Dispose();
