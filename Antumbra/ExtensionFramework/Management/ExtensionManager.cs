@@ -98,11 +98,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
             this.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
             this.ActiveDecorators.Clear();
-            foreach (String dec in parts[3].Split(' '))
+            foreach (String dec in parts[3].Split(' ')) {
+                if (dec.Equals(""))
+                    break;
                 this.ActiveDecorators.Add((GlowDecorator)this.lib.findExt(Guid.Parse(dec)));
+            }
             this.ActiveNotifiers.Clear();
-            foreach (String notf in parts[4].Split(' '))
+            foreach (String notf in parts[4].Split(' ')) {
+                if (notf.Equals(""))
+                    break;
                 this.ActiveNotifiers.Add((GlowNotifier)this.lib.findExt(Guid.Parse(notf)));
+            }
         }
 
         public void ResetSettings()
