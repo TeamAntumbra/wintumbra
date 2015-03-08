@@ -71,6 +71,7 @@
             this.quitMenuItem});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.contextMenu.Renderer = new CustomRenderer();
             this.contextMenu.ShowImageMargin = false;
             this.contextMenu.ShowItemToolTips = false;
             this.contextMenu.Size = new System.Drawing.Size(256, 271);
