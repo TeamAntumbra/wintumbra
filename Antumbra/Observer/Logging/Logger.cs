@@ -11,7 +11,7 @@ namespace Antumbra.Glow.Observer.Logging
     /// </summary>
     public class Logger
     {
-        public object sync = new object();
+        private object sync = new object();
         /// <summary>
         /// Name of the log file for this Logger
         /// </summary>
