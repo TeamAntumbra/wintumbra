@@ -689,7 +689,7 @@
             this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.saveBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.saveBtn.Location = new System.Drawing.Point(567, 167);
+            this.saveBtn.Location = new System.Drawing.Point(590, 167);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(126, 35);
             this.saveBtn.TabIndex = 93;
@@ -704,7 +704,7 @@
             this.loadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loadBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.loadBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.loadBtn.Location = new System.Drawing.Point(749, 167);
+            this.loadBtn.Location = new System.Drawing.Point(722, 167);
             this.loadBtn.Name = "loadBtn";
             this.loadBtn.Size = new System.Drawing.Size(126, 35);
             this.loadBtn.TabIndex = 94;

@@ -393,6 +393,7 @@ namespace Antumbra.Glow.Settings
 
         private void loadBtn_Click(object sender, EventArgs e)
         {
+            SendStopCommand();
             this.currentDevice.LoadSettings();
             updateValues();
         }
