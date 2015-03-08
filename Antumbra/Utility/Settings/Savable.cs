@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Settings
+namespace Antumbra.Glow.Utility.Settings
 {
     public interface Savable
     {
-        void AttachSavableObserver(SavableObserver observer);
+        void SaveSettings();
+        void LoadSettings(String settings);
+        void ResetSettings();
     }
 }

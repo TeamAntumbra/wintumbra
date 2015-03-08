@@ -4,13 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Settings
+namespace Antumbra.Glow.Utility.Settings
 {
-    public class Saver : SavableObserver
+    public class Saver
     {
         private object sync = new Object();
         private string path;
-        public Saver()
+        private static Saver instance;
+
+        public static Saver GetInstance()
+        {
+            if (instance == null)
+                instance = new Saver();
+            return instance;
+        }
+        private Saver()
         {
             this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                 "\\Antumbra\\";
@@ -18,27 +26,21 @@ namespace Antumbra.Glow.Observer.Settings
                 System.IO.Directory.CreateDirectory(this.path);
         }
 
-        public void NewSettingsUpdate(Guid id, String settings)
-        {
-            this.Save(id, settings);
-        }
-
-        private void Save(Guid id, String serializedSettings)
+        public void Save(String id, String serializedSettings)
         {
             lock (sync) {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + id.ToString(), false)) {
-                    file.WriteLine(id.ToString() + "-" + serializedSettings);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + id, false)) {
+                    file.WriteLine(serializedSettings);
                 }
             }
         }
 
-        public String Load(Guid id)
+        public String Load(String id)
         {
             lock (sync) {
                 using (System.IO.StreamReader file = new System.IO.StreamReader(this.path + id.ToString(), true)) {
-                    String line = file.ReadLine();
-                    if (line.StartsWith(id.ToString()))
-                        return line;
+                    String contents = file.ReadToEnd();
+                    return contents;
                 }
             }
             return null;

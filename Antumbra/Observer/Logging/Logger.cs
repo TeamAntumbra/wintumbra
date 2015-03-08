@@ -21,7 +21,16 @@ namespace Antumbra.Glow.Observer.Logging
         /// </summary>
         /// <param name="name"></param>
         private string path;
-        public Logger(string name)
+        private static Logger instance;
+
+        public static Logger GetInstance()
+        {
+            if (instance == null)
+                instance = new Logger("wintumbra.log");
+            return instance;
+        }
+
+        private Logger(string name)
         {
             this.name = name;
             this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +

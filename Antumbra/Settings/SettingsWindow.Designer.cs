@@ -77,6 +77,8 @@
             this.decoratorLabel = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.loadBtn = new System.Windows.Forms.Button();
             this.aboutPage.SuspendLayout();
             this.driverPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
@@ -680,6 +682,36 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Coming Soon!";
             // 
+            // saveBtn
+            // 
+            this.saveBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.saveBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.saveBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.saveBtn.Location = new System.Drawing.Point(567, 167);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(126, 35);
+            this.saveBtn.TabIndex = 93;
+            this.saveBtn.Text = "Save Settings";
+            this.saveBtn.UseVisualStyleBackColor = false;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            // 
+            // loadBtn
+            // 
+            this.loadBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.loadBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.loadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.loadBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.loadBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.loadBtn.Location = new System.Drawing.Point(749, 167);
+            this.loadBtn.Name = "loadBtn";
+            this.loadBtn.Size = new System.Drawing.Size(126, 35);
+            this.loadBtn.TabIndex = 94;
+            this.loadBtn.Text = "Load Settings";
+            this.loadBtn.UseVisualStyleBackColor = false;
+            this.loadBtn.Click += new System.EventHandler(this.loadBtn_Click);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -688,6 +720,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(962, 707);
+            this.Controls.Add(this.loadBtn);
+            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.aboutPage);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.compoundDecorationCheck);
@@ -794,5 +828,7 @@
         private System.Windows.Forms.Label currentDecStatus;
         private System.Windows.Forms.Label currentDecStatusLabel;
         private System.Windows.Forms.Button toggleActiveBtn;
+        private System.Windows.Forms.Button saveBtn;
+        private System.Windows.Forms.Button loadBtn;
     }
 }

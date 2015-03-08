@@ -385,5 +385,16 @@ namespace Antumbra.Glow.Settings
                 return;
             AttemptToOpenSettingsWindow(ext.id);
         }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            this.currentDevice.SaveSettings();
+        }
+
+        private void loadBtn_Click(object sender, EventArgs e)
+        {
+            this.currentDevice.LoadSettings();
+            updateValues();
+        }
     }
 }
