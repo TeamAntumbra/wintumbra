@@ -12,6 +12,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Utility.Settings;
 
 namespace Antumbra.Glow.Connector
@@ -19,8 +20,10 @@ namespace Antumbra.Glow.Connector
     /// <summary>
     /// Represents a physical Antumbra|Glow unit.
     /// </summary>
-    public class GlowDevice
+    public class GlowDevice : Configurable
     {
+        public delegate void ConfigurationUpdate(Configurable obj);
+        public event ConfigurationUpdate ConfigChangedEvent;
         /// <summary>
         /// Device pointer
         /// </summary>
@@ -64,18 +67,27 @@ namespace Antumbra.Glow.Connector
         {
             get
             {
-                return this.extMgr.ActiveDriver;
+                return this.extMgr.activeExts.ActiveDriver;
             }
         }
 
         public void SetDvrGbbrOrPrcsrExt(Guid id)
         {
             this.extMgr.UpdateExtension(id);
+            Notify();
+        }
+
+        private void Notify()
+        {
+            if (ConfigChangedEvent != null)
+                ConfigChangedEvent(this);
         }
 
         public bool SetDecOrNotf(Guid id)
         {
-            return this.extMgr.ToggleDecOrNotf(id);
+            bool result = this.extMgr.ToggleDecOrNotf(id);
+            Notify();
+            return result;
         }
         /// <summary>
         /// Active GlowScreenGrabber for this device
@@ -84,7 +96,7 @@ namespace Antumbra.Glow.Connector
         {
             get
             {
-                return this.extMgr.ActiveGrabber;
+                return this.extMgr.activeExts.ActiveGrabber;
             }
         }
         /// <summary>
@@ -94,7 +106,7 @@ namespace Antumbra.Glow.Connector
         {
             get
             {
-                return this.extMgr.ActiveProcessor;
+                return this.extMgr.activeExts.ActiveProcessor;
             }
         }
         /// <summary>
@@ -104,7 +116,7 @@ namespace Antumbra.Glow.Connector
         {
             get
             {
-                return this.extMgr.ActiveDecorators;
+                return this.extMgr.activeExts.ActiveDecorators;
             }
         }
 
@@ -125,7 +137,7 @@ namespace Antumbra.Glow.Connector
         {
             get
             {
-                return this.extMgr.ActiveNotifiers;
+                return this.extMgr.activeExts.ActiveNotifiers;
             }
         }
         /// <summary>
@@ -156,6 +168,7 @@ namespace Antumbra.Glow.Connector
             Saver saver = Saver.GetInstance();
             this.settings.LoadSettings(saver.Load(this.id.ToString()));
             this.extMgr.LoadSettings(saver.Load("ExtMgr"));
+            Notify();
         }
 
         public void SaveSettings()
@@ -170,6 +183,11 @@ namespace Antumbra.Glow.Connector
         public void AttachColorObserverToExtMgr(AntumbraColorObserver observer)
         {
             this.extMgr.AttachColorObserver(observer);
+        }
+
+        public void AttachConfigurationObserver(ConfigurationObserver observer)
+        {
+            this.ConfigChangedEvent += observer.ConfigurationUpdate;
         }
 
         public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)
