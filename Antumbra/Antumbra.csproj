@@ -150,6 +150,8 @@
     <Compile Include="Observer\Bitmaps\AntumbraBitmapSource.cs" />
     <Compile Include="Observer\Colors\AntumbraColorObserver.cs" />
     <Compile Include="Observer\Colors\AntumbraColorSource.cs" />
+    <Compile Include="Observer\Configuration\Configurable.cs" />
+    <Compile Include="Observer\Configuration\ConfigurationObserver.cs" />
     <Compile Include="Observer\Extensions\GlowExtCollection.cs" />
     <Compile Include="Observer\Extensions\GlowExtCollectionObserver.cs" />
     <Compile Include="Observer\GlowCommand\Commands\PowerOffCommand.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Observer\Logging\Loggable.cs" />
     <Compile Include="Observer\Logging\LogMsgObserver.cs" />
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
+    <Compile Include="Settings\ActiveExtensions.cs" />
     <Compile Include="Utility\Settings\Savable.cs" />
     <Compile Include="Utility\Settings\Saver.cs" />
     <Compile Include="Settings\BasicExtSettingsWinFactory.cs" />
@@ -256,7 +259,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AntumbraA.ico" />
     <Content Include="FodyWeavers.xml" />
     <None Include="..\deps\win32-libusb\libusb-1.0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
