@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility.Settings;
+using Antumbra.Glow.Observer.Configuration;
 
 namespace Antumbra.Glow.Settings
 {
