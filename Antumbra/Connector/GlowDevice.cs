@@ -51,7 +51,7 @@ namespace Antumbra.Glow.Connector
         /// <summary>
         /// DeviceSettings obj for this device
         /// </summary>
-        public DeviceSettings settings { get; private set; }
+        public DeviceSettings settings { get; private set; } //TODO make private
         /// <summary>
         /// ExtensionManager for this device
         /// </summary>
@@ -60,16 +60,6 @@ namespace Antumbra.Glow.Connector
         /// Integer representation of the device's status
         /// </summary>
         public int status { get; set; }
-        /// <summary>
-        /// Active GlowDriver for this device
-        /// </summary>
-        public GlowDriver ActiveDriver
-        {
-            get
-            {
-                return this.extMgr.activeExts.ActiveDriver;
-            }
-        }
 
         public void SetDvrGbbrOrPrcsrExt(Guid id)
         {
@@ -81,56 +71,22 @@ namespace Antumbra.Glow.Connector
             bool result = this.extMgr.ToggleDecOrNotf(id);
             return result;
         }
-        /// <summary>
-        /// Active GlowScreenGrabber for this device
-        /// </summary>
-        public GlowScreenGrabber ActiveGrabber
+
+        public void Notify()
         {
-            get
-            {
-                return this.extMgr.activeExts.ActiveGrabber;
-            }
-        }
-        /// <summary>
-        /// Active GlowScreenProcessor for this device
-        /// </summary>
-        public GlowScreenProcessor ActiveProcessor
-        {
-            get
-            {
-                return this.extMgr.activeExts.ActiveProcessor;
-            }
-        }
-        /// <summary>
-        /// Active GlowDecorators for this device
-        /// </summary>
-        public List<GlowDecorator> ActiveDecorators
-        {
-            get
-            {
-                return this.extMgr.activeExts.ActiveDecorators;
-            }
+            this.settings.Notify();
+            this.extMgr.activeExts.Notify();
         }
 
         public bool GetDecOrNotfStatus(Guid id)
         {
-            foreach (GlowDecorator dec in this.ActiveDecorators)
+            foreach (GlowDecorator dec in this.extMgr.activeExts.ActiveDecorators)
                 if (dec.id.Equals(id))
                     return true;
-            foreach (GlowNotifier notf in this.ActiveNotifiers)
+            foreach (GlowNotifier notf in this.extMgr.activeExts.ActiveNotifiers)
                 if (notf.id.Equals(id))
                     return true;
             return false;
-        }
-        /// <summary>
-        /// Active GlowNotifiers for this device
-        /// </summary>
-        public List<GlowNotifier> ActiveNotifiers
-        {
-            get
-            {
-                return this.extMgr.activeExts.ActiveNotifiers;
-            }
         }
         /// <summary>
         /// Constructor
@@ -145,8 +101,10 @@ namespace Antumbra.Glow.Connector
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
             this.settings.AttachConfigurationObserver(this);
-            this.extMgr = new ExtensionManager(lib, id, this.settings);
+            this.extMgr = new ExtensionManager(lib, id);
             this.extMgr.activeExts.AttachConfigurationObserver(this);
+            this.settings.AttachConfigurationObserver(this.extMgr);
+            this.settings.Notify();//force init update
         }
         /// <summary>
         /// Start the device's extensions
@@ -160,14 +118,14 @@ namespace Antumbra.Glow.Connector
         public void LoadSettings()
         {
             Saver saver = Saver.GetInstance();
-            this.settings.LoadSettings(saver.Load(this.id.ToString()));
-            this.extMgr.LoadSettings(saver.Load("ExtMgr"));
+            this.settings.LoadSave(saver.Load(this.id.ToString()));
+            this.extMgr.LoadSave(saver.Load(ExtensionManager.configFileBase + this.id));
         }
 
         public void SaveSettings()
         {
-            this.settings.SaveSettings();
-            this.extMgr.SaveSettings();
+            this.settings.Save();
+            this.extMgr.Save();
         }
         /// <summary>
         /// Attach an AntumbraColorObserver to the underlying extension manager

@@ -17,20 +17,21 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Extensions;
+using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.ExtensionFramework.Management;
 using FlatTabControl;
 
 namespace Antumbra.Glow.Settings
 {
-    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender, GlowExtCollectionObserver//TODO decouple out GlowDevice and ExtensionLibrary with observer pattern
+    public partial class SettingsWindow : Form, ToolbarNotificationSource, GlowCommandSender, GlowExtCollectionObserver,
+                                          ConfigurationObserver
     {
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommandAvail(GlowCommand command);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private Color[] PollingWindowColors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Pink, Color.Purple, Color.Orange, Color.White };
-        private String antumbraVersion;
         private int devId;
         private BasicExtSettingsWinFactory settingsFactory;
         /// <summary>
@@ -50,12 +51,12 @@ namespace Antumbra.Glow.Settings
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SettingsWindow(GlowDevice device, String version, BasicExtSettingsWinFactory factory)//TODO move to views folder
+        public SettingsWindow(GlowDevice device, String version, BasicExtSettingsWinFactory factory)
         {
-            this.antumbraVersion = version;
             this.currentDevice = device;
             this.settingsFactory = factory;
             InitializeComponent();
+            this.versionLabel.Text = version;
             this.Focus();
         }
 
@@ -67,6 +68,54 @@ namespace Antumbra.Glow.Settings
         public void AttachGlowCommandObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
+        }
+
+        public void ConfigurationUpdate(Configurable obj)
+        {
+            if (obj is DeviceSettings)
+                UpdateConfiguration((DeviceSettings)obj);
+            else
+                if (obj is ActiveExtensions)
+                    UpdateConfiguration((ActiveExtensions)obj);
+        }
+
+        private void UpdateConfiguration(DeviceSettings settings)
+        {
+            compoundDecorationCheck.Checked = settings.compoundDecoration;
+            newColorWeight.Text = (settings.newColorWeight * 100).ToString();
+            weightingEnabled.Checked = settings.weightingEnabled;
+            sleepSize.Text = settings.stepSleep.ToString();
+            pollingHeight.Text = settings.height.ToString();
+            pollingWidth.Text = settings.width.ToString();
+            pollingX.Text = settings.x.ToString();
+            pollingY.Text = settings.y.ToString();
+            glowStatus.Text = GetStatusString(this.currentDevice.status);
+            deviceName.Text = this.devId.ToString();
+        }
+
+        private void UpdateConfiguration(ActiveExtensions actives)
+        {
+            UpdatedComboBoxSelectedExt(actives.ActiveDriver.id, driverComboBox);
+            UpdatedComboBoxSelectedExt(actives.ActiveGrabber.id, grabberComboBx);
+            UpdatedComboBoxSelectedExt(actives.ActiveProcessor.id, processorComboBx);
+            GlowDecorator dec = actives.ActiveDecorators.First<GlowDecorator>();
+            if (dec != null)
+                UpdatedComboBoxSelectedExt(dec.id, decoratorComboBx);
+           // GlowNotifier notf = actives.ActiveNotifiers.First<GlowNotifier>();
+           // if (notf != null)
+          //      UpdatedComboBoxSelectedExt(notf.id, ) //TODO
+        }
+
+        private void UpdatedComboBoxSelectedExt(Guid id, ComboBox box)
+        {
+            foreach (var obj in box.Items) {
+                GlowExtension current = (GlowExtension)obj;
+                if (current.id.Equals(id)) {//it's a match
+                    box.SelectedItem = current;
+                    return;
+                }
+            }
+            //TODO throw element not found exception
         }
 
         public void RegisterDevice(int id)
@@ -91,23 +140,15 @@ namespace Antumbra.Glow.Settings
                 //else add it
                 if (ext is GlowDriver) {
                     this.driverComboBox.Items.Add(ext);
-                    if (this.driverComboBox.SelectedItem == null)
-                        this.driverComboBox.SelectedIndex = 0;
                 }
                 else if (ext is GlowScreenGrabber) {
                     this.grabberComboBx.Items.Add(ext);
-                    if (this.grabberComboBx.SelectedItem == null)
-                        this.grabberComboBx.SelectedIndex = 0;
                 }
                 else if (ext is GlowScreenProcessor) {
                     this.processorComboBx.Items.Add(ext);
-                    if (this.processorComboBx.SelectedItem == null)
-                        this.processorComboBx.SelectedIndex = 0;
                 }
                 else if (ext is GlowDecorator) {
                     this.decoratorComboBx.Items.Add(ext);
-                    if (this.decoratorComboBx.SelectedItem == null)
-                        this.decoratorComboBx.SelectedIndex = 0;
                 }
                 else if (ext is GlowNotifier) {
                     //TODO
@@ -127,24 +168,6 @@ namespace Antumbra.Glow.Settings
         {
             this.Close();
             this.Dispose();
-        }
-
-        /// <summary>
-        /// Update the settings window form to reflect the settings found in the GlowDevice settings object
-        /// </summary>
-        public void updateValues()
-        {
-            this.versionLabel.Text = this.antumbraVersion;
-            compoundDecorationCheck.Checked = this.currentDevice.settings.compoundDecoration;
-            newColorWeight.Text = (this.currentDevice.settings.newColorWeight * 100).ToString();
-            weightingEnabled.Checked = this.currentDevice.settings.weightingEnabled;
-            sleepSize.Text = this.currentDevice.settings.stepSleep.ToString();
-            pollingHeight.Text = this.currentDevice.settings.height.ToString();
-            pollingWidth.Text = this.currentDevice.settings.width.ToString();
-            pollingX.Text = this.currentDevice.settings.x.ToString();
-            pollingY.Text = this.currentDevice.settings.y.ToString();
-            glowStatus.Text = GetStatusString(this.currentDevice.status);
-            deviceName.Text = this.devId.ToString();
         }
 
         /// <summary>
@@ -196,10 +219,10 @@ namespace Antumbra.Glow.Settings
         {
             if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
                 var current = this.devId;
-                var back = PollingWindowColors[current % 8];
+                var back = PollingWindowColors[current % 8];//TODO make this generate unique colors
                 this.pollingAreaWindow = new pollingAreaSetter(this.currentDevice.settings, back);
                 NewGlowCommandAvailEvent(new StopCommand(current));
-                NewGlowCommandAvailEvent(new SendColorCommand(current, back));
+                NewGlowCommandAvailEvent(new SendColorCommand(current, back));//update device to unique color matching window
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingAreaWindow.Show();
@@ -207,7 +230,7 @@ namespace Antumbra.Glow.Settings
 
         private void UpdatePollingSelectionsEvent(object sender, EventArgs args)
         {
-            this.updateValues();
+            //this.updateValues();
         }
 
         private void startBtn_Click(object sender, EventArgs e)
@@ -258,9 +281,9 @@ namespace Antumbra.Glow.Settings
 
         private void driverRecBtn_Click(object sender, EventArgs e)
         {
-            this.currentDevice.ActiveDriver.RecmmndCoreSettings();
-            this.currentDevice.settings.stepSleep = this.currentDevice.ActiveDriver.stepSleep;
-            updateValues();
+            //this.currentDevice.ActiveDriver.RecmmndCoreSettings();
+            //this.currentDevice.settings.stepSleep = this.currentDevice.ActiveDriver.stepSleep;
+            //updateValues();
         }
 
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -356,34 +379,34 @@ namespace Antumbra.Glow.Settings
 
         private void driverSettingsBtn_Click(object sender, EventArgs e)
         {
-            GlowExtension ext = this.currentDevice.ActiveDriver;
-            if (ext == null)
-                return;
-            AttemptToOpenSettingsWindow(ext.id);
+           // GlowExtension ext = this.currentDevice.ActiveDriver;
+           // if (ext == null)
+           //     return;
+           // AttemptToOpenSettingsWindow(ext.id);
         }
 
         private void grabberSettingsBtn_Click(object sender, EventArgs e)
         {
-            GlowExtension ext = this.currentDevice.ActiveGrabber;
+           /* GlowExtension ext = this.currentDevice.ActiveGrabber;
             if (ext == null)
                 return;
-            AttemptToOpenSettingsWindow(ext.id);
+            AttemptToOpenSettingsWindow(ext.id);*/
         }
 
         private void processorSettingsBtn_Click(object sender, EventArgs e)
         {
-            GlowExtension ext = this.currentDevice.ActiveProcessor;
+           /* GlowExtension ext = this.currentDevice.ActiveProcessor;
             if (ext == null)
                 return;
-            AttemptToOpenSettingsWindow(ext.id);
+            AttemptToOpenSettingsWindow(ext.id);*/
         }
 
         private void decoratorSettingsBtn_Click(object sender, EventArgs e)
         {
-            GlowExtension ext = (GlowExtension)this.decoratorComboBx.SelectedItem;
+          /*  GlowExtension ext = (GlowExtension)this.decoratorComboBx.SelectedItem;
             if (ext == null)
                 return;
-            AttemptToOpenSettingsWindow(ext.id);
+            AttemptToOpenSettingsWindow(ext.id);*/
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
@@ -395,7 +418,7 @@ namespace Antumbra.Glow.Settings
         {
             SendStopCommand();
             this.currentDevice.LoadSettings();
-            updateValues();
+            //updateValues();
         }
     }
 }

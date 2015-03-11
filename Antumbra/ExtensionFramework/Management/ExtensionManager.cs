@@ -9,6 +9,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Utility.Settings;
 using Antumbra.Glow.ExtensionFramework.Types;
 
@@ -19,7 +20,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable,
                                     ToolbarNotificationObserver, ToolbarNotificationSource,
-                                    GlowCommandObserver, GlowCommandSender, Savable//TODO add observer for notifiers
+                                    GlowCommandObserver, GlowCommandSender, Savable,
+                                    ConfigurationObserver//TODO add observer for notifiers
     {
         /// <summary>
         /// Delegate for NewColorAvailEvent, handles a new Color being available
@@ -38,15 +40,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public delegate void NewGlowCommand(GlowCommand command);
         public event NewGlowCommand NewGlowCommandEvent;
         /// <summary>
-        /// DeviceSettings obj for the GlowDevice relating to this ExtensionManager
-        /// </summary>
-        private DeviceSettings settings;
-        /// <summary>
         /// The id for the GlowDevice relating to this ExtensionManager
         /// </summary>
         public int id { get; private set; }
         public ActiveExtensions activeExts { get; private set; }
         private ExtensionLibrary lib;
+        private bool compoundDecoration;
+        private int stepSleep, x, y, width, height;
+        public const String configFileBase = "ActiveExtsDev_";
         /// <summary>
         /// Constructor - Creates a new ExtensionManager relating to the GlowDevice
         /// with the same id as passed.
@@ -54,27 +55,22 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="path"></param>
         /// <param name="id"></param>
         /// <param name="settings"></param>
-        public ExtensionManager(ExtensionLibrary extLib, int id, DeviceSettings settings)
+        public ExtensionManager(ExtensionLibrary extLib, int id)
         {
-            this.settings = settings;
             this.lib = extLib;
             this.id = id;
             this.activeExts = new ActiveExtensions();
-            ResetSettings();
+            this.Reset();
+            this.activeExts.AttachConfigurationObserver(this);
         }
 
-        public void SetActiveExts(ActiveExtensions setup)
-        {
-            this.activeExts = setup;
-        }
-
-        public void SaveSettings()
+        public void Save()
         {
             Saver saver = Saver.GetInstance();
-            saver.Save("ExtMgr", SerializeActiveExts());
+            saver.Save(ExtensionManager.configFileBase + this.id, this.activeExts.ToString());
         }
 
-        public void LoadSettings(String settings)
+        public void LoadSave(String settings)
         {
             String[] parts = settings.Split(',');
             this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
@@ -94,38 +90,30 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
-        public void ResetSettings()
+        public void Reset()
         {
             this.activeExts.ActiveDriver = this.lib.GetDefaultDriver();
             this.activeExts.ActiveGrabber = this.lib.GetDefaultGrabber();
             this.activeExts.ActiveProcessor = this.lib.GetDefaultProcessor();
-            this.activeExts.ActiveDecorators = this.lib.GetDefaultDecorators();
-            this.activeExts.ActiveNotifiers = this.lib.GetDefaultNotifiers();
+            this.activeExts.ActiveDecorators.Clear();
+            foreach (GlowDecorator dec in this.lib.GetDefaultDecorators())
+                this.activeExts.ActiveDecorators.Add(dec);
+            this.activeExts.ActiveNotifiers.Clear();
+            foreach (GlowNotifier notf in this.lib.GetDefaultNotifiers())
+                this.activeExts.ActiveNotifiers.Add(notf);
         }
 
-        private String SerializeActiveExts()
+        public void ConfigurationUpdate(Configurable config)
         {
-            String result = "";
-            result += this.activeExts.ActiveDriver.id.ToString() + ',';
-            result += this.activeExts.ActiveGrabber.id.ToString() + ',';
-            result += this.activeExts.ActiveProcessor.id.ToString() + ',';
-            int count = this.activeExts.ActiveDecorators.Count;
-            for (int i = 0; i < count; i += 1) {
-                GlowDecorator dec = this.activeExts.ActiveDecorators[i];
-                result += dec.id.ToString();
-                if (i != count - 1)//not the last one
-                    result += ' ';
+            if (config is DeviceSettings) {//update local settings
+                DeviceSettings settings = (DeviceSettings)config;
+                this.compoundDecoration = settings.compoundDecoration;
+                this.x = settings.x;
+                this.y = settings.y;
+                this.width = settings.width;
+                this.height = settings.height;
+                this.stepSleep = settings.stepSleep;
             }
-            result += ',';
-            count = this.activeExts.ActiveNotifiers.Count;
-            for (int i = 0; i < count; i += 1) {
-                GlowNotifier notf = this.activeExts.ActiveNotifiers[i];
-                result += notf.id.ToString();
-                if (i != count - 1)//not the last one
-                    result += ' ';
-            }
-            result += ',';
-            return result;
         }
 
         public void UpdateExtension(Guid id)
@@ -287,25 +275,26 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="args"></param>
         void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
         {
-            if (this.activeExts.ActiveDecorators.Count == 0) {
+            List<GlowDecorator> decs = this.activeExts.ActiveDecorators;
+            int count = decs.Count;
+            if (count == 0) {
                 NewColorAvailEvent(newColor, args);//no decoration to do
                 return;
             }
-            if (this.settings.compoundDecoration) {
-                foreach (var dec in this.activeExts.ActiveDecorators)//decorate
+            if (this.compoundDecoration) {
+                foreach (var dec in decs)//decorate
                     newColor = dec.Decorate(newColor);
                 NewColorAvailEvent(newColor, args);
                 return;
             }
             //average decorators output
             int r = 0, g = 0, b = 0;
-            foreach (var dec in this.activeExts.ActiveDecorators) {
+            foreach (var dec in decs) {
                 Color decorated = dec.Decorate(newColor);
                 r += decorated.R;
                 g += decorated.G;
                 b += decorated.B;
             }
-            int count = this.activeExts.ActiveDecorators.Count;
             NewColorAvailEvent(Color.FromArgb(r / count, g / count, b / count), args);
         }
         /// <summary>
@@ -345,19 +334,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <returns>True if verified, else false</returns>
         private bool Verify()
         {
-            if (this.settings == null)
-                return false;
             if (this.activeExts.ActiveDriver is GlowScreenDriverCoupler) {//screen based driver selected
                 if (null == this.activeExts.ActiveGrabber || null == this.activeExts.ActiveProcessor) {//no grabber or processor set
                     return false;
                 }
-                this.activeExts.ActiveGrabber.x = this.settings.x;//set screen related settings for grabber
-                this.activeExts.ActiveGrabber.y = this.settings.y;
-                this.activeExts.ActiveGrabber.width = this.settings.width;
-                this.activeExts.ActiveGrabber.height = this.settings.height;
+                this.activeExts.ActiveGrabber.x = this.x;//set screen related settings for grabber
+                this.activeExts.ActiveGrabber.y = this.y;
+                this.activeExts.ActiveGrabber.width = this.width;
+                this.activeExts.ActiveGrabber.height = this.height;
                 this.activeExts.ActiveDriver = new GlowScreenDriverCoupler(this.activeExts.ActiveGrabber, this.activeExts.ActiveProcessor);
             }
-            this.activeExts.ActiveDriver.stepSleep = settings.stepSleep;
+            this.activeExts.ActiveDriver.stepSleep = this.stepSleep;
             return true;
         }
         /// <summary>

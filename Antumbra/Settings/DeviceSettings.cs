@@ -12,7 +12,7 @@ namespace Antumbra.Glow.Settings
 {
     public class DeviceSettings : Savable, Configurable
     {
-        public delegate void ConfigurationChange(DeviceSettings settings);
+        public delegate void ConfigurationChange(Configurable settings);
         public event ConfigurationChange ConfigChangeEvent;
         public int id { get; private set; }
         public int x { get; set; }
@@ -25,7 +25,7 @@ namespace Antumbra.Glow.Settings
         public bool compoundDecoration { get; set; }
         public DeviceSettings(int id)
         {
-            ResetSettings();
+            Reset();
         }
 
         private String SerializeSettings()
@@ -43,7 +43,7 @@ namespace Antumbra.Glow.Settings
             return result;
         }
 
-        public void SaveSettings()
+        public void Save()
         {
             Saver saver = Saver.GetInstance();
             saver.Save(this.id.ToString(), SerializeSettings());
@@ -51,11 +51,16 @@ namespace Antumbra.Glow.Settings
 
         public void AttachConfigurationObserver(ConfigurationObserver o)
         {
-            if (this.ConfigChangeEvent != null)
-                this.ConfigChangeEvent += o.ConfigurationUpdate;
+            this.ConfigChangeEvent += o.ConfigurationUpdate;
         }
 
-        public void ResetSettings()
+        public void Notify()
+        {
+            if (ConfigChangeEvent != null)
+                ConfigChangeEvent(this);
+        }
+
+        public void Reset()
         {
             this.id = id;
             this.x = 0;
@@ -67,9 +72,10 @@ namespace Antumbra.Glow.Settings
             this.weightingEnabled = true;
             this.newColorWeight = .05;
             this.compoundDecoration = true;
+            Notify();
         }
 
-        public void LoadSettings(String settings)
+        public void LoadSave(String settings)
         {
             String[] parts = settings.Split(',');
             this.id = int.Parse(parts[0]);
@@ -81,6 +87,7 @@ namespace Antumbra.Glow.Settings
             this.weightingEnabled = Boolean.Parse(parts[6]);
             this.newColorWeight = double.Parse(parts[7]);
             this.compoundDecoration = Boolean.Parse(parts[8]);
+            Notify();
         }
     }
 }

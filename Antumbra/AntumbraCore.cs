@@ -80,9 +80,11 @@ namespace Antumbra.Glow
                 GlowDevice dev = this.GlowManager.getDevice(0);
                 SettingsWindow win = new SettingsWindow(dev, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
                 this.extLibrary.AttachGlowExtCollectionObserver(win);
-                this.extLibrary.NotifyObservers();
+                this.extLibrary.NotifyObservers();//force inital update
                 win.AttachToolbarNotifObserver(this);
                 win.AttachGlowCommandObserver(this);
+                dev.AttachConfigurationObserver(win);
+                dev.Notify();//force inital update
                 this.settingsWindows.Add(win);
             }
             this.logger.Log("Core good start? - " + this.goodStart);
@@ -166,9 +168,10 @@ namespace Antumbra.Glow
                 this.extLibrary.NotifyObservers();
                 win.AttachToolbarNotifObserver(this);
                 win.AttachGlowCommandObserver(this);
+                current.AttachConfigurationObserver(win);
+                current.Notify();//force inital update
                 this.settingsWindows.Add(win);
             }
-            win.updateValues();
             win.Show();
         }
         /// <summary>
