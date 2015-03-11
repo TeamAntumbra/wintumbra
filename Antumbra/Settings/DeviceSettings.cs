@@ -10,8 +10,10 @@ using Antumbra.Glow.Observer.Configuration;
 
 namespace Antumbra.Glow.Settings
 {
-    public class DeviceSettings : Savable
+    public class DeviceSettings : Savable, Configurable
     {
+        public delegate void ConfigurationChange(DeviceSettings settings);
+        public event ConfigurationChange ConfigChangeEvent;
         public int id { get; private set; }
         public int x { get; set; }
         public int y { get; set; }
@@ -45,6 +47,12 @@ namespace Antumbra.Glow.Settings
         {
             Saver saver = Saver.GetInstance();
             saver.Save(this.id.ToString(), SerializeSettings());
+        }
+
+        public void AttachConfigurationObserver(ConfigurationObserver o)
+        {
+            if (this.ConfigChangeEvent != null)
+                this.ConfigChangeEvent += o.ConfigurationUpdate;
         }
 
         public void ResetSettings()
