@@ -20,10 +20,10 @@ namespace Antumbra.Glow.Connector
     /// <summary>
     /// Represents a physical Antumbra|Glow unit.
     /// </summary>
-    public class GlowDevice : Configurable
+    public class GlowDevice : ConfigurationObserver, Configurable
     {
-        public delegate void ConfigurationUpdate(Configurable obj);
-        public event ConfigurationUpdate ConfigChangedEvent;
+        public delegate void ConfigUpdate(Configurable obj);
+        public event ConfigUpdate ConfigUpdateAvail;
         /// <summary>
         /// Device pointer
         /// </summary>
@@ -74,19 +74,11 @@ namespace Antumbra.Glow.Connector
         public void SetDvrGbbrOrPrcsrExt(Guid id)
         {
             this.extMgr.UpdateExtension(id);
-            Notify();
-        }
-
-        private void Notify()
-        {
-            if (ConfigChangedEvent != null)
-                ConfigChangedEvent(this);
         }
 
         public bool SetDecOrNotf(Guid id)
         {
             bool result = this.extMgr.ToggleDecOrNotf(id);
-            Notify();
             return result;
         }
         /// <summary>
@@ -152,13 +144,15 @@ namespace Antumbra.Glow.Connector
             this.id = id;
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
+            this.settings.AttachConfigurationObserver(this);
             this.extMgr = new ExtensionManager(lib, id, this.settings);
+            this.extMgr.activeExts.AttachConfigurationObserver(this);
         }
         /// <summary>
         /// Start the device's extensions
         /// </summary>
         /// <returns>True if successfully started, else false</returns>
-        internal bool Start()
+        public bool Start()
         {
             return this.extMgr.Start();
         }
@@ -168,7 +162,6 @@ namespace Antumbra.Glow.Connector
             Saver saver = Saver.GetInstance();
             this.settings.LoadSettings(saver.Load(this.id.ToString()));
             this.extMgr.LoadSettings(saver.Load("ExtMgr"));
-            Notify();
         }
 
         public void SaveSettings()
@@ -185,9 +178,15 @@ namespace Antumbra.Glow.Connector
             this.extMgr.AttachColorObserver(observer);
         }
 
-        public void AttachConfigurationObserver(ConfigurationObserver observer)
+        public void AttachConfigurationObserver(ConfigurationObserver o)
         {
-            this.ConfigChangedEvent += observer.ConfigurationUpdate;
+            this.ConfigUpdateAvail += o.ConfigurationUpdate;
+        }
+
+        public void ConfigurationUpdate(Configurable obj)
+        {
+            if (this.ConfigUpdateAvail != null)
+                this.ConfigUpdateAvail(obj);//pass through
         }
 
         public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)
