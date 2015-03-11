@@ -19,7 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable,
                                     ToolbarNotificationObserver, ToolbarNotificationSource,
-                                    GlowCommandObserver, GlowCommandSender//TODO add observer for notifiers
+                                    GlowCommandObserver, GlowCommandSender, Savable//TODO add observer for notifiers
     {
         /// <summary>
         /// Delegate for NewColorAvailEvent, handles a new Color being available
