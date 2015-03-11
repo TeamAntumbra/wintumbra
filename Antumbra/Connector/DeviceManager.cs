@@ -20,7 +20,6 @@ namespace Antumbra.Glow.Connector
         public List<GlowDevice> Glows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
-        private List<ExtensionManager> Managers;
 
         public DeviceManager(int vid, int pid, ExtensionLibrary lib)
         {
@@ -33,18 +32,6 @@ namespace Antumbra.Glow.Connector
                 this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), lib));
             }
             this.GlowsFound = this.Glows.Count;
-        }
-
-        private bool OpenDevice(int id)
-        {
-            if (id < 0 || id >= this.Glows.Count)//invalid
-                return false;
-            int outerr;
-            IntPtr result = this.Connector.OpenDevice(getDevice(id).info, out outerr);
-            if (outerr != 0)
-                return false;
-            this.getDevice(id).dev = result;
-            return true;
         }
 
         public void sendColor(Color newColor) {
@@ -80,14 +67,6 @@ namespace Antumbra.Glow.Connector
             if (result.Equals(""))
                 return "No devices found";
             return result;
-        }
-
-        public DeviceSettings getDeviceSettings(int id)
-        {
-            GlowDevice dev = getDevice(id);
-            if (dev == null)
-                return null;
-            return dev.settings;
         }
 
         public GlowDevice getDevice(int id)
