@@ -417,11 +417,6 @@ namespace Antumbra.Glow
                 this.Off();
                 Console.WriteLine("Suspended.");
             }
-            // User is putting the system into resume from standby 
-            if (e.Mode == PowerModes.Resume) {
-                //this.StartAllAfterDelay();
-                Console.WriteLine("resumed...ignoring");//ignore because it is still at unlock screen
-            }
         }
 
         private void StartAllAfterDelay()
