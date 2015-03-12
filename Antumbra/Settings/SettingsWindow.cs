@@ -20,6 +20,7 @@ using Antumbra.Glow.Observer.Extensions;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.ExtensionFramework.Management;
+using Antumbra.Glow.Exceptions;
 using FlatTabControl;
 
 namespace Antumbra.Glow.Settings
@@ -115,7 +116,7 @@ namespace Antumbra.Glow.Settings
                     return;
                 }
             }
-            //TODO throw element not found exception
+            throw new ExtensionNotFoundException(id);
         }
 
         public void RegisterDevice(int id)
