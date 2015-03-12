@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.Colors
 {
     public interface AntumbraColorSource
     {
-        void AttachColorObserver(AntumbraColorObserver observer);
+        void AttachObserver(AntumbraColorObserver observer);
     }
 }

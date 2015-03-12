@@ -64,7 +64,7 @@ namespace AntumbraSmartScreenProcessor
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
-        public override void AttachColorObserver(AntumbraColorObserver observer)
+        public override void AttachObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
@@ -75,7 +75,7 @@ namespace AntumbraSmartScreenProcessor
             return true;
         }
 
-        public void AttachLogObserver(LogMsgObserver observer)
+        public void AttachObserver(LogMsgObserver observer)
         {
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }

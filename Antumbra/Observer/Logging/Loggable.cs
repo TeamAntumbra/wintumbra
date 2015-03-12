@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.Logging
 {
     public interface Loggable
     {
-        void AttachLogObserver(LogMsgObserver observer);
+        void AttachObserver(LogMsgObserver observer);
     }
 }

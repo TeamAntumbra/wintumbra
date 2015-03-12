@@ -48,7 +48,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             CollectionUpdateEvent(this.AvailExtensions);
         }
 
-        public void AttachGlowExtCollectionObserver(GlowExtCollectionObserver observer)
+        public void AttachObserver(GlowExtCollectionObserver observer)
         {
             CollectionUpdateEvent += observer.LibraryUpdate;
         }

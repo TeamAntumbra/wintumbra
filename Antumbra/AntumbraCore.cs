@@ -79,11 +79,11 @@ namespace Antumbra.Glow
                 this.toolStripDeviceList.SelectedIndex = 0;
                 GlowDevice dev = this.GlowManager.getDevice(0);
                 SettingsWindow win = new SettingsWindow(dev, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
-                this.extLibrary.AttachGlowExtCollectionObserver(win);
+                this.extLibrary.AttachObserver(win);
                 this.extLibrary.NotifyObservers();//force inital update
-                win.AttachToolbarNotifObserver(this);
-                win.AttachGlowCommandObserver(this);
-                dev.AttachConfigurationObserver(win);
+                win.AttachObserver((ToolbarNotificationObserver)this);
+                win.AttachObserver((GlowCommandObserver)this);
+                dev.AttachObserver(win);
                 dev.Notify();//force inital update
                 this.settingsWindows.Add(win);
             }
@@ -164,11 +164,11 @@ namespace Antumbra.Glow
             }
             else {
                 win = new SettingsWindow(current, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
-                this.extLibrary.AttachGlowExtCollectionObserver(win);
+                this.extLibrary.AttachObserver(win);
                 this.extLibrary.NotifyObservers();
-                win.AttachToolbarNotifObserver(this);
-                win.AttachGlowCommandObserver(this);
-                current.AttachConfigurationObserver(win);
+                win.AttachObserver((ToolbarNotificationObserver)this);
+                win.AttachObserver((GlowCommandObserver)this);
+                current.AttachObserver(win);
                 current.Notify();//force inital update
                 this.settingsWindows.Add(win);
             }

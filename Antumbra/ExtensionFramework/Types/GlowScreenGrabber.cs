@@ -12,7 +12,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
     //special type of driver that deals with bitmaps captured from the screen
     //uses a GlowScreenProcessor to determine color to return
     {
-        public abstract void AttachBitmapObserver(AntumbraBitmapObserver observer);
+        public abstract void AttachObserver(AntumbraBitmapObserver observer);
         public int x { get; set; }
         public int y { get; set; }
         public int width { get; set; }

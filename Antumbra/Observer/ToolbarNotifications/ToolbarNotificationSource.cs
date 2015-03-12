@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.ToolbarNotifications
 {
     public interface ToolbarNotificationSource
     {
-        void AttachToolbarNotifObserver(ToolbarNotificationObserver observer);
+        void AttachObserver(ToolbarNotificationObserver observer);
     }
 }

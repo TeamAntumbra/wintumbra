@@ -60,12 +60,12 @@ namespace Antumbra.Glow.Settings
             this.Focus();
         }
 
-        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
+        public void AttachObserver(ToolbarNotificationObserver observer)
         {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
-        public void AttachGlowCommandObserver(GlowCommandObserver observer)
+        public void AttachObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
         }

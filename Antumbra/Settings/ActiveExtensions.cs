@@ -83,7 +83,7 @@ namespace Antumbra.Glow.Settings
                 ConfigurationChangedEvent(this);
         }
 
-        public void AttachConfigurationObserver(ConfigurationObserver observer)
+        public void AttachObserver(ConfigurationObserver observer)
         {
             this.ConfigurationChangedEvent += observer.ConfigurationUpdate;
         }

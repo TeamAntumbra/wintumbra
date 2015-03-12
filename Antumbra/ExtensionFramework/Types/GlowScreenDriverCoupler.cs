@@ -35,7 +35,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             this.processor = proc;
         }
 
-        public void AttachLogObserver(LogMsgObserver observer)
+        public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
@@ -50,12 +50,12 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             NewToolbarNotifAvailEvent(time, title, msg, icon);//pass it up
         }
 
-        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
+        public void AttachObserver(ToolbarNotificationObserver observer)
         {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
-        public void AttachGlowCommandObserver(GlowCommandObserver observer)
+        public void AttachObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
         }
@@ -121,8 +121,8 @@ namespace Antumbra.Glow.ExtensionFramework.Types
                 AttemptToAttachSelfToExt(this.processor);
                 if (this.processor.Start()) {
                     if (this.processor is AntumbraBitmapObserver)
-                        this.grabber.AttachBitmapObserver((AntumbraBitmapObserver)this.processor);
-                    this.processor.AttachColorObserver(this);
+                        this.grabber.AttachObserver((AntumbraBitmapObserver)this.processor);
+                    this.processor.AttachObserver(this);
                     AttemptToAttachSelfToExt(this.grabber);
                     if (this.grabber.Start()) {
                         return true;
@@ -136,15 +136,15 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         {
             if (ext is Loggable) {
                 Loggable log = (Loggable)ext;
-                log.AttachLogObserver(this);
+                log.AttachObserver(this);
             }
             if (ext is ToolbarNotificationSource) {
                 ToolbarNotificationSource src = (ToolbarNotificationSource)ext;
-                src.AttachToolbarNotifObserver(this);
+                src.AttachObserver(this);
             }
             if (ext is GlowCommandSender) {
                 GlowCommandSender sender = (GlowCommandSender)ext;
-                sender.AttachGlowCommandObserver(this);
+                sender.AttachObserver(this);
             }
         }
 

@@ -79,7 +79,7 @@ namespace DirectXScreenCapture
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
-        public override void AttachBitmapObserver(AntumbraBitmapObserver observer)
+        public override void AttachObserver(AntumbraBitmapObserver observer)
         {
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
         }
@@ -96,17 +96,17 @@ namespace DirectXScreenCapture
             get { return !this._stopped; }
         }
 
-        public void AttachLogObserver(LogMsgObserver observer)
+        public void AttachObserver(LogMsgObserver observer)
         {
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
-        public void AttachToolbarNotifObserver(ToolbarNotificationObserver observer)
+        public void AttachObserver(ToolbarNotificationObserver observer)
         {
             this.NewToolbarNotifEvent += observer.NewToolbarNotifAvail;
         }
 
-        public void AttachGlowCommandObserver(GlowCommandObserver observer)
+        public void AttachObserver(GlowCommandObserver observer)
         {
             this.NewGlowCommandEvent += observer.NewGlowCommandAvail;
         }

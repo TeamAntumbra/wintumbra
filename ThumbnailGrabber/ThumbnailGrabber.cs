@@ -56,7 +56,7 @@ namespace ThumbnailGrabber
             get { return false; }
         }
 
-        public override void AttachBitmapObserver(Antumbra.Glow.Observer.Bitmaps.AntumbraBitmapObserver observer)
+        public override void AttachObserver(Antumbra.Glow.Observer.Bitmaps.AntumbraBitmapObserver observer)
         {
             NewBitMapAvailEvent += observer.NewBitmapAvail;
         }

@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.Extensions
 {
     public interface GlowExtCollection
     {
-        void AttachGlowExtCollectionObserver(GlowExtCollectionObserver observer);
+        void AttachObserver(GlowExtCollectionObserver observer);
     }
 }

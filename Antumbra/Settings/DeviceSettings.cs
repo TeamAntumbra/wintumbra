@@ -49,7 +49,7 @@ namespace Antumbra.Glow.Settings
             saver.Save(this.id.ToString(), SerializeSettings());
         }
 
-        public void AttachConfigurationObserver(ConfigurationObserver o)
+        public void AttachObserver(ConfigurationObserver o)
         {
             this.ConfigChangeEvent += o.ConfigurationUpdate;
         }

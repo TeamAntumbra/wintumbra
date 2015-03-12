@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.Configuration
 {
     public interface Configurable
     {
-        void AttachConfigurationObserver(ConfigurationObserver observer);
+        void AttachObserver(ConfigurationObserver observer);
     }
 }

@@ -59,7 +59,7 @@ namespace AntumbraScreenDriver
             get { return "https://antumbra.io/"; }
         }
 
-        public void AttachLogObserver(LogMsgObserver observer)
+        public void AttachObserver(LogMsgObserver observer)
         {
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
@@ -88,7 +88,7 @@ namespace AntumbraScreenDriver
             return true;
         }
 
-        public override void AttachBitmapObserver(AntumbraBitmapObserver observer)
+        public override void AttachObserver(AntumbraBitmapObserver observer)
         {
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
         }

@@ -79,7 +79,7 @@ namespace AntumbraFastScreenProcessor
             return small.GetPixel(0, 0);
         }
 
-        public override void AttachColorObserver(AntumbraColorObserver observer)
+        public override void AttachObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }

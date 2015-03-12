@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.Bitmaps
 {
     public interface AntumbraBitmapSource
     {
-        void AttachBitmapObserver(AntumbraBitmapObserver observer);
+        void AttachObserver(AntumbraBitmapObserver observer);
     }
 }

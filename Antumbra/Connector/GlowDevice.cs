@@ -100,10 +100,10 @@ namespace Antumbra.Glow.Connector
             this.id = id;
             this.dev = IntPtr.Zero;
             this.settings = new DeviceSettings(id);
-            this.settings.AttachConfigurationObserver(this);
+            this.settings.AttachObserver(this);
             this.extMgr = new ExtensionManager(lib, id);
-            this.extMgr.activeExts.AttachConfigurationObserver(this);
-            this.settings.AttachConfigurationObserver(this.extMgr);
+            this.extMgr.activeExts.AttachObserver(this);
+            this.settings.AttachObserver(this.extMgr);
             this.settings.Notify();//force init update
         }
         /// <summary>
@@ -133,10 +133,10 @@ namespace Antumbra.Glow.Connector
         /// <param name="observer"></param>
         public void AttachColorObserverToExtMgr(AntumbraColorObserver observer)
         {
-            this.extMgr.AttachColorObserver(observer);
+            this.extMgr.AttachObserver(observer);
         }
 
-        public void AttachConfigurationObserver(ConfigurationObserver o)
+        public void AttachObserver(ConfigurationObserver o)
         {
             this.ConfigUpdateAvail += o.ConfigurationUpdate;
         }
@@ -149,18 +149,18 @@ namespace Antumbra.Glow.Connector
 
         public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)
         {
-            this.extMgr.AttachToolbarNotifObserver(observer);
+            this.extMgr.AttachObserver(observer);
         }
 
         public void AttachLogObserverToExtMgr(LogMsgObserver observer)
         {
-            this.extMgr.AttachLogObserver(observer);
+            this.extMgr.AttachObserver(observer);
         }
 
         public void AttachGlowCommandObserverToExtMgr(GlowCommandObserver observer)
         {
             this.extMgr.RegisterDevice(this.id);
-            this.extMgr.AttachGlowCommandObserver(observer);
+            this.extMgr.AttachObserver(observer);
         }
         /// <summary>
         /// Get a string representation of the extensions activated for this device
