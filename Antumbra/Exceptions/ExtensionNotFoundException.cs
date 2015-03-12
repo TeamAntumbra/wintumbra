@@ -8,8 +8,8 @@ namespace Antumbra.Glow.Exceptions
 {
     class ExtensionNotFoundException : Exception
     {
-        public ExtensionNotFoundException(String extensionName) :
-            base("The extension " + extensionName + " was not found.")
+        public ExtensionNotFoundException(Guid id) :
+            base("The extension with GUID: " + id.ToString() + " was not found.")
         {
             //do nothing, use parent constructor
         }
