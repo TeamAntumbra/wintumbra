@@ -114,6 +114,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.height = settings.height;
                 this.stepSleep = settings.stepSleep;
             }
+            //ignore ActiveExtension events
         }
 
         public void UpdateExtension(Guid id)
