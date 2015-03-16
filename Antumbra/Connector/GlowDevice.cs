@@ -123,6 +123,12 @@ namespace Antumbra.Glow.Connector
             this.extMgr.LoadSave(saver.Load(ExtensionManager.configFileBase + this.id));
         }
 
+        public void Reset()
+        {
+            this.settings.Reset();
+            this.extMgr.Reset();
+        }
+
         public void SaveSettings()
         {
             this.settings.Save();
