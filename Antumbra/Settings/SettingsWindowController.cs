@@ -34,6 +34,7 @@ namespace Antumbra.Glow.Settings
         public SettingsWindowController(GlowDevice dev, String version, BasicExtSettingsWinFactory factory)
         {
             this.dev = dev;
+            this.dev.AttachObserver(this);
             this.id = dev.id;
             this.settingsFactory = factory;
             this.window = new SettingsWindow(version);
@@ -109,11 +110,13 @@ namespace Antumbra.Glow.Settings
 
         private void StopBtnClickHandler(object sender, EventArgs args)
         {
-            NewGlowCommandAvailEvent(new StopCommand(this.dev.id));
+            SendStopCommand();
         }
 
         private void StartBtnClickHandler(object sender, EventArgs args)
         {
+            if (this.dev.running)
+                SendStopCommand();
             NewGlowCommandAvailEvent(new StartCommand(this.dev.id));
         }
 
@@ -302,7 +305,7 @@ namespace Antumbra.Glow.Settings
                 UpdateDriverChoice(ext);
             }
             catch (Exception) {
-                //TODO report
+                //TODO
             }
         }
 
@@ -310,8 +313,7 @@ namespace Antumbra.Glow.Settings
         {
             if (ext == null)
                 return;
-            if (NewGlowCommandAvailEvent != null)
-                NewGlowCommandAvailEvent(new StopCommand(this.dev.id));
+            SendStopCommand();
             this.dev.SetDvrGbbrOrPrcsrExt(ext.id);
             bool screenBased = (ext is GlowScreenDriverCoupler);
             this.window.UpdateIfDriverScreenBased(screenBased);
@@ -319,16 +321,11 @@ namespace Antumbra.Glow.Settings
 
         private void UpdateGrabberProcessorChoice(object sender, EventArgs args)
         {
-            try {
-                GlowExtension ext = GetExtFromSender(sender);
-                if (ext == null)
-                    return;
-                SendStopCommand();
-                this.dev.SetDvrGbbrOrPrcsrExt(ext.id);
-            }
-            catch (Exception) {
-                //TODO report
-            }
+            GlowExtension ext = GetExtFromSender(sender);
+            if (ext == null)
+                return;
+            SendStopCommand();
+            this.dev.SetDvrGbbrOrPrcsrExt(ext.id);
         }
 
         private void updateSelectedDecorator(object sender, EventArgs a)
@@ -347,8 +344,7 @@ namespace Antumbra.Glow.Settings
         private void toggleDecorator(object sender, EventArgs args)
         {
             try {
-                ComboBox box = (ComboBox)sender;
-                if (HandleToggle(box))
+                if (HandleToggle(this.window.decoratorComboBx))
                     this.window.SetCurrentDecStatus("True");
                 else
                     this.window.SetCurrentDecStatus("False");
@@ -392,7 +388,7 @@ namespace Antumbra.Glow.Settings
                 var current = this.dev.id;
                 var back = GetUniquePollingColor();
                 this.pollingAreaWindow = new pollingAreaSetter(this.dev.settings, back);
-                NewGlowCommandAvailEvent(new StopCommand(current));
+                SendStopCommand();
                 NewGlowCommandAvailEvent(new SendColorCommand(current, back));//update device to unique color matching window
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
