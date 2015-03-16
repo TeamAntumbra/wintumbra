@@ -17,7 +17,7 @@ namespace Antumbra.Glow.Utility
             return instance;
         }
         private List<HslColor> assigned;
-        public UniqueColorGenerator()
+        private UniqueColorGenerator()
         {
             this.assigned = new List<HslColor>();
         }
