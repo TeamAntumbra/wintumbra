@@ -12,7 +12,7 @@ using Antumbra.Glow.ExtensionFramework;
 
 namespace Antumbra.Glow.Settings
 {
-    public class SettingsWindowManager : GlowExtCollectionObserver, GlowCommandObserver, ToolbarNotificationObserver,
+    public class SettingsWindowManager : GlowCommandObserver, ToolbarNotificationObserver,
                                          ToolbarNotificationSource, GlowCommandSender
     {
         public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
@@ -26,15 +26,9 @@ namespace Antumbra.Glow.Settings
         public SettingsWindowManager(String productVersion, ExtensionLibrary lib)
         {
             this.lib = lib;
-            this.lib.AttachObserver(this);//register for library updates
             this.basicWinFactory = new BasicExtSettingsWinFactory(this.lib);
             this.productVersion = productVersion;
             this.controllers = new List<SettingsWindowController>();
-        }
-
-        public void LibraryUpdate(List<GlowExtension> exts)
-        {
-
         }
 
         public SettingsWindowController CreateAndAddNewController(GlowDevice dev)
@@ -55,7 +49,8 @@ namespace Antumbra.Glow.Settings
 
         public void NewGlowCommandAvail(GlowCommand cmd)
         {
-
+            if (NewGlowCommandAvailEvent != null)
+                NewGlowCommandAvailEvent(cmd);//pass up
         }
 
         public void AttachObserver(GlowCommandObserver observer)
@@ -70,7 +65,8 @@ namespace Antumbra.Glow.Settings
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
         {
-
+            if (NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);//pass up
         }
 
         public void AttachObserver(ToolbarNotificationObserver observer)

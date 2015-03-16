@@ -60,6 +60,7 @@ namespace Antumbra.Glow.Connector
         /// Integer representation of the device's status
         /// </summary>
         public int status { get; set; }
+        public bool running { get; private set; }
 
         public void SetDvrGbbrOrPrcsrExt(Guid id)
         {
@@ -112,7 +113,8 @@ namespace Antumbra.Glow.Connector
         /// <returns>True if successfully started, else false</returns>
         public bool Start()
         {
-            return this.extMgr.Start();
+            this.running = this.extMgr.Start();
+            return this.running;
         }
 
         public void LoadSettings()
@@ -190,7 +192,9 @@ namespace Antumbra.Glow.Connector
         /// <returns>True if successful, else false</returns>
         internal bool Stop()
         {
-            return this.extMgr.Stop();
+            bool result = this.extMgr.Stop();
+            this.running = !result;
+            return result;
         }
 
         public bool GetExtSettingsWin(Guid id)

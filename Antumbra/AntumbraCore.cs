@@ -75,6 +75,8 @@ namespace Antumbra.Glow
                 this.toolStripDeviceList.Items.Add(dev);
             }
             this.SettingsWindowManager = new SettingsWindowManager(this.ProductVersion, this.extLibrary);
+            this.SettingsWindowManager.AttachObserver((GlowCommandObserver)this);
+            this.SettingsWindowManager.AttachObserver((ToolbarNotificationObserver)this);
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
                 GlowDevice dev = this.GlowManager.getDevice(0);
@@ -313,9 +315,11 @@ namespace Antumbra.Glow
         /// <param name="id"></param>
         public void Stop(int id)
         {
-            this.ShowMessage(3000, "Stopping device id: " + id, "Stopping device id " + id +
-                " please wait.", ToolTipIcon.Info);
             var dev = this.GlowManager.getDevice(id);
+            bool wasRunning = dev.running;
+            if (wasRunning)//only show if actually stopping device (still make calls to clean up)
+                this.ShowMessage(3000, "Stopping device id: " + id, "Stopping device id " + id +
+                    " please wait.", ToolTipIcon.Info);
             if (!dev.Stop())
                 ShowMessage(3000, "Device " + id + " Did Not Stop Correctly",
                     "Device " + id + " reported that it did not stop correctly.",
@@ -324,7 +328,8 @@ namespace Antumbra.Glow
             if (loop != null) {
                 loop.Dispose();
             }
-            ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
+            if (wasRunning)
+                ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
         }
         /// <summary>
         /// Event handler for start button

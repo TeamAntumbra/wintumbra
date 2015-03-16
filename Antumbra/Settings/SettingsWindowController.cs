@@ -45,6 +45,76 @@ namespace Antumbra.Glow.Settings
             this.window.decoratorComboBx_SelectedIndexChangedEvent += new EventHandler(updateSelectedDecorator);
             this.window.toggleDecoratorEvent += new EventHandler(toggleDecorator);
             this.window.pollingArea_ClickEvent += new EventHandler(pollingArea_Click);
+            this.window.startBtn_ClickEvent += new EventHandler(StartBtnClickHandler);
+            this.window.stopBtn_ClickEvent += new EventHandler(StopBtnClickHandler);
+            this.window.offBtn_ClickEvent += new EventHandler(OffBtnClickHandler);
+            this.window.closeBtn_ClickEvent += new EventHandler(CloseBtnClickHandler);
+            this.window.settingsWindow_FormClosingEvent += new FormClosingEventHandler(SettingsWindowFormClosing);
+            this.window.settingsWindow_MouseDownEvent += new MouseEventHandler(SettingsWindow_MouseDownHandler);
+            this.window.weightingEnabled_CheckedChangedEvent += new EventHandler(UpdateWeightingEnabled);
+            this.window.loadBtn_ClickEvent += new EventHandler(LoadBtnClickHandler);
+            this.window.saveBtn_ClickEvent += new EventHandler(SaveBtnClickHandler);
+            this.window.decoratorSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
+            this.window.processorSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
+            this.window.driverSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
+            this.window.decoratorComboBx_SelectedIndexChangedEvent += new EventHandler(DecoratorSelectedItemChangeHandler);
+            this.window.compoundDecorationCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundDecorationCheck);
+            this.window.grabberSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
+        }
+
+        private void DecoratorSelectedItemChangeHandler(object sender, EventArgs args)
+        {
+            GlowDecorator dec = (GlowDecorator)this.window.decoratorComboBx.SelectedItem;
+            if (dec != null)
+                this.window.SetCurrentDecStatus(this.dev.GetDecOrNotfStatus(dec.id).ToString());
+        }
+
+        private void ExtSettingsBtnClickHandler(object sender, EventArgs args)
+        {
+            GlowExtension ext = (GlowExtension)sender;
+            if (ext != null) {
+                if (!ext.Settings())
+                    this.settingsFactory.GenerateWindow(ext.id).Show();
+            }
+        }
+
+        private void SaveBtnClickHandler(object sender, EventArgs args)
+        {
+            this.dev.SaveSettings();
+        }
+
+        private void LoadBtnClickHandler(object sender, EventArgs args)
+        {
+            this.dev.LoadSettings();
+        }
+
+        private void SettingsWindow_MouseDownHandler(object sender, MouseEventArgs args)
+        {
+            //allows dragging of forms to move them (because of hidden menu bars and window frame)
+            if (args.Button == MouseButtons.Left) {//drag with left mouse btn
+                ReleaseCapture();
+                SendMessage(this.window.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void CloseBtnClickHandler(object sender, EventArgs args)
+        {
+            this.window.Close();
+        }
+
+        private void OffBtnClickHandler(object sender, EventArgs args)
+        {
+            NewGlowCommandAvailEvent(new SendColorCommand(this.dev.id, Color.Black));
+        }
+
+        private void StopBtnClickHandler(object sender, EventArgs args)
+        {
+            NewGlowCommandAvailEvent(new StopCommand(this.dev.id));
+        }
+
+        private void StartBtnClickHandler(object sender, EventArgs args)
+        {
+            NewGlowCommandAvailEvent(new StartCommand(this.dev.id));
         }
 
         public void Show()
