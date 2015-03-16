@@ -24,7 +24,7 @@ namespace SinFade
 
         public override Guid id
         {
-            get { return Guid.Parse("2c186c2f-3464-49b5-8737-50830231ff20"); }
+            get { return Guid.Parse("31cae25b-72c0-4ffc-860b-234fb931bc15"); }
         }
 
         public override bool IsDefault
