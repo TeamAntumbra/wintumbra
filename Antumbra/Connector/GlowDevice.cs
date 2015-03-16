@@ -136,6 +136,12 @@ namespace Antumbra.Glow.Connector
             this.extMgr.AttachObserver(observer);
         }
 
+        public int ApplyDriverRecomSettings()
+        {
+            this.extMgr.activeExts.ActiveDriver.RecmmndCoreSettings();
+            return this.extMgr.activeExts.ActiveDriver.stepSleep;
+        }
+
         public void AttachObserver(ConfigurationObserver o)
         {
             this.ConfigUpdateAvail += o.ConfigurationUpdate;

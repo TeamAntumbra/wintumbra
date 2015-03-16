@@ -32,7 +32,7 @@ namespace Antumbra.Glow
     public partial class AntumbraCore : Form, LogMsgObserver, ToolbarNotificationObserver, GlowCommandObserver
     {
         private DeviceManager GlowManager;
-        private List<SettingsWindow> settingsWindows;
+        private SettingsWindowManager SettingsWindowManager;
         private OutputLoopManager outManager;
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
@@ -74,18 +74,11 @@ namespace Antumbra.Glow
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
                 this.toolStripDeviceList.Items.Add(dev);
             }
-            this.settingsWindows = new List<SettingsWindow>();
+            this.SettingsWindowManager = new SettingsWindowManager(this.ProductVersion, this.extLibrary);
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 this.toolStripDeviceList.SelectedIndex = 0;
                 GlowDevice dev = this.GlowManager.getDevice(0);
-                SettingsWindow win = new SettingsWindow(dev, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
-                this.extLibrary.AttachObserver(win);
-                this.extLibrary.NotifyObservers();//force inital update
-                win.AttachObserver((ToolbarNotificationObserver)this);
-                win.AttachObserver((GlowCommandObserver)this);
-                dev.AttachObserver(win);
-                dev.Notify();//force inital update
-                this.settingsWindows.Add(win);
+                this.SettingsWindowManager.CreateAndAddNewController(dev);
             }
             this.logger.Log("Core good start? - " + this.goodStart);
         }
@@ -156,23 +149,9 @@ namespace Antumbra.Glow
                     "No Devices were found to edit the settings of.", ToolTipIcon.Info);
                 return;
             }
-            GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;
+            GlowDevice current = (GlowDevice)toolStripDeviceList.SelectedItem;//TODO move all this logic from here on (in this method) to settings mgr
             this.logger.Log("Opening settings window for device id: " + current.id);
-            SettingsWindow win;
-            if (this.settingsWindows.Count > current.id) {//in range
-                win = this.settingsWindows.ElementAt<SettingsWindow>(current.id);
-            }
-            else {
-                win = new SettingsWindow(current, this.ProductVersion, new BasicExtSettingsWinFactory(this.extLibrary));
-                this.extLibrary.AttachObserver(win);
-                this.extLibrary.NotifyObservers();
-                win.AttachObserver((ToolbarNotificationObserver)this);
-                win.AttachObserver((GlowCommandObserver)this);
-                current.AttachObserver(win);
-                current.Notify();//force inital update
-                this.settingsWindows.Add(win);
-            }
-            win.Show();
+            this.SettingsWindowManager.Show(current.id);
         }
         /// <summary>
         /// Event handler for the start all devices button
@@ -208,8 +187,7 @@ namespace Antumbra.Glow
             this.logger.Log("GlowManager cleaning up.");
             this.GlowManager.CleanUp();
             this.logger.Log("Cleaning up extension settings windows");
-            foreach (var win in this.settingsWindows)
-                win.CleanUp();
+            //TODO add settings window cleanup call
             this.Dispose();
             Application.Exit();
         }

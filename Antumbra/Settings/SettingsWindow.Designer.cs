@@ -437,7 +437,7 @@
             this.aboutPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.aboutPage.HotTrack = true;
             this.aboutPage.Location = new System.Drawing.Point(55, 192);
-            this.aboutPage.Margin = new System.Windows.Forms.Padding(2);
+            this.aboutPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.aboutPage.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.aboutPage.Name = "aboutPage";
             this.aboutPage.SelectedIndex = 0;
@@ -460,9 +460,9 @@
             this.driverPage.Controls.Add(this.driverLabel);
             this.driverPage.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.driverPage.Location = new System.Drawing.Point(4, 25);
-            this.driverPage.Margin = new System.Windows.Forms.Padding(2);
+            this.driverPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.driverPage.Name = "driverPage";
-            this.driverPage.Padding = new System.Windows.Forms.Padding(2);
+            this.driverPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.driverPage.Size = new System.Drawing.Size(831, 351);
             this.driverPage.TabIndex = 0;
             this.driverPage.Text = "Driver";
@@ -589,9 +589,9 @@
             this.decoratorPage.Controls.Add(this.decoratorComboBx);
             this.decoratorPage.Controls.Add(this.decoratorLabel);
             this.decoratorPage.Location = new System.Drawing.Point(4, 25);
-            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2);
+            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.decoratorPage.Name = "decoratorPage";
-            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2);
+            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.decoratorPage.Size = new System.Drawing.Size(831, 351);
             this.decoratorPage.TabIndex = 1;
             this.decoratorPage.Text = "Decorators";
@@ -668,7 +668,7 @@
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage3.Size = new System.Drawing.Size(831, 351);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Notifiers";
@@ -778,7 +778,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox sleepSize;
         //private MetroFramework.Components.MetroStyleManager settingsStyleManager;
         private System.Windows.Forms.Label stepSleepLabel;
         private System.Windows.Forms.Label metroLabel1;
@@ -801,28 +800,22 @@
         private System.Windows.Forms.Label settingsTitle;
         private System.Windows.Forms.TextBox newColorWeight;
         private System.Windows.Forms.Label weightingLabel;
-        private System.Windows.Forms.CheckBox weightingEnabled;
         private System.Windows.Forms.Label deviceNameLabel;
         private System.Windows.Forms.Label deviceName;
         private System.Windows.Forms.Button driverRecBtn;
-        private System.Windows.Forms.CheckBox compoundDecorationCheck;
         private System.Windows.Forms.Label versionLabel;
         private FlatTabControl.FlatTabControl aboutPage;
         private System.Windows.Forms.TabPage driverPage;
         private System.Windows.Forms.TabPage decoratorPage;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label driverLabel;
-        private System.Windows.Forms.ComboBox driverComboBox;
         private System.Windows.Forms.PictureBox processorSettingsBtn;
-        private System.Windows.Forms.ComboBox processorComboBx;
         private System.Windows.Forms.Label processorLabel;
         private System.Windows.Forms.PictureBox grabberSettingsBtn;
-        private System.Windows.Forms.ComboBox grabberComboBx;
         private System.Windows.Forms.Label grabberLabel;
         private System.Windows.Forms.PictureBox driverSettingsBtn;
         private System.Windows.Forms.Label instructions;
         private System.Windows.Forms.PictureBox decoratorSettingsBtn;
-        private System.Windows.Forms.ComboBox decoratorComboBx;
         private System.Windows.Forms.Label decoratorLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label currentDecStatus;
@@ -830,5 +823,12 @@
         private System.Windows.Forms.Button toggleActiveBtn;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button loadBtn;
+        private System.Windows.Forms.TextBox sleepSize;
+        private System.Windows.Forms.CheckBox weightingEnabled;
+        private System.Windows.Forms.CheckBox compoundDecorationCheck;
+        public System.Windows.Forms.ComboBox driverComboBox;
+        public System.Windows.Forms.ComboBox processorComboBx;
+        public System.Windows.Forms.ComboBox grabberComboBx;
+        public System.Windows.Forms.ComboBox decoratorComboBx;
     }
 }

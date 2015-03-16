@@ -167,6 +167,8 @@
     <Compile Include="Observer\Logging\LogMsgObserver.cs" />
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
     <Compile Include="Settings\ActiveExtensions.cs" />
+    <Compile Include="Settings\SettingsWindowController.cs" />
+    <Compile Include="Settings\SettingsWindowManager.cs" />
     <Compile Include="Utility\Settings\Savable.cs" />
     <Compile Include="Utility\Settings\Saver.cs" />
     <Compile Include="Settings\BasicExtSettingsWinFactory.cs" />
