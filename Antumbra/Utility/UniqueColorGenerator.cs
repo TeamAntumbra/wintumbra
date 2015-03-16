@@ -33,20 +33,29 @@ namespace Antumbra.Glow.Utility
                 result = new HslColor(0, 1.0, .5);
             }
             else {
-                double prev = 0;
-                double gapStart = 0;
-                double largestGap = 180.0;
+                double prev = hues[0];
+                double gapStart = prev;
+                double largestGap = 0.0;
+                double current = 0, gap = 0;
                 for (int i = 1; i < count; i += 1) {
-                    double current = hues[i];
-                    double gap = Math.Abs(prev-current);
+                    current = hues[i];
+                    gap = Math.Abs(prev-current);
                     if (gap > largestGap) {
                         largestGap = gap;
-                        gapStart = current;
+                        gapStart = prev;
                     }
+                    prev = current;
+                }
+                current = 360.0;
+                gap = Math.Abs(prev - current);
+                if (gap > largestGap) {
+                    largestGap = gap;
+                    gapStart = prev;
                 }
                 result = new HslColor(gapStart + (largestGap / 2.0), 1.0, .5);
             }
             this.assigned.Add(result);
+            this.assigned.Sort((x, y) => x.H.CompareTo(y.H));
             return result;
         }
     }
