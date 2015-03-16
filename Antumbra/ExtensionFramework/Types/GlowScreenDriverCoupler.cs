@@ -164,9 +164,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
 
         public override bool Settings()
         {
-            AntumbraExtSettingsWindow win = new AntumbraExtSettingsWindow(this);
-            win.Show();
-            return true;
+            return false;
         }
     }
 }
