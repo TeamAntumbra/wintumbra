@@ -146,9 +146,9 @@ namespace Antumbra.Glow.Settings
             this.window.UpdatedComboBoxSelectedExt(actives.ActiveDriver.id, this.window.driverComboBox);
             this.window.UpdatedComboBoxSelectedExt(actives.ActiveGrabber.id, this.window.grabberComboBx);
             this.window.UpdatedComboBoxSelectedExt(actives.ActiveProcessor.id, this.window.processorComboBx);
-            GlowDecorator dec = actives.ActiveDecorators.First<GlowDecorator>();
-            if (dec != null)
-                this.window.UpdatedComboBoxSelectedExt(dec.id, this.window.decoratorComboBx);
+            List<GlowDecorator> decs = actives.ActiveDecorators;
+            if (decs.Count != 0)
+                this.window.UpdatedComboBoxSelectedExt(decs.First<GlowDecorator>().id, this.window.decoratorComboBx);
             //TODO notifier
         }
 
@@ -397,7 +397,7 @@ namespace Antumbra.Glow.Settings
 
         private Color GetUniquePollingColor()
         {
-            //TODO ask settings window manager for unique color
+            
             return Color.AliceBlue;
         }
 
