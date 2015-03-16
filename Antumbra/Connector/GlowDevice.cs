@@ -105,7 +105,6 @@ namespace Antumbra.Glow.Connector
             this.extMgr = new ExtensionManager(lib, id);
             this.extMgr.activeExts.AttachObserver(this);
             this.settings.AttachObserver(this.extMgr);
-            this.settings.Notify();//force init update
         }
         /// <summary>
         /// Start the device's extensions
