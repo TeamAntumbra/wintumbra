@@ -13,6 +13,7 @@ using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Exceptions;
+using Antumbra.Glow.Utility;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing;
@@ -386,19 +387,13 @@ namespace Antumbra.Glow.Settings
         {
             if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
                 var current = this.dev.id;
-                var back = GetUniquePollingColor();
+                var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
                 this.pollingAreaWindow = new pollingAreaSetter(this.dev.settings, back);
                 SendStopCommand();
                 NewGlowCommandAvailEvent(new SendColorCommand(current, back));//update device to unique color matching window
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingAreaWindow.Show();
-        }
-
-        private Color GetUniquePollingColor()
-        {
-            
-            return Color.AliceBlue;
         }
 
         private void UpdatePollingSelectionsEvent(object sender, FormClosingEventArgs args)
@@ -408,6 +403,7 @@ namespace Antumbra.Glow.Settings
             this.dev.settings.y = form.Bounds.Y;
             this.dev.settings.width = form.Bounds.Width;
             this.dev.settings.height = form.Bounds.Height;
+            UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
         }
 
         private void SendStopCommand()

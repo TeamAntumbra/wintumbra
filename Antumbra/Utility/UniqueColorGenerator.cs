@@ -58,5 +58,10 @@ namespace Antumbra.Glow.Utility
             this.assigned.Sort((x, y) => x.H.CompareTo(y.H));
             return result;
         }
+
+        public void RetireUniqueColor(Color color)
+        {
+            this.assigned.Remove(color);
+        }
     }
 }
