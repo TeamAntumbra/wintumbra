@@ -79,6 +79,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.saveBtn = new System.Windows.Forms.Button();
             this.loadBtn = new System.Windows.Forms.Button();
+            this.resetBtn = new System.Windows.Forms.Button();
             this.aboutPage.SuspendLayout();
             this.driverPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
@@ -437,7 +438,7 @@
             this.aboutPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.aboutPage.HotTrack = true;
             this.aboutPage.Location = new System.Drawing.Point(55, 192);
-            this.aboutPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.aboutPage.Margin = new System.Windows.Forms.Padding(2);
             this.aboutPage.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.aboutPage.Name = "aboutPage";
             this.aboutPage.SelectedIndex = 0;
@@ -460,9 +461,9 @@
             this.driverPage.Controls.Add(this.driverLabel);
             this.driverPage.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.driverPage.Location = new System.Drawing.Point(4, 25);
-            this.driverPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.driverPage.Margin = new System.Windows.Forms.Padding(2);
             this.driverPage.Name = "driverPage";
-            this.driverPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.driverPage.Padding = new System.Windows.Forms.Padding(2);
             this.driverPage.Size = new System.Drawing.Size(831, 351);
             this.driverPage.TabIndex = 0;
             this.driverPage.Text = "Driver";
@@ -589,9 +590,9 @@
             this.decoratorPage.Controls.Add(this.decoratorComboBx);
             this.decoratorPage.Controls.Add(this.decoratorLabel);
             this.decoratorPage.Location = new System.Drawing.Point(4, 25);
-            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2);
             this.decoratorPage.Name = "decoratorPage";
-            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2);
             this.decoratorPage.Size = new System.Drawing.Size(831, 351);
             this.decoratorPage.TabIndex = 1;
             this.decoratorPage.Text = "Decorators";
@@ -668,7 +669,7 @@
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(831, 351);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Notifiers";
@@ -689,9 +690,9 @@
             this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.saveBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.saveBtn.Location = new System.Drawing.Point(590, 167);
+            this.saveBtn.Location = new System.Drawing.Point(538, 167);
             this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(126, 35);
+            this.saveBtn.Size = new System.Drawing.Size(114, 35);
             this.saveBtn.TabIndex = 93;
             this.saveBtn.Text = "Save Settings";
             this.saveBtn.UseVisualStyleBackColor = false;
@@ -704,13 +705,28 @@
             this.loadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loadBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.loadBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.loadBtn.Location = new System.Drawing.Point(722, 167);
+            this.loadBtn.Location = new System.Drawing.Point(778, 167);
             this.loadBtn.Name = "loadBtn";
-            this.loadBtn.Size = new System.Drawing.Size(126, 35);
+            this.loadBtn.Size = new System.Drawing.Size(114, 35);
             this.loadBtn.TabIndex = 94;
             this.loadBtn.Text = "Load Settings";
             this.loadBtn.UseVisualStyleBackColor = false;
             this.loadBtn.Click += new System.EventHandler(this.loadBtn_Click);
+            // 
+            // resetBtn
+            // 
+            this.resetBtn.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.resetBtn.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.resetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.resetBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.resetBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.resetBtn.Location = new System.Drawing.Point(658, 167);
+            this.resetBtn.Name = "resetBtn";
+            this.resetBtn.Size = new System.Drawing.Size(114, 35);
+            this.resetBtn.TabIndex = 95;
+            this.resetBtn.Text = "Reset Settings";
+            this.resetBtn.UseVisualStyleBackColor = false;
+            this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
             // 
             // SettingsWindow
             // 
@@ -720,6 +736,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(962, 707);
+            this.Controls.Add(this.resetBtn);
             this.Controls.Add(this.loadBtn);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.aboutPage);
@@ -830,5 +847,6 @@
         public System.Windows.Forms.ComboBox processorComboBx;
         public System.Windows.Forms.ComboBox grabberComboBx;
         public System.Windows.Forms.ComboBox decoratorComboBx;
+        private System.Windows.Forms.Button resetBtn;
     }
 }

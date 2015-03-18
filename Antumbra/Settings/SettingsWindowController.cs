@@ -62,6 +62,7 @@ namespace Antumbra.Glow.Settings
             this.window.decoratorComboBx_SelectedIndexChangedEvent += new EventHandler(DecoratorSelectedItemChangeHandler);
             this.window.compoundDecorationCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundDecorationCheck);
             this.window.grabberSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
+            this.window.resetBtn_ClickEvent += new EventHandler(ResetBtnClickHandler);
         }
 
         private void DecoratorSelectedItemChangeHandler(object sender, EventArgs args)
@@ -78,6 +79,11 @@ namespace Antumbra.Glow.Settings
                 if (!ext.Settings())
                     this.settingsFactory.GenerateWindow(ext.id).Show();
             }
+        }
+
+        private void ResetBtnClickHandler(object sender, EventArgs args)
+        {
+            this.dev.Reset();
         }
 
         private void SaveBtnClickHandler(object sender, EventArgs args)

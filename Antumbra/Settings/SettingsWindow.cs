@@ -34,6 +34,7 @@ namespace Antumbra.Glow.Settings
         public event EventHandler driverComboBox_SelectedIndexChangedEvent;
         public event EventHandler loadBtn_ClickEvent;
         public event EventHandler saveBtn_ClickEvent;
+        public event EventHandler resetBtn_ClickEvent;
         public event EventHandler decoratorSettingsBtn_ClickEvent;
         public event EventHandler processorSettingsBtn_ClickEvent;
         public event EventHandler driverSettingsBtn_ClickEvent;
@@ -235,9 +236,12 @@ namespace Antumbra.Glow.Settings
         {
             if (loadBtn_ClickEvent != null)
                 loadBtn_ClickEvent(sender, e);
-            //SendStopCommand();
-           // this.currentDevice.LoadSettings();
-            //updateValues();
+        }
+
+        private void resetBtn_Click(object sender, EventArgs e)
+        {
+            if (resetBtn_ClickEvent != null)
+                resetBtn_ClickEvent(sender, e);
         }
     }
 }
