@@ -15,14 +15,95 @@ namespace Antumbra.Glow.Settings
         public delegate void ConfigurationChange(Configurable settings);
         public event ConfigurationChange ConfigChangeEvent;
         public int id { get; private set; }
-        public int x { get; set; }
-        public int y { get; set; }
-        public int width { get; set; }
-        public int height { get; set; }
-        public int stepSleep { get; set; }//for the driver
-        public bool weightingEnabled { get; set; }//for the output loop
-        public double newColorWeight { get; set; }//for the output loop
-        public bool compoundDecoration { get; set; }
+        public int x
+        {
+            get { return _x; }
+            set
+            {
+                _x = value;
+                Notify();
+            }
+        }
+        private int _x;
+        public int y
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                Notify();
+            }
+        }
+        private int _y;
+        public int width
+        {
+            get { return _width; }
+            set
+            {
+                _width = value;
+                Notify();
+            }
+        }
+        private int _width;
+        public int height
+        {
+            get { return _height; }
+            set
+            {
+                _height = value;
+                Notify();
+            }
+        }
+        private int _height;
+        public int stepSleep
+        {
+            get { return _stepSleep; }
+            set
+            {
+                _stepSleep = value;
+                Notify();
+            }
+        }
+        private int _stepSleep;
+        public bool weightingEnabled
+        {
+            get
+            {
+                return _weightingEnabled;
+            }
+            set
+            {
+                _weightingEnabled = value;
+                Notify();
+            }
+        }
+        private bool _weightingEnabled;
+        public double newColorWeight
+        {
+            get
+            {
+                return _newColorWeight;
+            }
+            set
+            {
+                _newColorWeight = value;
+                Notify();
+            }
+        }
+        private double _newColorWeight;
+        public bool compoundDecoration
+        {
+            get
+            {
+                return _compoundDecoration;
+            }
+            set
+            {
+                _compoundDecoration = value;
+                Notify();
+            }
+        }
+        private bool _compoundDecoration;
         public DeviceSettings(int id)
         {
             Reset();
