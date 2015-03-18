@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Antumbra.Glow.ExtensionFramework;
 using System.Threading;
 using System.Linq.Expressions;
 using System.Reflection;
 using Antumbra.Glow.Exceptions;
+using Antumbra.Glow.Settings;
+using Antumbra.Glow.ExtensionFramework;
 using FlatTabControl;
 
-namespace Antumbra.Glow.Settings
+namespace Antumbra.Glow.View
 {
-    public partial class SettingsWindow : Form
+    public partial class AdvancedSettingsWindow : Form
     {
         //Begin UI events
         public event EventHandler driverRecomBtn_ClickEvent;
@@ -44,7 +45,7 @@ namespace Antumbra.Glow.Settings
         public event EventHandler toggleDecoratorEvent;
         //end UI events
         private int devId;
-        public SettingsWindow(String version)
+        public AdvancedSettingsWindow(String version)
         {
             InitializeComponent();
             this.versionLabel.Text = version;

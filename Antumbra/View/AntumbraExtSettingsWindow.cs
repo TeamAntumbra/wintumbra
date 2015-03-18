@@ -8,9 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
 
-namespace Antumbra.Glow.ExtensionFramework
+namespace Antumbra.Glow.View
 {
     public partial class AntumbraExtSettingsWindow : Form
     {

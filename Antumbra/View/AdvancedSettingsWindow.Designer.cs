@@ -1,6 +1,6 @@
-﻿namespace Antumbra.Glow.Settings
+﻿namespace Antumbra.Glow.View
 {
-    partial class SettingsWindow
+    partial class AdvancedSettingsWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -27,7 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvancedSettingsWindow));
             this.stepSleepLabel = new System.Windows.Forms.Label();
             this.sleepSize = new System.Windows.Forms.TextBox();
             this.metroLabel1 = new System.Windows.Forms.Label();

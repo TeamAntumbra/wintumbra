@@ -8,7 +8,8 @@ using Antumbra.Glow.Observer.Extensions;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.ExtensionFramework.Management;
-using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.Controller;
+using Antumbra.Glow.View;
 
 namespace Antumbra.Glow.Settings
 {

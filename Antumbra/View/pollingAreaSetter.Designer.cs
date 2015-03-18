@@ -1,4 +1,4 @@
-﻿namespace Antumbra.Glow.Settings
+﻿namespace Antumbra.Glow.View
 {
     partial class pollingAreaSetter
     {

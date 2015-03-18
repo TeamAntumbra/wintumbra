@@ -1,4 +1,4 @@
-﻿namespace Antumbra.Glow.ExtensionFramework
+﻿namespace Antumbra.Glow.View
 {
     partial class AntumbraExtSettingsWindow
     {

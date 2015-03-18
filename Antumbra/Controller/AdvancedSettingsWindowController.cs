@@ -10,15 +10,16 @@ using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Connector;
-using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.View;
 using Antumbra.Glow.Exceptions;
 using Antumbra.Glow.Utility;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing;
 
-namespace Antumbra.Glow.Settings
+namespace Antumbra.Glow.Controller
 {
     public class AdvancedSettingsWindowController : ConfigurationObserver, GlowCommandSender, ToolbarNotificationSource,
                                             GlowExtCollectionObserver
@@ -28,7 +29,7 @@ namespace Antumbra.Glow.Settings
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
         public int id;
-        private SettingsWindow window;
+        private AdvancedSettingsWindow window;
         private GlowDevice dev;
         private AntumbraExtSettingsWindow.ExtWindowFactory settingsFactory;
         private pollingAreaSetter pollingAreaWindow;
@@ -38,7 +39,7 @@ namespace Antumbra.Glow.Settings
             this.dev.AttachObserver(this);
             this.id = dev.id;
             this.settingsFactory = factory;
-            this.window = new SettingsWindow(version);
+            this.window = new AdvancedSettingsWindow(version);
             this.window.driverComboBox_SelectedIndexChangedEvent += new EventHandler(DriverComboBoxIndexChanged);
             this.window.driverRecomBtn_ClickEvent += new EventHandler(ApplyDriverRecomSettings);
             this.window.sleepSize_TextChangedEvent += new EventHandler(UpdateStepSleep);
@@ -284,7 +285,7 @@ namespace Antumbra.Glow.Settings
         private void SettingsWindowFormClosing(object sender, FormClosingEventArgs e)
         {
             try {
-                SettingsWindow win = (SettingsWindow)sender;
+                AdvancedSettingsWindow win = (AdvancedSettingsWindow)sender;
                 win.Hide();
                 e.Cancel = true;
             }

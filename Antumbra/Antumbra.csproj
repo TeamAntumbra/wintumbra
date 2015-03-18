@@ -131,10 +131,10 @@
     <Compile Include="Connector\OutputLoop.cs" />
     <Compile Include="Connector\OutputLoopManager.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
-    <Compile Include="ExtensionFramework\AntumbraExtSettingsWindow.cs">
+    <Compile Include="View\AntumbraExtSettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExtensionFramework\AntumbraExtSettingsWindow.Designer.cs">
+    <Compile Include="View\AntumbraExtSettingsWindow.Designer.cs">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionFramework\Management\ExtensionLibrary.cs" />
@@ -167,7 +167,7 @@
     <Compile Include="Observer\Logging\LogMsgObserver.cs" />
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
     <Compile Include="Settings\ActiveExtensions.cs" />
-    <Compile Include="Settings\AdvancedSettingsWindowController.cs" />
+    <Compile Include="Controller\AdvancedSettingsWindowController.cs" />
     <Compile Include="Settings\SettingsWindowManager.cs" />
     <Compile Include="Utility\Settings\Savable.cs" />
     <Compile Include="Utility\Settings\Saver.cs" />
@@ -185,19 +185,19 @@
     <Compile Include="ExtensionFramework\Types\GlowScreenDriverCoupler.cs" />
     <Compile Include="ExtensionFramework\Management\MEFHelper.cs" />
     <Compile Include="Utility\FPSCalc.cs" />
-    <Compile Include="Settings\pollingAreaSetter.cs">
+    <Compile Include="View\pollingAreaSetter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\pollingAreaSetter.Designer.cs">
+    <Compile Include="View\pollingAreaSetter.Designer.cs">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HslColor.cs" />
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <Compile Include="Settings\SettingsWindow.cs">
+    <Compile Include="View\AdvancedSettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\SettingsWindow.Designer.cs">
-      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    <Compile Include="View\AdvancedSettingsWindow.Designer.cs">
+      <DependentUpon>AdvancedSettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\HSVRGGConverter.cs" />
     <Compile Include="Connector\SerialConnector.cs" />
@@ -209,14 +209,14 @@
     <EmbeddedResource Include="AntumbraCore.resx">
       <DependentUpon>AntumbraCore.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExtensionFramework\AntumbraExtSettingsWindow.resx">
+    <EmbeddedResource Include="View\AntumbraExtSettingsWindow.resx">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\pollingAreaSetter.resx">
+    <EmbeddedResource Include="View\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\SettingsWindow.resx">
-      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    <EmbeddedResource Include="View\AdvancedSettingsWindow.resx">
+      <DependentUpon>AdvancedSettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

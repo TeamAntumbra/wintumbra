@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Antumbra.Glow.Settings;
 
-namespace Antumbra.Glow.Settings
+namespace Antumbra.Glow.View
 {
     public partial class pollingAreaSetter : Form
     {
