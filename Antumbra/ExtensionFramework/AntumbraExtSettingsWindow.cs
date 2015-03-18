@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Antumbra.Glow.ExtensionFramework.Management;
 
 namespace Antumbra.Glow.ExtensionFramework
 {
@@ -23,7 +24,7 @@ namespace Antumbra.Glow.ExtensionFramework
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public AntumbraExtSettingsWindow(GlowExtension ext)
+        private AntumbraExtSettingsWindow(GlowExtension ext)
         {
             this.ext = ext;
             InitializeComponent();
@@ -44,6 +45,22 @@ namespace Antumbra.Glow.ExtensionFramework
             if (e.Button == MouseButtons.Left) {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        public class ExtWindowFactory {
+            private ExtensionLibrary lib;
+            public ExtWindowFactory(ExtensionLibrary lib)
+            {
+                this.lib = lib;
+            }
+
+            public AntumbraExtSettingsWindow MakeAndShowWindow(Guid id)
+            {
+                GlowExtension ext = this.lib.findExt(id);
+                AntumbraExtSettingsWindow win = new AntumbraExtSettingsWindow(ext);
+                win.Show();
+                return win;
             }
         }
     }

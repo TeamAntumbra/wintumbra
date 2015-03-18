@@ -20,7 +20,7 @@ using System.Drawing;
 
 namespace Antumbra.Glow.Settings
 {
-    public class SettingsWindowController : ConfigurationObserver, GlowCommandSender, ToolbarNotificationSource,
+    public class AdvancedSettingsWindowController : ConfigurationObserver, GlowCommandSender, ToolbarNotificationSource,
                                             GlowExtCollectionObserver
     {
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
@@ -30,9 +30,9 @@ namespace Antumbra.Glow.Settings
         public int id;
         private SettingsWindow window;
         private GlowDevice dev;
-        private BasicExtSettingsWinFactory settingsFactory;
+        private AntumbraExtSettingsWindow.ExtWindowFactory settingsFactory;
         private pollingAreaSetter pollingAreaWindow;
-        public SettingsWindowController(GlowDevice dev, String version, BasicExtSettingsWinFactory factory)
+        public AdvancedSettingsWindowController(GlowDevice dev, String version, AntumbraExtSettingsWindow.ExtWindowFactory factory)
         {
             this.dev = dev;
             this.dev.AttachObserver(this);
@@ -77,7 +77,7 @@ namespace Antumbra.Glow.Settings
             GlowExtension ext = (GlowExtension)sender;
             if (ext != null) {
                 if (!ext.Settings())
-                    this.settingsFactory.GenerateWindow(ext.id).Show();
+                    this.settingsFactory.MakeAndShowWindow(ext.id);
             }
         }
 
@@ -373,10 +373,8 @@ namespace Antumbra.Glow.Settings
         private void AttemptToOpenSettingsWindow(Guid id)
         {
             try {
-                if (!this.dev.GetExtSettingsWin(id)) {
-                    var win = this.settingsFactory.GenerateWindow(id);
-                    win.Show();
-                }
+                if (!this.dev.GetExtSettingsWin(id))
+                    this.settingsFactory.MakeAndShowWindow(id);
             }
             catch (Exception) {
                 NewToolbarNotifAvailEvent(3000, "No Selected Extension",

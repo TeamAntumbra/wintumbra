@@ -19,24 +19,24 @@ namespace Antumbra.Glow.Settings
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommand(GlowCommand cmd);
         public event NewGlowCommand NewGlowCommandAvailEvent;
-        private List<SettingsWindowController> controllers;
+        private List<AdvancedSettingsWindowController> controllers;
         private String productVersion;
-        private BasicExtSettingsWinFactory basicWinFactory;
+        private AntumbraExtSettingsWindow.ExtWindowFactory basicWinFactory;
         private ExtensionLibrary lib;
         public SettingsWindowManager(String productVersion, ExtensionLibrary lib)
         {
             this.lib = lib;
-            this.basicWinFactory = new BasicExtSettingsWinFactory(this.lib);
+            this.basicWinFactory = new AntumbraExtSettingsWindow.ExtWindowFactory(this.lib);
             this.productVersion = productVersion;
-            this.controllers = new List<SettingsWindowController>();
+            this.controllers = new List<AdvancedSettingsWindowController>();
         }
 
-        public SettingsWindowController CreateAndAddNewController(GlowDevice dev)
+        public AdvancedSettingsWindowController CreateAndAddNewController(GlowDevice dev)
         {
-            SettingsWindowController found = FindController(dev.id);
+            AdvancedSettingsWindowController found = FindController(dev.id);
             if (found != null)
                 return found;//no need to make a new one
-            SettingsWindowController cont = new SettingsWindowController(dev, this.productVersion, this.basicWinFactory);
+            AdvancedSettingsWindowController cont = new AdvancedSettingsWindowController(dev, this.productVersion, this.basicWinFactory);
             this.lib.AttachObserver(cont);
             this.lib.NotifyObservers();//force inital update for this controller
             cont.AttachObserver((ToolbarNotificationObserver)this);
@@ -76,15 +76,15 @@ namespace Antumbra.Glow.Settings
 
         public bool Show(int id)
         {
-            SettingsWindowController cont = FindController(id);
+            AdvancedSettingsWindowController cont = FindController(id);
             if (cont != null)
                 cont.Show();
             return false;
         }
 
-        private SettingsWindowController FindController(int id)
+        private AdvancedSettingsWindowController FindController(int id)
         {
-            foreach (SettingsWindowController cont in controllers)
+            foreach (AdvancedSettingsWindowController cont in controllers)
                 if (cont.id.Equals(id))
                     return cont;
             return null;
