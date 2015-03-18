@@ -46,7 +46,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public ActiveExtensions activeExts { get; private set; }
         private ExtensionLibrary lib;
         private bool compoundDecoration;
-        private int stepSleep, x, y, width, height;
+        private int stepSleep, x, y, width, height;//local copies of just these rather than entire DeviceSettings obj
         public const String configFileBase = "ActiveExtsDev_";
         /// <summary>
         /// Constructor - Creates a new ExtensionManager relating to the GlowDevice
@@ -72,6 +72,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void LoadSave(String settings)
         {
+            this.Stop();
             String[] parts = settings.Split(',');
             this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
             this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
@@ -92,6 +93,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void Reset()
         {
+            this.Stop();
             this.activeExts.ActiveDriver = this.lib.GetDefaultDriver();
             this.activeExts.ActiveGrabber = this.lib.GetDefaultGrabber();
             this.activeExts.ActiveProcessor = this.lib.GetDefaultProcessor();
@@ -306,6 +308,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             if (!Verify())
                 return false;
+            GlowDriver activeDriver = this.activeExts.ActiveDriver;
             this.activeExts.ActiveDriver.AttachColorObserver(this);
             if (this.activeExts.ActiveDriver is Loggable) {
                 Loggable log = (Loggable)this.activeExts.ActiveDriver;
@@ -341,7 +344,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 }
                 this.activeExts.ActiveGrabber.x = this.x;//set screen related settings for grabber
                 this.activeExts.ActiveGrabber.y = this.y;
-                this.activeExts.ActiveGrabber.width = this.width;
+                this.activeExts.ActiveGrabber.width = this.width;//TODO potential, convert these to be changed via observer in extensions of certain type
                 this.activeExts.ActiveGrabber.height = this.height;
                 this.activeExts.ActiveDriver = new GlowScreenDriverCoupler(this.activeExts.ActiveGrabber, this.activeExts.ActiveProcessor);
             }
@@ -355,14 +358,18 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public bool Stop()
         {
             bool result = true;
-            if (!this.activeExts.ActiveDriver.Stop())//coupler will stop grabber & processor
-                result = false;
-            foreach (var dec in this.activeExts.ActiveDecorators)
-                if (!dec.Stop())
+            if (this.activeExts != null) {
+                if (this.activeExts.ActiveDriver == null)
+                    return false;
+                if (!this.activeExts.ActiveDriver.Stop())//coupler will stop grabber & processor
                     result = false;
-            foreach (var notf in this.activeExts.ActiveNotifiers)
-                if (!notf.Stop())
-                    result = false;
+                foreach (var dec in this.activeExts.ActiveDecorators)
+                    if (!dec.Stop())
+                        result = false;
+                foreach (var notf in this.activeExts.ActiveNotifiers)
+                    if (!notf.Stop())
+                        result = false;
+            }
             return result;
         }
     }
