@@ -15,6 +15,14 @@ namespace Antumbra.Glow.View
         public event EventHandler closeBtn_ClickEvent;
         public event EventHandler colorWheel_ColorChangedEvent;
         public event EventHandler brightnessTrackBar_ScrollEvent;
+        public event EventHandler hsvBtn_ClickEvent;
+        public event EventHandler sinBtn_ClickEvent;
+        public event EventHandler neonBtn_ClickEvent;
+        public event EventHandler mirrorBtn_ClickEvent;
+        public event EventHandler augmentBtn_ClickEvent;
+        public event EventHandler smoothBtn_ClickEvent;
+        public event EventHandler gameBtn_ClickEvent;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +44,48 @@ namespace Antumbra.Glow.View
         {
             if (brightnessTrackBar_ScrollEvent != null)
                 brightnessTrackBar_ScrollEvent(sender, e);
+        }
+
+        private void hsvBtn_Click(object sender, EventArgs e)
+        {
+            if (hsvBtn_ClickEvent != null)
+                hsvBtn_ClickEvent(sender, e);
+        }
+
+        private void sinBtn_Click(object sender, EventArgs e)
+        {
+            if (sinBtn_ClickEvent != null)
+                sinBtn_ClickEvent(sender, e);
+        }
+
+        private void neonBtn_Click(object sender, EventArgs e)
+        {
+            if (neonBtn_ClickEvent != null)
+                neonBtn_ClickEvent(sender, e);
+        }
+
+        private void mirrorBtn_Click(object sender, EventArgs e)
+        {
+            if (mirrorBtn_ClickEvent != null)
+                mirrorBtn_ClickEvent(sender, e);
+        }
+
+        private void augmentBtn_Click(object sender, EventArgs e)
+        {
+            if (augmentBtn_ClickEvent != null)
+                augmentBtn_ClickEvent(sender, e);
+        }
+
+        private void smoothBtn_Click(object sender, EventArgs e)
+        {
+            if (smoothBtn_ClickEvent != null)
+                smoothBtn_ClickEvent(sender, e);
+        }
+
+        private void gameBtn_Click(object sender, EventArgs e)
+        {
+            if (gameBtn_ClickEvent != null)
+                gameBtn_ClickEvent(sender, e);
         }
     }
 }

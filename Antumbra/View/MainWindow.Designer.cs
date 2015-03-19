@@ -204,6 +204,7 @@
             this.mirrorBtn.TabIndex = 0;
             this.mirrorBtn.Text = "Mirror";
             this.mirrorBtn.UseVisualStyleBackColor = true;
+            this.mirrorBtn.Click += new System.EventHandler(this.mirrorBtn_Click);
             // 
             // augmentBtn
             // 
@@ -215,6 +216,7 @@
             this.augmentBtn.TabIndex = 1;
             this.augmentBtn.Text = "Augment";
             this.augmentBtn.UseVisualStyleBackColor = true;
+            this.augmentBtn.Click += new System.EventHandler(this.augmentBtn_Click);
             // 
             // smoothBtn
             // 
@@ -226,6 +228,7 @@
             this.smoothBtn.TabIndex = 2;
             this.smoothBtn.Text = "Smooth";
             this.smoothBtn.UseVisualStyleBackColor = true;
+            this.smoothBtn.Click += new System.EventHandler(this.smoothBtn_Click);
             // 
             // gameBtn
             // 
@@ -237,6 +240,7 @@
             this.gameBtn.TabIndex = 3;
             this.gameBtn.Text = "Game";
             this.gameBtn.UseVisualStyleBackColor = true;
+            this.gameBtn.Click += new System.EventHandler(this.gameBtn_Click);
             // 
             // modeDescs
             // 
@@ -280,6 +284,7 @@
             this.neonBtn.TabIndex = 7;
             this.neonBtn.Text = "Neon";
             this.neonBtn.UseVisualStyleBackColor = true;
+            this.neonBtn.Click += new System.EventHandler(this.neonBtn_Click);
             // 
             // sinBtn
             // 
@@ -291,6 +296,7 @@
             this.sinBtn.TabIndex = 6;
             this.sinBtn.Text = "Sin Fade";
             this.sinBtn.UseVisualStyleBackColor = true;
+            this.sinBtn.Click += new System.EventHandler(this.sinBtn_Click);
             // 
             // hsvBtn
             // 
@@ -302,6 +308,7 @@
             this.hsvBtn.TabIndex = 5;
             this.hsvBtn.Text = "HSV";
             this.hsvBtn.UseVisualStyleBackColor = true;
+            this.hsvBtn.Click += new System.EventHandler(this.hsvBtn_Click);
             // 
             // MainWindow
             // 

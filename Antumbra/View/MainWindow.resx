@@ -117,16 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>HSV - A sweep through the Hue Saturation Value color spectrum.
-
-Sin Fade - Fade between black (off) and white following the curve of a sin wave.
-
-Neon - Fade between a selection of strong vibrant colors.</value>
-  </data>
-  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="modeDescs.Text" xml:space="preserve">
     <value>Mirror - Base Glow's color off of what is on screen. No crazy algorithms, just an average.
 
@@ -135,6 +125,16 @@ Augment - Like Mirror, only with all those crazy algorithms.
 Smooth - A smoothed balance in between Mirror and Augment.
 
 Game - A special capture mode for DirectX games. Click for more info.</value>
+  </data>
+  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="label1.Text" xml:space="preserve">
+    <value>HSV - A sweep through the Hue Saturation Value color spectrum.
+
+Sin Fade - Fade between black (off) and white following the curve of a sin wave.
+
+Neon - Fade between a selection of strong vibrant colors.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
