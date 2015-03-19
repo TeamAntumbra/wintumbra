@@ -47,8 +47,13 @@
             this.gameBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
             this.mirrorTab = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.neonBtn = new System.Windows.Forms.Button();
+            this.sinBtn = new System.Windows.Forms.Button();
+            this.hsvBtn = new System.Windows.Forms.Button();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
+            this.fadeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             this.mirrorTab.SuspendLayout();
@@ -104,6 +109,10 @@
             // fadeTab
             // 
             this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.fadeTab.Controls.Add(this.label1);
+            this.fadeTab.Controls.Add(this.neonBtn);
+            this.fadeTab.Controls.Add(this.sinBtn);
+            this.fadeTab.Controls.Add(this.hsvBtn);
             this.fadeTab.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.fadeTab.Location = new System.Drawing.Point(4, 25);
             this.fadeTab.Name = "fadeTab";
@@ -253,6 +262,47 @@
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(6, 95);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(531, 127);
+            this.label1.TabIndex = 9;
+            this.label1.Text = resources.GetString("label1.Text");
+            // 
+            // neonBtn
+            // 
+            this.neonBtn.AutoSize = true;
+            this.neonBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.neonBtn.Location = new System.Drawing.Point(399, 32);
+            this.neonBtn.Name = "neonBtn";
+            this.neonBtn.Size = new System.Drawing.Size(75, 28);
+            this.neonBtn.TabIndex = 7;
+            this.neonBtn.Text = "Neon";
+            this.neonBtn.UseVisualStyleBackColor = true;
+            // 
+            // sinBtn
+            // 
+            this.sinBtn.AutoSize = true;
+            this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.sinBtn.Location = new System.Drawing.Point(233, 32);
+            this.sinBtn.Name = "sinBtn";
+            this.sinBtn.Size = new System.Drawing.Size(75, 28);
+            this.sinBtn.TabIndex = 6;
+            this.sinBtn.Text = "Sin Fade";
+            this.sinBtn.UseVisualStyleBackColor = true;
+            // 
+            // hsvBtn
+            // 
+            this.hsvBtn.AutoSize = true;
+            this.hsvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hsvBtn.Location = new System.Drawing.Point(57, 32);
+            this.hsvBtn.Name = "hsvBtn";
+            this.hsvBtn.Size = new System.Drawing.Size(75, 28);
+            this.hsvBtn.TabIndex = 5;
+            this.hsvBtn.Text = "HSV";
+            this.hsvBtn.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -272,6 +322,8 @@
             this.flatTabControl.ResumeLayout(false);
             this.manualTab.ResumeLayout(false);
             this.manualTab.PerformLayout();
+            this.fadeTab.ResumeLayout(false);
+            this.fadeTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             this.mirrorTab.ResumeLayout(false);
@@ -301,5 +353,9 @@
         private System.Windows.Forms.Button smoothBtn;
         private System.Windows.Forms.Button augmentBtn;
         private System.Windows.Forms.Button mirrorBtn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button neonBtn;
+        private System.Windows.Forms.Button sinBtn;
+        private System.Windows.Forms.Button hsvBtn;
     }
 }
