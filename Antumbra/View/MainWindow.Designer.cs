@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.closeBtn = new System.Windows.Forms.Button();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
@@ -34,7 +35,11 @@
             this.mirrorTab = new System.Windows.Forms.TabPage();
             this.fadeTab = new System.Windows.Forms.TabPage();
             this.customTab = new System.Windows.Forms.TabPage();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.flatTabControl.SuspendLayout();
+            this.manualTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -64,19 +69,19 @@
             this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.flatTabControl.Name = "flatTabControl";
             this.flatTabControl.SelectedIndex = 0;
-            this.flatTabControl.Size = new System.Drawing.Size(755, 348);
-            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+            this.flatTabControl.Size = new System.Drawing.Size(755, 266);
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.flatTabControl.TabIndex = 74;
             // 
             // manualTab
             // 
             this.manualTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.manualTab.Controls.Add(this.colorWheel);
             this.manualTab.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.manualTab.Location = new System.Drawing.Point(4, 25);
             this.manualTab.Name = "manualTab";
             this.manualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manualTab.Size = new System.Drawing.Size(747, 319);
+            this.manualTab.Size = new System.Drawing.Size(747, 237);
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
@@ -113,12 +118,21 @@
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 18);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(202, 202);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.ClientSize = new System.Drawing.Size(783, 411);
+            this.ClientSize = new System.Drawing.Size(783, 317);
             this.Controls.Add(this.flatTabControl);
             this.Controls.Add(this.closeBtn);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
@@ -129,6 +143,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainWindow";
             this.flatTabControl.ResumeLayout(false);
+            this.manualTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,5 +158,7 @@
         private System.Windows.Forms.TabPage mirrorTab;
         private System.Windows.Forms.TabPage fadeTab;
         private System.Windows.Forms.TabPage customTab;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private CyotekColorWheel.ColorWheel colorWheel;
     }
 }

@@ -13,6 +13,7 @@ namespace Antumbra.Glow.View
     public partial class MainWindow : Form
     {
         public event EventHandler closeBtn_ClickEvent;
+        public event EventHandler colorWheel_ColorChangedEvent;
         public MainWindow()
         {
             InitializeComponent();
@@ -20,7 +21,14 @@ namespace Antumbra.Glow.View
 
         private void closeBtn_Click(object sender, EventArgs e)
         {
+            if (closeBtn_ClickEvent != null)
+                closeBtn_ClickEvent(sender, e);
+        }
 
+        private void colorWheel_ColorChanged(object sender, EventArgs e)
+        {
+            if (colorWheel_ColorChangedEvent != null)
+                colorWheel_ColorChangedEvent(sender, e);
         }
     }
 }

@@ -137,7 +137,7 @@ namespace Antumbra.Glow
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
-                    //contextMenu.Show(Cursor.Position);
+                    contextMenu.Show(Cursor.Position);
         }
         /// <summary>
         /// Event handler for the settings menu item

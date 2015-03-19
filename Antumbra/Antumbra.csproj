@@ -185,6 +185,16 @@
     <Compile Include="ExtensionFramework\Types\GlowScreenDriverCoupler.cs" />
     <Compile Include="ExtensionFramework\Management\MEFHelper.cs" />
     <Compile Include="Utility\FPSCalc.cs" />
+    <Compile Include="View\CyotekColorWheel\ColorWheel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\CyotekColorWheel\IColorEditor.cs" />
+    <Compile Include="View\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\pollingAreaSetter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\AntumbraExtSettingsWindow.resx">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
