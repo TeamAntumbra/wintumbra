@@ -130,6 +130,7 @@
     <Compile Include="Connector\GlowDevice.cs" />
     <Compile Include="Connector\OutputLoop.cs" />
     <Compile Include="Connector\OutputLoopManager.cs" />
+    <Compile Include="Controller\MainWindowController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
       <SubType>Form</SubType>

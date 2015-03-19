@@ -23,10 +23,12 @@ namespace Antumbra.Glow.View
         public event EventHandler smoothBtn_ClickEvent;
         public event EventHandler gameBtn_ClickEvent;
         public event MouseEventHandler mainWindow_MouseDownEvent;
+        public event EventHandler customConfigBtn_ClickEvent;
 
         public MainWindow()
         {
             InitializeComponent();
+            this.versionLabel.Text = "v" + this.ProductVersion.ToString();
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -93,6 +95,12 @@ namespace Antumbra.Glow.View
         {
             if (mainWindow_MouseDownEvent != null)
                 mainWindow_MouseDownEvent(sender, e);
+        }
+
+        private void customConfigBtn_Click(object sender, EventArgs e)
+        {
+            if (customConfigBtn_ClickEvent != null)
+                customConfigBtn_ClickEvent(sender, e);
         }
     }
 }

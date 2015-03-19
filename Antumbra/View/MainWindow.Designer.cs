@@ -51,9 +51,12 @@
             this.neonBtn = new System.Windows.Forms.Button();
             this.sinBtn = new System.Windows.Forms.Button();
             this.hsvBtn = new System.Windows.Forms.Button();
+            this.versionLabel = new System.Windows.Forms.Label();
+            this.customConfigBtn = new System.Windows.Forms.Button();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             this.fadeTab.SuspendLayout();
+            this.customTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             this.mirrorTab.SuspendLayout();
@@ -117,18 +120,19 @@
             this.fadeTab.Location = new System.Drawing.Point(4, 25);
             this.fadeTab.Name = "fadeTab";
             this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(543, 255);
+            this.fadeTab.Size = new System.Drawing.Size(569, 255);
             this.fadeTab.TabIndex = 2;
             this.fadeTab.Text = "Fade";
             // 
             // customTab
             // 
             this.customTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.customTab.Controls.Add(this.customConfigBtn);
             this.customTab.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.customTab.Location = new System.Drawing.Point(4, 25);
             this.customTab.Name = "customTab";
             this.customTab.Padding = new System.Windows.Forms.Padding(3);
-            this.customTab.Size = new System.Drawing.Size(543, 255);
+            this.customTab.Size = new System.Drawing.Size(569, 255);
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
@@ -262,7 +266,7 @@
             this.mirrorTab.Location = new System.Drawing.Point(4, 25);
             this.mirrorTab.Name = "mirrorTab";
             this.mirrorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mirrorTab.Size = new System.Drawing.Size(543, 255);
+            this.mirrorTab.Size = new System.Drawing.Size(569, 255);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
@@ -310,12 +314,35 @@
             this.hsvBtn.UseVisualStyleBackColor = true;
             this.hsvBtn.Click += new System.EventHandler(this.hsvBtn_Click);
             // 
+            // versionLabel
+            // 
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versionLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.versionLabel.Location = new System.Drawing.Point(200, 14);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(0, 20);
+            this.versionLabel.TabIndex = 76;
+            // 
+            // customConfigBtn
+            // 
+            this.customConfigBtn.AutoSize = true;
+            this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customConfigBtn.Location = new System.Drawing.Point(203, 111);
+            this.customConfigBtn.Name = "customConfigBtn";
+            this.customConfigBtn.Size = new System.Drawing.Size(169, 28);
+            this.customConfigBtn.TabIndex = 7;
+            this.customConfigBtn.Text = "Open Advanced Settings";
+            this.customConfigBtn.UseVisualStyleBackColor = true;
+            this.customConfigBtn.Click += new System.EventHandler(this.customConfigBtn_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(576, 334);
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.antumbraLabel);
             this.Controls.Add(this.flatTabControl);
             this.Controls.Add(this.closeBtn);
@@ -332,6 +359,8 @@
             this.manualTab.PerformLayout();
             this.fadeTab.ResumeLayout(false);
             this.fadeTab.PerformLayout();
+            this.customTab.ResumeLayout(false);
+            this.customTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             this.mirrorTab.ResumeLayout(false);
@@ -365,5 +394,7 @@
         private System.Windows.Forms.Button neonBtn;
         private System.Windows.Forms.Button sinBtn;
         private System.Windows.Forms.Button hsvBtn;
+        private System.Windows.Forms.Label versionLabel;
+        private System.Windows.Forms.Button customConfigBtn;
     }
 }

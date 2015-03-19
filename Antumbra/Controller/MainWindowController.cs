@@ -28,6 +28,7 @@ namespace Antumbra.Glow.Controller
             this.window.smoothBtn_ClickEvent += new EventHandler(smoothBtnClicked);
             this.window.gameBtn_ClickEvent += new EventHandler(gameBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
+            this.window.customConfigBtn_ClickEvent += new EventHandler(customConfigBtnClicked);
             this.window.Show();
         }
 
@@ -83,6 +84,11 @@ namespace Antumbra.Glow.Controller
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
+        {
+
+        }
+
+        public void customConfigBtnClicked(object sender, EventArgs args)
         {
 
         }
