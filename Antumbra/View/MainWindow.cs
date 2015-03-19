@@ -14,6 +14,7 @@ namespace Antumbra.Glow.View
     {
         public event EventHandler closeBtn_ClickEvent;
         public event EventHandler colorWheel_ColorChangedEvent;
+        public event EventHandler brightnessTrackBar_ScrollEvent;
         public MainWindow()
         {
             InitializeComponent();
@@ -29,6 +30,12 @@ namespace Antumbra.Glow.View
         {
             if (colorWheel_ColorChangedEvent != null)
                 colorWheel_ColorChangedEvent(sender, e);
+        }
+
+        private void brightnessTrackBar_Scroll(object sender, EventArgs e)
+        {
+            if (brightnessTrackBar_ScrollEvent != null)
+                brightnessTrackBar_ScrollEvent(sender, e);
         }
     }
 }

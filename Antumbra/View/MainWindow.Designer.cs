@@ -32,7 +32,6 @@
             this.closeBtn = new System.Windows.Forms.Button();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
-            this.mirrorTab = new System.Windows.Forms.TabPage();
             this.fadeTab = new System.Windows.Forms.TabPage();
             this.customTab = new System.Windows.Forms.TabPage();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -42,10 +41,17 @@
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.brightnessLabel = new System.Windows.Forms.Label();
+            this.mirrorBtn = new System.Windows.Forms.Button();
+            this.augmentBtn = new System.Windows.Forms.Button();
+            this.smoothBtn = new System.Windows.Forms.Button();
+            this.gameBtn = new System.Windows.Forms.Button();
+            this.modeDescs = new System.Windows.Forms.Label();
+            this.mirrorTab = new System.Windows.Forms.TabPage();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
+            this.mirrorTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -95,17 +101,6 @@
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
-            // mirrorTab
-            // 
-            this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.mirrorTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.mirrorTab.Location = new System.Drawing.Point(4, 25);
-            this.mirrorTab.Name = "mirrorTab";
-            this.mirrorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mirrorTab.Size = new System.Drawing.Size(747, 255);
-            this.mirrorTab.TabIndex = 1;
-            this.mirrorTab.Text = "Mirror";
-            // 
             // fadeTab
             // 
             this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
@@ -113,7 +108,7 @@
             this.fadeTab.Location = new System.Drawing.Point(4, 25);
             this.fadeTab.Name = "fadeTab";
             this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(747, 255);
+            this.fadeTab.Size = new System.Drawing.Size(543, 255);
             this.fadeTab.TabIndex = 2;
             this.fadeTab.Text = "Fade";
             // 
@@ -124,7 +119,7 @@
             this.customTab.Location = new System.Drawing.Point(4, 25);
             this.customTab.Name = "customTab";
             this.customTab.Padding = new System.Windows.Forms.Padding(3);
-            this.customTab.Size = new System.Drawing.Size(747, 255);
+            this.customTab.Size = new System.Drawing.Size(543, 255);
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
@@ -178,6 +173,7 @@
             this.brightnessTrackBar.Name = "brightnessTrackBar";
             this.brightnessTrackBar.Size = new System.Drawing.Size(244, 45);
             this.brightnessTrackBar.TabIndex = 3;
+            this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
             // 
             // brightnessLabel
             // 
@@ -188,6 +184,74 @@
             this.brightnessLabel.Size = new System.Drawing.Size(78, 18);
             this.brightnessLabel.TabIndex = 4;
             this.brightnessLabel.Text = "Brightness";
+            // 
+            // mirrorBtn
+            // 
+            this.mirrorBtn.AutoSize = true;
+            this.mirrorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mirrorBtn.Location = new System.Drawing.Point(57, 44);
+            this.mirrorBtn.Name = "mirrorBtn";
+            this.mirrorBtn.Size = new System.Drawing.Size(75, 28);
+            this.mirrorBtn.TabIndex = 0;
+            this.mirrorBtn.Text = "Mirror";
+            this.mirrorBtn.UseVisualStyleBackColor = true;
+            // 
+            // augmentBtn
+            // 
+            this.augmentBtn.AutoSize = true;
+            this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.augmentBtn.Location = new System.Drawing.Point(177, 44);
+            this.augmentBtn.Name = "augmentBtn";
+            this.augmentBtn.Size = new System.Drawing.Size(75, 28);
+            this.augmentBtn.TabIndex = 1;
+            this.augmentBtn.Text = "Augment";
+            this.augmentBtn.UseVisualStyleBackColor = true;
+            // 
+            // smoothBtn
+            // 
+            this.smoothBtn.AutoSize = true;
+            this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.smoothBtn.Location = new System.Drawing.Point(297, 44);
+            this.smoothBtn.Name = "smoothBtn";
+            this.smoothBtn.Size = new System.Drawing.Size(75, 28);
+            this.smoothBtn.TabIndex = 2;
+            this.smoothBtn.Text = "Smooth";
+            this.smoothBtn.UseVisualStyleBackColor = true;
+            // 
+            // gameBtn
+            // 
+            this.gameBtn.AutoSize = true;
+            this.gameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gameBtn.Location = new System.Drawing.Point(417, 44);
+            this.gameBtn.Name = "gameBtn";
+            this.gameBtn.Size = new System.Drawing.Size(75, 28);
+            this.gameBtn.TabIndex = 3;
+            this.gameBtn.Text = "Game";
+            this.gameBtn.UseVisualStyleBackColor = true;
+            // 
+            // modeDescs
+            // 
+            this.modeDescs.Location = new System.Drawing.Point(6, 107);
+            this.modeDescs.Name = "modeDescs";
+            this.modeDescs.Size = new System.Drawing.Size(531, 127);
+            this.modeDescs.TabIndex = 4;
+            this.modeDescs.Text = resources.GetString("modeDescs.Text");
+            // 
+            // mirrorTab
+            // 
+            this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.mirrorTab.Controls.Add(this.modeDescs);
+            this.mirrorTab.Controls.Add(this.gameBtn);
+            this.mirrorTab.Controls.Add(this.smoothBtn);
+            this.mirrorTab.Controls.Add(this.augmentBtn);
+            this.mirrorTab.Controls.Add(this.mirrorBtn);
+            this.mirrorTab.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.mirrorTab.Location = new System.Drawing.Point(4, 25);
+            this.mirrorTab.Name = "mirrorTab";
+            this.mirrorTab.Padding = new System.Windows.Forms.Padding(3);
+            this.mirrorTab.Size = new System.Drawing.Size(543, 255);
+            this.mirrorTab.TabIndex = 1;
+            this.mirrorTab.Text = "Mirror";
             // 
             // MainWindow
             // 
@@ -210,6 +274,8 @@
             this.manualTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
+            this.mirrorTab.ResumeLayout(false);
+            this.mirrorTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -220,7 +286,6 @@
         private System.Windows.Forms.Button closeBtn;
         private FlatTabControl.FlatTabControl flatTabControl;
         private System.Windows.Forms.TabPage manualTab;
-        private System.Windows.Forms.TabPage mirrorTab;
         private System.Windows.Forms.TabPage fadeTab;
         private System.Windows.Forms.TabPage customTab;
         private System.Windows.Forms.BindingSource bindingSource1;
@@ -230,5 +295,11 @@
         private System.Windows.Forms.RadioButton onBtn;
         private System.Windows.Forms.Label brightnessLabel;
         private System.Windows.Forms.TrackBar brightnessTrackBar;
+        private System.Windows.Forms.TabPage mirrorTab;
+        private System.Windows.Forms.Label modeDescs;
+        private System.Windows.Forms.Button gameBtn;
+        private System.Windows.Forms.Button smoothBtn;
+        private System.Windows.Forms.Button augmentBtn;
+        private System.Windows.Forms.Button mirrorBtn;
     }
 }
