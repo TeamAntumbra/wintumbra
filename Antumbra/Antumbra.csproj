@@ -177,11 +177,11 @@
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationSource.cs" />
     <Compile Include="Utility\Mixer.cs" />
-    <Compile Include="AntumbraCore.cs">
+    <Compile Include="ToolbarIconController.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AntumbraCore.Designer.cs">
-      <DependentUpon>AntumbraCore.cs</DependentUpon>
+    <Compile Include="ToolbarIconController.Designer.cs">
+      <DependentUpon>ToolbarIconController.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionFramework\Types\GlowScreenDriverCoupler.cs" />
     <Compile Include="ExtensionFramework\Management\MEFHelper.cs" />
@@ -217,8 +217,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\UniqueColorGenerator.cs" />
-    <EmbeddedResource Include="AntumbraCore.resx">
-      <DependentUpon>AntumbraCore.cs</DependentUpon>
+    <EmbeddedResource Include="ToolbarIconController.resx">
+      <DependentUpon>ToolbarIconController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\AntumbraExtSettingsWindow.resx">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>

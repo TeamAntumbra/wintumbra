@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using Antumbra.Glow.Controller;
 
 namespace Antumbra.Glow
 {
@@ -22,14 +23,9 @@ namespace Antumbra.Glow
                 }
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                AntumbraCore core = new AntumbraCore();
-                core.Hide();
-                if (core.goodStart)
-                    Application.Run();
-                else {//if start up failed close the app before it even starts
-                    core.Close();
-                    core.Dispose();
-                }
+                ToolbarIconController controller = new ToolbarIconController();
+                controller.Hide();//no associated form, so hide any default junk
+                Application.Run();//start independednt of form
             }
         }
 

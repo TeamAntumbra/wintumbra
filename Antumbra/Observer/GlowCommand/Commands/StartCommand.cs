@@ -13,7 +13,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
         {
 
         }
-        public override void ExecuteCommand(AntumbraCore core)
+        public override void ExecuteCommand(ToolbarIconController core)
         {
             core.Start(this.id);
         }

@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.GlowCommands
 {
     public interface IGlowCommand
     {
-        void ExecuteCommand(AntumbraCore core);
+        void ExecuteCommand(ToolbarIconController core);
     }
 }

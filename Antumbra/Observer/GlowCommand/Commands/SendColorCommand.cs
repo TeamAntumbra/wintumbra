@@ -16,7 +16,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
             this.newColor = newColor;
         }
 
-        public override void ExecuteCommand(AntumbraCore core)
+        public override void ExecuteCommand(ToolbarIconController core)
         {
             core.SendColor(this.id, this.newColor);
         }

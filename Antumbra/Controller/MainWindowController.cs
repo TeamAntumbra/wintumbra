@@ -2,21 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Antumbra.Glow.View;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.ExtensionFramework.Management;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 namespace Antumbra.Glow.Controller
 {
-    public class MainWindowController : Loggable
+    public class MainWindowController : Loggable, ToolbarNotificationSource
     {
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
+        public delegate void NewToolbarNotifAvail(int time, string title, string msg, int icon);
+        public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
+        public bool goodStart { get; private set; }
+        private const string extPath = "./Extensions/";
         private MainWindow window;
-        public MainWindowController()//main entry point for the system
+        public MainWindowController()
         {
+            this.AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
             this.window = new MainWindow();
@@ -32,19 +41,40 @@ namespace Antumbra.Glow.Controller
             this.window.gameBtn_ClickEvent += new EventHandler(gameBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
             this.window.customConfigBtn_ClickEvent += new EventHandler(customConfigBtnClicked);
-            this.window.Show();
+            this.showWindow();
+        }
+
+        public void AttachObserver(ToolbarNotificationObserver observer)
+        {
+            if (NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
         public void AttachObserver(LogMsgObserver observer)
         {
-            if (this.NewLogMsgAvailEvent != null)
-                this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+
+        }
+
+        private void ShowMessage(int time, string title, string msg, int icon)
+        {
+            if (NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);
+        }
+
+        private void Log(string msg)
+        {
+            if (NewLogMsgAvailEvent != null)
+                NewLogMsgAvailEvent("MainWindowController", msg);
+        }
+
+        public void showWindow()
+        {
+            this.window.Show();
         }
 
         public void closeBtnClicked(object sender, EventArgs args)
         {
-            this.window.Close();
-            this.window.Dispose();
+            this.window.Hide();
         }
 
         public void colorWheelColorChanged(object sender, EventArgs args)

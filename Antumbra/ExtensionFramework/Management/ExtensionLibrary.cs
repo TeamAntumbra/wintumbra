@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Extensions;
+using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
 {
-    public class ExtensionLibrary : GlowExtCollection
+    public class ExtensionLibrary : GlowExtCollection, Loggable
     {
+        public delegate void NewLogMsgAvail(string source, string msg);
+        public event NewLogMsgAvail NewLogMsgAvailEvent;
         public delegate void CollectionUpdate(List<GlowExtension> exts);
         public event CollectionUpdate CollectionUpdateEvent;
         public List<GlowDriver> AvailDrivers { get; private set; }
@@ -23,6 +26,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             MEFHelper helper = new MEFHelper(path);
             if (helper.failed) {
+                this.Log("MEFHelper failed to initalize correctly.");
                 this.ready = false;
                 return;//cannot continue
             }
@@ -38,14 +42,45 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.AvailNotifiers = helper.AvailNotifiers;
             this.AvailExtensions.AddRange(this.AvailNotifiers);
             helper.Dispose();
+            LogFoundExtensions();
             if (CollectionUpdateEvent != null)
                 CollectionUpdateEvent(this.AvailExtensions);
             this.ready = true;
         }
 
+        public void AttachObserver(LogMsgObserver observer)
+        {
+            if (this.NewLogMsgAvailEvent != null)
+                this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+        }
+
+        private void LogFoundExtensions()
+        {
+            this.Log("Found Extensions:");
+            LogExtensions("Drivers", this.AvailDrivers.ToList<GlowExtension>());
+            LogExtensions("Screen Grabbers", this.AvailGrabbers.ToList<GlowExtension>());
+            LogExtensions("Screen Processors", this.AvailProcessors.ToList<GlowExtension>());
+            LogExtensions("Decorators", this.AvailDecorators.ToList<GlowExtension>());
+            LogExtensions("Notifiers", this.AvailNotifiers.ToList<GlowExtension>());
+        }
+
+        private void LogExtensions(String type, List<GlowExtension> exts)
+        {
+            this.Log("Found " + type + ":");
+            foreach (var ext in exts)
+                this.Log("\t" + ext.ToString());
+        }
+
+        private void Log(string msg)
+        {
+            if (this.NewLogMsgAvailEvent != null)
+                this.NewLogMsgAvailEvent("Extension Library", msg);
+        }
+
         public void NotifyObservers()
         {
-            CollectionUpdateEvent(this.AvailExtensions);
+            if (CollectionUpdateEvent != null)
+                CollectionUpdateEvent(this.AvailExtensions);
         }
 
         public void AttachObserver(GlowExtCollectionObserver observer)

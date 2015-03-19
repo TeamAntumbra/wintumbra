@@ -11,14 +11,14 @@ namespace Antumbra.Glow.Observer.Logging
     /// </summary>
     public static class LoggerHelper
     {
-        internal class Logger : LogMsgObserver {
+        public class Logger : LogMsgObserver {
             private object sync = new object();
             /// <summary>
             /// Name of the log file for this Logger
             /// </summary>
             private string name;
             private string path;
-            public Logger(string name) {
+            internal Logger(string name) {
                 this.name = name;
                 this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                     "\\Antumbra\\";
@@ -46,12 +46,8 @@ namespace Antumbra.Glow.Observer.Logging
         }
 
         private static Logger instance;
-        private static void AttachLoggable(Loggable loggable)
-        {
 
-        }
-
-        private static Logger GetInstance()
+        public static Logger GetInstance()
         {
             if (instance == null)
                 instance = new Logger("wintumbra.log");

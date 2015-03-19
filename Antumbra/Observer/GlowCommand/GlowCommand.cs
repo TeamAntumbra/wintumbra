@@ -14,6 +14,6 @@ namespace Antumbra.Glow.Observer.GlowCommands
             this.id = id;
         }
 
-        public abstract void ExecuteCommand(AntumbraCore core);
+        public abstract void ExecuteCommand(ToolbarIconController core);
     }
 }
