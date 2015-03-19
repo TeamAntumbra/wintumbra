@@ -32,11 +32,8 @@
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
             this.mirrorTab = new System.Windows.Forms.TabPage();
-<<<<<<< HEAD
             this.fadeTab = new System.Windows.Forms.TabPage();
             this.customTab = new System.Windows.Forms.TabPage();
-=======
->>>>>>> 1ac96a20ea774215222d68e9cc9914d836f24241
             this.flatTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,22 +57,16 @@
             // 
             this.flatTabControl.Controls.Add(this.manualTab);
             this.flatTabControl.Controls.Add(this.mirrorTab);
-<<<<<<< HEAD
             this.flatTabControl.Controls.Add(this.fadeTab);
             this.flatTabControl.Controls.Add(this.customTab);
-=======
->>>>>>> 1ac96a20ea774215222d68e9cc9914d836f24241
             this.flatTabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.flatTabControl.Location = new System.Drawing.Point(14, 48);
             this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.flatTabControl.Name = "flatTabControl";
             this.flatTabControl.SelectedIndex = 0;
             this.flatTabControl.Size = new System.Drawing.Size(755, 348);
-<<<<<<< HEAD
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
-=======
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
->>>>>>> 1ac96a20ea774215222d68e9cc9914d836f24241
             this.flatTabControl.TabIndex = 74;
             // 
             // manualTab
@@ -100,7 +91,6 @@
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
-<<<<<<< HEAD
             // fadeTab
             // 
             this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
@@ -123,8 +113,6 @@
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
-=======
->>>>>>> 1ac96a20ea774215222d68e9cc9914d836f24241
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -152,10 +140,7 @@
         private FlatTabControl.FlatTabControl flatTabControl;
         private System.Windows.Forms.TabPage manualTab;
         private System.Windows.Forms.TabPage mirrorTab;
-<<<<<<< HEAD
         private System.Windows.Forms.TabPage fadeTab;
         private System.Windows.Forms.TabPage customTab;
-=======
->>>>>>> 1ac96a20ea774215222d68e9cc9914d836f24241
     }
 }
