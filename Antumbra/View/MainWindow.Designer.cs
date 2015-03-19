@@ -82,11 +82,11 @@
             this.flatTabControl.Controls.Add(this.fadeTab);
             this.flatTabControl.Controls.Add(this.customTab);
             this.flatTabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.flatTabControl.Location = new System.Drawing.Point(14, 51);
+            this.flatTabControl.Location = new System.Drawing.Point(-1, 51);
             this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.flatTabControl.Name = "flatTabControl";
             this.flatTabControl.SelectedIndex = 0;
-            this.flatTabControl.Size = new System.Drawing.Size(551, 284);
+            this.flatTabControl.Size = new System.Drawing.Size(577, 284);
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.flatTabControl.TabIndex = 74;
             // 
@@ -102,7 +102,7 @@
             this.manualTab.Location = new System.Drawing.Point(4, 25);
             this.manualTab.Name = "manualTab";
             this.manualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manualTab.Size = new System.Drawing.Size(543, 255);
+            this.manualTab.Size = new System.Drawing.Size(569, 255);
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
@@ -315,7 +315,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.ClientSize = new System.Drawing.Size(576, 338);
+            this.ClientSize = new System.Drawing.Size(576, 334);
             this.Controls.Add(this.antumbraLabel);
             this.Controls.Add(this.flatTabControl);
             this.Controls.Add(this.closeBtn);
@@ -326,6 +326,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainWindow";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);
             this.flatTabControl.ResumeLayout(false);
             this.manualTab.ResumeLayout(false);
             this.manualTab.PerformLayout();

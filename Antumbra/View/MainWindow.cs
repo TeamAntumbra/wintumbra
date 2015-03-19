@@ -22,6 +22,7 @@ namespace Antumbra.Glow.View
         public event EventHandler augmentBtn_ClickEvent;
         public event EventHandler smoothBtn_ClickEvent;
         public event EventHandler gameBtn_ClickEvent;
+        public event MouseEventHandler mainWindow_MouseDownEvent;
 
         public MainWindow()
         {
@@ -86,6 +87,12 @@ namespace Antumbra.Glow.View
         {
             if (gameBtn_ClickEvent != null)
                 gameBtn_ClickEvent(sender, e);
+        }
+
+        private void MainWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (mainWindow_MouseDownEvent != null)
+                mainWindow_MouseDownEvent(sender, e);
         }
     }
 }
