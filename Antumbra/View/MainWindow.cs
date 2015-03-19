@@ -28,7 +28,15 @@ namespace Antumbra.Glow.View
         public MainWindow()
         {
             InitializeComponent();
+            this.offBtn.Checked = true;//defaults off
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
+        }
+
+        public void ToggleOnOffSelection()
+        {
+            bool current = this.offBtn.Checked;
+            this.offBtn.Checked = !current;
+            this.onBtn.Checked = current;
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
