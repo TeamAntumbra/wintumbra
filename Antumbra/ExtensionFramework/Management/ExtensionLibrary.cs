@@ -24,6 +24,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public bool ready { get; private set; }
         public ExtensionLibrary(string path)
         {
+            this.AttachObserver(LoggerHelper.GetInstance());
             MEFHelper helper = new MEFHelper(path);
             if (helper.failed) {
                 this.Log("MEFHelper failed to initalize correctly.");

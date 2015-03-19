@@ -23,7 +23,7 @@ namespace Antumbra.Glow
                 }
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                ToolbarIconController controller = new ToolbarIconController();
+                ToolbarIcon controller = new ToolbarIcon();
                 controller.Hide();//no associated form, so hide any default junk
                 Application.Run();//start independednt of form
             }

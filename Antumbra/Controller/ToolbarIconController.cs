@@ -1,52 +1,35 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.IO.Ports;
-using System.IO;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using Antumbra.Glow.Connector;
-using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.ExtensionFramework.Management;
-using Antumbra.Glow.Utility;
-using Antumbra.Glow.Settings;
+using System.Threading.Tasks;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
-using Antumbra.Glow.Observer.GlowCommands;
-using System.Reflection;
-using Microsoft.Win32;
+using Antumbra.Glow.ExtensionFramework.Management;
+using Antumbra.Glow.Connector;
+using Antumbra.Glow.Settings;
+using System.Drawing;
 
-namespace Antumbra.Glow
+namespace Antumbra.Glow.Controller
 {
-    public partial class ToolbarIconController : Form, Loggable, ToolbarNotificationObserver
+    public class ToolbarIconController : Loggable, ToolbarNotificationObserver, ToolbarNotificationSource
     {
+        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
+        public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private DeviceManager GlowManager;
-        private SettingsWindowManager SettingsWindowManager;
+        private AdvancedSettingsWindowManager SettingsWindowManager;
         private OutputLoopManager outManager;
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
-        //private Logger logger;
-        /// <summary>
-        /// ToolbarIconController Constructor - Main entry point into the system
-        /// </summary>
+        private ToolbarIcon toolbarIcon;
         public ToolbarIconController()
         {
+            this.toolbarIcon = new ToolbarIcon();
             this.AttachObserver(LoggerHelper.GetInstance());
             this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
-            InitializeComponent();
             try {
                 this.extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
             }
@@ -54,7 +37,7 @@ namespace Antumbra.Glow
                 string msg = "";
                 foreach (var err in e.LoaderExceptions)
                     msg += err.Message;
-                ShowMessage(10000, "Exception Occured While Loading Extensions", msg, ToolTipIcon.Error);
+                NewToolbarNotifAvail(10000, "Exception Occured While Loading Extensions", msg, 2);
                 Thread.Sleep(10000);//wait for message
                 throw e;//pass up
             }
@@ -66,13 +49,19 @@ namespace Antumbra.Glow
             foreach (var dev in this.GlowManager.Glows) {//create output loop
                 this.outManager.CreateAndAddLoop(GlowManager, dev.id);
             }
-            this.SettingsWindowManager = new SettingsWindowManager(this.ProductVersion, this.extLibrary);
+            this.SettingsWindowManager = new AdvancedSettingsWindowManager(this.toolbarIcon.ProductVersion, this.extLibrary);
             //this.SettingsWindowManager.AttachObserver((GlowCommandObserver)this);
             this.SettingsWindowManager.AttachObserver((ToolbarNotificationObserver)this);
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 GlowDevice dev = this.GlowManager.getDevice(0);
                 this.SettingsWindowManager.CreateAndAddNewController(dev);
             }
+        }
+
+        public void AttachObserver(ToolbarNotificationObserver observer)
+        {
+            if (this.NewToolbarNotifAvailEvent != null)
+                this.NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
         private void LogMsg(String msg)
@@ -85,52 +74,6 @@ namespace Antumbra.Glow
         {
             if (this.NewLogMsgAvailEvent != null)
                 this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
-        }
-
-        public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
-        {
-            ToolTipIcon notifIcon = ToolTipIcon.None;//default
-            switch (icon) {
-                case 0:
-                    notifIcon = ToolTipIcon.Info;
-                    break;
-                case 1:
-                    notifIcon = ToolTipIcon.Warning;
-                    break;
-                case 2:
-                    notifIcon = ToolTipIcon.Error;
-                    break;
-            }
-            this.ShowMessage(time, title, msg, notifIcon);
-        }
-        /// <summary>
-        /// Event handler for when the menubar icon is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
-                Console.Write("TODO");//TODO
-        }
-        /// <summary>
-        /// Announce the current devices extension configuration
-        /// </summary>
-        private void AnnounceConfig()
-        {
-            ShowMessage(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), ToolTipIcon.Info);
-        }
-        /// <summary>
-        /// Show the passed message as a balloon of the applications NotifyIcon
-        /// </summary>
-        /// <param name="time"></param>
-        /// <param name="title"></param>
-        /// <param name="msg"></param>
-        /// <param name="icon"></param>
-        private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
-        {
-        //    this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
-            this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
 
         public void Off(int id)
@@ -160,11 +103,11 @@ namespace Antumbra.Glow
         private void StartAll()//TODO move
         {
             if (this.GlowManager.GlowsFound == 0) {
-                ShowMessage(3000, "No Devices Found", "No devices were found to start.", ToolTipIcon.Error);
+                NewToolbarNotifAvail(3000, "No Devices Found", "No devices were found to start.", 2);
                 return;
             }
             StopAll();
-            ShowMessage(3000, "Starting All", "Extensions are being started. Please wait.", ToolTipIcon.Info);
+            NewToolbarNotifAvail(3000, "Starting All", "Extensions are being started. Please wait.", 0);
 
             foreach (var dev in this.GlowManager.Glows) {//start each output loop
                 this.Start(dev.id);
@@ -176,7 +119,7 @@ namespace Antumbra.Glow
         /// <param name="id"></param>
         public void Start(int id)//TODO move
         {
-      //      this.logger.Log("Starting device id: " + id);
+            //      this.logger.Log("Starting device id: " + id);
             Stop(id);
             var dev = this.GlowManager.getDevice(id);
             var loop = this.outManager.FindLoopOrReturnNull(id);
@@ -187,13 +130,13 @@ namespace Antumbra.Glow
             //dev.AttachGlowCommandObserverToExtMgr(this);
             dev.AttachColorObserverToExtMgr(loop);
             if (dev.Start()) {
-                this.ShowMessage(3000, "Device id: " + dev.id + " Started.", 
-                    "Device id: " + dev.id + " started successfully.", ToolTipIcon.Info);
+                NewToolbarNotifAvail(3000, "Device id: " + dev.id + " Started.",
+                    "Device id: " + dev.id + " started successfully.", 0);
                 this.Log(dev.GetSetupDesc());
             }
             else {//starting failed
                 dev.Stop();
-                this.ShowMessage(3000, "Starting Failed", "Starting the selected extensions failed.", ToolTipIcon.Error);
+                NewToolbarNotifAvail(3000, "Starting Failed", "Starting the selected extensions failed.", 2);
                 return;
             }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
@@ -213,18 +156,18 @@ namespace Antumbra.Glow
             var dev = this.GlowManager.getDevice(id);
             bool wasRunning = dev.running;
             if (wasRunning)//only show notifs if actually stopping device (still make call to clean up)
-                this.ShowMessage(3000, "Stopping device id: " + id, "Stopping device id " + id +
-                    " please wait.", ToolTipIcon.Info);
+                this.NewToolbarNotifAvail(3000, "Stopping device id: " + id, "Stopping device id " + id +
+                    " please wait.", 0);
             if (!dev.Stop())
-                ShowMessage(3000, "Device " + id + " Did Not Stop Correctly",
+                NewToolbarNotifAvail(3000, "Device " + id + " Did Not Stop Correctly",
                     "Device " + id + " reported that it did not stop correctly.",
-                    ToolTipIcon.Warning);
+                    1);
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop != null) {
                 loop.Dispose();
             }
             if (wasRunning)
-                ShowMessage(3000, "Device " + id + " Stopped.", "The current device has been stopped.", ToolTipIcon.Info);
+                NewToolbarNotifAvail(3000, "Device " + id + " Stopped.", "The current device has been stopped.", 1);
         }
         /// <summary>
         /// Stop all found devices
@@ -232,12 +175,26 @@ namespace Antumbra.Glow
         private void StopAll()
         {
             if (this.GlowManager.GlowsFound == 0) {
-                ShowMessage(3000, "No Devices Found", "No devices were found to stop.", ToolTipIcon.Error);
+                NewToolbarNotifAvail(3000, "No Devices Found", "No devices were found to stop.", 2);
                 return;
             }
             foreach (var dev in this.GlowManager.Glows) {
                 this.Stop(dev.id);
             }
+        }
+
+        /// <summary>
+        /// Announce the current devices extension configuration
+        /// </summary>
+        private void AnnounceConfig()
+        {
+            NewToolbarNotifAvail(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), 0);
+        }
+
+        public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
+        {
+            if (NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);
         }
     }
 }

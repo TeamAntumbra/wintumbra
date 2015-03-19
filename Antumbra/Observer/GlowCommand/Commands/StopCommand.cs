@@ -14,7 +14,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         }
 
-        public override void ExecuteCommand(ToolbarIconController core)
+        public override void ExecuteCommand(ToolbarIcon core)
         {
             core.Stop(this.id);
         }

@@ -13,7 +13,7 @@ using Antumbra.Glow.View;
 
 namespace Antumbra.Glow.Settings
 {
-    public class SettingsWindowManager : GlowCommandObserver, ToolbarNotificationObserver,
+    public class AdvancedSettingsWindowManager : GlowCommandObserver, ToolbarNotificationObserver,
                                          ToolbarNotificationSource, GlowCommandSender
     {
         public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
@@ -24,7 +24,7 @@ namespace Antumbra.Glow.Settings
         private String productVersion;
         private AntumbraExtSettingsWindow.ExtWindowFactory basicWinFactory;
         private ExtensionLibrary lib;
-        public SettingsWindowManager(String productVersion, ExtensionLibrary lib)
+        public AdvancedSettingsWindowManager(String productVersion, ExtensionLibrary lib)
         {
             this.lib = lib;
             this.basicWinFactory = new AntumbraExtSettingsWindow.ExtWindowFactory(this.lib);

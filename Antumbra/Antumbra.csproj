@@ -131,6 +131,7 @@
     <Compile Include="Connector\OutputLoop.cs" />
     <Compile Include="Connector\OutputLoopManager.cs" />
     <Compile Include="Controller\MainWindowController.cs" />
+    <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
       <SubType>Form</SubType>
@@ -169,7 +170,7 @@
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
     <Compile Include="Settings\ActiveExtensions.cs" />
     <Compile Include="Controller\AdvancedSettingsWindowController.cs" />
-    <Compile Include="Settings\SettingsWindowManager.cs" />
+    <Compile Include="Settings\AdvancedSettingsWindowManager.cs" />
     <Compile Include="Utility\Settings\Savable.cs" />
     <Compile Include="Utility\Settings\Saver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
@@ -177,11 +178,11 @@
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationSource.cs" />
     <Compile Include="Utility\Mixer.cs" />
-    <Compile Include="ToolbarIconController.cs">
+    <Compile Include="ToolbarIcon.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ToolbarIconController.Designer.cs">
-      <DependentUpon>ToolbarIconController.cs</DependentUpon>
+    <Compile Include="ToolbarIcon.Designer.cs">
+      <DependentUpon>ToolbarIcon.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionFramework\Types\GlowScreenDriverCoupler.cs" />
     <Compile Include="ExtensionFramework\Management\MEFHelper.cs" />
@@ -217,8 +218,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\UniqueColorGenerator.cs" />
-    <EmbeddedResource Include="ToolbarIconController.resx">
-      <DependentUpon>ToolbarIconController.cs</DependentUpon>
+    <EmbeddedResource Include="ToolbarIcon.resx">
+      <DependentUpon>ToolbarIcon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\AntumbraExtSettingsWindow.resx">
       <DependentUpon>AntumbraExtSettingsWindow.cs</DependentUpon>
