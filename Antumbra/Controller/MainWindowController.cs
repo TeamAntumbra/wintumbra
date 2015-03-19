@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Antumbra.Glow.View;
 using Antumbra.Glow.Observer.Logging;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace Antumbra.Glow.Controller
 {
@@ -14,8 +15,10 @@ namespace Antumbra.Glow.Controller
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private MainWindow window;
-        public MainWindowController()
+        public MainWindowController()//main entry point for the system
         {
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+            SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
             this.window = new MainWindow();
             this.window.closeBtn_ClickEvent += new EventHandler(closeBtnClicked);
             this.window.colorWheel_ColorChangedEvent += new EventHandler(colorWheelColorChanged);
@@ -40,7 +43,8 @@ namespace Antumbra.Glow.Controller
 
         public void closeBtnClicked(object sender, EventArgs args)
         {
-
+            this.window.Close();
+            this.window.Dispose();
         }
 
         public void colorWheelColorChanged(object sender, EventArgs args)
@@ -91,6 +95,40 @@ namespace Antumbra.Glow.Controller
         public void customConfigBtnClicked(object sender, EventArgs args)
         {
 
+        }
+
+        /// <summary>
+        /// Event handler for session switching. Used for handling locking and unlocking of the system
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            switch (e.Reason) {
+                case SessionSwitchReason.SessionLogoff:
+                case SessionSwitchReason.SessionLock:
+                    //this.Off();
+                    Console.WriteLine("locked/logged off");
+                    break;
+                case SessionSwitchReason.SessionLogon:
+                case SessionSwitchReason.SessionUnlock:
+                    Console.WriteLine("unlocked/logged on");
+                   // StartAllAfterDelay();
+                    break;
+            }
+        }
+        /// <summary>
+        /// Event handler for PowerModeChanged events
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            // User is putting the system into standby 
+            if (e.Mode == PowerModes.Suspend) {
+                //this.Off();
+                Console.WriteLine("Suspended.");
+            }
         }
 
         public void mouseDownEvent(object sender, System.Windows.Forms.MouseEventArgs args)
