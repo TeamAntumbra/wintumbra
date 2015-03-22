@@ -23,12 +23,12 @@ namespace Antumbra.Glow.Controller
         private DeviceManager GlowManager;
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
-        private ToolbarIcon toolbarIcon;
+        private Antumbra.Glow.View.ToolbarIcon toolbarIcon;
         public ToolbarIconController()
         {
-            this.toolbarIcon = new ToolbarIcon();
+            this.toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             this.toolbarIcon.Hide();
-            MainWindowController mainController = new MainWindowController();
+            MainWindowController mainController = new MainWindowController(this.toolbarIcon.ProductVersion);
             this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
             this.AttachObserver(LoggerHelper.GetInstance());
             this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
@@ -44,16 +44,13 @@ namespace Antumbra.Glow.Controller
                 throw e;//pass up
             }
             this.LogMsg("Creating DeviceManager");
-            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, this.extLibrary);//find devices
+            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, this.extLibrary, this.toolbarIcon.ProductVersion.ToString());//find devices
             mainController.AttachObserver((GlowCommandObserver)this.GlowManager);
+            mainController.AttachObserver(this);
             mainController.quitEventHandler += new EventHandler(Quit);
-            AdvancedSettingsWindowManager SettingsWindowManager = new AdvancedSettingsWindowManager(this.toolbarIcon.ProductVersion, this.extLibrary);
-            //this.SettingsWindowManager.AttachObserver((GlowCommandObserver)this);
-            SettingsWindowManager.AttachObserver((ToolbarNotificationObserver)this);
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 GlowDevice dev = this.GlowManager.getDevice(0);
                 mainController.RegisterDevice(dev.id);
-                SettingsWindowManager.CreateAndAddNewController(dev);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Antumbra.Glow
+﻿namespace Antumbra.Glow.View
 {
     partial class ToolbarIcon
     {

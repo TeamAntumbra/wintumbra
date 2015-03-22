@@ -21,7 +21,7 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using System.Reflection;
 using Microsoft.Win32;
 
-namespace Antumbra.Glow
+namespace Antumbra.Glow.View
 {
     public partial class ToolbarIcon : Form, ToolbarNotificationObserver
     {
