@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Antumbra.Glow.Connector;
 
 namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
@@ -16,9 +17,9 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
             this.newColor = newColor;
         }
 
-        public override void ExecuteCommand(ToolbarIcon core)
+        public override void ExecuteCommand(DeviceManager mgr)
         {
-            core.SendColor(this.id, this.newColor);
+            mgr.sendColor(newColor, id);
         }
     }
 }

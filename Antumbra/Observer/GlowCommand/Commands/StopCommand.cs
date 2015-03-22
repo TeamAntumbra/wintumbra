@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Antumbra.Glow.Connector;
 
 namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
@@ -14,9 +15,10 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         }
 
-        public override void ExecuteCommand(ToolbarIcon core)
+        public override void ExecuteCommand(DeviceManager mgr)
         {
-            core.Stop(this.id);
+            foreach (GlowDevice dev in mgr.Glows)
+                dev.Stop();
         }
     }
 }
