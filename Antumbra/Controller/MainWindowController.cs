@@ -14,6 +14,7 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using Antumbra.Glow.Utility;
 
 namespace Antumbra.Glow.Controller
 {
@@ -100,9 +101,9 @@ namespace Antumbra.Glow.Controller
 
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
-            if (sender is Color) {
-                Color col = (Color)sender;
-                NewGlowCmdAvailEvent(new SendColorCommand(this.id, col));
+            if (sender is HslColor) {
+                HslColor col = (HslColor)sender;
+                NewGlowCmdAvailEvent(new SendColorCommand(this.id, col.ToRgbColor()));
             }
         }
 
