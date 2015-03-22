@@ -28,6 +28,7 @@ namespace Antumbra.Glow.Controller
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
         public event EventHandler quitEventHandler;
         public bool goodStart { get; private set; }
+        private Guid currentDriver;
         private const string extPath = "./Extensions/";
         private MainWindow window;
         private int id;
@@ -102,6 +103,7 @@ namespace Antumbra.Glow.Controller
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
             if (sender is HslColor) {
+                NewGlowCmdAvailEvent(new StopCommand(this.id));//stop device if running (dev mgr will make check)
                 HslColor col = (HslColor)sender;
                 NewGlowCmdAvailEvent(new SendColorCommand(this.id, col.ToRgbColor()));
             }
@@ -155,6 +157,7 @@ namespace Antumbra.Glow.Controller
         public void quitBtnClicked(object sender, EventArgs args)
         {
             this.window.Close();
+            NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all devices off
             if (quitEventHandler != null)
                 quitEventHandler(sender, args);
         }

@@ -17,8 +17,15 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         public override void ExecuteCommand(DeviceManager mgr)
         {
-            mgr.getDevice(id).Stop();
-            mgr.sendColor(0, 0, 0, id);
+            if (this.id == -1)//turn off all
+                foreach (GlowDevice dev in mgr.Glows) {
+                    dev.Stop();
+                    mgr.sendColor(0, 0, 0, dev.id);
+                }
+            else {
+                mgr.getDevice(id).Stop();
+                mgr.sendColor(0, 0, 0, id);
+            }
         }
     }
 }
