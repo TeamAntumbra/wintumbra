@@ -32,34 +32,35 @@
             this.closeBtn = new System.Windows.Forms.Button();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
-            this.fadeTab = new System.Windows.Forms.TabPage();
-            this.customTab = new System.Windows.Forms.TabPage();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
-            this.antumbraLabel = new System.Windows.Forms.Label();
-            this.onBtn = new System.Windows.Forms.RadioButton();
-            this.offBtn = new System.Windows.Forms.RadioButton();
-            this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.brightnessLabel = new System.Windows.Forms.Label();
-            this.mirrorBtn = new System.Windows.Forms.Button();
-            this.augmentBtn = new System.Windows.Forms.Button();
-            this.smoothBtn = new System.Windows.Forms.Button();
-            this.gameBtn = new System.Windows.Forms.Button();
-            this.modeDescs = new System.Windows.Forms.Label();
+            this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
+            this.offBtn = new System.Windows.Forms.RadioButton();
+            this.onBtn = new System.Windows.Forms.RadioButton();
             this.mirrorTab = new System.Windows.Forms.TabPage();
+            this.modeDescs = new System.Windows.Forms.Label();
+            this.gameBtn = new System.Windows.Forms.Button();
+            this.smoothBtn = new System.Windows.Forms.Button();
+            this.augmentBtn = new System.Windows.Forms.Button();
+            this.mirrorBtn = new System.Windows.Forms.Button();
+            this.fadeTab = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.neonBtn = new System.Windows.Forms.Button();
             this.sinBtn = new System.Windows.Forms.Button();
             this.hsvBtn = new System.Windows.Forms.Button();
-            this.versionLabel = new System.Windows.Forms.Label();
+            this.customTab = new System.Windows.Forms.TabPage();
             this.customConfigBtn = new System.Windows.Forms.Button();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.antumbraLabel = new System.Windows.Forms.Label();
+            this.versionLabel = new System.Windows.Forms.Label();
+            this.quitBtn = new System.Windows.Forms.Button();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
+            this.mirrorTab.SuspendLayout();
             this.fadeTab.SuspendLayout();
             this.customTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
-            this.mirrorTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -72,7 +73,7 @@
             this.closeBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.closeBtn.Location = new System.Drawing.Point(520, -2);
             this.closeBtn.Name = "closeBtn";
-            this.closeBtn.Size = new System.Drawing.Size(28, 28);
+            this.closeBtn.Size = new System.Drawing.Size(33, 34);
             this.closeBtn.TabIndex = 73;
             this.closeBtn.Text = "X";
             this.closeBtn.UseVisualStyleBackColor = false;
@@ -96,6 +97,7 @@
             // manualTab
             // 
             this.manualTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.manualTab.Controls.Add(this.quitBtn);
             this.manualTab.Controls.Add(this.brightnessLabel);
             this.manualTab.Controls.Add(this.brightnessTrackBar);
             this.manualTab.Controls.Add(this.offBtn);
@@ -109,64 +111,23 @@
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
-            // fadeTab
+            // brightnessLabel
             // 
-            this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.fadeTab.Controls.Add(this.label1);
-            this.fadeTab.Controls.Add(this.neonBtn);
-            this.fadeTab.Controls.Add(this.sinBtn);
-            this.fadeTab.Controls.Add(this.hsvBtn);
-            this.fadeTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.fadeTab.Location = new System.Drawing.Point(4, 25);
-            this.fadeTab.Name = "fadeTab";
-            this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(569, 255);
-            this.fadeTab.TabIndex = 2;
-            this.fadeTab.Text = "Fade";
+            this.brightnessLabel.AutoSize = true;
+            this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.brightnessLabel.Location = new System.Drawing.Point(358, 82);
+            this.brightnessLabel.Name = "brightnessLabel";
+            this.brightnessLabel.Size = new System.Drawing.Size(127, 29);
+            this.brightnessLabel.TabIndex = 4;
+            this.brightnessLabel.Text = "Brightness";
             // 
-            // customTab
+            // brightnessTrackBar
             // 
-            this.customTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.customTab.Controls.Add(this.customConfigBtn);
-            this.customTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.customTab.Location = new System.Drawing.Point(4, 25);
-            this.customTab.Name = "customTab";
-            this.customTab.Padding = new System.Windows.Forms.Padding(3);
-            this.customTab.Size = new System.Drawing.Size(569, 255);
-            this.customTab.TabIndex = 3;
-            this.customTab.Text = "Custom";
-            // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(202, 215);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
-            // 
-            // antumbraLabel
-            // 
-            this.antumbraLabel.AutoSize = true;
-            this.antumbraLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.antumbraLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.antumbraLabel.Location = new System.Drawing.Point(70, 8);
-            this.antumbraLabel.Name = "antumbraLabel";
-            this.antumbraLabel.Size = new System.Drawing.Size(124, 28);
-            this.antumbraLabel.TabIndex = 75;
-            this.antumbraLabel.Text = "antumbra";
-            // 
-            // onBtn
-            // 
-            this.onBtn.AutoSize = true;
-            this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.onBtn.Location = new System.Drawing.Point(406, 214);
-            this.onBtn.Name = "onBtn";
-            this.onBtn.Size = new System.Drawing.Size(42, 20);
-            this.onBtn.TabIndex = 1;
-            this.onBtn.TabStop = true;
-            this.onBtn.Text = "On";
-            this.onBtn.UseVisualStyleBackColor = true;
+            this.brightnessTrackBar.Location = new System.Drawing.Point(273, 44);
+            this.brightnessTrackBar.Name = "brightnessTrackBar";
+            this.brightnessTrackBar.Size = new System.Drawing.Size(244, 69);
+            this.brightnessTrackBar.TabIndex = 3;
+            this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
             // 
             // offBtn
             // 
@@ -174,85 +135,23 @@
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.offBtn.Location = new System.Drawing.Point(464, 214);
             this.offBtn.Name = "offBtn";
-            this.offBtn.Size = new System.Drawing.Size(41, 20);
+            this.offBtn.Size = new System.Drawing.Size(56, 28);
             this.offBtn.TabIndex = 2;
             this.offBtn.TabStop = true;
             this.offBtn.Text = "Off";
             this.offBtn.UseVisualStyleBackColor = true;
             // 
-            // brightnessTrackBar
+            // onBtn
             // 
-            this.brightnessTrackBar.Location = new System.Drawing.Point(273, 44);
-            this.brightnessTrackBar.Name = "brightnessTrackBar";
-            this.brightnessTrackBar.Size = new System.Drawing.Size(244, 45);
-            this.brightnessTrackBar.TabIndex = 3;
-            this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
-            // 
-            // brightnessLabel
-            // 
-            this.brightnessLabel.AutoSize = true;
-            this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            this.brightnessLabel.Location = new System.Drawing.Point(358, 82);
-            this.brightnessLabel.Name = "brightnessLabel";
-            this.brightnessLabel.Size = new System.Drawing.Size(78, 18);
-            this.brightnessLabel.TabIndex = 4;
-            this.brightnessLabel.Text = "Brightness";
-            // 
-            // mirrorBtn
-            // 
-            this.mirrorBtn.AutoSize = true;
-            this.mirrorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mirrorBtn.Location = new System.Drawing.Point(57, 44);
-            this.mirrorBtn.Name = "mirrorBtn";
-            this.mirrorBtn.Size = new System.Drawing.Size(75, 28);
-            this.mirrorBtn.TabIndex = 0;
-            this.mirrorBtn.Text = "Mirror";
-            this.mirrorBtn.UseVisualStyleBackColor = true;
-            this.mirrorBtn.Click += new System.EventHandler(this.mirrorBtn_Click);
-            // 
-            // augmentBtn
-            // 
-            this.augmentBtn.AutoSize = true;
-            this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(177, 44);
-            this.augmentBtn.Name = "augmentBtn";
-            this.augmentBtn.Size = new System.Drawing.Size(75, 28);
-            this.augmentBtn.TabIndex = 1;
-            this.augmentBtn.Text = "Augment";
-            this.augmentBtn.UseVisualStyleBackColor = true;
-            this.augmentBtn.Click += new System.EventHandler(this.augmentBtn_Click);
-            // 
-            // smoothBtn
-            // 
-            this.smoothBtn.AutoSize = true;
-            this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(297, 44);
-            this.smoothBtn.Name = "smoothBtn";
-            this.smoothBtn.Size = new System.Drawing.Size(75, 28);
-            this.smoothBtn.TabIndex = 2;
-            this.smoothBtn.Text = "Smooth";
-            this.smoothBtn.UseVisualStyleBackColor = true;
-            this.smoothBtn.Click += new System.EventHandler(this.smoothBtn_Click);
-            // 
-            // gameBtn
-            // 
-            this.gameBtn.AutoSize = true;
-            this.gameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gameBtn.Location = new System.Drawing.Point(417, 44);
-            this.gameBtn.Name = "gameBtn";
-            this.gameBtn.Size = new System.Drawing.Size(75, 28);
-            this.gameBtn.TabIndex = 3;
-            this.gameBtn.Text = "Game";
-            this.gameBtn.UseVisualStyleBackColor = true;
-            this.gameBtn.Click += new System.EventHandler(this.gameBtn_Click);
-            // 
-            // modeDescs
-            // 
-            this.modeDescs.Location = new System.Drawing.Point(6, 107);
-            this.modeDescs.Name = "modeDescs";
-            this.modeDescs.Size = new System.Drawing.Size(531, 127);
-            this.modeDescs.TabIndex = 4;
-            this.modeDescs.Text = resources.GetString("modeDescs.Text");
+            this.onBtn.AutoSize = true;
+            this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.onBtn.Location = new System.Drawing.Point(406, 214);
+            this.onBtn.Name = "onBtn";
+            this.onBtn.Size = new System.Drawing.Size(59, 28);
+            this.onBtn.TabIndex = 1;
+            this.onBtn.TabStop = true;
+            this.onBtn.Text = "On";
+            this.onBtn.UseVisualStyleBackColor = true;
             // 
             // mirrorTab
             // 
@@ -270,6 +169,77 @@
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
+            // modeDescs
+            // 
+            this.modeDescs.Location = new System.Drawing.Point(6, 107);
+            this.modeDescs.Name = "modeDescs";
+            this.modeDescs.Size = new System.Drawing.Size(531, 127);
+            this.modeDescs.TabIndex = 4;
+            this.modeDescs.Text = resources.GetString("modeDescs.Text");
+            // 
+            // gameBtn
+            // 
+            this.gameBtn.AutoSize = true;
+            this.gameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gameBtn.Location = new System.Drawing.Point(417, 44);
+            this.gameBtn.Name = "gameBtn";
+            this.gameBtn.Size = new System.Drawing.Size(75, 36);
+            this.gameBtn.TabIndex = 3;
+            this.gameBtn.Text = "Game";
+            this.gameBtn.UseVisualStyleBackColor = true;
+            this.gameBtn.Click += new System.EventHandler(this.gameBtn_Click);
+            // 
+            // smoothBtn
+            // 
+            this.smoothBtn.AutoSize = true;
+            this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.smoothBtn.Location = new System.Drawing.Point(297, 44);
+            this.smoothBtn.Name = "smoothBtn";
+            this.smoothBtn.Size = new System.Drawing.Size(87, 36);
+            this.smoothBtn.TabIndex = 2;
+            this.smoothBtn.Text = "Smooth";
+            this.smoothBtn.UseVisualStyleBackColor = true;
+            this.smoothBtn.Click += new System.EventHandler(this.smoothBtn_Click);
+            // 
+            // augmentBtn
+            // 
+            this.augmentBtn.AutoSize = true;
+            this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.augmentBtn.Location = new System.Drawing.Point(177, 44);
+            this.augmentBtn.Name = "augmentBtn";
+            this.augmentBtn.Size = new System.Drawing.Size(99, 36);
+            this.augmentBtn.TabIndex = 1;
+            this.augmentBtn.Text = "Augment";
+            this.augmentBtn.UseVisualStyleBackColor = true;
+            this.augmentBtn.Click += new System.EventHandler(this.augmentBtn_Click);
+            // 
+            // mirrorBtn
+            // 
+            this.mirrorBtn.AutoSize = true;
+            this.mirrorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mirrorBtn.Location = new System.Drawing.Point(57, 44);
+            this.mirrorBtn.Name = "mirrorBtn";
+            this.mirrorBtn.Size = new System.Drawing.Size(75, 36);
+            this.mirrorBtn.TabIndex = 0;
+            this.mirrorBtn.Text = "Mirror";
+            this.mirrorBtn.UseVisualStyleBackColor = true;
+            this.mirrorBtn.Click += new System.EventHandler(this.mirrorBtn_Click);
+            // 
+            // fadeTab
+            // 
+            this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.fadeTab.Controls.Add(this.label1);
+            this.fadeTab.Controls.Add(this.neonBtn);
+            this.fadeTab.Controls.Add(this.sinBtn);
+            this.fadeTab.Controls.Add(this.hsvBtn);
+            this.fadeTab.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.fadeTab.Location = new System.Drawing.Point(4, 25);
+            this.fadeTab.Name = "fadeTab";
+            this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
+            this.fadeTab.Size = new System.Drawing.Size(569, 255);
+            this.fadeTab.TabIndex = 2;
+            this.fadeTab.Text = "Fade";
+            // 
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(6, 95);
@@ -284,7 +254,7 @@
             this.neonBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.neonBtn.Location = new System.Drawing.Point(399, 32);
             this.neonBtn.Name = "neonBtn";
-            this.neonBtn.Size = new System.Drawing.Size(75, 28);
+            this.neonBtn.Size = new System.Drawing.Size(75, 36);
             this.neonBtn.TabIndex = 7;
             this.neonBtn.Text = "Neon";
             this.neonBtn.UseVisualStyleBackColor = true;
@@ -296,7 +266,7 @@
             this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sinBtn.Location = new System.Drawing.Point(233, 32);
             this.sinBtn.Name = "sinBtn";
-            this.sinBtn.Size = new System.Drawing.Size(75, 28);
+            this.sinBtn.Size = new System.Drawing.Size(98, 36);
             this.sinBtn.TabIndex = 6;
             this.sinBtn.Text = "Sin Fade";
             this.sinBtn.UseVisualStyleBackColor = true;
@@ -308,11 +278,46 @@
             this.hsvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.hsvBtn.Location = new System.Drawing.Point(57, 32);
             this.hsvBtn.Name = "hsvBtn";
-            this.hsvBtn.Size = new System.Drawing.Size(75, 28);
+            this.hsvBtn.Size = new System.Drawing.Size(75, 36);
             this.hsvBtn.TabIndex = 5;
             this.hsvBtn.Text = "HSV";
             this.hsvBtn.UseVisualStyleBackColor = true;
             this.hsvBtn.Click += new System.EventHandler(this.hsvBtn_Click);
+            // 
+            // customTab
+            // 
+            this.customTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.customTab.Controls.Add(this.customConfigBtn);
+            this.customTab.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.customTab.Location = new System.Drawing.Point(4, 25);
+            this.customTab.Name = "customTab";
+            this.customTab.Padding = new System.Windows.Forms.Padding(3);
+            this.customTab.Size = new System.Drawing.Size(569, 255);
+            this.customTab.TabIndex = 3;
+            this.customTab.Text = "Custom";
+            // 
+            // customConfigBtn
+            // 
+            this.customConfigBtn.AutoSize = true;
+            this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customConfigBtn.Location = new System.Drawing.Point(203, 111);
+            this.customConfigBtn.Name = "customConfigBtn";
+            this.customConfigBtn.Size = new System.Drawing.Size(232, 36);
+            this.customConfigBtn.TabIndex = 7;
+            this.customConfigBtn.Text = "Open Advanced Settings";
+            this.customConfigBtn.UseVisualStyleBackColor = true;
+            this.customConfigBtn.Click += new System.EventHandler(this.customConfigBtn_Click);
+            // 
+            // antumbraLabel
+            // 
+            this.antumbraLabel.AutoSize = true;
+            this.antumbraLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.antumbraLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.antumbraLabel.Location = new System.Drawing.Point(70, 8);
+            this.antumbraLabel.Name = "antumbraLabel";
+            this.antumbraLabel.Size = new System.Drawing.Size(189, 44);
+            this.antumbraLabel.TabIndex = 75;
+            this.antumbraLabel.Text = "antumbra";
             // 
             // versionLabel
             // 
@@ -321,24 +326,38 @@
             this.versionLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.versionLabel.Location = new System.Drawing.Point(200, 14);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(0, 20);
+            this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
             // 
-            // customConfigBtn
+            // quitBtn
             // 
-            this.customConfigBtn.AutoSize = true;
-            this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customConfigBtn.Location = new System.Drawing.Point(203, 111);
-            this.customConfigBtn.Name = "customConfigBtn";
-            this.customConfigBtn.Size = new System.Drawing.Size(169, 28);
-            this.customConfigBtn.TabIndex = 7;
-            this.customConfigBtn.Text = "Open Advanced Settings";
-            this.customConfigBtn.UseVisualStyleBackColor = true;
-            this.customConfigBtn.Click += new System.EventHandler(this.customConfigBtn_Click);
+            this.quitBtn.AutoSize = true;
+            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.quitBtn.Location = new System.Drawing.Point(464, 162);
+            this.quitBtn.Name = "quitBtn";
+            this.quitBtn.Size = new System.Drawing.Size(54, 32);
+            this.quitBtn.TabIndex = 77;
+            this.quitBtn.Text = "Quit";
+            this.quitBtn.UseVisualStyleBackColor = false;
+            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
+            // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(202, 215);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(576, 334);
@@ -357,14 +376,14 @@
             this.flatTabControl.ResumeLayout(false);
             this.manualTab.ResumeLayout(false);
             this.manualTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
+            this.mirrorTab.ResumeLayout(false);
+            this.mirrorTab.PerformLayout();
             this.fadeTab.ResumeLayout(false);
             this.fadeTab.PerformLayout();
             this.customTab.ResumeLayout(false);
             this.customTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
-            this.mirrorTab.ResumeLayout(false);
-            this.mirrorTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -396,5 +415,6 @@
         private System.Windows.Forms.Button hsvBtn;
         private System.Windows.Forms.Label versionLabel;
         private System.Windows.Forms.Button customConfigBtn;
+        private System.Windows.Forms.Button quitBtn;
     }
 }
