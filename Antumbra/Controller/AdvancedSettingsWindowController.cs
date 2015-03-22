@@ -22,10 +22,10 @@ using System.Drawing;
 namespace Antumbra.Glow.Controller
 {
     public class AdvancedSettingsWindowController : ConfigurationObserver, GlowCommandSender, ToolbarNotificationSource,
-                                            GlowExtCollectionObserver
+                                            GlowExtCollectionObserver, GlowCommandObserver
     {
-        public delegate void NewGlowCommandAvail(GlowCommand cmd);
-        public event NewGlowCommandAvail NewGlowCommandAvailEvent;
+        public delegate void NewGlowCmdAvail(GlowCommand cmd);
+        public event NewGlowCmdAvail NewGlowCommandAvailEvent;
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
         public int id;
@@ -64,6 +64,12 @@ namespace Antumbra.Glow.Controller
             this.window.compoundDecorationCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundDecorationCheck);
             this.window.grabberSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
             this.window.resetBtn_ClickEvent += new EventHandler(ResetBtnClickHandler);
+        }
+
+        public void NewGlowCommandAvail(GlowCommand cmd)
+        {
+            if (NewGlowCommandAvailEvent != null)
+                NewGlowCommandAvailEvent(cmd);//pass it up
         }
 
         private void DecoratorSelectedItemChangeHandler(object sender, EventArgs args)
@@ -390,7 +396,7 @@ namespace Antumbra.Glow.Controller
 
         private void pollingArea_Click(object sender, EventArgs e)
         {
-            if (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
+            /* (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
                 var current = this.dev.id;
                 var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
                 this.pollingAreaWindow = new pollingAreaSetter(this.dev.settings, back);
@@ -398,7 +404,9 @@ namespace Antumbra.Glow.Controller
                 NewGlowCommandAvailEvent(new SendColorCommand(current, back));//update device to unique color matching window
                 this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
             }
-            this.pollingAreaWindow.Show();
+            this.pollingAreaWindow.Show();*/
+            PollingAreaWindowController cont = new PollingAreaWindowController();
+            cont.AttachObserver(this);
         }
 
         private void UpdatePollingSelectionsEvent(object sender, FormClosingEventArgs args)

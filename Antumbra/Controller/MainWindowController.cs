@@ -18,7 +18,7 @@ using Antumbra.Glow.Utility;
 
 namespace Antumbra.Glow.Controller
 {
-    public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender
+    public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver
     {
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
@@ -31,7 +31,7 @@ namespace Antumbra.Glow.Controller
         private const string extPath = "./Extensions/";
         private MainWindow window;
         private int id;
-        public MainWindowController()
+        public MainWindowController(String productVersion)
         {
             this.AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
@@ -51,6 +51,19 @@ namespace Antumbra.Glow.Controller
             this.window.customConfigBtn_ClickEvent += new EventHandler(customConfigBtnClicked);
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.window.onBtnValueChanged += new EventHandler(onBtnValueChangedHandler);
+            this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
+        }
+
+        public void NewGlowCommandAvail(GlowCommand cmd)
+        {
+            if (NewGlowCmdAvailEvent != null)
+                NewGlowCmdAvailEvent(cmd);//pass it up
+        }
+
+        private void setPollingBtnClickHandler(object sender, EventArgs args)
+        {
+            PollingAreaWindowController cont = new PollingAreaWindowController();
+            cont.AttachObserver(this);
         }
 
         private void onBtnValueChangedHandler(object sender, EventArgs args)
@@ -124,47 +137,47 @@ namespace Antumbra.Glow.Controller
 
         public void brightnessValueChanged(object sender, EventArgs args)
         {
-
+            //change max brightness value
         }
 
         public void hsvBtnClicked(object sender, EventArgs args)
         {
-
+            //find and load hsv fade setup
         }
 
         public void sinBtnClicked(object sender, EventArgs args)
         {
-
+            //sin fade
         }
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
-
+            //neon fade TODO make this
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
-
+            //start default mirroring setup
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
         {
-
+            //augment mirror default
         }
 
         public void smoothBtnClicked(object sender, EventArgs args)
         {
-
+            //smooth mirror default
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
         {
-
+            //direct x mirror preset
         }
 
         public void customConfigBtnClicked(object sender, EventArgs args)
         {
-            
+            //open advanced settings window
         }
 
         public void quitBtnClicked(object sender, EventArgs args)
