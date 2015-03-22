@@ -12,17 +12,16 @@ namespace Antumbra.Glow.Settings
     {
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCommandAvailEvent;
-        private List<PollingAreaWindowController> controllers;
         public PollingAreaWindowManager()
         {
-            this.controllers = new List<PollingAreaWindowController>();
+
         }
 
         public void CreateAndAddController(int id)
         {
             PollingAreaWindowController cont = new PollingAreaWindowController();
+            cont.RegisterDevice(id);//register related to passed device via id
             cont.AttachObserver(this);//attach to pass through
-            this.controllers.Add(cont);
         }
 
         public void RegisterDevice(int id)
