@@ -131,6 +131,7 @@
     <Compile Include="Connector\OutputLoop.cs" />
     <Compile Include="Connector\OutputLoopManager.cs" />
     <Compile Include="Controller\MainWindowController.cs" />
+    <Compile Include="Controller\PollingAreaWindowController.cs" />
     <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
@@ -178,10 +179,10 @@
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationSource.cs" />
     <Compile Include="Utility\Mixer.cs" />
-    <Compile Include="ToolbarIcon.cs">
+    <Compile Include="View\ToolbarIcon.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ToolbarIcon.Designer.cs">
+    <Compile Include="View\ToolbarIcon.Designer.cs">
       <DependentUpon>ToolbarIcon.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionFramework\Types\GlowScreenDriverCoupler.cs" />
@@ -218,7 +219,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\UniqueColorGenerator.cs" />
-    <EmbeddedResource Include="ToolbarIcon.resx">
+    <EmbeddedResource Include="View\ToolbarIcon.resx">
       <DependentUpon>ToolbarIcon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\AntumbraExtSettingsWindow.resx">
