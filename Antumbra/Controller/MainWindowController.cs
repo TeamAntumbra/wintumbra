@@ -28,7 +28,6 @@ namespace Antumbra.Glow.Controller
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
         public event EventHandler quitEventHandler;
         public bool goodStart { get; private set; }
-        private Guid currentDriver;
         private const string extPath = "./Extensions/";
         private MainWindow window;
         private int id;
@@ -151,7 +150,7 @@ namespace Antumbra.Glow.Controller
 
         public void customConfigBtnClicked(object sender, EventArgs args)
         {
-
+            
         }
 
         public void quitBtnClicked(object sender, EventArgs args)
