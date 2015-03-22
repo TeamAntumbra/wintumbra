@@ -19,7 +19,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
         {
             if (this.id == -1)//turn off all
                 foreach (GlowDevice dev in mgr.Glows) {
-                    dev.Stop();
+                    mgr.Stop(dev.id);
                     mgr.sendColor(0, 0, 0, dev.id);
                 }
             else {
