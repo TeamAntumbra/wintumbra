@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.Settings;
-using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.ExtensionFramework.Management;
-using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
@@ -165,11 +163,6 @@ namespace Antumbra.Glow.Connector
             this.extMgr.AttachObserver(observer);
         }
 
-        public void AttachLogObserverToExtMgr(LogMsgObserver observer)
-        {
-            this.extMgr.AttachObserver(observer);
-        }
-
         public void AttachGlowCommandObserverToExtMgr(GlowCommandObserver observer)
         {
             this.extMgr.RegisterDevice(this.id);
@@ -195,7 +188,7 @@ namespace Antumbra.Glow.Connector
         /// Stop the extensions for this device
         /// </summary>
         /// <returns>True if successful, else false</returns>
-        internal bool Stop()
+        public bool Stop()
         {
             bool result = this.extMgr.Stop();
             this.running = !result;
