@@ -32,6 +32,7 @@
             this.closeBtn = new System.Windows.Forms.Button();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
+            this.quitBtn = new System.Windows.Forms.Button();
             this.brightnessLabel = new System.Windows.Forms.Label();
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
@@ -52,8 +53,8 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.quitBtn = new System.Windows.Forms.Button();
             this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
+            this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
@@ -97,7 +98,6 @@
             // manualTab
             // 
             this.manualTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.manualTab.Controls.Add(this.quitBtn);
             this.manualTab.Controls.Add(this.brightnessLabel);
             this.manualTab.Controls.Add(this.brightnessTrackBar);
             this.manualTab.Controls.Add(this.offBtn);
@@ -110,6 +110,23 @@
             this.manualTab.Size = new System.Drawing.Size(569, 255);
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
+            // 
+            // quitBtn
+            // 
+            this.quitBtn.AutoSize = true;
+            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.quitBtn.Location = new System.Drawing.Point(460, -2);
+            this.quitBtn.Name = "quitBtn";
+            this.quitBtn.Size = new System.Drawing.Size(54, 32);
+            this.quitBtn.TabIndex = 77;
+            this.quitBtn.Text = "Quit";
+            this.quitBtn.UseVisualStyleBackColor = false;
+            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
             // 
             // brightnessLabel
             // 
@@ -157,6 +174,7 @@
             // mirrorTab
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.mirrorTab.Controls.Add(this.setPollingSizeBtn);
             this.mirrorTab.Controls.Add(this.modeDescs);
             this.mirrorTab.Controls.Add(this.gameBtn);
             this.mirrorTab.Controls.Add(this.smoothBtn);
@@ -194,7 +212,7 @@
             // 
             this.smoothBtn.AutoSize = true;
             this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(297, 44);
+            this.smoothBtn.Location = new System.Drawing.Point(301, 44);
             this.smoothBtn.Name = "smoothBtn";
             this.smoothBtn.Size = new System.Drawing.Size(87, 36);
             this.smoothBtn.TabIndex = 2;
@@ -206,7 +224,7 @@
             // 
             this.augmentBtn.AutoSize = true;
             this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(177, 44);
+            this.augmentBtn.Location = new System.Drawing.Point(168, 44);
             this.augmentBtn.Name = "augmentBtn";
             this.augmentBtn.Size = new System.Drawing.Size(99, 36);
             this.augmentBtn.TabIndex = 1;
@@ -330,23 +348,6 @@
             this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
             // 
-            // quitBtn
-            // 
-            this.quitBtn.AutoSize = true;
-            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
-            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.quitBtn.Location = new System.Drawing.Point(464, 162);
-            this.quitBtn.Name = "quitBtn";
-            this.quitBtn.Size = new System.Drawing.Size(54, 32);
-            this.quitBtn.TabIndex = 77;
-            this.quitBtn.Text = "Quit";
-            this.quitBtn.UseVisualStyleBackColor = false;
-            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
-            // 
             // colorWheel
             // 
             this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -356,12 +357,25 @@
             this.colorWheel.TabIndex = 0;
             this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
+            // setPollingSizeBtn
+            // 
+            this.setPollingSizeBtn.AutoSize = true;
+            this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.setPollingSizeBtn.Location = new System.Drawing.Point(402, 216);
+            this.setPollingSizeBtn.Name = "setPollingSizeBtn";
+            this.setPollingSizeBtn.Size = new System.Drawing.Size(161, 36);
+            this.setPollingSizeBtn.TabIndex = 5;
+            this.setPollingSizeBtn.Text = "Set Capture Size";
+            this.setPollingSizeBtn.UseVisualStyleBackColor = true;
+            this.setPollingSizeBtn.Click += new System.EventHandler(this.setPollingSizeBtn_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(576, 334);
+            this.Controls.Add(this.quitBtn);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.antumbraLabel);
             this.Controls.Add(this.flatTabControl);
@@ -417,5 +431,6 @@
         private System.Windows.Forms.Label versionLabel;
         private System.Windows.Forms.Button customConfigBtn;
         private System.Windows.Forms.Button quitBtn;
+        private System.Windows.Forms.Button setPollingSizeBtn;
     }
 }

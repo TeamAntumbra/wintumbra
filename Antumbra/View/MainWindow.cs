@@ -26,6 +26,7 @@ namespace Antumbra.Glow.View
         public event EventHandler customConfigBtn_ClickEvent;
         public event EventHandler quitBtn_ClickEvent;
         public event EventHandler onBtnValueChanged;
+        public event EventHandler setPollingBtn_ClickEvent;
 
         public MainWindow()
         {
@@ -122,6 +123,12 @@ namespace Antumbra.Glow.View
         {
             if (onBtnValueChanged != null)
                 onBtnValueChanged(this.onBtn.Checked, e);
+        }
+
+        private void setPollingSizeBtn_Click(object sender, EventArgs e)
+        {
+            if (setPollingBtn_ClickEvent != null)
+                setPollingBtn_ClickEvent(sender, e);
         }
     }
 }
