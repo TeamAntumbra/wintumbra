@@ -13,20 +13,17 @@ namespace Antumbra.Glow.View
 {
     public partial class pollingAreaSetter : Form
     {
-        private DeviceSettings settingsObj;
-        public pollingAreaSetter(DeviceSettings settingsObj, Color back)
+        public event EventHandler formClosingEvent;
+        public pollingAreaSetter(Color back)
         {
-            this.settingsObj = settingsObj;
             InitializeComponent();
             this.BackColor = back;
         }
 
         private void pollingAreaSetter_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.settingsObj.x = this.Location.X;
-            this.settingsObj.y = this.Location.Y;
-            this.settingsObj.height = this.Height;
-            this.settingsObj.width = this.Width;
+            if (formClosingEvent != null)
+                formClosingEvent(sender, EventArgs.Empty);//replace with event args as to not have to use FormClosingEventHandler
         }
     }
 }
