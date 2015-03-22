@@ -26,11 +26,12 @@ namespace Antumbra.Glow.Connector
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private SerialConnector Connector;
         private OutputLoopManager outManager;
+        private AdvancedSettingsWindowManager advancedSettingsWinMgr;
         public List<GlowDevice> Glows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
 
-        public DeviceManager(int vid, int pid, ExtensionLibrary lib)
+        public DeviceManager(int vid, int pid, ExtensionLibrary lib, string productVersion)
         {
             this.status = 0;
             this.GlowsFound = 0;
@@ -42,8 +43,10 @@ namespace Antumbra.Glow.Connector
             }
             this.GlowsFound = this.Glows.Count;
             this.outManager = new OutputLoopManager();
+            this.advancedSettingsWinMgr = new AdvancedSettingsWindowManager(productVersion, lib);
             foreach (var dev in this.Glows) {//create output loops
                 this.outManager.CreateAndAddLoop(this, dev.id);
+                this.advancedSettingsWinMgr.CreateAndAddNewController(dev);
             }
         }
 
