@@ -24,6 +24,7 @@ namespace Antumbra.Glow.View
         public event EventHandler gameBtn_ClickEvent;
         public event MouseEventHandler mainWindow_MouseDownEvent;
         public event EventHandler customConfigBtn_ClickEvent;
+        public event EventHandler quitBtn_ClickEvent;
 
         public MainWindow()
         {
@@ -48,7 +49,7 @@ namespace Antumbra.Glow.View
         private void colorWheel_ColorChanged(object sender, EventArgs e)
         {
             if (colorWheel_ColorChangedEvent != null)
-                colorWheel_ColorChangedEvent(sender, e);
+                colorWheel_ColorChangedEvent(this.colorWheel.HslColor, e);
         }
 
         private void brightnessTrackBar_Scroll(object sender, EventArgs e)
@@ -109,6 +110,12 @@ namespace Antumbra.Glow.View
         {
             if (customConfigBtn_ClickEvent != null)
                 customConfigBtn_ClickEvent(sender, e);
+        }
+
+        private void quitBtn_Click(object sender, EventArgs e)
+        {
+            if (quitBtn_ClickEvent != null)
+                quitBtn_ClickEvent(sender, e);
         }
     }
 }
