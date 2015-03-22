@@ -259,17 +259,20 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
         {
-            NewToolbarNotifAvailEvent(time, title, msg, icon);
+            if (NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);
         }
 
         public void NewLogMsgAvail(String source, String msg)
         {
-            NewLogMsgAvailEvent(source, msg);
+            if (NewLogMsgAvailEvent != null)
+                NewLogMsgAvailEvent(source, msg);
         }
 
         public void NewGlowCommandAvail(GlowCommand command)
         {
-            NewGlowCommandEvent(command);//pass it up to core
+            if (NewGlowCommandEvent != null)
+                NewGlowCommandEvent(command);//pass it up to core
         }
         /// <summary>
         /// Event handler for the NewColorAvail event
