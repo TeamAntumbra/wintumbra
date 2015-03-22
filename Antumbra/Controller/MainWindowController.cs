@@ -50,6 +50,19 @@ namespace Antumbra.Glow.Controller
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
             this.window.customConfigBtn_ClickEvent += new EventHandler(customConfigBtnClicked);
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
+            this.window.onBtnValueChanged += new EventHandler(onBtnValueChangedHandler);
+        }
+
+        private void onBtnValueChangedHandler(object sender, EventArgs args)
+        {
+            if (sender is bool) {
+                bool value = (bool)sender;//true when now marked on
+                if (value)
+                    NewGlowCmdAvailEvent(new StartCommand(-1));//start all (dev mgr will ignore those running already)
+                else
+                    NewGlowCmdAvailEvent(new StopCommand(-1));//stop all (dev mgr will ignore those already stopped)
+            }
+
         }
 
         public void RegisterDevice(int id)
@@ -102,6 +115,7 @@ namespace Antumbra.Glow.Controller
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
             if (sender is HslColor) {
+                this.window.SetOnSelection(true);//mark device on
                 NewGlowCmdAvailEvent(new StopCommand(this.id));//stop device if running (dev mgr will make check)
                 HslColor col = (HslColor)sender;
                 NewGlowCmdAvailEvent(new SendColorCommand(this.id, col.ToRgbColor()));

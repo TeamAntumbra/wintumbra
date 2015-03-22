@@ -152,6 +152,7 @@
             this.onBtn.TabStop = true;
             this.onBtn.Text = "On";
             this.onBtn.UseVisualStyleBackColor = true;
+            this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
             // 
             // mirrorTab
             // 

@@ -25,6 +25,7 @@ namespace Antumbra.Glow.View
         public event MouseEventHandler mainWindow_MouseDownEvent;
         public event EventHandler customConfigBtn_ClickEvent;
         public event EventHandler quitBtn_ClickEvent;
+        public event EventHandler onBtnValueChanged;
 
         public MainWindow()
         {
@@ -33,11 +34,10 @@ namespace Antumbra.Glow.View
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
         }
 
-        public void ToggleOnOffSelection()
+        public void SetOnSelection(bool value)
         {
-            bool current = this.offBtn.Checked;
-            this.offBtn.Checked = !current;
-            this.onBtn.Checked = current;
+            this.offBtn.Checked = !value;
+            this.onBtn.Checked = value;
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -116,6 +116,12 @@ namespace Antumbra.Glow.View
         {
             if (quitBtn_ClickEvent != null)
                 quitBtn_ClickEvent(sender, e);
+        }
+
+        private void onBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (onBtnValueChanged != null)
+                onBtnValueChanged(this.onBtn.Checked, e);
         }
     }
 }
