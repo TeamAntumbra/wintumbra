@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Drawing;
 using Antumbra.Glow.View;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
 using System.Runtime.InteropServices;
@@ -14,15 +17,19 @@ using Microsoft.Win32;
 
 namespace Antumbra.Glow.Controller
 {
-    public class MainWindowController : Loggable, ToolbarNotificationSource
+    public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender
     {
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         public delegate void NewToolbarNotifAvail(int time, string title, string msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
+        public delegate void NewGlowCmdAvail(GlowCommand cmd);
+        public event NewGlowCmdAvail NewGlowCmdAvailEvent;
+        public event EventHandler quitEventHandler;
         public bool goodStart { get; private set; }
         private const string extPath = "./Extensions/";
         private MainWindow window;
+        private int id;
         public MainWindowController()
         {
             this.AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
@@ -41,18 +48,27 @@ namespace Antumbra.Glow.Controller
             this.window.gameBtn_ClickEvent += new EventHandler(gameBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
             this.window.customConfigBtn_ClickEvent += new EventHandler(customConfigBtnClicked);
-            this.showWindow();
+            this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
+        }
+
+        public void RegisterDevice(int id)
+        {
+            this.id = id;
+        }
+
+        public void AttachObserver(GlowCommandObserver observer)
+        {
+            this.NewGlowCmdAvailEvent += observer.NewGlowCommandAvail;
         }
 
         public void AttachObserver(ToolbarNotificationObserver observer)
         {
-            if (NewToolbarNotifAvailEvent != null)
-                NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
+            this.NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
         public void AttachObserver(LogMsgObserver observer)
         {
-
+            this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
         private void ShowMessage(int time, string title, string msg, int icon)
@@ -67,7 +83,12 @@ namespace Antumbra.Glow.Controller
                 NewLogMsgAvailEvent("MainWindowController", msg);
         }
 
-        public void showWindow()
+        public void showWindowEventHandler(object sender, EventArgs args)
+        {
+            this.showWindow();
+        }
+
+        private void showWindow()
         {
             this.window.Show();
         }
@@ -79,7 +100,10 @@ namespace Antumbra.Glow.Controller
 
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
-
+            if (sender is Color) {
+                Color col = (Color)sender;
+                NewGlowCmdAvailEvent(new SendColorCommand(this.id, col));
+            }
         }
 
         public void brightnessValueChanged(object sender, EventArgs args)
@@ -125,6 +149,13 @@ namespace Antumbra.Glow.Controller
         public void customConfigBtnClicked(object sender, EventArgs args)
         {
 
+        }
+
+        public void quitBtnClicked(object sender, EventArgs args)
+        {
+            this.window.Close();
+            if (quitEventHandler != null)
+                quitEventHandler(sender, args);
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.Settings;
@@ -20,14 +21,15 @@ namespace Antumbra.Glow.Controller
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private DeviceManager GlowManager;
-        private AdvancedSettingsWindowManager SettingsWindowManager;
-        private OutputLoopManager outManager;
         private const string extPath = "./Extensions/";
         private ExtensionLibrary extLibrary;
         private ToolbarIcon toolbarIcon;
         public ToolbarIconController()
         {
             this.toolbarIcon = new ToolbarIcon();
+            this.toolbarIcon.Hide();
+            MainWindowController mainController = new MainWindowController();
+            this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
             this.AttachObserver(LoggerHelper.GetInstance());
             this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
             try {
@@ -43,25 +45,22 @@ namespace Antumbra.Glow.Controller
             }
             this.LogMsg("Creating DeviceManager");
             this.GlowManager = new DeviceManager(0x16D0, 0x0A85, this.extLibrary);//find devices
-            this.LogMsg("Creating OutputLoopManager");
-            this.outManager = new OutputLoopManager();//TODO have device manager create outputloop manager upon creation...maybe
-            this.LogMsg("Creating OutputLoops");
-            foreach (var dev in this.GlowManager.Glows) {//create output loop
-                this.outManager.CreateAndAddLoop(GlowManager, dev.id);
-            }
-            this.SettingsWindowManager = new AdvancedSettingsWindowManager(this.toolbarIcon.ProductVersion, this.extLibrary);
+            mainController.AttachObserver((GlowCommandObserver)this.GlowManager);
+            mainController.quitEventHandler += new EventHandler(Quit);
+            AdvancedSettingsWindowManager SettingsWindowManager = new AdvancedSettingsWindowManager(this.toolbarIcon.ProductVersion, this.extLibrary);
             //this.SettingsWindowManager.AttachObserver((GlowCommandObserver)this);
-            this.SettingsWindowManager.AttachObserver((ToolbarNotificationObserver)this);
+            SettingsWindowManager.AttachObserver((ToolbarNotificationObserver)this);
             if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
                 GlowDevice dev = this.GlowManager.getDevice(0);
-                this.SettingsWindowManager.CreateAndAddNewController(dev);
+                mainController.RegisterDevice(dev.id);
+                SettingsWindowManager.CreateAndAddNewController(dev);
             }
         }
 
-        public void AttachObserver(ToolbarNotificationObserver observer)
+        private void Quit(object sender, EventArgs args)
         {
-            if (this.NewToolbarNotifAvailEvent != null)
-                this.NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
+            this.toolbarIcon.Dispose();
+            System.Windows.Forms.Application.Exit();
         }
 
         private void LogMsg(String msg)
@@ -72,11 +71,15 @@ namespace Antumbra.Glow.Controller
 
         public void AttachObserver(LogMsgObserver observer)
         {
-            if (this.NewLogMsgAvailEvent != null)
-                this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+            this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
-        public void Off(int id)
+        public void AttachObserver(ToolbarNotificationObserver observer)
+        {
+            this.NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
+        }
+
+        /*public void Off(int id)
         {
             if (id == -1) {
                 this.StopAll();
@@ -141,13 +144,13 @@ namespace Antumbra.Glow.Controller
             }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
         }
-
+        */
         private void Log(string msg)
         {
             NewLogMsgAvailEvent("ToolbarIconController", msg);
         }
 
-        /// <summary>
+        /*// <summary>
         /// Stop the device (if found) with the id passed
         /// </summary>
         /// <param name="id"></param>
@@ -189,7 +192,7 @@ namespace Antumbra.Glow.Controller
         private void AnnounceConfig()
         {
             NewToolbarNotifAvail(5000, "Current Configurations", this.GlowManager.GetDeviceSetupDecs(), 0);
-        }
+        }*/
 
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
         {
