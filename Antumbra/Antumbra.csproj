@@ -132,6 +132,8 @@
     <Compile Include="Connector\OutputLoopManager.cs" />
     <Compile Include="Controller\MainWindowController.cs" />
     <Compile Include="Controller\PollingAreaWindowController.cs" />
+    <Compile Include="ExtensionFramework\Management\PresetBuilder.cs" />
+    <Compile Include="Settings\PollingAreaWindowManager.cs" />
     <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
