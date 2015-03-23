@@ -12,26 +12,30 @@ using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
+using Antumbra.Glow.Connector;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using Antumbra.Glow.Utility;
 
 namespace Antumbra.Glow.Controller
 {
-    public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver
+    public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver,
+                                        ToolbarNotificationObserver
     {
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
-        public delegate void NewToolbarNotifAvail(int time, string title, string msg, int icon);
-        public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
+        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
+        public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
         public event EventHandler quitEventHandler;
         public bool goodStart { get; private set; }
         private const string extPath = "./Extensions/";
         private MainWindow window;
+        private PresetBuilder presetBuilder;
+        private DeviceManager deviceMgr;
         private int id;
-        public MainWindowController(String productVersion)
+        public MainWindowController(String productVersion, EventHandler quitHandler)
         {
             this.AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
@@ -52,6 +56,34 @@ namespace Antumbra.Glow.Controller
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.window.onBtnValueChanged += new EventHandler(onBtnValueChangedHandler);
             this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
+            ExtensionLibrary extLibrary = null;
+            try {
+                extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
+            }
+            catch (System.Reflection.ReflectionTypeLoadException e) {
+                string msg = "";
+                foreach (var err in e.LoaderExceptions)
+                    msg += err.Message;
+                ShowMessage(10000, "Exception Occured While Loading Extensions", msg, 2);
+                Thread.Sleep(10000);//wait for message
+                throw e;//pass up
+            }
+            this.Log("Creating DeviceManager");
+            this.deviceMgr = new DeviceManager(0x16D0, 0x0A85, extLibrary, productVersion);//find devices
+            this.deviceMgr.AttachObserver(this);
+            this.AttachObserver((GlowCommandObserver)this.deviceMgr);
+            this.quitEventHandler += quitHandler;
+            if (this.deviceMgr.GlowsFound > 0) {//ready first device for output if any are found
+                GlowDevice dev = this.deviceMgr.getDevice(0);
+                this.RegisterDevice(dev.id);
+            }
+            this.presetBuilder = new PresetBuilder(extLibrary);
+        }
+
+        public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
+        {
+            if (NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);//pass it up
         }
 
         public void NewGlowCommandAvail(GlowCommand cmd)
@@ -75,7 +107,6 @@ namespace Antumbra.Glow.Controller
                 else
                     NewGlowCmdAvailEvent(new StopCommand(-1));//stop all (dev mgr will ignore those already stopped)
             }
-
         }
 
         public void RegisterDevice(int id)
@@ -142,7 +173,11 @@ namespace Antumbra.Glow.Controller
 
         public void hsvBtnClicked(object sender, EventArgs args)
         {
-            //find and load hsv fade setup
+            NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
+            foreach (GlowDevice dev in this.deviceMgr.Glows) {
+                dev.SetActives(this.presetBuilder.GetHSVFadePreset());
+            }
+            NewGlowCmdAvailEvent(new StartCommand(-1));//start all
         }
 
         public void sinBtnClicked(object sender, EventArgs args)

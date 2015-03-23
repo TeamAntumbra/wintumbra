@@ -28,30 +28,11 @@ namespace Antumbra.Glow.Controller
         {
             this.toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             this.toolbarIcon.Hide();
-            MainWindowController mainController = new MainWindowController(this.toolbarIcon.ProductVersion);
+            MainWindowController mainController = new MainWindowController(this.toolbarIcon.ProductVersion, new EventHandler(Quit));
+            mainController.AttachObserver(this);
             this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
             this.AttachObserver(LoggerHelper.GetInstance());
             this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
-            try {
-                this.extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
-            }
-            catch (System.Reflection.ReflectionTypeLoadException e) {
-                string msg = "";
-                foreach (var err in e.LoaderExceptions)
-                    msg += err.Message;
-                NewToolbarNotifAvail(10000, "Exception Occured While Loading Extensions", msg, 2);
-                Thread.Sleep(10000);//wait for message
-                throw e;//pass up
-            }
-            this.LogMsg("Creating DeviceManager");
-            this.GlowManager = new DeviceManager(0x16D0, 0x0A85, this.extLibrary, this.toolbarIcon.ProductVersion.ToString());//find devices
-            mainController.AttachObserver((GlowCommandObserver)this.GlowManager);
-            mainController.AttachObserver(this);
-            mainController.quitEventHandler += new EventHandler(Quit);
-            if (GlowManager.GlowsFound > 0) {//ready first device for output if any are found
-                GlowDevice dev = this.GlowManager.getDevice(0);
-                mainController.RegisterDevice(dev.id);
-            }
         }
 
         private void Quit(object sender, EventArgs args)
