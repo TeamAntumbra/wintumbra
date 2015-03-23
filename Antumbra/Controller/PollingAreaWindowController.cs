@@ -17,11 +17,20 @@ namespace Antumbra.Glow.Controller
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private View.pollingAreaSetter pollingWindow;
-        private int id;
+        private Color color;
+        public int id { get; private set; }
         public PollingAreaWindowController()
         {
-            View.pollingAreaSetter pollingWindow = new View.pollingAreaSetter(UniqueColorGenerator.GetInstance().GetUniqueColor());
+            this.color = UniqueColorGenerator.GetInstance().GetUniqueColor();
+            View.pollingAreaSetter pollingWindow = new View.pollingAreaSetter(color);
             pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
+        }
+
+        public void Show()
+        {
+            pollingWindow.Show();
+            SendStopCommand();//stop device
+            SendColorCommand(this.color);//set to unique color to match its window
         }
         
         private void pollingArea_Click(object sender, EventArgs e)
