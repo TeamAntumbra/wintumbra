@@ -49,6 +49,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.ready = true;
         }
 
+        public GlowExtension LookupExt(Guid id)
+        {
+            foreach (GlowExtension ext in this.AvailExtensions)
+                if (ext.id.Equals(id))//it's a match
+                    return ext;
+            return null;//not found
+        }
+
         public void AttachObserver(LogMsgObserver observer)
         {
             if (this.NewLogMsgAvailEvent != null)
