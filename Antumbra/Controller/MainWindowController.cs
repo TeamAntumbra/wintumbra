@@ -176,6 +176,7 @@ namespace Antumbra.Glow.Controller
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
                 dev.SetActives(this.presetBuilder.GetHSVFadePreset());
+                dev.ApplyDriverRecomSettings();
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
         }
