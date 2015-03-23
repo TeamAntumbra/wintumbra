@@ -64,6 +64,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.activeExts.AttachObserver(this);
         }
 
+        public void LoadActives(ActiveExtensions actives)
+        {
+            this.activeExts = actives;
+            this.activeExts.AttachObserver(this);
+        }
+
         public void Save()
         {
             Saver saver = Saver.GetInstance();

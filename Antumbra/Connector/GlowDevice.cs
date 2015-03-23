@@ -60,6 +60,11 @@ namespace Antumbra.Glow.Connector
         public int status { get; set; }
         public bool running { get; private set; }
 
+        public void SetActives(ActiveExtensions actives)
+        {
+            this.extMgr.LoadActives(actives);
+        }
+
         public void SetDvrGbbrOrPrcsrExt(Guid id)
         {
             this.extMgr.UpdateExtension(id);
