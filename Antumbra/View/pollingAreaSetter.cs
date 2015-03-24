@@ -18,6 +18,7 @@ namespace Antumbra.Glow.View
         {
             InitializeComponent();
             this.BackColor = back;
+            this.Refresh();
         }
 
         private void pollingAreaSetter_FormClosing(object sender, FormClosingEventArgs e)
