@@ -14,6 +14,7 @@ using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Connector;
+using Antumbra.Glow.Settings;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
@@ -34,6 +35,7 @@ namespace Antumbra.Glow.Controller
         private MainWindow window;
         private PresetBuilder presetBuilder;
         private DeviceManager deviceMgr;
+        private AdvancedSettingsWindowManager advSettingsMgr;
         private int id;
         public MainWindowController(String productVersion, EventHandler quitHandler)
         {
@@ -78,6 +80,9 @@ namespace Antumbra.Glow.Controller
                 this.RegisterDevice(dev.id);
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
+            this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
+            this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
+            this.advSettingsMgr.AttachObserver((GlowCommandObserver)this.deviceMgr);
         }
 
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
@@ -96,6 +101,7 @@ namespace Antumbra.Glow.Controller
         {
             PollingAreaWindowController cont = new PollingAreaWindowController();
             cont.AttachObserver(this);
+            cont.Show();
         }
 
         private void onBtnValueChangedHandler(object sender, EventArgs args)
@@ -171,7 +177,7 @@ namespace Antumbra.Glow.Controller
             //change max brightness value
         }
 
-        private void ApplyNewSetup(Settings.ActiveExtensions actives, int stepSleep, bool weighted, double weight)
+        private void ApplyNewSetup(ActiveExtensions actives, int stepSleep, bool weighted, double weight)
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
@@ -183,7 +189,7 @@ namespace Antumbra.Glow.Controller
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
         }
 
-        private void ApplyNewSetup(Settings.ActiveExtensions actives)
+        private void ApplyNewSetup(ActiveExtensions actives)
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
@@ -230,7 +236,10 @@ namespace Antumbra.Glow.Controller
 
         public void customConfigBtnClicked(object sender, EventArgs args)
         {
-            //open advanced settings window
+            if (!this.advSettingsMgr.Show(this.id)) {
+                this.advSettingsMgr.CreateAndAddNewController(this.deviceMgr.getDevice(this.id));
+                this.advSettingsMgr.Show(this.id);
+            }
         }
 
         public void quitBtnClicked(object sender, EventArgs args)
