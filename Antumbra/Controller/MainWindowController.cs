@@ -193,27 +193,27 @@ namespace Antumbra.Glow.Controller
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
-            //neon fade TODO make this
+            ApplyNewActives(this.presetBuilder.GetNeonFadePreset());
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
-            //start default mirroring setup
+            ApplyNewActives(this.presetBuilder.GetMirrorPreset());
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
         {
-            //augment mirror default
+            ApplyNewActives(this.presetBuilder.GetAugmentMirrorPreset());
         }
 
         public void smoothBtnClicked(object sender, EventArgs args)
         {
-            //smooth mirror default
+            ApplyNewActives(this.presetBuilder.GetSmoothMirrorPreset());
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
         {
-            //direct x mirror preset
+            ApplyNewActives(this.presetBuilder.GetGameMirrorPreset());
         }
 
         public void customConfigBtnClicked(object sender, EventArgs args)
