@@ -152,7 +152,7 @@ namespace Antumbra.Glow.Settings
             this.stepSleep = 1;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
-            this.compoundDecoration = true;
+            this.compoundDecoration = false;
             Notify();
         }
 
