@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Utility;
+using Antumbra.Glow.Observer.Colors;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
@@ -44,14 +45,14 @@ namespace Brightener
             get { return true; }
         }
 
-        public override Color Decorate(Color origColor)
+        public override Color16Bit Decorate(Color16Bit origColor)
         {
-            HslColor hsl = new HslColor(origColor);
+            HslColor hsl = new HslColor(origColor.ToRGBColor());
             if (hsl.L > (1.0 - (double)Properties.Settings.Default.amountToLighten))
                 hsl.L = 1.0;
             else
                 hsl.L += (double)Properties.Settings.Default.amountToLighten;
-            return hsl.ToRgbColor();
+            return new Color16Bit(hsl.ToRgbColor());
         }
 
         public override bool IsRunning

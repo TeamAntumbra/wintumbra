@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
@@ -17,7 +16,7 @@ namespace FluxCompanion
     [Export(typeof(GlowExtension))]
     public class FluxCompanion : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running;
         private Task driver;
@@ -101,7 +100,7 @@ namespace FluxCompanion
             }
         }
 
-        private Color ConvertKelvinToColor(int kelvin)
+        private Color16Bit ConvertKelvinToColor(int kelvin)
         {/*http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/ */
             int temp = kelvin / 100;
             int red = 0;
@@ -112,22 +111,25 @@ namespace FluxCompanion
                 green = (int)(99.4708025861 * Math.Log(green) - 161.1195681661);
                 if (green < 0)
                     green = 0;
-                if (green > 255)
-                    green = 255;
+                else 
+                    if (green > 255)
+                       green = 255;
             }
             else {
                 red = temp - 60;
                 red = (int)(329.698727446 * (Math.Pow(red, -0.1332047592)));
                 if (red < 0)
                     red = 0;
-                if (red > 255)
-                    red = 255;
+                else 
+                    if (red > 255)
+                        red = 255;
                 green = temp - 60;
                 green = (int)(288.1221695283 * Math.Pow(green,-0.0755148492));
                 if (green < 0)
                     green = 0;
-                if (green > 255)
-                    green = 255;
+                else 
+                    if (green > 255)
+                        green = 255;
             }
             int blue = 0;
             if (temp >= 66)
@@ -137,10 +139,14 @@ namespace FluxCompanion
                 blue = (int)(138.5177312231 * Math.Log(blue) - 305.0447927307);
                 if (blue < 0)
                     blue = 0;
-                if (blue > 255)
-                    blue = 255;
+                else 
+                    if (blue > 255)
+                        blue = 255;
             }
-            return Color.FromArgb(red, green, blue);
+            UInt16 r = Convert.ToUInt16(red);
+            UInt16 g = Convert.ToUInt16(green);
+            UInt16 b = Convert.ToUInt16(blue);
+            return new Color16Bit(r, g, b);
         }
 
         public override bool Stop()

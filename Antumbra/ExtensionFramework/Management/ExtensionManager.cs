@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Settings;
-using System.Drawing;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
@@ -28,7 +27,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="newColor"></param>
         /// <param name="args"></param>
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         /// <summary>
         /// NewColorAvail Event, occurs when a new color is available
         /// </summary>
@@ -285,7 +284,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="newColor"></param>
         /// <param name="args"></param>
-        void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor, EventArgs args)
         {
             List<GlowDecorator> decs = this.activeExts.ActiveDecorators;
             int count = decs.Count;
@@ -302,12 +301,15 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             //average decorators output
             int r = 0, g = 0, b = 0;
             foreach (var dec in decs) {
-                Color decorated = dec.Decorate(newColor);
-                r += decorated.R;
-                g += decorated.G;
-                b += decorated.B;
+                Color16Bit decorated = dec.Decorate(newColor);
+                r += decorated.red;
+                g += decorated.green;
+                b += decorated.blue;
             }
-            NewColorAvailEvent(Color.FromArgb(r / count, g / count, b / count), args);
+            UInt16 red = Convert.ToUInt16(r/count);
+            UInt16 green = Convert.ToUInt16(g/count);
+            UInt16 blue = Convert.ToUInt16(b/count);
+            NewColorAvailEvent(new Color16Bit(red, green, blue), args);
         }
         /// <summary>
         /// Start active extensions

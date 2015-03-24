@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Observer.Colors;
-using System.Drawing;
 
 namespace Antumbra.Glow.Connector
 {
@@ -16,8 +15,8 @@ namespace Antumbra.Glow.Connector
         private FPSCalc outputFPS = new FPSCalc();
         private DeviceManager mgr;
         public int id { get; private set; }
-        private Color color;
-        private Color weightedAvg;
+        private Color16Bit color;
+        private Color16Bit weightedAvg;
         private bool weightingEnabled;//TODO move to decorator
         private double newColorWeight;
 
@@ -55,8 +54,8 @@ namespace Antumbra.Glow.Connector
         {
             this.weightingEnabled = weightEnabled;
             this.newColorWeight = newColorWeight;
-            this.weightedAvg = Color.Empty;
-            this.color = Color.Empty;
+            this.weightedAvg = new Color16Bit(0,0,0);
+            this.color = null;
             this._active = true;
             this.outputLoopTask = new Task(target);
             this.outputLoopTask.Start();
@@ -66,7 +65,7 @@ namespace Antumbra.Glow.Connector
         private void target()
         {
             while (Active) {
-                if (color.Equals(Color.Empty))//no values yet
+                if (color == null)//no values yet
                     continue;
                 if (this.weightingEnabled) {
                     weightedAvg = Mixer.MixColorPercIn(color, weightedAvg, this.newColorWeight);
@@ -96,7 +95,7 @@ namespace Antumbra.Glow.Connector
             this.Stop();
         }
 
-        void AntumbraColorObserver.NewColorAvail(Color newColor, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor, EventArgs args)
         {
             outputFPS.Tick();
             lock (sync) {

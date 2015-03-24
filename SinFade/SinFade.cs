@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ namespace SinFade
     [Export(typeof(GlowExtension))]
     public class SinFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color newCol, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newCol, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
@@ -63,13 +63,9 @@ namespace SinFade
             int deg = 0;
             while (running) {
                 double rad = (Math.PI / 180.0) * deg;
-                double value = Math.Abs(Math.Sin(rad) * 255);
-                int v = (int)value;
-                if (v > 255)
-                    v = 255;
-                if (v < 0)
-                    v = 0;
-                Color result = Color.FromArgb(v, v, v);
+                double value = Math.Abs(Math.Sin(rad) * UInt16.MaxValue);
+                UInt16 v = Convert.ToUInt16(value);
+                Color16Bit result = new Color16Bit(v, v, v);
                 try {
                     NewColorAvailEvent(result, EventArgs.Empty);
                     Thread.Sleep(this.stepSleep);

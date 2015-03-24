@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Utility;
+using Antumbra.Glow.Observer.Colors;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -55,16 +55,16 @@ namespace Saturator
             get { return "https://antumbra.io"; }
         }
 
-        public override Color Decorate(Color origColor)
+        public override Color16Bit Decorate(Color16Bit origColor)
         {
-            HslColor boringHSL = new HslColor(origColor);
+            HslColor boringHSL = new HslColor(origColor.ToRGBColor());
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;
             if (boringHSL.S < satAmnt) { }//skip low saturation colors TODO make this its own value
             else if (boringHSL.S <= (1.0-satAmnt))
                 boringHSL.S += satAmnt; //saturate
             else
                 boringHSL.S = 1.0;
-            return boringHSL.ToRgbColor();
+            return new Color16Bit(boringHSL.ToRgbColor());
         }
 
         public override bool IsRunning

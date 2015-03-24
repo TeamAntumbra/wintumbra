@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
@@ -18,7 +17,7 @@ namespace ExampleGlowDriver
     [Export(typeof(GlowExtension))]
     public class ExampleGlowDriver : GlowIndependentDriver, Loggable
     {
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -68,7 +67,8 @@ namespace ExampleGlowDriver
             Random rnd = new Random();
             while (this.running) {
                 //do stuff (logic of driver)
-                Color result = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                UInt16 val = Convert.ToUInt16(rnd.Next(UInt16.MaxValue));
+                Color16Bit result = new Color16Bit(val, val, val);
                 //report new color event
                 try {
                     NewColorAvailEvent(result, EventArgs.Empty);

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Connector
 {
@@ -104,19 +104,9 @@ namespace Antumbra.Glow.Connector
                 NewToolbarNotifAvail(3000, "Device " + id + " Stopped.", "The current device has been stopped.", 1);
         }
 
-        public void sendColor(Color newColor) {
-            foreach (var dev in this.Glows)
-                sendColor(newColor, dev.id);
-        }
-
-        public void sendColor(Color newColor, int id)
+        public void sendColor(Color16Bit newColor, int id)
         {
-            sendColor(ByteToUInt16(newColor.R), ByteToUInt16(newColor.G), ByteToUInt16(newColor.B), id);
-        }
-
-        private UInt16 ByteToUInt16(byte target)
-        {
-            return Convert.ToUInt16((target / 255.0) * UInt16.MaxValue);
+            sendColor(newColor.red, newColor.green, newColor.blue, id);
         }
 
         public void sendColor(UInt16 r, UInt16 g, UInt16 b, int id)

@@ -8,6 +8,7 @@ using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.ExtensionFramework;
@@ -17,7 +18,6 @@ using Antumbra.Glow.Exceptions;
 using Antumbra.Glow.Utility;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Drawing;
 
 namespace Antumbra.Glow.Controller
 {
@@ -119,7 +119,7 @@ namespace Antumbra.Glow.Controller
 
         private void OffBtnClickHandler(object sender, EventArgs args)
         {
-            NewGlowCommandAvailEvent(new SendColorCommand(this.dev.id, Color.Black));
+            NewGlowCommandAvailEvent(new SendColorCommand(this.dev.id, new Color16Bit(0,0,0)));
         }
 
         private void StopBtnClickHandler(object sender, EventArgs args)

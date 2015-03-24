@@ -9,7 +9,6 @@ using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
@@ -18,7 +17,7 @@ namespace HSVFade
     [Export(typeof(GlowExtension))]
     public class HSVFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
@@ -78,7 +77,7 @@ namespace HSVFade
                 h += 1;
                 h %= 360;
                 HslColor col = new HslColor(h, 1, .5);
-                NewColorAvailEvent(col.ToRgbColor(), EventArgs.Empty);
+                NewColorAvailEvent(new Color16Bit(col.ToRgbColor()), EventArgs.Empty);
                 if (this.stepSleep != 0)
                     Thread.Sleep(this.stepSleep);
             }

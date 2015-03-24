@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
-using System.Drawing;
+using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Controller
 {
@@ -17,12 +17,12 @@ namespace Antumbra.Glow.Controller
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private View.pollingAreaSetter pollingWindow;
-        private Color color;
+        private Color16Bit color;
         public int id { get; private set; }
         public PollingAreaWindowController()
         {
-            this.color = UniqueColorGenerator.GetInstance().GetUniqueColor();
-            View.pollingAreaSetter pollingWindow = new View.pollingAreaSetter(color);
+            this.color = new Color16Bit(UniqueColorGenerator.GetInstance().GetUniqueColor());
+            View.pollingAreaSetter pollingWindow = new View.pollingAreaSetter(color.ToRGBColor());
             pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
         }
 
@@ -39,7 +39,7 @@ namespace Antumbra.Glow.Controller
                 var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
                 this.pollingWindow = new View.pollingAreaSetter(back);
                 SendStopCommand();
-                SendColorCommand(back);
+                SendColorCommand(new Color16Bit(back));
                 this.pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingWindow.Show();
@@ -61,7 +61,7 @@ namespace Antumbra.Glow.Controller
                 NewGlowCommandAvailEvent(new StopCommand(this.id));
         }
 
-        private void SendColorCommand(Color col)
+        private void SendColorCommand(Color16Bit col)
         {
             if (NewGlowCommandAvailEvent != null)
                 NewGlowCommandAvailEvent(new SendColorCommand(this.id, col));

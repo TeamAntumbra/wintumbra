@@ -8,7 +8,6 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Utility;
-using System.Drawing;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
 using System.Reflection;
@@ -18,7 +17,7 @@ namespace ColorClock
     [Export(typeof(GlowExtension))]
     public class ColorClock : GlowDriver
     {
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
@@ -111,7 +110,7 @@ namespace ColorClock
             }
         }
 
-        private Color getTimeColor(DateTime time)
+        private Color16Bit getTimeColor(DateTime time)
         {
             double secondsFromStart = (time - DateTime.Today).TotalSeconds;//0-86400
             double fraction = secondsFromStart / 86400.0;
@@ -125,7 +124,7 @@ namespace ColorClock
             else//middle 8ths
                 hsv[2] = 1;
             int[] values = HSVRGGConverter.HSVToRGB(hsv[0], hsv[1], hsv[2]);
-            return Color.FromArgb(values[0], values[1], values[2]);
+            return new Color16Bit(System.Drawing.Color.FromArgb(values[0], values[1], values[2]));
         }
     }
 }

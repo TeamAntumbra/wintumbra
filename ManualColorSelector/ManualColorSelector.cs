@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Utility;
 using System.ComponentModel.Composition;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
@@ -18,8 +18,8 @@ namespace ManualColorSelector
     {
         private bool running;
         private MainForm picker;
-        private Color lastUpdate;
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        private Color16Bit lastUpdate;
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
 
         public override Guid id
@@ -73,7 +73,7 @@ namespace ManualColorSelector
 
         public override bool Start()
         {
-            this.lastUpdate = Color.Empty;
+            this.lastUpdate = null;
             this.picker = new MainForm();
             this.picker.BackColorChanged += new EventHandler(SendColorEvent);
             this.picker.Show();
@@ -85,10 +85,10 @@ namespace ManualColorSelector
         {
             if (sender == null)//invalid
                 return;
-            SendColor(((MainForm)sender).sampleColor);
+            SendColor(new Color16Bit(((MainForm)sender).sampleColor));
         }
 
-        public void SendColor(Color newColor)
+        public void SendColor(Color16Bit newColor)
         {
             NewColorAvailEvent(newColor, EventArgs.Empty);
         }

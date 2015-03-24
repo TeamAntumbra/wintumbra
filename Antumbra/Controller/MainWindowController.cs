@@ -10,12 +10,12 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
+using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Connector;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
-using Antumbra.Glow.Utility;
 
 namespace Antumbra.Glow.Controller
 {
@@ -158,11 +158,11 @@ namespace Antumbra.Glow.Controller
 
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
-            if (sender is HslColor) {
+            if (sender is Utility.HslColor) {
                 this.window.SetOnSelection(true);//mark device on
                 NewGlowCmdAvailEvent(new StopCommand(this.id));//stop device if running (dev mgr will make check)
-                HslColor col = (HslColor)sender;
-                NewGlowCmdAvailEvent(new SendColorCommand(this.id, col.ToRgbColor()));
+                Utility.HslColor col = (Utility.HslColor)sender;
+                NewGlowCmdAvailEvent(new SendColorCommand(this.id, new Color16Bit(col.ToRgbColor())));//TODO change this to not lose percision down to 8 bit
             }
         }
 
@@ -171,19 +171,24 @@ namespace Antumbra.Glow.Controller
             //change max brightness value
         }
 
-        public void hsvBtnClicked(object sender, EventArgs args)
+        private void ApplyNewActives(Settings.ActiveExtensions actives)
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
-                dev.SetActives(this.presetBuilder.GetHSVFadePreset());
+                dev.SetActives(actives);
                 dev.ApplyDriverRecomSettings();
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
         }
 
+        public void hsvBtnClicked(object sender, EventArgs args)
+        {
+            ApplyNewActives(this.presetBuilder.GetHSVFadePreset());
+        }
+
         public void sinBtnClicked(object sender, EventArgs args)
         {
-            //sin fade
+            ApplyNewActives(this.presetBuilder.GetSinFadePreset());
         }
 
         public void neonBtnClicked(object sender, EventArgs args)

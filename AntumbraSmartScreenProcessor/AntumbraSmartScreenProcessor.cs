@@ -21,7 +21,7 @@ namespace AntumbraSmartScreenProcessor
     {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
-        public delegate void NewColorAvail(Color newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
         private SmartProcSettingsWindow settings;
@@ -161,11 +161,11 @@ namespace AntumbraSmartScreenProcessor
             }
         }
 
-        public Color Process(Bitmap screen)
+        public Color16Bit Process(Bitmap screen)
         {
             if (screen == null) {
                 NewLogMsgEvent(this.Name, "Null bitmap passed to process.");
-                return Color.Empty;
+                return null;
             }
             try {
                 return SmartCalculateReprColor(screen, (int)Properties.Settings.Default["useAllTol"], (int)Properties.Settings.Default["minMixPerc"],
@@ -176,17 +176,17 @@ namespace AntumbraSmartScreenProcessor
                 else {
                     NewLogMsgEvent(this.Name, e.ToString());
                 }
-                return Color.Empty;
+                return null;
             }
             finally {
                 screen.Dispose();
             }
         }
 
-        private Color SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness, int scaleDownFactor)
+        private Color16Bit SmartCalculateReprColor(Bitmap bm, int useAllTolerance, int mixPercThreshold, int minBrightness, int scaleDownFactor)
         {
             if (bm == null)//sanity check
-                return Color.Empty;
+                return null;
             int newWidth = bm.Width / scaleDownFactor;
             int newHeight = bm.Height / scaleDownFactor;
             Bitmap small = new Bitmap(newWidth, newHeight);
@@ -305,11 +305,11 @@ namespace AntumbraSmartScreenProcessor
             small.Dispose();
             bm.Dispose();
             if (count == 0)//avoid dividing by zero
-                return Color.Empty;
+                return null;
             int avgR = (int)(totals[2] / count);
             int avgG = (int)(totals[1] / count);
             int avgB = (int)(totals[0] / count);
-            return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
+            return new Color16Bit(System.Drawing.Color.FromArgb(avgR, avgG, avgB));
         }
     }
 }
