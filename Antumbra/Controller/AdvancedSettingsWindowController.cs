@@ -391,7 +391,7 @@ namespace Antumbra.Glow.Controller
 
         private void ApplyDriverRecomSettings(object sender, EventArgs a)
         {
-            this.dev.settings.stepSleep = this.dev.ApplyDriverRecomSettings();
+            this.dev.ApplyDriverRecomSettings();
         }
 
         private void pollingArea_Click(object sender, EventArgs e)
