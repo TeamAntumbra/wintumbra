@@ -43,15 +43,11 @@ namespace Antumbra.Glow.Connector
             return outndevs;
         }
 
-        public int SetDeviceColor(int index, IntPtr dev, byte r, byte g, byte b)
+        public int SetDeviceColor(int index, IntPtr dev, UInt16 r, UInt16 g, UInt16 b)
         {
             LightInfo info;
             AnLight_Info_S(this.ctx, dev, out info);
-            byte[] rArray = {r};
-            UInt16 red = (UInt16)((r / 255.0) * UInt16.MaxValue);//convert to UInt16s
-            UInt16 green = (UInt16)((g / 255.0) * UInt16.MaxValue);
-            UInt16 blue = (UInt16)((b / 255.0) * UInt16.MaxValue);
-            return AnLight_Set_S(this.ctx, dev, out info, red, green, blue);
+            return AnLight_Set_S(this.ctx, dev, out info, r, g, b);
         }
 
         public void CloseDevice(IntPtr dev)
