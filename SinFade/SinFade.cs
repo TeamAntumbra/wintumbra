@@ -60,23 +60,20 @@ namespace SinFade
         /// </summary>
         private void target()
         {
-            bool up = true;
-            int value = 0;
+            int deg = 0;
             while (running) {
-                Color result = Color.FromArgb(value, value, value);
+                double rad = (Math.PI / 180.0) * deg;
+                double value = Math.Abs(Math.Sin(rad) * 255);
+                int v = (int)value;
+                if (v > 255)
+                    v = 255;
+                if (v < 0)
+                    v = 0;
+                Color result = Color.FromArgb(v, v, v);
                 try {
                     NewColorAvailEvent(result, EventArgs.Empty);
                     Thread.Sleep(this.stepSleep);
-                    if (up)
-                        if (value == 255)
-                            up = false;//turn around
-                        else
-                            value += 1;
-                    else//down
-                        if (value == 0)
-                            up = true;//turn around
-                        else
-                            value -= 1;
+                    deg += 1;
                 }
                 catch (System.NullReferenceException) { }
             }
@@ -129,7 +126,7 @@ namespace SinFade
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 100;
+            this.stepSleep = 50;
         }
     }
 }
