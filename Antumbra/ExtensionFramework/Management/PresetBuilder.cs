@@ -68,6 +68,21 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return result;
         }
 
+        public ActiveExtensions GetSmoothMirrorPreset()
+        {
+            ActiveExtensions result = new ActiveExtensions();
+            GlowExtension ext = this.lib.LookupExt(ScreenDriverCoupler);
+            if (ext != null)
+                result.ActiveDriver = (GlowDriver)ext;
+            ext = this.lib.LookupExt(ScreenGrabber);
+            if (ext != null)
+                result.ActiveGrabber = (GlowScreenGrabber)ext;
+            ext = this.lib.LookupExt(SmartProcessor);
+            if (ext != null)
+                result.ActiveProcessor = (GlowScreenProcessor)ext;
+            return result;
+        }
+
         public ActiveExtensions GetAugmentMirrorPreset()
         {
             ActiveExtensions result = new ActiveExtensions();
