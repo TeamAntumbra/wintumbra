@@ -407,6 +407,7 @@ namespace Antumbra.Glow.Controller
             this.pollingAreaWindow.Show();*/
             PollingAreaWindowController cont = new PollingAreaWindowController();
             cont.AttachObserver(this);
+            cont.Show();
         }
 
         private void UpdatePollingSelectionsEvent(object sender, FormClosingEventArgs args)
