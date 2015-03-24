@@ -111,10 +111,15 @@ namespace Antumbra.Glow.Connector
 
         public void sendColor(Color newColor, int id)
         {
-            sendColor(newColor.R, newColor.G, newColor.B, id);
+            sendColor(ByteToUInt16(newColor.R), ByteToUInt16(newColor.G), ByteToUInt16(newColor.B), id);
         }
 
-        public void sendColor(byte r, byte g, byte b, int id)
+        private UInt16 ByteToUInt16(byte target)
+        {
+            return Convert.ToUInt16((target / 255.0) * UInt16.MaxValue);
+        }
+
+        public void sendColor(UInt16 r, UInt16 g, UInt16 b, int id)
         {
             GlowDevice activeDev = getDevice(id);
             if (activeDev == null)//device not found
