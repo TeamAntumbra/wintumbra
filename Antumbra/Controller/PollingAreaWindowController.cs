@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using Antumbra.Glow.Utility;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
@@ -17,20 +18,20 @@ namespace Antumbra.Glow.Controller
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private View.pollingAreaSetter pollingWindow;
-        private Color16Bit color;
+        private Color color;
         public int id { get; private set; }
         public PollingAreaWindowController()
         {
-            this.color = new Color16Bit(UniqueColorGenerator.GetInstance().GetUniqueColor());
-            View.pollingAreaSetter pollingWindow = new View.pollingAreaSetter(color.ToRGBColor());
-            pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
+            this.color = UniqueColorGenerator.GetInstance().GetUniqueColor();
+            this.pollingWindow = new View.pollingAreaSetter(this.color);
+            this.pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
         }
 
         public void Show()
         {
-            pollingWindow.Show();
+            this.pollingWindow.Show();
             SendStopCommand();//stop device
-            SendColorCommand(this.color);//set to unique color to match its window
+            SendColorCommand(new Color16Bit(this.color));//set to unique color to match its window
         }
         
         private void pollingArea_Click(object sender, EventArgs e)
