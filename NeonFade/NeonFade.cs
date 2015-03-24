@@ -109,7 +109,9 @@ namespace NeonFade
             int index = 0;
             Color prev = Color.Black;
             while (running) {
-                FadeFromTo(new Color16Bit(prev), new Color16Bit(colors[index]));
+                Color newColor = colors[index];
+                FadeFromTo(new Color16Bit(prev), new Color16Bit(newColor));
+                prev = newColor;
                 index += 1;
                 if (index == colors.Count)
                     index = 0;//wrap around
@@ -126,7 +128,7 @@ namespace NeonFade
         {
             for (int i = 1; i <= 100; i += 1) {
                 double frac = i / 100.0;
-                Color16Bit newColor = Mixer.MixColorPercIn(col1, col2, frac);
+                Color16Bit newColor = Mixer.MixColorPercIn(col2, col1, frac);
                 SendColor(newColor);
                 Thread.Sleep(this.stepSleep);
             }
