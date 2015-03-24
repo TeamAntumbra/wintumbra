@@ -162,7 +162,7 @@ namespace Antumbra.Glow.Controller
                 this.window.SetOnSelection(true);//mark device on
                 NewGlowCmdAvailEvent(new StopCommand(this.id));//stop device if running (dev mgr will make check)
                 Utility.HslColor col = (Utility.HslColor)sender;
-                NewGlowCmdAvailEvent(new SendColorCommand(this.id, new Color16Bit(col.ToRgbColor())));//TODO change this to not lose percision down to 8 bit
+                NewGlowCmdAvailEvent(new SendColorCommand(this.id, new Color16Bit(col.ToRgbColor())));
             }
         }
 
@@ -171,7 +171,19 @@ namespace Antumbra.Glow.Controller
             //change max brightness value
         }
 
-        private void ApplyNewActives(Settings.ActiveExtensions actives)
+        private void ApplyNewSetup(Settings.ActiveExtensions actives, int stepSleep, bool weighted, double weight)
+        {
+            NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
+            foreach (GlowDevice dev in this.deviceMgr.Glows) {
+                dev.SetActives(actives);
+                dev.settings.weightingEnabled = weighted;
+                dev.settings.newColorWeight = weight;
+                dev.settings.stepSleep = stepSleep;
+            }
+            NewGlowCmdAvailEvent(new StartCommand(-1));//start all
+        }
+
+        private void ApplyNewSetup(Settings.ActiveExtensions actives)
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
@@ -183,37 +195,37 @@ namespace Antumbra.Glow.Controller
 
         public void hsvBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetHSVFadePreset());
+            ApplyNewSetup(this.presetBuilder.GetHSVFadePreset());
         }
 
         public void sinBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetSinFadePreset());
+            ApplyNewSetup(this.presetBuilder.GetSinFadePreset());
         }
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetNeonFadePreset());
+            ApplyNewSetup(this.presetBuilder.GetNeonFadePreset());
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetMirrorPreset());
+            ApplyNewSetup(this.presetBuilder.GetMirrorPreset());
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetAugmentMirrorPreset());
+            ApplyNewSetup(this.presetBuilder.GetAugmentMirrorPreset(), 0, true, .05);
         }
 
         public void smoothBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetSmoothMirrorPreset());
+            ApplyNewSetup(this.presetBuilder.GetSmoothMirrorPreset(), 1, true, .05);
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
         {
-            ApplyNewActives(this.presetBuilder.GetGameMirrorPreset());
+            ApplyNewSetup(this.presetBuilder.GetGameMirrorPreset());
         }
 
         public void customConfigBtnClicked(object sender, EventArgs args)
