@@ -12,5 +12,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public abstract void RecmmndCoreSettings();
         public abstract void AttachColorObserver(AntumbraColorObserver observer);
         public int stepSleep { get; set; }
+        public bool weighted { get; set; }
+        public double newColorWeight { get; set; }
     }
 }
