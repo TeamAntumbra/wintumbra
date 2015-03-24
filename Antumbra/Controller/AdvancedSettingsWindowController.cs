@@ -32,7 +32,6 @@ namespace Antumbra.Glow.Controller
         private AdvancedSettingsWindow window;
         private GlowDevice dev;
         private AntumbraExtSettingsWindow.ExtWindowFactory settingsFactory;
-        private pollingAreaSetter pollingAreaWindow;
         public AdvancedSettingsWindowController(GlowDevice dev, String version, AntumbraExtSettingsWindow.ExtWindowFactory factory)
         {
             this.dev = dev;
@@ -396,15 +395,6 @@ namespace Antumbra.Glow.Controller
 
         private void pollingArea_Click(object sender, EventArgs e)
         {
-            /* (this.pollingAreaWindow == null || this.pollingAreaWindow.IsDisposed) {
-                var current = this.dev.id;
-                var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
-                this.pollingAreaWindow = new pollingAreaSetter(this.dev.settings, back);
-                SendStopCommand();
-                NewGlowCommandAvailEvent(new SendColorCommand(current, back));//update device to unique color matching window
-                this.pollingAreaWindow.FormClosing += new FormClosingEventHandler(UpdatePollingSelectionsEvent);
-            }
-            this.pollingAreaWindow.Show();*/
             PollingAreaWindowController cont = new PollingAreaWindowController();
             cont.AttachObserver(this);
             cont.Show();
