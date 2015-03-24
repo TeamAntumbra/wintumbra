@@ -165,6 +165,9 @@ namespace Antumbra.Glow.Controller
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
             if (sender is Utility.HslColor) {
+                foreach (GlowDevice dev in this.deviceMgr.Glows) {
+                    dev.settings.weightingEnabled = false;
+                }
                 this.window.SetOnSelection(true);//mark device on
                 NewGlowCmdAvailEvent(new StopCommand(this.id));//stop device if running (dev mgr will make check)
                 Utility.HslColor col = (Utility.HslColor)sender;
