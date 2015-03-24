@@ -95,7 +95,7 @@ namespace Antumbra.Glow.Connector
             this.Stop();
         }
 
-        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
         {
             outputFPS.Tick();
             lock (sync) {

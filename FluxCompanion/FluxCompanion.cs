@@ -16,7 +16,7 @@ namespace FluxCompanion
     [Export(typeof(GlowExtension))]
     public class FluxCompanion : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
         private bool running;
         private Task driver;
@@ -75,7 +75,7 @@ namespace FluxCompanion
                 int sec = now.Second;
                 int min = now.Minute;
                 int hour = now.Hour;
-                NewColorAvailEvent(ConvertKelvinToColor(ConvertTimeToKelvin(hour, min, sec)), EventArgs.Empty);
+                NewColorAvailEvent(ConvertKelvinToColor(ConvertTimeToKelvin(hour, min, sec)));
                 Thread.Sleep(this.stepSleep);
             }
         }

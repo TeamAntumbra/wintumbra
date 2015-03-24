@@ -19,7 +19,7 @@ namespace AntumbraFastScreenProcessor
     public class AntumbraFastScreenProcessor : GlowScreenProcessor
     //No fancy algorithms here. Just pure speed through a straight average
     {
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
         public override bool IsDefault
@@ -87,7 +87,7 @@ namespace AntumbraFastScreenProcessor
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
             try {
-                NewColorAvailEvent(Process(bm), EventArgs.Empty);
+                NewColorAvailEvent(Process(bm));
             }
             catch (Exception) {
                 this.Stop();

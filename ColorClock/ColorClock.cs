@@ -17,7 +17,7 @@ namespace ColorClock
     [Export(typeof(GlowExtension))]
     public class ColorClock : GlowDriver
     {
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
@@ -105,7 +105,7 @@ namespace ColorClock
             while (this.running) {
                 if (NewColorAvailEvent == null) {}//no one is listening, do nothing...
                 else
-                    NewColorAvailEvent(getTimeColor(DateTime.Now), EventArgs.Empty);
+                    NewColorAvailEvent(getTimeColor(DateTime.Now));
                 Thread.Sleep(this.stepSleep);
             }
         }

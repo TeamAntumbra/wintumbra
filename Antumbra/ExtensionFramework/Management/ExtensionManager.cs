@@ -27,7 +27,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="newColor"></param>
         /// <param name="args"></param>
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         /// <summary>
         /// NewColorAvail Event, occurs when a new color is available
         /// </summary>
@@ -284,18 +284,18 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="newColor"></param>
         /// <param name="args"></param>
-        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor, EventArgs args)
+        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
         {
             List<GlowDecorator> decs = this.activeExts.ActiveDecorators;
             int count = decs.Count;
             if (count == 0) {
-                NewColorAvailEvent(newColor, args);//no decoration to do
+                NewColorAvailEvent(newColor);//no decoration to do
                 return;
             }
             if (this.compoundDecoration) {
                 foreach (var dec in decs)//decorate
                     newColor = dec.Decorate(newColor);
-                NewColorAvailEvent(newColor, args);
+                NewColorAvailEvent(newColor);
                 return;
             }
             //average decorators output
@@ -309,7 +309,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             UInt16 red = Convert.ToUInt16(r/count);
             UInt16 green = Convert.ToUInt16(g/count);
             UInt16 blue = Convert.ToUInt16(b/count);
-            NewColorAvailEvent(new Color16Bit(red, green, blue), args);
+            NewColorAvailEvent(new Color16Bit(red, green, blue));
         }
         /// <summary>
         /// Start active extensions

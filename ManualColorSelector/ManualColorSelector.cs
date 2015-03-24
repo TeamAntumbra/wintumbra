@@ -19,7 +19,7 @@ namespace ManualColorSelector
         private bool running;
         private MainForm picker;
         private Color16Bit lastUpdate;
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
 
         public override Guid id
@@ -90,7 +90,7 @@ namespace ManualColorSelector
 
         public void SendColor(Color16Bit newColor)
         {
-            NewColorAvailEvent(newColor, EventArgs.Empty);
+            NewColorAvailEvent(newColor);
         }
 
         public override bool Stop()

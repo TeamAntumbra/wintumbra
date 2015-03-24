@@ -8,6 +8,6 @@ namespace Antumbra.Glow.Observer.Colors
 {
     public interface AntumbraColorObserver
     {
-        void NewColorAvail(Color16Bit newCol, EventArgs args);
+        void NewColorAvail(Color16Bit newCol);
     }
 }

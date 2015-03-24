@@ -17,7 +17,7 @@ namespace ExampleGlowDriver
     [Export(typeof(GlowExtension))]
     public class ExampleGlowDriver : GlowIndependentDriver, Loggable
     {
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -71,7 +71,7 @@ namespace ExampleGlowDriver
                 Color16Bit result = new Color16Bit(val, val, val);
                 //report new color event
                 try {
-                    NewColorAvailEvent(result, EventArgs.Empty);
+                    NewColorAvailEvent(result);
                 }
                 catch (Exception e) {
                     NewLogMsgEvent(this.Name, e.ToString());

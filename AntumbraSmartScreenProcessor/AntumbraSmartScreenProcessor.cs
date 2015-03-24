@@ -21,7 +21,7 @@ namespace AntumbraSmartScreenProcessor
     {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
         private bool running = false;
         private SmartProcSettingsWindow settings;
@@ -149,7 +149,7 @@ namespace AntumbraSmartScreenProcessor
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
             try {
-                NewColorAvailEvent(Process(bm), EventArgs.Empty);
+                NewColorAvailEvent(Process(bm));
             }
             catch (Exception e) {
                 if (e is ThreadAbortException) { }//swallow exception

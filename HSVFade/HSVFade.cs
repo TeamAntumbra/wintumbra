@@ -17,7 +17,7 @@ namespace HSVFade
     [Export(typeof(GlowExtension))]
     public class HSVFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit newColor, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newColor);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
@@ -77,7 +77,7 @@ namespace HSVFade
                 h += 1;
                 h %= 360;
                 HslColor col = new HslColor(h, 1, .5);
-                NewColorAvailEvent(new Color16Bit(col.ToRgbColor()), EventArgs.Empty);
+                NewColorAvailEvent(new Color16Bit(col.ToRgbColor()));
                 if (this.stepSleep != 0)
                     Thread.Sleep(this.stepSleep);
             }

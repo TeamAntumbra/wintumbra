@@ -17,7 +17,7 @@ namespace SinFade
     [Export(typeof(GlowExtension))]
     public class SinFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit newCol, EventArgs args);
+        public delegate void NewColorAvail(Color16Bit newCol);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
@@ -67,7 +67,7 @@ namespace SinFade
                 UInt16 v = Convert.ToUInt16(value);
                 Color16Bit result = new Color16Bit(v, v, v);
                 try {
-                    NewColorAvailEvent(result, EventArgs.Empty);
+                    NewColorAvailEvent(result);
                     Thread.Sleep(this.stepSleep);
                     deg += 1;
                 }

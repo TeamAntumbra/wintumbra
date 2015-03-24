@@ -13,7 +13,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private ExtensionLibrary lib;
         private Guid HSVDriver = Guid.Parse("8360550b-d599-4f0f-8806-bc323f9ce547");
         private Guid SinDriver = Guid.Parse("31cae25b-72c0-4ffc-860b-234fb931bc15");
-        private Guid NeonDriver = Guid.Empty;//Guid.Parse("");//TODO
+        private Guid NeonDriver = Guid.Parse("9a310fae-2084-4dc5-ae6a-4f664faa1fe8");
         private Guid ScreenDriverCoupler = Guid.Parse("70987576-1a00-4a34-b787-4c08516cd1b8");
         private Guid ScreenGrabber = Guid.Parse("15115e91-ed5c-49e6-b7a8-4ebbd4dabb2e");
         private Guid SmartProcessor = Guid.Parse("f4f3692d-a405-4dca-82fd-a9f3e9f93afe");
