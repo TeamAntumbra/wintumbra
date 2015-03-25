@@ -66,8 +66,18 @@ namespace Antumbra.Glow.Connector
             cmd.ExecuteCommand(this);
         }
 
+        private void StartAll()
+        {
+            foreach (GlowDevice dev in this.Glows)
+                Start(dev.id);
+        }
+
         public void Start(int id)
         {
+            if (id == -1) {
+                StartAll();
+                return;//cancel this call
+            }
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)//needs to be created
                 loop = this.outManager.CreateAndAddLoop(this, id);
@@ -86,8 +96,18 @@ namespace Antumbra.Glow.Connector
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
         }
 
+        private void StopAll()
+        {
+            foreach (GlowDevice dev in this.Glows)
+                Stop(dev.id);
+        }
+
         public void Stop(int id)
         {
+            if (id == -1) {
+                StopAll();
+                return;//cancel this call
+            }
             var dev = this.getDevice(id);
             bool wasRunning = dev.running;
             if (wasRunning)//only show notifs if actually stopping device (still make call to clean up)
