@@ -21,7 +21,7 @@ using Microsoft.Win32;
 namespace Antumbra.Glow.Controller
 {
     public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver,
-                                        ToolbarNotificationObserver, AntumbraColorSource
+                                        ToolbarNotificationObserver, AntumbraColorSource, AntumbraColorObserver
     {
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
@@ -29,8 +29,8 @@ namespace Antumbra.Glow.Controller
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
-        public delegate void NewColorAvail(Color16Bit newColor);
-        public event NewColorAvail NewColorAvailEvent;
+        public delegate void NewColor(Color16Bit newColor);
+        public event NewColor NewColorAvailEvent;
         public event EventHandler quitEventHandler;
         public bool goodStart { get; private set; }
         private const string extPath = "./Extensions/";
@@ -87,6 +87,11 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this.deviceMgr);
         }
 
+        public void NewColorAvail(Color16Bit color)
+        {
+            SendColor(color);
+        }
+
         public void AttachObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += observer.NewColorAvail;
@@ -107,7 +112,8 @@ namespace Antumbra.Glow.Controller
         private void setPollingBtnClickHandler(object sender, EventArgs args)
         {
             PollingAreaWindowController cont = new PollingAreaWindowController();
-            cont.AttachObserver(this);
+            cont.AttachObserver((AntumbraColorObserver)this);
+            cont.AttachObserver((GlowCommandObserver)this);
             cont.Show();
         }
 
