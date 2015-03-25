@@ -97,7 +97,20 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             CollectionUpdateEvent += observer.LibraryUpdate;
         }
 
-        public GlowDriver GetDefaultDriver()
+        public Settings.ActiveExtensions GetDefaults()
+        {
+            Settings.ActiveExtensions result = new Settings.ActiveExtensions();
+            result.ActiveDriver = this.GetDefaultDriver();
+            result.ActiveGrabber = this.GetDefaultGrabber();
+            result.ActiveProcessor = this.GetDefaultProcessor();
+            foreach (GlowDecorator dec in this.GetDefaultDecorators())
+                result.ActiveDecorators.Add(dec);
+            foreach (GlowNotifier notf in this.GetDefaultNotifiers())
+                result.ActiveNotifiers.Add(notf);
+            return result;
+        }
+
+        private GlowDriver GetDefaultDriver()
         {
             foreach (GlowDriver dvr in this.AvailDrivers)
                 if (dvr.IsDefault)
@@ -105,7 +118,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return null;
         }
 
-        public GlowScreenGrabber GetDefaultGrabber()
+        private GlowScreenGrabber GetDefaultGrabber()
         {
             foreach (GlowScreenGrabber gbr in this.AvailGrabbers)
                 if (gbr.IsDefault)
@@ -113,7 +126,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return null;
         }
 
-        public GlowScreenProcessor GetDefaultProcessor()
+        private GlowScreenProcessor GetDefaultProcessor()
         {
             foreach (GlowScreenProcessor pcr in this.AvailProcessors)
                 if (pcr.IsDefault)
@@ -121,7 +134,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return null;
         }
 
-        public List<GlowDecorator> GetDefaultDecorators()
+        private List<GlowDecorator> GetDefaultDecorators()
         {
             List<GlowDecorator> result = new List<GlowDecorator>();
             foreach (GlowDecorator dec in this.AvailDecorators)
@@ -130,7 +143,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return result;
         }
 
-        public List<GlowNotifier> GetDefaultNotifiers()
+        private List<GlowNotifier> GetDefaultNotifiers()
         {
             List<GlowNotifier> result = new List<GlowNotifier>();
             foreach (GlowNotifier notf in this.AvailNotifiers)
