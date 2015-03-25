@@ -62,6 +62,7 @@ namespace Antumbra.Glow.Connector
 
         public void SetActives(ActiveExtensions actives)
         {
+            actives.AttachObserver(this);
             this.extMgr.LoadActives(actives);
         }
 
