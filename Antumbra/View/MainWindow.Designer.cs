@@ -32,12 +32,13 @@
             this.closeBtn = new System.Windows.Forms.Button();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
-            this.quitBtn = new System.Windows.Forms.Button();
             this.brightnessLabel = new System.Windows.Forms.Label();
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.mirrorTab = new System.Windows.Forms.TabPage();
+            this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
             this.gameBtn = new System.Windows.Forms.Button();
             this.smoothBtn = new System.Windows.Forms.Button();
@@ -50,11 +51,10 @@
             this.hsvBtn = new System.Windows.Forms.Button();
             this.customTab = new System.Windows.Forms.TabPage();
             this.customConfigBtn = new System.Windows.Forms.Button();
+            this.quitBtn = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
-            this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
@@ -111,23 +111,6 @@
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
-            // quitBtn
-            // 
-            this.quitBtn.AutoSize = true;
-            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
-            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.quitBtn.Location = new System.Drawing.Point(460, -2);
-            this.quitBtn.Name = "quitBtn";
-            this.quitBtn.Size = new System.Drawing.Size(54, 32);
-            this.quitBtn.TabIndex = 77;
-            this.quitBtn.Text = "Quit";
-            this.quitBtn.UseVisualStyleBackColor = false;
-            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
-            // 
             // brightnessLabel
             // 
             this.brightnessLabel.AutoSize = true;
@@ -141,9 +124,11 @@
             // brightnessTrackBar
             // 
             this.brightnessTrackBar.Location = new System.Drawing.Point(273, 44);
+            this.brightnessTrackBar.Maximum = 100;
             this.brightnessTrackBar.Name = "brightnessTrackBar";
             this.brightnessTrackBar.Size = new System.Drawing.Size(244, 69);
             this.brightnessTrackBar.TabIndex = 3;
+            this.brightnessTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
             // 
             // offBtn
@@ -171,6 +156,15 @@
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
             // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(202, 215);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
+            // 
             // mirrorTab
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
@@ -187,6 +181,18 @@
             this.mirrorTab.Size = new System.Drawing.Size(569, 255);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
+            // 
+            // setPollingSizeBtn
+            // 
+            this.setPollingSizeBtn.AutoSize = true;
+            this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.setPollingSizeBtn.Location = new System.Drawing.Point(402, 216);
+            this.setPollingSizeBtn.Name = "setPollingSizeBtn";
+            this.setPollingSizeBtn.Size = new System.Drawing.Size(161, 36);
+            this.setPollingSizeBtn.TabIndex = 5;
+            this.setPollingSizeBtn.Text = "Set Capture Size";
+            this.setPollingSizeBtn.UseVisualStyleBackColor = true;
+            this.setPollingSizeBtn.Click += new System.EventHandler(this.setPollingSizeBtn_Click);
             // 
             // modeDescs
             // 
@@ -327,6 +333,23 @@
             this.customConfigBtn.UseVisualStyleBackColor = true;
             this.customConfigBtn.Click += new System.EventHandler(this.customConfigBtn_Click);
             // 
+            // quitBtn
+            // 
+            this.quitBtn.AutoSize = true;
+            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.quitBtn.Location = new System.Drawing.Point(460, -2);
+            this.quitBtn.Name = "quitBtn";
+            this.quitBtn.Size = new System.Drawing.Size(54, 32);
+            this.quitBtn.TabIndex = 77;
+            this.quitBtn.Text = "Quit";
+            this.quitBtn.UseVisualStyleBackColor = false;
+            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
+            // 
             // antumbraLabel
             // 
             this.antumbraLabel.AutoSize = true;
@@ -347,27 +370,6 @@
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
-            // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(202, 215);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
-            // 
-            // setPollingSizeBtn
-            // 
-            this.setPollingSizeBtn.AutoSize = true;
-            this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setPollingSizeBtn.Location = new System.Drawing.Point(402, 216);
-            this.setPollingSizeBtn.Name = "setPollingSizeBtn";
-            this.setPollingSizeBtn.Size = new System.Drawing.Size(161, 36);
-            this.setPollingSizeBtn.TabIndex = 5;
-            this.setPollingSizeBtn.Text = "Set Capture Size";
-            this.setPollingSizeBtn.UseVisualStyleBackColor = true;
-            this.setPollingSizeBtn.Click += new System.EventHandler(this.setPollingSizeBtn_Click);
             // 
             // MainWindow
             // 
