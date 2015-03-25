@@ -55,8 +55,12 @@ namespace Antumbra.Glow.View
 
         private void brightnessTrackBar_Scroll(object sender, EventArgs e)
         {
-            if (brightnessTrackBar_ScrollEvent != null)
-                brightnessTrackBar_ScrollEvent(sender, e);
+            if (brightnessTrackBar_ScrollEvent != null) {
+                int max = this.brightnessTrackBar.Maximum;
+                int current = this.brightnessTrackBar.Value;
+                int[] values = { current, max };
+                brightnessTrackBar_ScrollEvent(values, e);
+            }
         }
 
         private void hsvBtn_Click(object sender, EventArgs e)
