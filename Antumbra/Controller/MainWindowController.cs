@@ -197,6 +197,7 @@ namespace Antumbra.Glow.Controller
                 dev.settings.stepSleep = stepSleep;
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
+            this.window.SetOnSelection(true);//mark device on
         }
 
         private void ApplyNewSetup(ActiveExtensions actives)
@@ -207,6 +208,7 @@ namespace Antumbra.Glow.Controller
                 dev.ApplyDriverRecomSettings();
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
+            this.window.SetOnSelection(true);//mark device on
         }
 
         public void hsvBtnClicked(object sender, EventArgs args)
