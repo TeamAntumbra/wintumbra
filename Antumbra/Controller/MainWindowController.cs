@@ -100,8 +100,19 @@ namespace Antumbra.Glow.Controller
         private void setPollingBtnClickHandler(object sender, EventArgs args)
         {
             PollingAreaWindowController cont = new PollingAreaWindowController();
+            cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
             cont.AttachObserver(this);
             cont.Show();
+        }
+
+        private void UpdatePollingSelection(int x, int y, int width, int height)
+        {
+            foreach (GlowDevice dev in this.deviceMgr.Glows) {//TODO change for easier multi-glow setup
+                dev.settings.x = x;
+                dev.settings.y = y;
+                dev.settings.width = width;
+                dev.settings.height = height;
+            }
         }
 
         private void OnOffValueChangedHandler(object sender, EventArgs args)

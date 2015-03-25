@@ -401,18 +401,17 @@ namespace Antumbra.Glow.Controller
         private void pollingArea_Click(object sender, EventArgs e)
         {
             PollingAreaWindowController cont = new PollingAreaWindowController();
+            cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelections);
             cont.AttachObserver(this);
             cont.Show();
         }
 
-        private void UpdatePollingSelectionsEvent(object sender, FormClosingEventArgs args)
+        private void UpdatePollingSelections(int x, int y, int width, int height)
         {
-            Form form = (Form)sender;
-            this.dev.settings.x = form.Bounds.X;
-            this.dev.settings.y = form.Bounds.Y;
-            this.dev.settings.width = form.Bounds.Width;
-            this.dev.settings.height = form.Bounds.Height;
-            UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
+            this.dev.settings.x = x;
+            this.dev.settings.y = y;
+            this.dev.settings.width = width;
+            this.dev.settings.height = height;
         }
 
         private void SendStopCommand()

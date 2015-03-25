@@ -13,7 +13,7 @@ namespace Antumbra.Glow.Controller
 {
     public class PollingAreaWindowController : GlowCommandSender
     {
-        public delegate void PollingAreaUpdated(int x, int y, int height, int width);
+        public delegate void PollingAreaUpdated(int x, int y, int width, int height);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
