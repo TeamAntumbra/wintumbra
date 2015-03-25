@@ -9,7 +9,6 @@ using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.GlowCommands;
-using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Connector
 {
@@ -44,6 +43,8 @@ namespace Antumbra.Glow.Connector
             this.GlowsFound = this.Glows.Count;
             this.outManager = new OutputLoopManager();
             this.advancedSettingsWinMgr = new AdvancedSettingsWindowManager(productVersion, lib);
+            this.advancedSettingsWinMgr.AttachObserver((ToolbarNotificationObserver)this);
+            this.advancedSettingsWinMgr.AttachObserver((GlowCommandObserver)this);
             foreach (var dev in this.Glows) {//create output loops
                 this.outManager.CreateAndAddLoop(this, dev.id);
                 this.advancedSettingsWinMgr.CreateAndAddNewController(dev);
@@ -104,7 +105,7 @@ namespace Antumbra.Glow.Connector
                 NewToolbarNotifAvail(3000, "Device " + id + " Stopped.", "The current device has been stopped.", 1);
         }
 
-        public void sendColor(Color16Bit newColor, int id)
+        public void sendColor(Antumbra.Glow.Observer.Colors.Color16Bit newColor, int id)
         {
             sendColor(newColor.red, newColor.green, newColor.blue, id);
         }
