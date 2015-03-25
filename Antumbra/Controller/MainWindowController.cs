@@ -149,12 +149,10 @@ namespace Antumbra.Glow.Controller
 
         public void showWindowEventHandler(object sender, EventArgs args)
         {
-            this.showWindow();
-        }
-
-        private void showWindow()
-        {
-            this.window.Show();
+            if (this.window.Visible)
+                this.window.Activate();
+            else
+                this.window.Show();
         }
 
         public void closeBtnClicked(object sender, EventArgs args)
