@@ -123,7 +123,7 @@ namespace Antumbra.Glow.Controller
 
         private void OffBtnClickHandler(object sender, EventArgs args)
         {
-            NewGlowCommandAvailEvent(new SendColorCommand(this.dev.id, new Color16Bit(0,0,0)));
+            NewGlowCommandAvailEvent(new PowerOffCommand(this.dev.id));
         }
 
         private void StopBtnClickHandler(object sender, EventArgs args)
