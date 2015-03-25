@@ -167,6 +167,7 @@ namespace Antumbra.Glow.Settings
             this.weightingEnabled = true;
             this.newColorWeight = .05;
             this.compoundDecoration = false;
+            this.maxBrightness = UInt16.MaxValue;
             Notify();
         }
 
@@ -181,7 +182,8 @@ namespace Antumbra.Glow.Settings
             this.stepSleep = int.Parse(parts[5]);
             this.weightingEnabled = Boolean.Parse(parts[6]);
             this.newColorWeight = double.Parse(parts[7]);
-            this.compoundDecoration = Boolean.Parse(parts[8]);
+            this.maxBrightness = UInt16.Parse(parts[8]);
+            this.compoundDecoration = Boolean.Parse(parts[9]);
             Notify();
         }
     }
