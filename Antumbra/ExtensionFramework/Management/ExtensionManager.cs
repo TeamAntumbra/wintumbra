@@ -60,7 +60,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.lib = extLib;
             this.id = id;
             this.activeExts = new ActiveExtensions();
-            this.Reset();
+            //this.Reset();
             this.activeExts.AttachObserver(this);
         }
 
@@ -288,12 +288,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="args"></param>
         void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
         {
-            Color16Bit decorated = ApplyDecorations(newColor);
-            Color16Bit result = ApplyBrightnessSettings(decorated);
-            NewColorAvailEvent(result);
+            NewColorAvailEvent(newColor);//pass up, device manager will decorate
         }
 
-        private Color16Bit ApplyBrightnessSettings(Color16Bit decorated)
+        public Color16Bit ApplyBrightnessSettings(Color16Bit decorated)
         {
             UInt16 red = Convert.ToUInt16(((double)decorated.red / UInt16.MaxValue) * this.maxBrightness);
             UInt16 green = Convert.ToUInt16(((double)decorated.green / UInt16.MaxValue) * this.maxBrightness);
@@ -301,7 +299,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return new Color16Bit(red, green, blue);
         }
 
-        private Color16Bit ApplyDecorations(Color16Bit orig)
+        public Color16Bit ApplyDecorations(Color16Bit orig)
         {
             List<GlowDecorator> decs = this.activeExts.ActiveDecorators;
             int count = decs.Count;
@@ -365,8 +363,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <returns>True if verified, else false</returns>
         private bool Verify()
         {
+            if (this.activeExts.ActiveDriver == null)
+                return false;
             if (this.activeExts.ActiveDriver is GlowScreenDriverCoupler) {//screen based driver selected
-                if (null == this.activeExts.ActiveGrabber || null == this.activeExts.ActiveProcessor) {//no grabber or processor set
+                if (null == this.activeExts.ActiveGrabber || this.activeExts.ActiveProcessor == null) {//no grabber or processor set
                     return false;
                 }
                 this.activeExts.ActiveGrabber.x = this.x;//set screen related settings for grabber
