@@ -202,12 +202,13 @@ namespace AntumbraSmartScreenProcessor
             long[] greens = new long[] { 0, 0, 0 };
             long[] reds = new long[] { 0, 0, 0 };
             long[] all = new long[] { 0, 0, 0 };
+            long[] dark = new long[] { 0, 0, 0 };
             int bppModifier = bm.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb ? 3 : 4; // cutting corners, will fail on anything else but 32 and 24 bit images
 
             BitmapData srcData = bm.LockBits(new System.Drawing.Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
             int stride = srcData.Stride;
             IntPtr Scan0 = srcData.Scan0;
-            int bluesCount = 0, greensCount = 0, redsCount = 0;
+            int bluesCount = 0, greensCount = 0, redsCount = 0, darkCount = 0;
 
             unsafe {
                 byte* p = (byte*)(void*)Scan0;
@@ -218,8 +219,13 @@ namespace AntumbraSmartScreenProcessor
                         red = p[idx + 2];
                         green = p[idx + 1];
                         blue = p[idx];
-                        if (red < minBrightness && green < minBrightness && blue < minBrightness)//skip pixel, too dark
+                        if (red < minBrightness && green < minBrightness && blue < minBrightness) {//dark pixel
+                            dark[2] += red;
+                            dark[1] += green;
+                            dark[0] += blue;
+                            darkCount += 1;
                             continue;
+                        }
                         int max = Math.Max(blue, Math.Max(green, red));
                         if (blue == max) {//blue dominant
                             blues[2] += red;
@@ -239,9 +245,6 @@ namespace AntumbraSmartScreenProcessor
                             reds[0] += blue;
                             redsCount += 1;
                         }
-                        else {
-                            Console.WriteLine("this should not happen! (in getReprColor)");
-                        }
                         all[2] += red;
                         all[1] += green;
                         all[0] += blue;
@@ -252,7 +255,7 @@ namespace AntumbraSmartScreenProcessor
             int count = Math.Max(bluesCount, Math.Max(greensCount, redsCount));
             if (Math.Abs(bluesCount - greensCount) < useAllTolerance && Math.Abs(bluesCount - redsCount) < useAllTolerance && Math.Abs(greensCount - redsCount) < useAllTolerance)
                 totals = all;
-            else if (bluesCount >= greensCount && bluesCount >= redsCount) {
+            else if (bluesCount == count) {//blue is most common
                 totals = blues;
                 double mixThreshold = bluesCount * (mixPercThreshold / 100.0);
                 if (redsCount > mixThreshold) { //mix in red
@@ -267,8 +270,14 @@ namespace AntumbraSmartScreenProcessor
                     totals[0] += greens[0];
                     count += greensCount;
                 }
+                if (darkCount > mixThreshold) {//mix in darks
+                    totals[2] += dark[2];
+                    totals[1] += dark[1];
+                    totals[0] += dark[0];
+                    count += darkCount;
+                }
             }
-            else if (greensCount >= bluesCount && greensCount >= redsCount) {
+            else if (greensCount == count) {//green is most common
                 totals = greens;
                 double mixThreshold = greensCount * (mixPercThreshold / 100.0);
                 if (redsCount > mixThreshold) { //mix in red
@@ -283,8 +292,14 @@ namespace AntumbraSmartScreenProcessor
                     totals[0] += blues[0];
                     count += bluesCount;
                 }
+                if (darkCount > mixThreshold) {//mix in darks
+                    totals[2] += dark[2];
+                    totals[1] += dark[1];
+                    totals[0] += dark[0];
+                    count += darkCount;
+                }
             }
-            else if (redsCount >= bluesCount && redsCount >= greensCount) {
+            else if (redsCount == count) {//red is most common
                 totals = reds;
                 double mixThreshold = redsCount * (mixPercThreshold / 100.0);
                 if (bluesCount > mixThreshold) { //mix in blue
@@ -299,9 +314,13 @@ namespace AntumbraSmartScreenProcessor
                     totals[0] += greens[0];
                     count += greensCount;
                 }
+                if (darkCount > mixThreshold) {//mix in darks
+                    totals[2] += dark[2];
+                    totals[1] += dark[1];
+                    totals[0] += dark[0];
+                    count += darkCount;
+                }
             }
-            else
-                Console.WriteLine("this should not happen! (in getReprColor) #2");
             small.Dispose();
             bm.Dispose();
             if (count == 0)//avoid dividing by zero
