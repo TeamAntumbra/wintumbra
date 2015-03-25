@@ -66,17 +66,19 @@ namespace Antumbra.Glow.Connector
             cmd.ExecuteCommand(this);
         }
 
-        private void StartAll()
+        private bool StartAll()
         {
+            bool result = true;
             foreach (GlowDevice dev in this.Glows)
-                Start(dev.id);
+                if (!Start(dev.id))//failed to start
+                    result = false;
+            return result;
         }
 
-        public void Start(int id)
+        public bool Start(int id)
         {
             if (id == -1) {
-                StartAll();
-                return;//cancel this call
+                return StartAll();
             }
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop == null)//needs to be created
@@ -91,22 +93,25 @@ namespace Antumbra.Glow.Connector
             else {//starting failed
                 dev.Stop();
                 NewToolbarNotifAvail(3000, "Starting Failed", "Starting the selected extensions failed.", 2);
-                return;
+                return false;
             }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
+            return true;
         }
 
-        private void StopAll()
+        private bool StopAll()
         {
+            bool result = true;
             foreach (GlowDevice dev in this.Glows)
-                Stop(dev.id);
+                if (!Stop(dev.id))
+                    result = false;
+            return result;
         }
 
-        public void Stop(int id)
+        public bool Stop(int id)
         {
             if (id == -1) {
-                StopAll();
-                return;//cancel this call
+                return StopAll();
             }
             var dev = this.getDevice(id);
             bool wasRunning = dev.running;
@@ -123,10 +128,16 @@ namespace Antumbra.Glow.Connector
             }
             if (wasRunning)
                 NewToolbarNotifAvail(3000, "Device " + id + " Stopped.", "The current device has been stopped.", 1);
+            return true;
         }
 
         public void sendColor(Antumbra.Glow.Observer.Colors.Color16Bit newColor, int id)
         {
+            GlowDevice dev = this.getDevice(id);
+            if (dev == null)
+                return;//no device found matching passed id
+            newColor = dev.ApplyDecorations(newColor);
+            newColor = dev.ApplyBrightness(newColor);
             sendColor(newColor.red, newColor.green, newColor.blue, id);
         }
 
@@ -142,6 +153,8 @@ namespace Antumbra.Glow.Connector
                     return;
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
+            if (status != 0)//did not work as expected
+                status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);//try again
             this.status = status;
         }
 
