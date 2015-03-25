@@ -32,6 +32,7 @@ namespace Antumbra.Glow.View
         {
             InitializeComponent();
             this.offBtn.Checked = true;//defaults off
+            this.brightnessTrackBar.Value = this.brightnessTrackBar.Maximum;
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
         }
 
