@@ -295,9 +295,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         private Color16Bit ApplyBrightnessSettings(Color16Bit decorated)
         {
-            UInt16 red = Convert.ToUInt16((decorated.red / UInt16.MaxValue) * this.maxBrightness);
-            UInt16 green = Convert.ToUInt16((decorated.green / UInt16.MaxValue) * this.maxBrightness);
-            UInt16 blue = Convert.ToUInt16((decorated.blue / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 red = Convert.ToUInt16(((double)decorated.red / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 green = Convert.ToUInt16(((double)decorated.green / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 blue = Convert.ToUInt16(((double)decorated.blue / UInt16.MaxValue) * this.maxBrightness);
             return new Color16Bit(red, green, blue);
         }
 
