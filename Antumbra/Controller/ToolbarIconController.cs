@@ -28,6 +28,7 @@ namespace Antumbra.Glow.Controller
         {
             this.toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             this.toolbarIcon.Hide();
+            this.AttachObserver(this.toolbarIcon);
             MainWindowController mainController = new MainWindowController(this.toolbarIcon.ProductVersion, new EventHandler(Quit));
             mainController.AttachObserver(this);
             this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
