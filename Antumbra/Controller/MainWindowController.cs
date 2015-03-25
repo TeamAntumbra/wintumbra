@@ -183,9 +183,9 @@ namespace Antumbra.Glow.Controller
                     dev.settings.weightingEnabled = false;
                 }
                 this.window.SetOnSelection(true);//mark device on
-                NewGlowCmdAvailEvent(new StopCommand(this.id));//stop device if running (dev mgr will make check)
+                NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will make check)
                 Utility.HslColor col = (Utility.HslColor)sender;
-                NewGlowCmdAvailEvent(new SendColorCommand(this.id, new Color16Bit(col.ToRgbColor())));
+                NewGlowCmdAvailEvent(new SendColorCommand(-1, new Color16Bit(col.ToRgbColor())));
             }
         }
 
