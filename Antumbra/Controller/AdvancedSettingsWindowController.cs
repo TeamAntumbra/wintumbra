@@ -22,14 +22,14 @@ using System.Runtime.InteropServices;
 namespace Antumbra.Glow.Controller
 {
     public class AdvancedSettingsWindowController : ConfigurationObserver, GlowCommandSender, ToolbarNotificationSource,
-                                            GlowExtCollectionObserver, GlowCommandObserver, AntumbraColorSource
+                                            GlowExtCollectionObserver, GlowCommandObserver, AntumbraColorSource, AntumbraColorObserver
     {
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCommandAvailEvent;
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
-        public delegate void NewColorAvail(Color16Bit newColor);
-        public event NewColorAvail NewColorAvailEvent;
+        public delegate void NewColor(Color16Bit newColor);
+        public event NewColor NewColorAvailEvent;
         public int id;
         private AdvancedSettingsWindow window;
         private GlowDevice dev;
@@ -65,6 +65,11 @@ namespace Antumbra.Glow.Controller
             this.window.compoundDecorationCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundDecorationCheck);
             this.window.grabberSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
             this.window.resetBtn_ClickEvent += new EventHandler(ResetBtnClickHandler);
+        }
+
+        public void NewColorAvail(Color16Bit color)
+        {
+            SendColor(color);
         }
 
         public void AttachObserver(AntumbraColorObserver observer)
@@ -405,7 +410,8 @@ namespace Antumbra.Glow.Controller
         private void pollingArea_Click(object sender, EventArgs e)
         {
             PollingAreaWindowController cont = new PollingAreaWindowController();
-            cont.AttachObserver(this);
+            cont.AttachObserver((GlowCommandObserver)this);
+            cont.AttachObserver((AntumbraColorObserver)this);
             cont.Show();
         }
 
