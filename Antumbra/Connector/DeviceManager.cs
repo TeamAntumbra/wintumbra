@@ -80,13 +80,12 @@ namespace Antumbra.Glow.Connector
             GlowDevice dev = getDevice(id);
             dev.AttachColorObserverToExtMgr(loop);
             if (dev.Start()) {
-                NewToolbarNotifAvail(3000, "Device id: " + dev.id + " Started.",
-                    "Device id: " + dev.id + " started successfully.", 0);
+                this.Log("Device id: " + dev.id + " started successfully.");
                 this.Log(dev.GetSetupDesc());//use this format as to always null check TODO
             }
             else {//starting failed
                 dev.Stop();
-                NewToolbarNotifAvail(3000, "Starting Failed", "Starting the selected extensions failed.", 2);
+                this.Log("Starting the selected extensions failed. " + dev.GetSetupDesc());
                 return false;
             }
             loop.Start(dev.settings.weightingEnabled, dev.settings.newColorWeight);
@@ -108,20 +107,13 @@ namespace Antumbra.Glow.Connector
                 return StopAll();
             }
             var dev = this.getDevice(id);
-            bool wasRunning = dev.running;
-            if (wasRunning)//only show notifs if actually stopping device (still make call to clean up)
-                this.NewToolbarNotifAvail(3000, "Stopping device id: " + id, "Stopping device id " + id +
-                    " please wait.", 0);
             if (!dev.Stop())
-                NewToolbarNotifAvail(3000, "Device " + id + " Did Not Stop Correctly",
-                    "Device " + id + " reported that it did not stop correctly.",
-                    1);
+                this.Log("Device " + id + " reported that it did not stop correctly.");
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop != null) {
                 loop.Dispose();
             }
-            if (wasRunning)
-                NewToolbarNotifAvail(3000, "Device " + id + " Stopped.", "The current device has been stopped.", 1);
+            this.Log("Device " + id + " Stopped.");
             return true;
         }
 
