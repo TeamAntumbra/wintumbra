@@ -17,8 +17,9 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         public override void ExecuteCommand(DeviceManager mgr)
         {
-            foreach (GlowDevice dev in mgr.Glows)
-                mgr.Start(dev.id);
+            mgr.Start(this.id);
+            //foreach (GlowDevice dev in mgr.Glows)
+              //  mgr.Start(dev.id);
         }
 
     }
