@@ -235,7 +235,8 @@ Global
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|x86.ActiveCfg = Release|x86
+		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
