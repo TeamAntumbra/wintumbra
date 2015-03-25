@@ -41,9 +41,9 @@ namespace Antumbra.Glow.Observer.Colors
 
         public Color ToRGBColor()
         {
-            byte r = Convert.ToByte(this.red/UInt16.MaxValue);
-            byte g = Convert.ToByte(this.green/UInt16.MaxValue);
-            byte b = Convert.ToByte(this.blue/UInt16.MaxValue);
+            byte r = Convert.ToByte((double)this.red/UInt16.MaxValue * byte.MaxValue);
+            byte g = Convert.ToByte((double)this.green / UInt16.MaxValue * byte.MaxValue);
+            byte b = Convert.ToByte((double)this.blue / UInt16.MaxValue * byte.MaxValue);
             return Color.FromArgb(r, g, b);
         }
     }
