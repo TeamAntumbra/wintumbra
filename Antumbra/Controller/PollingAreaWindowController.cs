@@ -11,14 +11,12 @@ using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Controller
 {
-    public class PollingAreaWindowController : GlowCommandSender, AntumbraColorSource
+    public class PollingAreaWindowController : GlowCommandSender
     {
         public delegate void PollingAreaUpdated(int x, int y, int height, int width);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
-        public delegate void NewColorAvail(Color16Bit color);
-        public event NewColorAvail NewColorAvailEvent;
         private View.pollingAreaSetter pollingWindow;
         private Color color;
         public int id { get; private set; }
@@ -33,7 +31,7 @@ namespace Antumbra.Glow.Controller
         {
             this.pollingWindow.Show();
             SendStopCommand();//stop device
-            SendColor(new Color16Bit(this.color));//set to unique color to match its window
+            SendColorCommand(new Color16Bit(this.color));//set to unique color to match its window
         }
         
         private void pollingArea_Click(object sender, EventArgs e)
@@ -42,21 +40,10 @@ namespace Antumbra.Glow.Controller
                 var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
                 this.pollingWindow = new View.pollingAreaSetter(back);
                 SendStopCommand();
-                SendColor(new Color16Bit(back));
+                SendColorCommand(new Color16Bit(back));
                 this.pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingWindow.Show();
-        }
-
-        public void AttachObserver(AntumbraColorObserver observer)
-        {
-            this.NewColorAvailEvent += observer.NewColorAvail;
-        }
-
-        private void SendColor(Color16Bit color)
-        {
-            if (NewColorAvailEvent != null)
-                NewColorAvailEvent(color);
         }
 
         public void AttachObserver(GlowCommandObserver observer)
@@ -73,6 +60,12 @@ namespace Antumbra.Glow.Controller
         {
             if (NewGlowCommandAvailEvent != null)
                 NewGlowCommandAvailEvent(new StopCommand(this.id));
+        }
+
+        private void SendColorCommand(Color16Bit col)
+        {
+            if (NewGlowCommandAvailEvent != null)
+                NewGlowCommandAvailEvent(new SendColorCommand(this.id, col));
         }
 
         private void UpdatePollingSelectionsEvent(object sender, EventArgs args)

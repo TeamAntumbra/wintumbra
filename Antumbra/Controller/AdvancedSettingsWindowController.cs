@@ -22,14 +22,12 @@ using System.Runtime.InteropServices;
 namespace Antumbra.Glow.Controller
 {
     public class AdvancedSettingsWindowController : ConfigurationObserver, GlowCommandSender, ToolbarNotificationSource,
-                                            GlowExtCollectionObserver, GlowCommandObserver, AntumbraColorSource
+                                            GlowExtCollectionObserver, GlowCommandObserver
     {
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCommandAvailEvent;
         public delegate void NewToolbarNotifAvail(int time, String title, String msg, int icon);
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
-        public delegate void NewColorAvail(Color16Bit newColor);
-        public event NewColorAvail NewColorAvailEvent;
         public int id;
         private AdvancedSettingsWindow window;
         private GlowDevice dev;
@@ -65,11 +63,6 @@ namespace Antumbra.Glow.Controller
             this.window.compoundDecorationCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundDecorationCheck);
             this.window.grabberSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
             this.window.resetBtn_ClickEvent += new EventHandler(ResetBtnClickHandler);
-        }
-
-        public void AttachObserver(AntumbraColorObserver observer)
-        {
-            this.NewColorAvailEvent += observer.NewColorAvail;
         }
 
         public void NewGlowCommandAvail(GlowCommand cmd)
@@ -125,9 +118,7 @@ namespace Antumbra.Glow.Controller
 
         private void OffBtnClickHandler(object sender, EventArgs args)
         {
-            if (dev.running)
-                SendStopCommand();
-            SendColor(new Color16Bit(0, 0, 0));
+            NewGlowCommandAvailEvent(new SendColorCommand(this.dev.id, new Color16Bit(0,0,0)));
         }
 
         private void StopBtnClickHandler(object sender, EventArgs args)
@@ -417,12 +408,6 @@ namespace Antumbra.Glow.Controller
             this.dev.settings.width = form.Bounds.Width;
             this.dev.settings.height = form.Bounds.Height;
             UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
-        }
-
-        private void SendColor(Color16Bit col)
-        {
-            if (NewColorAvailEvent != null)
-                NewColorAvailEvent(col);
         }
 
         private void SendStopCommand()
