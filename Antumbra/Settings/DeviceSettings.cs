@@ -104,6 +104,19 @@ namespace Antumbra.Glow.Settings
             }
         }
         private bool _compoundDecoration;
+        public UInt16 maxBrightness
+        {
+            get
+            {
+                return _maxBrightness;
+            }
+            set
+            {
+                _maxBrightness = value;
+                Notify();
+            }
+        }
+        private UInt16 _maxBrightness;
         public DeviceSettings(int id)
         {
             Reset();
@@ -120,6 +133,7 @@ namespace Antumbra.Glow.Settings
             result += this.stepSleep.ToString() + ',';
             result += this.weightingEnabled.ToString() + ',';
             result += this.newColorWeight.ToString() + ',';
+            result += this.maxBrightness.ToString() + ',';
             result += this.compoundDecoration.ToString() + '\n';
             return result;
         }
