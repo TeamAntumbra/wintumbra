@@ -62,7 +62,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             ext = this.lib.LookupExt(ScreenGrabber);
             if (ext != null)
                 result.ActiveGrabber = (GlowScreenGrabber)ext;
-            ext = this.lib.LookupExt(SmartProcessor);
+            ext = this.lib.LookupExt(FastProcessor);
             if (ext != null)
                 result.ActiveProcessor = (GlowScreenProcessor)ext;
             return result;
@@ -77,7 +77,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             ext = this.lib.LookupExt(ScreenGrabber);
             if (ext != null)
                 result.ActiveGrabber = (GlowScreenGrabber)ext;
-            ext = this.lib.LookupExt(SmartProcessor);
+            ext = this.lib.LookupExt(FastProcessor);
             if (ext != null)
                 result.ActiveProcessor = (GlowScreenProcessor)ext;
             return result;
@@ -95,6 +95,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             ext = this.lib.LookupExt(SmartProcessor);
             if (ext != null)
                 result.ActiveProcessor = (GlowScreenProcessor)ext;
+            ext = this.lib.LookupExt(Saturator);
+            if (ext != null)
+                result.ActiveDecorators.Add((GlowDecorator)ext);
+            ext = this.lib.LookupExt(Brightener);
+            if (ext != null)
+                result.ActiveDecorators.Add((GlowDecorator)ext);
             return result;
         }
 
