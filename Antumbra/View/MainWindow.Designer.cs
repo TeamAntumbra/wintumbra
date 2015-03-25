@@ -186,7 +186,7 @@
             // 
             this.setPollingSizeBtn.AutoSize = true;
             this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setPollingSizeBtn.Location = new System.Drawing.Point(402, 216);
+            this.setPollingSizeBtn.Location = new System.Drawing.Point(403, 218);
             this.setPollingSizeBtn.Name = "setPollingSizeBtn";
             this.setPollingSizeBtn.Size = new System.Drawing.Size(161, 36);
             this.setPollingSizeBtn.TabIndex = 5;
@@ -198,7 +198,7 @@
             // 
             this.modeDescs.Location = new System.Drawing.Point(6, 107);
             this.modeDescs.Name = "modeDescs";
-            this.modeDescs.Size = new System.Drawing.Size(531, 127);
+            this.modeDescs.Size = new System.Drawing.Size(531, 116);
             this.modeDescs.TabIndex = 4;
             this.modeDescs.Text = resources.GetString("modeDescs.Text");
             // 
@@ -218,7 +218,7 @@
             // 
             this.smoothBtn.AutoSize = true;
             this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(301, 44);
+            this.smoothBtn.Location = new System.Drawing.Point(300, 44);
             this.smoothBtn.Name = "smoothBtn";
             this.smoothBtn.Size = new System.Drawing.Size(87, 36);
             this.smoothBtn.TabIndex = 2;
@@ -230,7 +230,7 @@
             // 
             this.augmentBtn.AutoSize = true;
             this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(168, 44);
+            this.augmentBtn.Location = new System.Drawing.Point(170, 44);
             this.augmentBtn.Name = "augmentBtn";
             this.augmentBtn.Size = new System.Drawing.Size(99, 36);
             this.augmentBtn.TabIndex = 1;
@@ -289,7 +289,7 @@
             // 
             this.sinBtn.AutoSize = true;
             this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sinBtn.Location = new System.Drawing.Point(233, 32);
+            this.sinBtn.Location = new System.Drawing.Point(228, 32);
             this.sinBtn.Name = "sinBtn";
             this.sinBtn.Size = new System.Drawing.Size(98, 36);
             this.sinBtn.TabIndex = 6;
@@ -325,7 +325,7 @@
             // 
             this.customConfigBtn.AutoSize = true;
             this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customConfigBtn.Location = new System.Drawing.Point(203, 111);
+            this.customConfigBtn.Location = new System.Drawing.Point(171, 108);
             this.customConfigBtn.Name = "customConfigBtn";
             this.customConfigBtn.Size = new System.Drawing.Size(232, 36);
             this.customConfigBtn.TabIndex = 7;
@@ -355,7 +355,7 @@
             this.antumbraLabel.AutoSize = true;
             this.antumbraLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.antumbraLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.antumbraLabel.Location = new System.Drawing.Point(70, 8);
+            this.antumbraLabel.Location = new System.Drawing.Point(17, 9);
             this.antumbraLabel.Name = "antumbraLabel";
             this.antumbraLabel.Size = new System.Drawing.Size(189, 44);
             this.antumbraLabel.TabIndex = 75;
@@ -366,7 +366,7 @@
             this.versionLabel.AutoSize = true;
             this.versionLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.versionLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.versionLabel.Location = new System.Drawing.Point(200, 14);
+            this.versionLabel.Location = new System.Drawing.Point(274, 14);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
