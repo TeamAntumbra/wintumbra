@@ -281,6 +281,11 @@ namespace Antumbra.Glow.Controller
 
         public void customConfigBtnClicked(object sender, EventArgs args)
         {
+            if (this.deviceMgr.GlowsFound == 0) {
+                this.ShowMessage(3000, "No Glows Found",
+                    "Settings cannot be opened because no Glow devices were found.", 2);
+                return;//can't open
+            }
             if (!this.advSettingsMgr.Show(this.id)) {
                 this.advSettingsMgr.CreateAndAddNewController(this.deviceMgr.getDevice(this.id));
                 this.advSettingsMgr.Show(this.id);
