@@ -60,14 +60,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.lib = extLib;
             this.id = id;
             this.activeExts = new ActiveExtensions();
-            //this.Reset();
-            this.activeExts.AttachObserver(this);
         }
 
         public void LoadActives(ActiveExtensions actives)
         {
             this.activeExts = actives;
-            this.activeExts.AttachObserver(this);
         }
 
         public void Save()
@@ -115,7 +112,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.stepSleep = settings.stepSleep;
                 this.maxBrightness = settings.maxBrightness;
             }
-            //ignore ActiveExtension events
+            //ignore ActiveExtensions events, already knows about it
         }
 
         public void UpdateExtension(Guid id)
