@@ -127,6 +127,8 @@ namespace NeonFade
         private void FadeFromTo(Color16Bit col1, Color16Bit col2)
         {
             for (int i = 1; i <= 100; i += 1) {
+                if (!running)
+                    return;//cancel fade, we've been stopped
                 double frac = i / 100.0;
                 Color16Bit newColor = Mixer.MixColorPercIn(col2, col1, frac);
                 SendColor(newColor);
