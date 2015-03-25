@@ -288,7 +288,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="args"></param>
         void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
         {
-            NewColorAvailEvent(ApplyDecorations(newColor));
+            Color16Bit decorated = ApplyDecorations(newColor);
+            Color16Bit result = ApplyBrightnessSettings(decorated);
+            NewColorAvailEvent(result);
+        }
+
+        private Color16Bit ApplyBrightnessSettings(Color16Bit decorated)
+        {
+            UInt16 red = Convert.ToUInt16((decorated.red / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 green = Convert.ToUInt16((decorated.green / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 blue = Convert.ToUInt16((decorated.blue / UInt16.MaxValue) * this.maxBrightness);
+            return new Color16Bit(red, green, blue);
         }
 
         private Color16Bit ApplyDecorations(Color16Bit orig)
