@@ -165,17 +165,6 @@ namespace Antumbra.Glow.Connector
             if (this.ConfigUpdateAvail != null)
                 this.ConfigUpdateAvail(obj);//pass through
         }
-
-        public void AttachToolbarNotifObserverToExtMgr(ToolbarNotificationObserver observer)
-        {
-            this.extMgr.AttachObserver(observer);
-        }
-
-        public void AttachGlowCommandObserverToExtMgr(GlowCommandObserver observer)
-        {
-            this.extMgr.RegisterDevice(this.id);
-            this.extMgr.AttachObserver(observer);
-        }
         /// <summary>
         /// Get a string representation of the extensions activated for this device
         /// </summary>
