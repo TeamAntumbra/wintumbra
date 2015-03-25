@@ -56,9 +56,8 @@ namespace Antumbra.Glow.View
         /// <param name="e"></param>
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
-                if (notifyIcon_MouseClickEvent != null)
-                    notifyIcon_MouseClickEvent(sender, e);
+            if (notifyIcon_MouseClickEvent != null)
+                notifyIcon_MouseClickEvent(sender, e);
         }
 
         /// <summary>
