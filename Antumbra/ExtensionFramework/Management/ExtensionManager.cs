@@ -46,6 +46,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private ExtensionLibrary lib;
         private bool compoundDecoration;
         private int stepSleep, x, y, width, height;//local copies of just these rather than entire DeviceSettings obj
+        private UInt16 maxBrightness;
         public const String configFileBase = "ActiveExtsDev_";
         /// <summary>
         /// Constructor - Creates a new ExtensionManager relating to the GlowDevice
@@ -120,6 +121,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.width = settings.width;
                 this.height = settings.height;
                 this.stepSleep = settings.stepSleep;
+                this.maxBrightness = settings.maxBrightness;
             }
             //ignore ActiveExtension events
         }
@@ -277,7 +279,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void NewGlowCommandAvail(GlowCommand command)
         {
             if (NewGlowCommandEvent != null)
-                NewGlowCommandEvent(command);//pass it up to core
+                NewGlowCommandEvent(command);//pass it up
         }
         /// <summary>
         /// Event handler for the NewColorAvail event
@@ -286,31 +288,35 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="args"></param>
         void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
         {
+            NewColorAvailEvent(ApplyDecorations(newColor));
+        }
+
+        private Color16Bit ApplyDecorations(Color16Bit orig)
+        {
             List<GlowDecorator> decs = this.activeExts.ActiveDecorators;
             int count = decs.Count;
             if (count == 0) {
-                NewColorAvailEvent(newColor);//no decoration to do
-                return;
+                return orig;
             }
             if (this.compoundDecoration) {
                 foreach (var dec in decs)//decorate
-                    newColor = dec.Decorate(newColor);
-                NewColorAvailEvent(newColor);
-                return;
+                    orig = dec.Decorate(orig);
+                return orig;
             }
             //average decorators output
             int r = 0, g = 0, b = 0;
             foreach (var dec in decs) {
-                Color16Bit decorated = dec.Decorate(newColor);
+                Color16Bit decorated = dec.Decorate(orig);
                 r += decorated.red;
                 g += decorated.green;
                 b += decorated.blue;
             }
-            UInt16 red = Convert.ToUInt16(r/count);
-            UInt16 green = Convert.ToUInt16(g/count);
-            UInt16 blue = Convert.ToUInt16(b/count);
-            NewColorAvailEvent(new Color16Bit(red, green, blue));
+            UInt16 red = Convert.ToUInt16(r / count);
+            UInt16 green = Convert.ToUInt16(g / count);
+            UInt16 blue = Convert.ToUInt16(b / count);
+            return new Color16Bit(red, green, blue);
         }
+
         /// <summary>
         /// Start active extensions
         /// </summary>
