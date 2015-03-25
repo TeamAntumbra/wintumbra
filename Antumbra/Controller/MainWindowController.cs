@@ -110,8 +110,9 @@ namespace Antumbra.Glow.Controller
                 bool value = (bool)sender;//true when now marked on
                 if (value)
                     NewGlowCmdAvailEvent(new StartCommand(-1));//start all (dev mgr will ignore those running already)
-                else
-                    NewGlowCmdAvailEvent(new StopCommand(-1));//stop all (dev mgr will ignore those already stopped)
+                else {
+                    NewGlowCmdAvailEvent(new PowerOffCommand(-1));//stop and turn off all (dev mgr will ignore those already stopped)
+                }
             }
         }
 
