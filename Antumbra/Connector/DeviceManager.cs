@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Utility;
-using Antumbra.Glow.Settings;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.Logging;
@@ -25,7 +24,6 @@ namespace Antumbra.Glow.Connector
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private SerialConnector Connector;
         private OutputLoopManager outManager;
-        private AdvancedSettingsWindowManager advancedSettingsWinMgr;
         public List<GlowDevice> Glows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
@@ -42,12 +40,8 @@ namespace Antumbra.Glow.Connector
             }
             this.GlowsFound = this.Glows.Count;
             this.outManager = new OutputLoopManager();
-            this.advancedSettingsWinMgr = new AdvancedSettingsWindowManager(productVersion, lib);
-            this.advancedSettingsWinMgr.AttachObserver((ToolbarNotificationObserver)this);
-            this.advancedSettingsWinMgr.AttachObserver((GlowCommandObserver)this);
-            foreach (var dev in this.Glows) {//create output loops
+            foreach (var dev in this.Glows) {//create output loops and advanced settings window controllers
                 this.outManager.CreateAndAddLoop(this, dev.id);
-                this.advancedSettingsWinMgr.CreateAndAddNewController(dev);
             }
         }
 
