@@ -40,9 +40,6 @@ namespace Antumbra.Glow.Connector
             }
             this.GlowsFound = this.Glows.Count;
             this.outManager = new OutputLoopManager();
-            foreach (var dev in this.Glows) {//create output loops and advanced settings window controllers
-                this.outManager.CreateAndAddLoop(this, dev.id);
-            }
         }
 
         public void AttachObserver(ToolbarNotificationObserver observer)
@@ -143,8 +140,10 @@ namespace Antumbra.Glow.Connector
             int err;
             if (activeDev.dev == IntPtr.Zero) {//needs opening
                 activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
-                if (err != 0)//error occured
+                if (err != 0) {//error occured
+                    System.Threading.Thread.Sleep(10);
                     return;
+                }
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
             if (status != 0)//did not work as expected
