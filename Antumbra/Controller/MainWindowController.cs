@@ -37,8 +37,11 @@ namespace Antumbra.Glow.Controller
         private DeviceManager deviceMgr;
         private AdvancedSettingsWindowManager advSettingsMgr;
         private int id;
+        private bool manual;
+        private Color16Bit lastManualColor;
         public MainWindowController(String productVersion, EventHandler quitHandler)
         {
+            this.manual = false;
             this.AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
@@ -179,13 +182,15 @@ namespace Antumbra.Glow.Controller
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
             if (sender is Utility.HslColor) {
+                manual = true;
                 foreach (GlowDevice dev in this.deviceMgr.Glows) {
                     dev.settings.weightingEnabled = false;
                 }
                 this.window.SetOnSelection(true);//mark device on
                 NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will make check)
                 Utility.HslColor col = (Utility.HslColor)sender;
-                NewGlowCmdAvailEvent(new SendColorCommand(-1, new Color16Bit(col.ToRgbColor())));
+                this.lastManualColor = new Color16Bit(col.ToRgbColor());
+                NewGlowCmdAvailEvent(new SendColorCommand(-1, lastManualColor));
             }
         }
 
@@ -194,14 +199,28 @@ namespace Antumbra.Glow.Controller
             if (sender is int[]) {
                 int[] values = (int[])sender;
                 double value = (double)values[0] / values[1];
+                UInt16 max = UInt16.MaxValue;
                 foreach (GlowDevice dev in this.deviceMgr.Glows) {
-                    dev.settings.maxBrightness = Convert.ToUInt16(UInt16.MaxValue * value);
+                    max = Convert.ToUInt16(UInt16.MaxValue * value);
+                    dev.settings.maxBrightness = max;
+                }
+                if (manual) {//resend color to comply with updated brightness if in manual mode
+                    NewGlowCmdAvailEvent(new SendColorCommand(-1, ApplyBrightnessSettings(lastManualColor, max)));
                 }
             }
         }
 
+        private Color16Bit ApplyBrightnessSettings(Color16Bit decorated, UInt16 maxBrightness)
+        {
+            UInt16 red = Convert.ToUInt16(((double)decorated.red / UInt16.MaxValue) * maxBrightness);
+            UInt16 green = Convert.ToUInt16(((double)decorated.green / UInt16.MaxValue) * maxBrightness);
+            UInt16 blue = Convert.ToUInt16(((double)decorated.blue / UInt16.MaxValue) * maxBrightness);
+            return new Color16Bit(red, green, blue);
+        }
+
         private void ApplyNewSetup(ActiveExtensions actives, int stepSleep, bool weighted, double weight)
         {
+            manual = false;
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
                 dev.SetActives(actives);
@@ -215,6 +234,7 @@ namespace Antumbra.Glow.Controller
 
         private void ApplyNewSetup(ActiveExtensions actives)
         {
+            manual = false;
             NewGlowCmdAvailEvent(new StopCommand(-1));//stop all
             foreach (GlowDevice dev in this.deviceMgr.Glows) {
                 dev.SetActives(actives);
