@@ -29,8 +29,8 @@ namespace Antumbra.Glow.Controller
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
-        public event EventHandler quitEventHandler;
         public bool goodStart { get; private set; }
+        private event EventHandler quitEventHandler;
         private const string extPath = "./Extensions/";
         private MainWindow window;
         private PresetBuilder presetBuilder;
@@ -266,6 +266,8 @@ namespace Antumbra.Glow.Controller
         {
             this.window.Close();
             NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all devices off
+            this.deviceMgr.CleanUp();
+            this.advSettingsMgr.CleanUp();
             if (quitEventHandler != null)
                 quitEventHandler(sender, args);
         }

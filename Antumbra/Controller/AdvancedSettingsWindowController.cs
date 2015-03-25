@@ -65,6 +65,11 @@ namespace Antumbra.Glow.Controller
             this.window.resetBtn_ClickEvent += new EventHandler(ResetBtnClickHandler);
         }
 
+        public void CleanUp()
+        {
+            this.window.Dispose();
+        }
+
         public void NewGlowCommandAvail(GlowCommand cmd)
         {
             if (NewGlowCommandAvailEvent != null)

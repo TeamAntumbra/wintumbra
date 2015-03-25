@@ -92,5 +92,11 @@ namespace Antumbra.Glow.Settings
                     return cont;
             return null;
         }
+
+        public void CleanUp()
+        {
+            foreach (AdvancedSettingsWindowController cont in this.controllers)
+                cont.CleanUp();
+        }
     }
 }
