@@ -156,13 +156,18 @@ namespace Antumbra.Glow.Controller
 
         private void UpdateActive(ActiveExtensions actives)
         {
-            this.window.UpdatedComboBoxSelectedExt(actives.ActiveDriver.id, this.window.driverComboBox);
-            this.window.UpdatedComboBoxSelectedExt(actives.ActiveGrabber.id, this.window.grabberComboBx);
-            this.window.UpdatedComboBoxSelectedExt(actives.ActiveProcessor.id, this.window.processorComboBx);
-            List<GlowDecorator> decs = actives.ActiveDecorators;
-            if (decs.Count != 0)
-                this.window.UpdatedComboBoxSelectedExt(decs.First<GlowDecorator>().id, this.window.decoratorComboBx);
-            //TODO notifier
+            if (actives != null) {
+                if (actives.ActiveDriver != null)
+                    this.window.UpdatedComboBoxSelectedExt(actives.ActiveDriver.id, this.window.driverComboBox);
+                if (actives.ActiveGrabber != null)
+                    this.window.UpdatedComboBoxSelectedExt(actives.ActiveGrabber.id, this.window.grabberComboBx);
+                if (actives.ActiveProcessor != null)
+                    this.window.UpdatedComboBoxSelectedExt(actives.ActiveProcessor.id, this.window.processorComboBx);
+                List<GlowDecorator> decs = actives.ActiveDecorators;
+                if (decs.Count != 0)
+                    this.window.UpdatedComboBoxSelectedExt(decs.First<GlowDecorator>().id, this.window.decoratorComboBx);
+                //TODO notifier
+            }
         }
 
         public void LibraryUpdate(List<GlowExtension> exts)
