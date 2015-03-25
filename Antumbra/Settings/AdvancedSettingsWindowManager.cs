@@ -78,8 +78,10 @@ namespace Antumbra.Glow.Settings
         public bool Show(int id)
         {
             AdvancedSettingsWindowController cont = FindController(id);
-            if (cont != null)
+            if (cont != null) {
                 cont.Show();
+                return true;
+            }
             return false;
         }
 
