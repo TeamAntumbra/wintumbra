@@ -82,7 +82,7 @@ namespace Antumbra.Glow.Controller
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
-            this.advSettingsMgr.AttachObserver((GlowCommandObserver)this.deviceMgr);
+            this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
         }
 
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
@@ -93,8 +93,13 @@ namespace Antumbra.Glow.Controller
 
         public void NewGlowCommandAvail(GlowCommand cmd)
         {
-            if (NewGlowCmdAvailEvent != null)
+            if (NewGlowCmdAvailEvent != null) {
+                if (cmd is StartCommand)
+                    this.window.SetOnSelection(true);
+                if (cmd is PowerOffCommand)
+                    this.window.SetOnSelection(false);
                 NewGlowCmdAvailEvent(cmd);//pass it up
+            }
         }
 
         private void setPollingBtnClickHandler(object sender, EventArgs args)
