@@ -25,13 +25,12 @@ namespace Antumbra.Glow.View
         public event MouseEventHandler mainWindow_MouseDownEvent;
         public event EventHandler customConfigBtn_ClickEvent;
         public event EventHandler quitBtn_ClickEvent;
-        public event EventHandler onBtnValueChanged;
         public event EventHandler setPollingBtn_ClickEvent;
+        public event EventHandler onOffValueChanged;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.offBtn.Checked = true;//defaults off
             this.brightnessTrackBar.Value = this.brightnessTrackBar.Maximum;
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
         }
@@ -124,16 +123,16 @@ namespace Antumbra.Glow.View
                 quitBtn_ClickEvent(sender, e);
         }
 
-        private void onBtn_CheckedChanged(object sender, EventArgs e)
-        {
-            if (onBtnValueChanged != null)
-                onBtnValueChanged(this.onBtn.Checked, e);
-        }
-
         private void setPollingSizeBtn_Click(object sender, EventArgs e)
         {
             if (setPollingBtn_ClickEvent != null)
                 setPollingBtn_ClickEvent(sender, e);
+        }
+
+        private void onBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (onOffValueChanged != null)
+                onOffValueChanged(onBtn.Checked, e);
         }
     }
 }

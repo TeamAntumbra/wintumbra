@@ -134,6 +134,7 @@
             // offBtn
             // 
             this.offBtn.AutoSize = true;
+            this.offBtn.Checked = true;
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.offBtn.Location = new System.Drawing.Point(464, 214);
             this.offBtn.Name = "offBtn";
@@ -151,7 +152,6 @@
             this.onBtn.Name = "onBtn";
             this.onBtn.Size = new System.Drawing.Size(59, 28);
             this.onBtn.TabIndex = 1;
-            this.onBtn.TabStop = true;
             this.onBtn.Text = "On";
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
