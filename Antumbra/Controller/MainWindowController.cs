@@ -177,7 +177,13 @@ namespace Antumbra.Glow.Controller
 
         public void brightnessValueChanged(object sender, EventArgs args)
         {
-            //change max brightness value
+            if (sender is int[]) {
+                int[] values = (int[])sender;
+                double value = (double)values[0] / values[1];
+                foreach (GlowDevice dev in this.deviceMgr.Glows) {
+                    dev.settings.maxBrightness = Convert.ToUInt16(UInt16.MaxValue * value);
+                }
+            }
         }
 
         private void ApplyNewSetup(ActiveExtensions actives, int stepSleep, bool weighted, double weight)
