@@ -119,6 +119,14 @@ namespace Antumbra.Glow.Connector
 
         public void sendColor(Antumbra.Glow.Observer.Colors.Color16Bit newColor, int id)
         {
+            if (id == -1) {
+                foreach (GlowDevice device in this.Glows) {
+                    newColor = device.ApplyDecorations(newColor);
+                    newColor = device.ApplyBrightness(newColor);
+                    sendColor(newColor.red, newColor.green, newColor.blue, device.id);
+                }
+                return; //cancel this call
+            }
             GlowDevice dev = this.getDevice(id);
             if (dev == null)
                 return;//no device found matching passed id
