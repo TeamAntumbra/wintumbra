@@ -100,15 +100,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void Reset()
         {
             this.Stop();
-            this.activeExts.ActiveDriver = this.lib.GetDefaultDriver();
-            this.activeExts.ActiveGrabber = this.lib.GetDefaultGrabber();
-            this.activeExts.ActiveProcessor = this.lib.GetDefaultProcessor();
-            this.activeExts.ActiveDecorators.Clear();
-            foreach (GlowDecorator dec in this.lib.GetDefaultDecorators())
-                this.activeExts.ActiveDecorators.Add(dec);
-            this.activeExts.ActiveNotifiers.Clear();
-            foreach (GlowNotifier notf in this.lib.GetDefaultNotifiers())
-                this.activeExts.ActiveNotifiers.Add(notf);
+            this.activeExts = this.lib.GetDefaults();
         }
 
         public void ConfigurationUpdate(Configurable config)
