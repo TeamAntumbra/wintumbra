@@ -199,7 +199,7 @@
             // 
             this.gameBtn.AutoSize = true;
             this.gameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gameBtn.Location = new System.Drawing.Point(417, 44);
+            this.gameBtn.Location = new System.Drawing.Point(423, 44);
             this.gameBtn.Name = "gameBtn";
             this.gameBtn.Size = new System.Drawing.Size(75, 36);
             this.gameBtn.TabIndex = 3;
@@ -211,7 +211,7 @@
             // 
             this.smoothBtn.AutoSize = true;
             this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(300, 44);
+            this.smoothBtn.Location = new System.Drawing.Point(307, 44);
             this.smoothBtn.Name = "smoothBtn";
             this.smoothBtn.Size = new System.Drawing.Size(87, 36);
             this.smoothBtn.TabIndex = 2;
@@ -223,7 +223,7 @@
             // 
             this.augmentBtn.AutoSize = true;
             this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(170, 44);
+            this.augmentBtn.Location = new System.Drawing.Point(174, 44);
             this.augmentBtn.Name = "augmentBtn";
             this.augmentBtn.Size = new System.Drawing.Size(99, 36);
             this.augmentBtn.TabIndex = 1;
@@ -235,7 +235,7 @@
             // 
             this.mirrorBtn.AutoSize = true;
             this.mirrorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mirrorBtn.Location = new System.Drawing.Point(57, 44);
+            this.mirrorBtn.Location = new System.Drawing.Point(64, 44);
             this.mirrorBtn.Name = "mirrorBtn";
             this.mirrorBtn.Size = new System.Drawing.Size(75, 36);
             this.mirrorBtn.TabIndex = 0;
@@ -270,7 +270,7 @@
             // 
             this.neonBtn.AutoSize = true;
             this.neonBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.neonBtn.Location = new System.Drawing.Point(399, 32);
+            this.neonBtn.Location = new System.Drawing.Point(405, 32);
             this.neonBtn.Name = "neonBtn";
             this.neonBtn.Size = new System.Drawing.Size(75, 36);
             this.neonBtn.TabIndex = 7;
@@ -282,7 +282,7 @@
             // 
             this.sinBtn.AutoSize = true;
             this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sinBtn.Location = new System.Drawing.Point(228, 32);
+            this.sinBtn.Location = new System.Drawing.Point(233, 32);
             this.sinBtn.Name = "sinBtn";
             this.sinBtn.Size = new System.Drawing.Size(98, 36);
             this.sinBtn.TabIndex = 6;
@@ -294,7 +294,7 @@
             // 
             this.hsvBtn.AutoSize = true;
             this.hsvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hsvBtn.Location = new System.Drawing.Point(57, 32);
+            this.hsvBtn.Location = new System.Drawing.Point(72, 32);
             this.hsvBtn.Name = "hsvBtn";
             this.hsvBtn.Size = new System.Drawing.Size(75, 36);
             this.hsvBtn.TabIndex = 5;
