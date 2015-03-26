@@ -168,7 +168,6 @@ namespace Antumbra.Glow.Settings
             this.newColorWeight = .05;
             this.compoundDecoration = false;
             this.maxBrightness = UInt16.MaxValue;
-            Notify();
         }
 
         public void LoadSave(String settings)
