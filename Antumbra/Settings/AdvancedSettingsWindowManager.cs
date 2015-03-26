@@ -42,7 +42,6 @@ namespace Antumbra.Glow.Settings
             this.lib.NotifyObservers();//force inital update for this controller
             cont.AttachObserver((ToolbarNotificationObserver)this);
             cont.AttachObserver((GlowCommandObserver)this);
-            dev.AttachObserver(cont);
             dev.Notify();//force inital update
             this.controllers.Add(cont);
             return cont;
