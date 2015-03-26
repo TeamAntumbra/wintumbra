@@ -61,7 +61,7 @@ namespace Antumbra.Glow.Settings
 
         public void RegisterDevice(int id)
         {
-            //ignore, simply uses this interface to pass through events to toolbar controller
+            //ignore, simply uses this interface to pass through events to device manager
         }
 
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon)

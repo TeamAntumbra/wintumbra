@@ -61,6 +61,7 @@ namespace Antumbra.Glow.Controller
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
+            this.window.advancedDevSelectionChanged += new EventHandler(advDevSelectionChangedHandler);
             ExtensionLibrary extLibrary = null;
             try {
                 extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
@@ -81,11 +82,21 @@ namespace Antumbra.Glow.Controller
             if (this.deviceMgr.GlowsFound > 0) {//ready first device for output if any are found
                 GlowDevice dev = this.deviceMgr.getDevice(0);
                 this.RegisterDevice(dev.id);
+                foreach (GlowDevice device in this.deviceMgr.Glows)
+                    this.window.AddDeviceId(device.id);
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
+        }
+
+        private void advDevSelectionChangedHandler(object sender, EventArgs args)
+        {
+            if (sender is int) {
+                int selection = (int)sender;
+                this.RegisterDevice(selection);
+            }
         }
 
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon)

@@ -27,12 +27,20 @@ namespace Antumbra.Glow.View
         public event EventHandler quitBtn_ClickEvent;
         public event EventHandler setPollingBtn_ClickEvent;
         public event EventHandler onOffValueChanged;
+        public event EventHandler advancedDevSelectionChanged;
 
         public MainWindow()
         {
             InitializeComponent();
             this.brightnessTrackBar.Value = this.brightnessTrackBar.Maximum;
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
+        }
+
+        public void AddDeviceId(int id)
+        {
+            this.devIDList.Items.Add(id);
+            if (this.devIDList.SelectedItem == null)
+                this.devIDList.SelectedIndex = 0;
         }
 
         public void SetOnSelection(bool value)
@@ -133,6 +141,12 @@ namespace Antumbra.Glow.View
         {
             if (onOffValueChanged != null)
                 onOffValueChanged(onBtn.Checked, e);
+        }
+
+        private void devIDList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (advancedDevSelectionChanged != null)
+                advancedDevSelectionChanged(this.devIDList.SelectedItem, e);
         }
     }
 }

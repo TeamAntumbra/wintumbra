@@ -149,7 +149,9 @@ namespace AntumbraSmartScreenProcessor
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
             try {
-                NewColorAvailEvent(Process(bm));
+                Color16Bit newColor = Process(bm);
+                if (newColor != null)
+                    NewColorAvailEvent(newColor);
             }
             catch (Exception e) {
                 if (e is ThreadAbortException) { }//swallow exception
@@ -173,9 +175,8 @@ namespace AntumbraSmartScreenProcessor
             }
             catch (Exception e) {
                 if (e is ThreadAbortException) { }//swallow, cause clutter in logs
-                else {
+                else
                     NewLogMsgEvent(this.Name, e.ToString());
-                }
                 return null;
             }
             finally {
@@ -204,8 +205,13 @@ namespace AntumbraSmartScreenProcessor
             long[] all = new long[] { 0, 0, 0 };
             long[] dark = new long[] { 0, 0, 0 };
             int bppModifier = bm.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb ? 3 : 4; // cutting corners, will fail on anything else but 32 and 24 bit images
-
-            BitmapData srcData = bm.LockBits(new System.Drawing.Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
+            BitmapData srcData;
+            try {
+                srcData = bm.LockBits(new System.Drawing.Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
+            }
+            catch (ArgumentException) {
+                return null;
+            }
             int stride = srcData.Stride;
             IntPtr Scan0 = srcData.Scan0;
             int bluesCount = 0, greensCount = 0, redsCount = 0, darkCount = 0;
