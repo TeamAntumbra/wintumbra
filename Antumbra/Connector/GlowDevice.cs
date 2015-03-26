@@ -131,6 +131,8 @@ namespace Antumbra.Glow.Connector
         {
             this.settings.Reset();
             this.extMgr.Reset();
+            this.extMgr.activeExts.AttachObserver(this);//attach to new actives obj
+            this.Notify();
         }
 
         public void SaveSettings()
