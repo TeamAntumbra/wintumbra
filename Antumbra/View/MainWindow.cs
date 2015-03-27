@@ -28,6 +28,7 @@ namespace Antumbra.Glow.View
         public event EventHandler setPollingBtn_ClickEvent;
         public event EventHandler onOffValueChanged;
         public event EventHandler advancedDevSelectionChanged;
+        public event EventHandler whiteBalanceBtn_ClickEvent;
 
         public MainWindow()
         {
@@ -147,6 +148,12 @@ namespace Antumbra.Glow.View
         {
             if (advancedDevSelectionChanged != null)
                 advancedDevSelectionChanged(this.devIDList.SelectedItem, e);
+        }
+
+        private void whiteBalanceBtn_Click(object sender, EventArgs e)
+        {
+            if (whiteBalanceBtn_ClickEvent != null)
+                whiteBalanceBtn_ClickEvent(sender, e);
         }
     }
 }

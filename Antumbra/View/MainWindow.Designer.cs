@@ -36,6 +36,7 @@
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.mirrorTab = new System.Windows.Forms.TabPage();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
@@ -49,14 +50,14 @@
             this.sinBtn = new System.Windows.Forms.Button();
             this.hsvBtn = new System.Windows.Forms.Button();
             this.customTab = new System.Windows.Forms.TabPage();
+            this.idDevLabel = new System.Windows.Forms.Label();
+            this.devIDList = new System.Windows.Forms.ComboBox();
             this.customConfigBtn = new System.Windows.Forms.Button();
             this.quitBtn = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.devIDList = new System.Windows.Forms.ComboBox();
-            this.idDevLabel = new System.Windows.Forms.Label();
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
+            this.whiteBalanceBtn = new System.Windows.Forms.Button();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
@@ -100,6 +101,7 @@
             // manualTab
             // 
             this.manualTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.manualTab.Controls.Add(this.whiteBalanceBtn);
             this.manualTab.Controls.Add(this.brightnessLabel);
             this.manualTab.Controls.Add(this.brightnessTrackBar);
             this.manualTab.Controls.Add(this.offBtn);
@@ -157,6 +159,15 @@
             this.onBtn.Text = "On";
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
+            // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(202, 215);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // mirrorTab
             // 
@@ -316,6 +327,27 @@
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
+            // idDevLabel
+            // 
+            this.idDevLabel.AutoSize = true;
+            this.idDevLabel.Location = new System.Drawing.Point(147, 186);
+            this.idDevLabel.Name = "idDevLabel";
+            this.idDevLabel.Size = new System.Drawing.Size(134, 24);
+            this.idDevLabel.TabIndex = 9;
+            this.idDevLabel.Text = "For Device ID: ";
+            // 
+            // devIDList
+            // 
+            this.devIDList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.devIDList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.devIDList.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.devIDList.FormattingEnabled = true;
+            this.devIDList.Location = new System.Drawing.Point(297, 183);
+            this.devIDList.Name = "devIDList";
+            this.devIDList.Size = new System.Drawing.Size(106, 32);
+            this.devIDList.TabIndex = 8;
+            this.devIDList.SelectedIndexChanged += new System.EventHandler(this.devIDList_SelectedIndexChanged);
+            // 
             // customConfigBtn
             // 
             this.customConfigBtn.AutoSize = true;
@@ -366,35 +398,22 @@
             this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
             // 
-            // devIDList
+            // whiteBalanceBtn
             // 
-            this.devIDList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.devIDList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.devIDList.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.devIDList.FormattingEnabled = true;
-            this.devIDList.Location = new System.Drawing.Point(297, 183);
-            this.devIDList.Name = "devIDList";
-            this.devIDList.Size = new System.Drawing.Size(106, 32);
-            this.devIDList.TabIndex = 8;
-            this.devIDList.SelectedIndexChanged += new System.EventHandler(this.devIDList_SelectedIndexChanged);
-            // 
-            // idDevLabel
-            // 
-            this.idDevLabel.AutoSize = true;
-            this.idDevLabel.Location = new System.Drawing.Point(147, 186);
-            this.idDevLabel.Name = "idDevLabel";
-            this.idDevLabel.Size = new System.Drawing.Size(134, 24);
-            this.idDevLabel.TabIndex = 9;
-            this.idDevLabel.Text = "For Device ID: ";
-            // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(202, 215);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
+            this.whiteBalanceBtn.AutoSize = true;
+            this.whiteBalanceBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.whiteBalanceBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.whiteBalanceBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.whiteBalanceBtn.Location = new System.Drawing.Point(399, 156);
+            this.whiteBalanceBtn.Name = "whiteBalanceBtn";
+            this.whiteBalanceBtn.Size = new System.Drawing.Size(131, 32);
+            this.whiteBalanceBtn.TabIndex = 78;
+            this.whiteBalanceBtn.Text = "White Balance";
+            this.whiteBalanceBtn.UseVisualStyleBackColor = false;
+            this.whiteBalanceBtn.Click += new System.EventHandler(this.whiteBalanceBtn_Click);
             // 
             // MainWindow
             // 
@@ -461,5 +480,6 @@
         private System.Windows.Forms.Button setPollingSizeBtn;
         private System.Windows.Forms.Label idDevLabel;
         private System.Windows.Forms.ComboBox devIDList;
+        private System.Windows.Forms.Button whiteBalanceBtn;
     }
 }

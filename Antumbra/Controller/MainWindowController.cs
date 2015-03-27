@@ -62,6 +62,7 @@ namespace Antumbra.Glow.Controller
             this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
             this.window.advancedDevSelectionChanged += new EventHandler(advDevSelectionChangedHandler);
+            this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
             ExtensionLibrary extLibrary = null;
             try {
                 extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
@@ -89,6 +90,11 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
+        }
+
+        private void whiteBalanceBtnClicked(object sender, EventArgs args)
+        {
+
         }
 
         private void advDevSelectionChangedHandler(object sender, EventArgs args)
