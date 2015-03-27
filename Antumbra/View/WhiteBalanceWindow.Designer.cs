@@ -37,6 +37,10 @@
             this.rDownBtn = new System.Windows.Forms.Button();
             this.gDownBtn = new System.Windows.Forms.Button();
             this.bDownBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.redLabel = new System.Windows.Forms.Label();
+            this.greenLabel = new System.Windows.Forms.Label();
+            this.blueLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -169,12 +173,58 @@
             this.bDownBtn.UseVisualStyleBackColor = true;
             this.bDownBtn.Click += new System.EventHandler(this.bDownBtn_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 20);
+            this.label1.TabIndex = 84;
+            this.label1.Text = "label1";
+            // 
+            // redLabel
+            // 
+            this.redLabel.AutoSize = true;
+            this.redLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.redLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.redLabel.Location = new System.Drawing.Point(184, 114);
+            this.redLabel.Name = "redLabel";
+            this.redLabel.Size = new System.Drawing.Size(47, 25);
+            this.redLabel.TabIndex = 85;
+            this.redLabel.Text = "Red";
+            // 
+            // greenLabel
+            // 
+            this.greenLabel.AutoSize = true;
+            this.greenLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.greenLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.greenLabel.Location = new System.Drawing.Point(363, 114);
+            this.greenLabel.Name = "greenLabel";
+            this.greenLabel.Size = new System.Drawing.Size(66, 25);
+            this.greenLabel.TabIndex = 86;
+            this.greenLabel.Text = "Green";
+            // 
+            // blueLabel
+            // 
+            this.blueLabel.AutoSize = true;
+            this.blueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.blueLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.blueLabel.Location = new System.Drawing.Point(545, 114);
+            this.blueLabel.Name = "blueLabel";
+            this.blueLabel.Size = new System.Drawing.Size(51, 25);
+            this.blueLabel.TabIndex = 87;
+            this.blueLabel.Text = "Blue";
+            // 
             // WhiteBalanceWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(822, 468);
+            this.Controls.Add(this.blueLabel);
+            this.Controls.Add(this.greenLabel);
+            this.Controls.Add(this.redLabel);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.bDownBtn);
             this.Controls.Add(this.gDownBtn);
             this.Controls.Add(this.rDownBtn);
@@ -205,5 +255,9 @@
         private System.Windows.Forms.Button rDownBtn;
         private System.Windows.Forms.Button gDownBtn;
         private System.Windows.Forms.Button bDownBtn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label redLabel;
+        private System.Windows.Forms.Label greenLabel;
+        private System.Windows.Forms.Label blueLabel;
     }
 }
