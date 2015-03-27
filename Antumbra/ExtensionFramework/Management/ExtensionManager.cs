@@ -322,6 +322,24 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             int red = orig.red >> 8;
             int green = orig.green >> 8;
             int blue = orig.blue >> 8;
+            red += redBias;
+            green += greenBias;
+            blue += blueBias;
+            if (red > 255)
+                red = 255;
+            else
+                if (red < 0)
+                    red = 0;
+            if (green > 255)
+                green = 255;
+            else
+                if (green < 0)
+                    green = 0;
+            if (blue > 255)
+                blue = 255;
+            else
+                if (blue < 0)
+                    blue = 0;
             return new Color16Bit(System.Drawing.Color.FromArgb(red,green,blue));
         }
 
