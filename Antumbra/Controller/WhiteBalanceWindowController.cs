@@ -16,7 +16,6 @@ namespace Antumbra.Glow.Controller
         {
             this.devices = new List<GlowDevice>();
             this.devices.Add(dev);
-            Init();
         }
 
         public WhiteBalanceWindowController(List<GlowDevice> devs)
@@ -24,7 +23,6 @@ namespace Antumbra.Glow.Controller
             this.devices = new List<GlowDevice>();
             foreach (var dev in devs)
                 this.devices.Add(dev);
-            Init();
         }
 
         private void Init()
@@ -36,6 +34,12 @@ namespace Antumbra.Glow.Controller
             this.view.rUpBtn_ClickEvent += new EventHandler(redUpHandler);
             this.view.gUpBtn_ClickEvent += new EventHandler(greenUpHandler);
             this.view.bUpBtn_clickEvent += new EventHandler(blueUpHandler);
+            this.view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
+        }
+
+        private void closeBtnHandler(object sender, EventArgs args)
+        {
+            this.view.Close();
         }
 
         private void redDownHandler(object sender, EventArgs args)
@@ -77,7 +81,8 @@ namespace Antumbra.Glow.Controller
         public void Show()
         {
             if (this.view == null || this.view.IsDisposed)
-                this.view = new WhiteBalanceWindow();
+                Init();
+            this.view.Show();
         }
     }
 }

@@ -132,6 +132,7 @@
     <Compile Include="Connector\OutputLoopManager.cs" />
     <Compile Include="Controller\MainWindowController.cs" />
     <Compile Include="Controller\PollingAreaWindowController.cs" />
+    <Compile Include="Controller\WhiteBalanceWindowController.cs" />
     <Compile Include="ExtensionFramework\Management\PresetBuilder.cs" />
     <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
@@ -221,6 +222,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\UniqueColorGenerator.cs" />
+    <Compile Include="View\WhiteBalanceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\WhiteBalanceWindow.Designer.cs">
+      <DependentUpon>WhiteBalanceWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\ToolbarIcon.resx">
       <DependentUpon>ToolbarIcon.cs</DependentUpon>
     </EmbeddedResource>
@@ -246,6 +253,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\WhiteBalanceWindow.resx">
+      <DependentUpon>WhiteBalanceWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
