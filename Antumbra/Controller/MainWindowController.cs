@@ -94,6 +94,11 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
         }
 
+        public void ResendManualColor(int id)
+        {
+            this.colorWheelColorChanged(this.window.colorWheel.HslColor, EventArgs.Empty);
+        }
+
         private void whiteBalanceBtnClicked(object sender, EventArgs args)
         {
             if (this.deviceMgr.GlowsFound == 0) {
@@ -229,7 +234,7 @@ namespace Antumbra.Glow.Controller
                     dev.settings.maxBrightness = max;
                 }
                 if (manual) {//resend color to comply with updated brightness if in manual mode
-                    colorWheelColorChanged(this.window.colorWheel.HslColor, EventArgs.Empty);//force update to reflect brightness changes
+                    ResendManualColor(-1);//force update to reflect brightness changes
                 }
             }
         }
@@ -342,7 +347,7 @@ namespace Antumbra.Glow.Controller
                 case SessionSwitchReason.SessionUnlock:
                     Thread.Sleep(2500);//wait for system to be ready
                     if (manual)
-                        colorWheelColorChanged(this.window.colorWheel.HslColor, EventArgs.Empty);
+                        ResendManualColor(-1);
                     else
                         NewGlowCmdAvailEvent(new StartCommand(-1));//start all
                     break;
