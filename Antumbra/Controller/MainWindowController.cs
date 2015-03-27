@@ -229,7 +229,7 @@ namespace Antumbra.Glow.Controller
                     dev.settings.maxBrightness = max;
                 }
                 if (manual) {//resend color to comply with updated brightness if in manual mode
-                    NewGlowCmdAvailEvent(new SendColorCommand(-1, ApplyBrightnessSettings(lastManualColor, max)));
+                    colorWheelColorChanged(this.window.colorWheel.HslColor, EventArgs.Empty);//force update to reflect brightness changes
                 }
             }
         }

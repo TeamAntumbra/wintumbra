@@ -32,11 +32,11 @@
             this.closeBtn = new System.Windows.Forms.Button();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
+            this.whiteBalanceBtn = new System.Windows.Forms.Button();
             this.brightnessLabel = new System.Windows.Forms.Label();
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.mirrorTab = new System.Windows.Forms.TabPage();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
@@ -57,7 +57,7 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.whiteBalanceBtn = new System.Windows.Forms.Button();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
@@ -115,6 +115,23 @@
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
+            // whiteBalanceBtn
+            // 
+            this.whiteBalanceBtn.AutoSize = true;
+            this.whiteBalanceBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.whiteBalanceBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.whiteBalanceBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.whiteBalanceBtn.Location = new System.Drawing.Point(399, 156);
+            this.whiteBalanceBtn.Name = "whiteBalanceBtn";
+            this.whiteBalanceBtn.Size = new System.Drawing.Size(131, 32);
+            this.whiteBalanceBtn.TabIndex = 78;
+            this.whiteBalanceBtn.Text = "White Balance";
+            this.whiteBalanceBtn.UseVisualStyleBackColor = false;
+            this.whiteBalanceBtn.Click += new System.EventHandler(this.whiteBalanceBtn_Click);
+            // 
             // brightnessLabel
             // 
             this.brightnessLabel.AutoSize = true;
@@ -159,15 +176,6 @@
             this.onBtn.Text = "On";
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
-            // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(202, 215);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // mirrorTab
             // 
@@ -398,22 +406,14 @@
             this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
             // 
-            // whiteBalanceBtn
+            // colorWheel
             // 
-            this.whiteBalanceBtn.AutoSize = true;
-            this.whiteBalanceBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.whiteBalanceBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.whiteBalanceBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-            this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
-            this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.whiteBalanceBtn.Location = new System.Drawing.Point(399, 156);
-            this.whiteBalanceBtn.Name = "whiteBalanceBtn";
-            this.whiteBalanceBtn.Size = new System.Drawing.Size(131, 32);
-            this.whiteBalanceBtn.TabIndex = 78;
-            this.whiteBalanceBtn.Text = "White Balance";
-            this.whiteBalanceBtn.UseVisualStyleBackColor = false;
-            this.whiteBalanceBtn.Click += new System.EventHandler(this.whiteBalanceBtn_Click);
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(202, 215);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // MainWindow
             // 
@@ -458,7 +458,6 @@
         private System.Windows.Forms.TabPage fadeTab;
         private System.Windows.Forms.TabPage customTab;
         private System.Windows.Forms.BindingSource bindingSource1;
-        private CyotekColorWheel.ColorWheel colorWheel;
         private System.Windows.Forms.Label antumbraLabel;
         private System.Windows.Forms.RadioButton offBtn;
         private System.Windows.Forms.RadioButton onBtn;
@@ -481,5 +480,6 @@
         private System.Windows.Forms.Label idDevLabel;
         private System.Windows.Forms.ComboBox devIDList;
         private System.Windows.Forms.Button whiteBalanceBtn;
+        public CyotekColorWheel.ColorWheel colorWheel;
     }
 }
