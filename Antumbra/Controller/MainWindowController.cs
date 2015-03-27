@@ -86,8 +86,8 @@ namespace Antumbra.Glow.Controller
                 this.RegisterDevice(dev.id);
                 foreach (GlowDevice device in this.deviceMgr.Glows)
                     this.window.AddDeviceId(device.id);
+                this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
-            this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
@@ -96,6 +96,11 @@ namespace Antumbra.Glow.Controller
 
         private void whiteBalanceBtnClicked(object sender, EventArgs args)
         {
+            if (this.deviceMgr.GlowsFound == 0) {
+                this.ShowMessage(3000, "No Glows Found",
+                    "White balance cannot be opened because no Glow devices were found.", 2);
+                return;//can't open, controller is most likely null anyways
+            }
             this.whiteBalController.Show();
         }
 
