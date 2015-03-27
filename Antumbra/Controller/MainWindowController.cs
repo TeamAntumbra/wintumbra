@@ -11,7 +11,7 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.ExtensionFramework;
+using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.Settings;
@@ -21,7 +21,7 @@ using Microsoft.Win32;
 namespace Antumbra.Glow.Controller
 {
     public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver,
-                                        ToolbarNotificationObserver
+                                        ToolbarNotificationObserver, ConfigurationObserver
     {
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
@@ -84,14 +84,22 @@ namespace Antumbra.Glow.Controller
             if (this.deviceMgr.GlowsFound > 0) {//ready first device for output if any are found
                 GlowDevice dev = this.deviceMgr.getDevice(0);
                 this.RegisterDevice(dev.id);
-                foreach (GlowDevice device in this.deviceMgr.Glows)
+                foreach (GlowDevice device in this.deviceMgr.Glows) {
                     this.window.AddDeviceId(device.id);
+                    device.AttachObserver(this);
+                }
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
+        }
+
+        public void ConfigurationUpdate(Configurable config)
+        {
+            if (config is DeviceSettings && manual)//settings changed, and manual mode enabled
+                ResendManualColor(-1);//re-send to all devices
         }
 
         public void ResendManualColor(int id)
@@ -128,8 +136,9 @@ namespace Antumbra.Glow.Controller
             if (NewGlowCmdAvailEvent != null) {
                 if (cmd is StartCommand)
                     this.window.SetOnSelection(true);
-                if (cmd is PowerOffCommand)
-                    this.window.SetOnSelection(false);
+                else
+                    if (cmd is PowerOffCommand)
+                        this.window.SetOnSelection(false);
                 NewGlowCmdAvailEvent(cmd);//pass it up
             }
         }
@@ -235,9 +244,6 @@ namespace Antumbra.Glow.Controller
                 foreach (GlowDevice dev in this.deviceMgr.Glows) {
                     max = Convert.ToUInt16(UInt16.MaxValue * value);
                     dev.settings.maxBrightness = max;
-                }
-                if (manual) {//resend color to comply with updated brightness if in manual mode
-                    ResendManualColor(-1);//force update to reflect brightness changes
                 }
             }
         }
