@@ -31,7 +31,7 @@ namespace Antumbra.Glow.Controller
 
         public void ConfigurationUpdate(Configurable config)
         {
-            if (config is Settings.DeviceSettings) {
+            if (config is Settings.DeviceSettings && this.view != null) {
                 Settings.DeviceSettings settings = (Settings.DeviceSettings)config;
                 this.view.SetR(settings.redBias);
                 this.view.SetG(settings.greenBias);
