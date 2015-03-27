@@ -45,7 +45,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public ActiveExtensions activeExts { get; private set; }
         private ExtensionLibrary lib;
         private bool compoundDecoration;
-        private int stepSleep, x, y, width, height;//local copies of just these rather than entire DeviceSettings obj
+        private int stepSleep, x, y, width, height, redBias, greenBias, blueBias;//local copies of just these rather than entire DeviceSettings obj
         private UInt16 maxBrightness;
         public const String configFileBase = "ActiveExtsDev_";
         /// <summary>
@@ -111,6 +111,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.height = settings.height;
                 this.stepSleep = settings.stepSleep;
                 this.maxBrightness = settings.maxBrightness;
+                this.redBias = settings.redBias;
+                this.greenBias = settings.greenBias;
+                this.blueBias = settings.blueBias;
             }
             //ignore ActiveExtensions events, already knows about it
         }
@@ -312,6 +315,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             UInt16 green = Convert.ToUInt16(g / count);
             UInt16 blue = Convert.ToUInt16(b / count);
             return new Color16Bit(red, green, blue);
+        }
+
+        public Color16Bit ApplyWhiteBalance(Color16Bit orig)
+        {
+            int red = orig.red >> 8;
+            int green = orig.green >> 8;
+            int blue = orig.blue >> 8;
+            return new Color16Bit(System.Drawing.Color.FromArgb(red,green,blue));
         }
 
         /// <summary>
