@@ -117,6 +117,45 @@ namespace Antumbra.Glow.Settings
             }
         }
         private UInt16 _maxBrightness;
+        public int redBias
+        {
+            get
+            {
+                return _redBias;
+            }
+            set
+            {
+                _redBias = value;
+                Notify();
+            }
+        }
+        private int _redBias;
+        public int greenBias
+        {
+            get
+            {
+                return _greenBias;
+            }
+            set
+            {
+                _greenBias = value;
+                Notify();
+            }
+        }
+        private int _greenBias;
+        public int blueBias
+        {
+            get
+            {
+                return _blueBias;
+            }
+            set
+            {
+                _blueBias = value;
+                Notify();
+            }
+        }
+        private int _blueBias;
         public DeviceSettings(int id)
         {
             Reset();
@@ -134,6 +173,9 @@ namespace Antumbra.Glow.Settings
             result += this.weightingEnabled.ToString() + ',';
             result += this.newColorWeight.ToString() + ',';
             result += this.maxBrightness.ToString() + ',';
+            result += this.redBias.ToString() + ',';
+            result += this.greenBias.ToString() + ',';
+            result += this.blueBias.ToString() + ',';
             result += this.compoundDecoration.ToString() + '\n';
             return result;
         }
@@ -167,6 +209,9 @@ namespace Antumbra.Glow.Settings
             this.weightingEnabled = true;
             this.newColorWeight = .05;
             this.compoundDecoration = false;
+            this.redBias = 0;
+            this.greenBias = 0;
+            this.blueBias = 0;
             this.maxBrightness = UInt16.MaxValue;
         }
 
@@ -182,6 +227,9 @@ namespace Antumbra.Glow.Settings
             this.weightingEnabled = Boolean.Parse(parts[6]);
             this.newColorWeight = double.Parse(parts[7]);
             this.maxBrightness = UInt16.Parse(parts[8]);
+            this.redBias = int.Parse(parts[9]);
+            this.greenBias = int.Parse(parts[10]);
+            this.blueBias = int.Parse(parts[11]);
             this.compoundDecoration = Boolean.Parse(parts[9]);
             Notify();
         }
