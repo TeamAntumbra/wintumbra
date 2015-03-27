@@ -157,7 +157,10 @@ namespace Antumbra.Glow.Controller
             if (sender is bool) {
                 bool on = (bool)sender;
                 if (on)
-                    NewGlowCmdAvailEvent(new StartCommand(-1));
+                    if (manual)
+                        ResendManualColor(-1);//can't 'start' manual mode
+                    else
+                        NewGlowCmdAvailEvent(new StartCommand(-1));
                 else
                     NewGlowCmdAvailEvent(new PowerOffCommand(-1));
             }
