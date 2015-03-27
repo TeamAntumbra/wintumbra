@@ -120,6 +120,7 @@ namespace Antumbra.Glow.Connector
                 foreach (GlowDevice device in this.Glows) {
                     newColor = device.ApplyDecorations(newColor);
                     newColor = device.ApplyBrightness(newColor);
+                    newColor = device.ApplyWhiteBalance(newColor);
                     sendColor(newColor.red, newColor.green, newColor.blue, device.id);
                 }
                 return; //cancel this call
@@ -129,6 +130,7 @@ namespace Antumbra.Glow.Connector
                 return;//no device found matching passed id
             newColor = dev.ApplyDecorations(newColor);
             newColor = dev.ApplyBrightness(newColor);
+            newColor = dev.ApplyWhiteBalance(newColor);
             sendColor(newColor.red, newColor.green, newColor.blue, id);
         }
 

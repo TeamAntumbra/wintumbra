@@ -159,6 +159,11 @@ namespace Antumbra.Glow.Connector
             return this.extMgr.ApplyBrightnessSettings(orig);
         }
 
+        public Color16Bit ApplyWhiteBalance(Color16Bit orig)
+        {
+            return this.extMgr.ApplyWhiteBalance(orig);
+        }
+
         public void ApplyDriverRecomSettings()
         {
             GlowDriver activeDriver = this.extMgr.activeExts.ActiveDriver;
