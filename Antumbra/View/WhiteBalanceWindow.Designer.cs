@@ -40,6 +40,7 @@
             this.redLabel = new System.Windows.Forms.Label();
             this.greenLabel = new System.Windows.Forms.Label();
             this.blueLabel = new System.Windows.Forms.Label();
+            this.descLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -214,12 +215,24 @@
             this.blueLabel.TabIndex = 87;
             this.blueLabel.Text = "Blue";
             // 
+            // descLabel
+            // 
+            this.descLabel.AutoSize = true;
+            this.descLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.descLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.descLabel.Location = new System.Drawing.Point(177, 352);
+            this.descLabel.Name = "descLabel";
+            this.descLabel.Size = new System.Drawing.Size(429, 25);
+            this.descLabel.TabIndex = 88;
+            this.descLabel.Text = "Values are based off an 8-bit (0-255) color scale";
+            // 
             // WhiteBalanceWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(822, 468);
+            this.Controls.Add(this.descLabel);
             this.Controls.Add(this.blueLabel);
             this.Controls.Add(this.greenLabel);
             this.Controls.Add(this.redLabel);
@@ -257,5 +270,6 @@
         private System.Windows.Forms.Label redLabel;
         private System.Windows.Forms.Label greenLabel;
         private System.Windows.Forms.Label blueLabel;
+        private System.Windows.Forms.Label descLabel;
     }
 }
