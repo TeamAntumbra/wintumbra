@@ -336,13 +336,17 @@ namespace Antumbra.Glow.Controller
             switch (e.Reason) {
                 case SessionSwitchReason.SessionLogoff:
                 case SessionSwitchReason.SessionLock:
-                    //this.Off();
+                    NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all off
                     Console.WriteLine("locked/logged off");
                     break;
                 case SessionSwitchReason.SessionLogon:
                 case SessionSwitchReason.SessionUnlock:
                     Console.WriteLine("unlocked/logged on");
-                   // StartAllAfterDelay();
+                    Thread.Sleep(2500);//wait for system to be ready
+                    if (manual)
+                        colorWheelColorChanged(this.window.colorWheel.HslColor, EventArgs.Empty);
+                    else
+                        NewGlowCmdAvailEvent(new StartCommand(-1));//start all
                     break;
             }
         }
@@ -355,7 +359,7 @@ namespace Antumbra.Glow.Controller
         {
             // User is putting the system into standby 
             if (e.Mode == PowerModes.Suspend) {
-                //this.Off();
+                NewGlowCmdAvailEvent(new PowerOffCommand(-1));
                 Console.WriteLine("Suspended.");
             }
         }
