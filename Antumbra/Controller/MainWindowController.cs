@@ -36,6 +36,7 @@ namespace Antumbra.Glow.Controller
         private PresetBuilder presetBuilder;
         private DeviceManager deviceMgr;
         private AdvancedSettingsWindowManager advSettingsMgr;
+        private WhiteBalanceWindowController whiteBalController;
         private int id;
         private bool manual;
         private Color16Bit lastManualColor;
@@ -86,6 +87,7 @@ namespace Antumbra.Glow.Controller
                 foreach (GlowDevice device in this.deviceMgr.Glows)
                     this.window.AddDeviceId(device.id);
             }
+            this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
@@ -94,7 +96,7 @@ namespace Antumbra.Glow.Controller
 
         private void whiteBalanceBtnClicked(object sender, EventArgs args)
         {
-
+            this.whiteBalController.Show();
         }
 
         private void advDevSelectionChangedHandler(object sender, EventArgs args)
