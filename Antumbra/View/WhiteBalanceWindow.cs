@@ -24,6 +24,21 @@ namespace Antumbra.Glow.View
             InitializeComponent();
         }
 
+        public void SetR(int r)
+        {
+            this.redValue.Text = r.ToString();
+        }
+
+        public void SetG(int g)
+        {
+            this.greenValue.Text = g.ToString();
+        }
+
+        public void SetB(int b)
+        {
+            this.blueValue.Text = b.ToString();
+        }
+
         private void closeBtn_Click(object sender, EventArgs e)
         {
             if (closeBtn_ClickEvent != null)
