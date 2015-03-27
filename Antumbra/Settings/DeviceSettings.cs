@@ -20,8 +20,10 @@ namespace Antumbra.Glow.Settings
             get { return _x; }
             set
             {
-                _x = value;
-                Notify();
+                if (value != _x) {
+                    _x = value;
+                    Notify();
+                }
             }
         }
         private int _x;
@@ -30,8 +32,10 @@ namespace Antumbra.Glow.Settings
             get { return _y; }
             set
             {
-                _y = value;
-                Notify();
+                if (value != _y) {
+                    _y = value;
+                    Notify();
+                }
             }
         }
         private int _y;
@@ -40,8 +44,10 @@ namespace Antumbra.Glow.Settings
             get { return _width; }
             set
             {
-                _width = value;
-                Notify();
+                if (value != _width) {
+                    _width = value;
+                    Notify();
+                }
             }
         }
         private int _width;
@@ -50,8 +56,10 @@ namespace Antumbra.Glow.Settings
             get { return _height; }
             set
             {
-                _height = value;
-                Notify();
+                if (value != _height) {
+                    _height = value;
+                    Notify();
+                }
             }
         }
         private int _height;
@@ -60,8 +68,10 @@ namespace Antumbra.Glow.Settings
             get { return _stepSleep; }
             set
             {
-                _stepSleep = value;
-                Notify();
+                if (value != _stepSleep) {
+                    _stepSleep = value;
+                    Notify();
+                }
             }
         }
         private int _stepSleep;
@@ -73,8 +83,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _weightingEnabled = value;
-                Notify();
+                if (value != _weightingEnabled) {
+                    _weightingEnabled = value;
+                    Notify();
+                }
             }
         }
         private bool _weightingEnabled;
@@ -86,8 +98,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _newColorWeight = value;
-                Notify();
+                if (value != _newColorWeight) {
+                    _newColorWeight = value;
+                    Notify();
+                }
             }
         }
         private double _newColorWeight;
@@ -99,8 +113,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _compoundDecoration = value;
-                Notify();
+                if (value != _compoundDecoration) {
+                    _compoundDecoration = value;
+                    Notify();
+                }
             }
         }
         private bool _compoundDecoration;
@@ -112,8 +128,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _maxBrightness = value;
-                Notify();
+                if (value != _maxBrightness) {
+                    _maxBrightness = value;
+                    Notify();
+                }
             }
         }
         private UInt16 _maxBrightness;
@@ -125,8 +143,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _redBias = value;
-                Notify();
+                if (value != _redBias) {
+                    _redBias = value;
+                    Notify();
+                }
             }
         }
         private int _redBias;
@@ -138,8 +158,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _greenBias = value;
-                Notify();
+                if (value != _greenBias) {
+                    _greenBias = value;
+                    Notify();
+                }
             }
         }
         private int _greenBias;
@@ -151,8 +173,10 @@ namespace Antumbra.Glow.Settings
             }
             set
             {
-                _blueBias = value;
-                Notify();
+                if (value != _blueBias) {
+                    _blueBias = value;
+                    Notify();
+                }
             }
         }
         private int _blueBias;
