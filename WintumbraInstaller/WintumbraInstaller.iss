@@ -36,7 +36,7 @@ Type: files; Name: "{app}\Extensions\*.dll"
 Type: files; Name: "%appdata%\Antumbra\wintumbra.log"
 
 [Run]
-Filename: "{tmp}\dotNetFx40_Full_setup.exe"; Check: FrameworkIsNotInstalled
+Filename: "{tmp}\dotNetFx40_Full_x86_x64.exe"; Check: FrameworkIsNotInstalled
 Filename: "{app}\DriverInstaller\glowdrvinst.exe"; Parameters: "batch"
 
 [code]
