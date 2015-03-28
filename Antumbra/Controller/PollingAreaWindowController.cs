@@ -70,10 +70,12 @@ namespace Antumbra.Glow.Controller
 
         private void UpdatePollingSelectionsEvent(object sender, EventArgs args)
         {
-            System.Windows.Forms.Form form = (System.Windows.Forms.Form)sender;
-            if (PollingAreaUpdatedEvent != null)
-                PollingAreaUpdatedEvent(form.Bounds.X, form.Bounds.Y, form.Width, form.Height);
-            UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
+            if (sender is System.Windows.Forms.Form) {
+                System.Windows.Forms.Form form = (System.Windows.Forms.Form)sender;
+                if (PollingAreaUpdatedEvent != null)
+                    PollingAreaUpdatedEvent(form.Bounds.X, form.Bounds.Y, form.Width, form.Height);
+                UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
+            }
         }
     }
 }
