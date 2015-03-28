@@ -89,21 +89,21 @@ namespace Antumbra.Glow.Connector
             return true;
         }
 
-        private bool StopAll()
+        private void StopAll()
         {
-            bool result = true;
             foreach (GlowDevice dev in this.Glows)
-                if (!Stop(dev.id))
-                    result = false;
-            return result;
+                Stop(dev.id);
         }
 
-        public bool Stop(int id)
+        public void Stop(int id)
         {
             if (id == -1) {
-                return StopAll();
+                StopAll();
+                return;//cancel this call
             }
             var dev = this.getDevice(id);
+            if (dev == null)//no device
+                return;
             if (!dev.Stop())
                 this.Log("Device " + id + " reported that it did not stop correctly.");
             var loop = this.outManager.FindLoopOrReturnNull(id);
@@ -111,7 +111,6 @@ namespace Antumbra.Glow.Connector
                 loop.Dispose();
             }
             this.Log("Device " + id + " Stopped.");
-            return true;
         }
 
         public void sendColor(Antumbra.Glow.Observer.Colors.Color16Bit newColor, int id)
