@@ -234,7 +234,8 @@ namespace Antumbra.Glow.Controller
             if (sender is Utility.HslColor) {
                 manual = true;
                 foreach (GlowDevice dev in this.deviceMgr.Glows) {
-                    dev.settings.weightingEnabled = false;
+                    if (dev.settings.weightingEnabled)
+                        dev.settings.weightingEnabled = false;
                 }
                 NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will check)
                 Utility.HslColor col = (Utility.HslColor)sender;
