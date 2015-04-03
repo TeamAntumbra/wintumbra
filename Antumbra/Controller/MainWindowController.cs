@@ -122,6 +122,7 @@ namespace Antumbra.Glow.Controller
             }
             NewGlowCmdAvailEvent(new StopCommand(-1));
             NewGlowCmdAvailEvent(new SendColorCommand(-1, this.controlColor));
+            this.window.colorWheel.HslColor = new Utility.HslColor(0,0,.5);//reset selector to center
             this.whiteBalController.Show();
         }
 
