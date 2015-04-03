@@ -133,7 +133,7 @@ namespace Antumbra.Glow.Controller
 
         private void StartBtnClickHandler(object sender, EventArgs args)
         {
-            if (this.dev.running)
+            if (this.dev.settings.powerState)
                 SendStopCommand();
             NewGlowCommandAvailEvent(new StartCommand(this.dev.id));
         }

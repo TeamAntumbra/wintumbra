@@ -58,7 +58,7 @@ namespace Antumbra.Glow.Connector
         /// Integer representation of the device's status
         /// </summary>
         public int status { get; set; }
-        public bool running { get; private set; }
+        //public bool running { get; private set; }
 
         public void SetActives(ActiveExtensions actives)
         {
@@ -116,8 +116,8 @@ namespace Antumbra.Glow.Connector
         /// <returns>True if successfully started, else false</returns>
         public bool Start()
         {
-            this.running = this.extMgr.Start();
-            return this.running;
+            this.settings.powerState = this.extMgr.Start();
+            return this.settings.powerState;
         }
 
         public void LoadSettings()
@@ -206,7 +206,7 @@ namespace Antumbra.Glow.Connector
         public bool Stop()
         {
             bool result = this.extMgr.Stop();
-            this.running = !result;
+            this.settings.powerState = !result;//inverse of stop result status is running state
             return result;
         }
 

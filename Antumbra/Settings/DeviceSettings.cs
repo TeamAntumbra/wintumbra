@@ -180,6 +180,21 @@ namespace Antumbra.Glow.Settings
             }
         }
         private int _blueBias;
+        public bool powerState
+        {
+            get
+            {
+                return _powerState;
+            }
+            set
+            {
+                if (value != _powerState) {
+                    _powerState = value;
+                    Notify();
+                }
+            }
+        }
+        private bool _powerState;
         public DeviceSettings(int id)
         {
             Reset();
@@ -221,7 +236,7 @@ namespace Antumbra.Glow.Settings
                 ConfigChangeEvent(this);
         }
 
-        public void Reset()
+        public void Reset()//reset everything except power state
         {
             this.id = id;
             this.x = 0;
