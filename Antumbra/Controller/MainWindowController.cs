@@ -100,8 +100,12 @@ namespace Antumbra.Glow.Controller
 
         public void ConfigurationUpdate(Configurable config)
         {
-            if (config is DeviceSettings && manual)//settings changed, and manual mode enabled
-                ResendManualColor(-1);//re-send to all devices
+            if (config is DeviceSettings) {//settings changed
+                DeviceSettings settings = (DeviceSettings)config;
+                this.window.SetOnSelection(settings.powerState);
+                if (manual)//manual mode enabled
+                    ResendManualColor(-1);//re-send to all devices
+            }
         }
 
         public void ResendManualColor(int id)
@@ -137,14 +141,8 @@ namespace Antumbra.Glow.Controller
 
         public void NewGlowCommandAvail(GlowCommand cmd)
         {
-            if (NewGlowCmdAvailEvent != null) {
-                if (cmd is StartCommand)
-                    this.window.SetOnSelection(true);
-                else
-                    if (cmd is PowerOffCommand)
-                        this.window.SetOnSelection(false);
+            if (NewGlowCmdAvailEvent != null)
                 NewGlowCmdAvailEvent(cmd);//pass it up
-            }
         }
 
         private void setPollingBtnClickHandler(object sender, EventArgs args)
@@ -231,7 +229,7 @@ namespace Antumbra.Glow.Controller
                 foreach (GlowDevice dev in this.deviceMgr.Glows) {
                     dev.settings.weightingEnabled = false;
                 }
-                this.window.SetOnSelection(true);//mark device on
+                //this.window.SetOnSelection(true);//mark device on
                 NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will make check)
                 Utility.HslColor col = (Utility.HslColor)sender;
                 this.lastManualColor = new Color16Bit(col.ToRgbColor());
@@ -271,7 +269,7 @@ namespace Antumbra.Glow.Controller
                 dev.settings.stepSleep = stepSleep;
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
-            this.window.SetOnSelection(true);//mark device on
+            //this.window.SetOnSelection(true);//mark device on
         }
 
         private void ApplyNewSetup(ActiveExtensions actives)
@@ -283,7 +281,7 @@ namespace Antumbra.Glow.Controller
                 dev.ApplyDriverRecomSettings();
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
-            this.window.SetOnSelection(true);//mark device on
+            //this.window.SetOnSelection(true);//mark device on
         }
 
         public void hsvBtnClicked(object sender, EventArgs args)
