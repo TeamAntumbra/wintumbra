@@ -14,11 +14,13 @@ namespace Antumbra.Glow.Controller
     {
         private WhiteBalanceWindow view;
         private List<GlowDevice> devices;
+        private Color control;
         public WhiteBalanceWindowController(GlowDevice dev)
         {
             this.devices = new List<GlowDevice>();
             this.devices.Add(dev);
             dev.AttachObserver(this);
+            this.control = new Utility.HslColor(0, 0, .5).ToRgbColor();
         }
 
         public WhiteBalanceWindowController(List<GlowDevice> devs)
@@ -28,6 +30,7 @@ namespace Antumbra.Glow.Controller
                 this.devices.Add(dev);
                 dev.AttachObserver(this);
             }
+            this.control = new Utility.HslColor(0, 0, .5).ToRgbColor();
         }
 
         public void ConfigurationUpdate(Configurable config)
@@ -40,7 +43,6 @@ namespace Antumbra.Glow.Controller
 
         private void SetColorFromBias(int redBias, int greenBias, int blueBias)
         {
-            Color control = new Utility.HslColor(0, 0, .5).ToRgbColor();
             Color newColor = Color.FromArgb(control.R - redBias, control.G - greenBias, control.B - blueBias);
             this.view.SetColor(newColor);
         }
@@ -57,7 +59,7 @@ namespace Antumbra.Glow.Controller
         private void ColorWheelChangedHandler(Color newColor)
         {
             foreach (GlowDevice dev in devices) {
-                Color control = new Utility.HslColor(0, 0, .5).ToRgbColor();
+                
                 dev.settings.redBias = control.R - newColor.R;
                 dev.settings.greenBias = control.G - newColor.G;
                 dev.settings.blueBias = control.B - newColor.B;
