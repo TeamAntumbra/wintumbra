@@ -40,7 +40,8 @@ namespace Antumbra.Glow.Controller
 
         private void SetColorFromBias(int redBias, int greenBias, int blueBias)
         {
-            Color newColor = Color.FromArgb(255 - redBias, 255 - greenBias, 255 - blueBias);
+            Color control = new Utility.HslColor(0, 0, .5).ToRgbColor();
+            Color newColor = Color.FromArgb(control.R - redBias, control.G - greenBias, control.B - blueBias);
             this.view.SetColor(newColor);
         }
 
@@ -56,10 +57,10 @@ namespace Antumbra.Glow.Controller
         private void ColorWheelChangedHandler(Color newColor)
         {
             foreach (GlowDevice dev in devices) {
-                dev.settings.redBias = 255 - newColor.R;
-                dev.settings.greenBias = 255 - newColor.G;
-                dev.settings.blueBias = 255 - newColor.B;
-                Console.WriteLine(dev.settings.redBias + " " + dev.settings.greenBias + " " + dev.settings.blueBias + " " + newColor.ToString());
+                Color control = new Utility.HslColor(0, 0, .5).ToRgbColor();
+                dev.settings.redBias = control.R - newColor.R;
+                dev.settings.greenBias = control.G - newColor.G;
+                dev.settings.blueBias = control.B - newColor.B;
             }
         }
 
