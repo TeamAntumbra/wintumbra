@@ -114,6 +114,8 @@ namespace Antumbra.Glow.Controller
                     "White balance cannot be opened because no Glow devices were found.", 2);
                 return;//can't open, controller is most likely null anyways
             }
+            NewGlowCmdAvailEvent(new StopCommand(-1));
+            NewGlowCmdAvailEvent(new SendColorCommand(-1, new Color16Bit(Color.White)));
             this.whiteBalController.Show();
         }
 
