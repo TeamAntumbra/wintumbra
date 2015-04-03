@@ -76,7 +76,8 @@ namespace Antumbra.Glow.Controller
             if (this.view == null || this.view.IsDisposed)
                 Init();
             this.view.Show();
-            this.view.FormClosing += viewClosingHandler;
+            if (viewClosingHandler != null)
+                this.view.FormClosing += viewClosingHandler;
         }
     }
 }
