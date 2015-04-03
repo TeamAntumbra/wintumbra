@@ -123,7 +123,13 @@ namespace Antumbra.Glow.Controller
             NewGlowCmdAvailEvent(new StopCommand(-1));
             NewGlowCmdAvailEvent(new SendColorCommand(-1, this.controlColor));
             this.window.colorWheel.HslColor = new Utility.HslColor(0,0,.5);//reset selector to center
-            this.whiteBalController.Show();
+            this.window.colorWheel.Enabled = false;//disable main color wheel until color balance window closed
+            this.whiteBalController.Show(WhiteBalanceWindowClosingHandler);
+        }
+
+        private void WhiteBalanceWindowClosingHandler(object sender, System.Windows.Forms.FormClosingEventArgs args)
+        {
+            this.window.colorWheel.Enabled = true;//re-enable main wheel
         }
 
         private void advDevSelectionChangedHandler(object sender, EventArgs args)
@@ -230,8 +236,7 @@ namespace Antumbra.Glow.Controller
                 foreach (GlowDevice dev in this.deviceMgr.Glows) {
                     dev.settings.weightingEnabled = false;
                 }
-                //this.window.SetOnSelection(true);//mark device on
-                NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will make check)
+                NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will check)
                 Utility.HslColor col = (Utility.HslColor)sender;
                 this.lastManualColor = new Color16Bit(col.ToRgbColor());
                 NewGlowCmdAvailEvent(new SendColorCommand(-1, lastManualColor));
@@ -270,7 +275,6 @@ namespace Antumbra.Glow.Controller
                 dev.settings.stepSleep = stepSleep;
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
-            //this.window.SetOnSelection(true);//mark device on
         }
 
         private void ApplyNewSetup(ActiveExtensions actives)
@@ -282,7 +286,6 @@ namespace Antumbra.Glow.Controller
                 dev.ApplyDriverRecomSettings();
             }
             NewGlowCmdAvailEvent(new StartCommand(-1));//start all
-            //this.window.SetOnSelection(true);//mark device on
         }
 
         public void hsvBtnClicked(object sender, EventArgs args)

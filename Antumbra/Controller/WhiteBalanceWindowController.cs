@@ -71,11 +71,12 @@ namespace Antumbra.Glow.Controller
             this.view.Close();
         }
 
-        public void Show()
+        public void Show(System.Windows.Forms.FormClosingEventHandler viewClosingHandler)
         {
             if (this.view == null || this.view.IsDisposed)
                 Init();
             this.view.Show();
+            this.view.FormClosing += viewClosingHandler;
         }
     }
 }
