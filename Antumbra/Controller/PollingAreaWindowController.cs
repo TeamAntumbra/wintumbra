@@ -30,8 +30,8 @@ namespace Antumbra.Glow.Controller
         public void Show()
         {
             this.pollingWindow.Show();
-            SendStopCommand();//stop device
-            SendColorCommand(new Color16Bit(this.color));//set to unique color to match its window
+            SendCommand(new StopCommand(this.id));//stop device
+            SendCommand(new SendColorCommand(this.id,new Color16Bit(this.color)));//set to unique color to match its window
         }
         
         private void pollingArea_Click(object sender, EventArgs e)
@@ -39,8 +39,8 @@ namespace Antumbra.Glow.Controller
             if (this.pollingWindow == null || this.pollingWindow.IsDisposed) {
                 var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
                 this.pollingWindow = new View.pollingAreaSetter(back);
-                SendStopCommand();
-                SendColorCommand(new Color16Bit(back));
+                SendCommand(new StopCommand(this.id));
+                SendCommand(new SendColorCommand(this.id, new Color16Bit(back)));
                 this.pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingWindow.Show();
@@ -56,16 +56,10 @@ namespace Antumbra.Glow.Controller
             this.id = id;
         }
 
-        private void SendStopCommand()
+        private void SendCommand(GlowCommand cmd)
         {
             if (NewGlowCommandAvailEvent != null)
-                NewGlowCommandAvailEvent(new StopCommand(this.id));
-        }
-
-        private void SendColorCommand(Color16Bit col)
-        {
-            if (NewGlowCommandAvailEvent != null)
-                NewGlowCommandAvailEvent(new SendColorCommand(this.id, col));
+                NewGlowCommandAvailEvent(cmd);
         }
 
         private void UpdatePollingSelectionsEvent(object sender, EventArgs args)
@@ -75,6 +69,7 @@ namespace Antumbra.Glow.Controller
                 if (PollingAreaUpdatedEvent != null)
                     PollingAreaUpdatedEvent(form.Bounds.X, form.Bounds.Y, form.Width, form.Height);
                 UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
+                SendCommand(new StartCommand(this.id));
             }
         }
     }
