@@ -13,30 +13,16 @@ namespace Antumbra.Glow.View
     public partial class WhiteBalanceWindow : Form
     {
         public event EventHandler closeBtn_ClickEvent;
-        public event EventHandler rUpBtn_ClickEvent;
-        public event EventHandler gUpBtn_ClickEvent;
-        public event EventHandler bUpBtn_clickEvent;
-        public event EventHandler rDownBtn_ClickEvent;
-        public event EventHandler gDownBtn_ClickEvent;
-        public event EventHandler bDownBtn_ClickEvent;
+        public delegate void ColorWheelChanged(Color newColor);
+        public event ColorWheelChanged ColorWheelChangedEvent;
         public WhiteBalanceWindow()
         {
             InitializeComponent();
         }
 
-        public void SetR(int r)
+        public void SetColor(Color newColor)
         {
-            this.redValue.Text = r.ToString();
-        }
-
-        public void SetG(int g)
-        {
-            this.greenValue.Text = g.ToString();
-        }
-
-        public void SetB(int b)
-        {
-            this.blueValue.Text = b.ToString();
+            this.colorWheel.HslColor = newColor;
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -45,40 +31,10 @@ namespace Antumbra.Glow.View
                 closeBtn_ClickEvent(sender, e);
         }
 
-        private void rUpBtn_Click(object sender, EventArgs e)
+        private void colorWheel_ColorChanged(object sender, EventArgs e)
         {
-            if (rUpBtn_ClickEvent != null)
-                rUpBtn_ClickEvent(sender, e);
-        }
-
-        private void gUpBtn_Click(object sender, EventArgs e)
-        {
-            if (gUpBtn_ClickEvent != null)
-                gUpBtn_ClickEvent(sender, e);
-        }
-
-        private void bUpBtn_Click(object sender, EventArgs e)
-        {
-            if (bUpBtn_clickEvent != null)
-                bUpBtn_clickEvent(sender, e);
-        }
-
-        private void rDownBtn_Click(object sender, EventArgs e)
-        {
-            if (rDownBtn_ClickEvent != null)
-                rDownBtn_ClickEvent(sender, e);
-        }
-
-        private void gDownBtn_Click(object sender, EventArgs e)
-        {
-            if (gDownBtn_ClickEvent != null)
-                gDownBtn_ClickEvent(sender, e);
-        }
-
-        private void bDownBtn_Click(object sender, EventArgs e)
-        {
-            if (bDownBtn_ClickEvent != null)
-                bDownBtn_ClickEvent(sender, e);
+            if (ColorWheelChangedEvent != null)
+                ColorWheelChangedEvent(this.colorWheel.HslColor.ToRgbColor());
         }
     }
 }

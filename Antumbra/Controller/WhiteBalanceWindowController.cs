@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using Antumbra.Glow.View;
 using Antumbra.Glow.Connector;
 using Antumbra.Glow.Observer.Configuration;
@@ -33,67 +34,38 @@ namespace Antumbra.Glow.Controller
         {
             if (config is Settings.DeviceSettings && this.view != null) {
                 Settings.DeviceSettings settings = (Settings.DeviceSettings)config;
-                this.view.SetR(settings.redBias);
-                this.view.SetG(settings.greenBias);
-                this.view.SetB(settings.blueBias);
+                SetColorFromBias(settings.redBias, settings.greenBias, settings.blueBias);
             }
+        }
+
+        private void SetColorFromBias(int redBias, int greenBias, int blueBias)
+        {
+            Color newColor = Color.FromArgb(255 - redBias, 255 - greenBias, 255 - blueBias);
+            this.view.SetColor(newColor);
         }
 
         private void Init()
         {
             this.view = new WhiteBalanceWindow();
             GlowDevice dev = this.devices.First<GlowDevice>();
-            this.view.SetR(dev.settings.redBias);
-            this.view.SetG(dev.settings.greenBias);
-            this.view.SetB(dev.settings.blueBias);
-            this.view.rDownBtn_ClickEvent += new EventHandler(redDownHandler);
-            this.view.gDownBtn_ClickEvent += new EventHandler(greenDownHandler);
-            this.view.bDownBtn_ClickEvent += new EventHandler(blueDownHandler);
-            this.view.rUpBtn_ClickEvent += new EventHandler(redUpHandler);
-            this.view.gUpBtn_ClickEvent += new EventHandler(greenUpHandler);
-            this.view.bUpBtn_clickEvent += new EventHandler(blueUpHandler);
+            SetColorFromBias(dev.settings.redBias, dev.settings.greenBias, dev.settings.blueBias);
+            this.view.ColorWheelChangedEvent += new WhiteBalanceWindow.ColorWheelChanged(ColorWheelChangedHandler);
             this.view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
+        }
+
+        private void ColorWheelChangedHandler(Color newColor)
+        {
+            foreach (GlowDevice dev in devices) {
+                dev.settings.redBias = 255 - newColor.R;
+                dev.settings.greenBias = 255 - newColor.G;
+                dev.settings.blueBias = 255 - newColor.B;
+                Console.WriteLine(dev.settings.redBias + " " + dev.settings.greenBias + " " + dev.settings.blueBias + " " + newColor.ToString());
+            }
         }
 
         private void closeBtnHandler(object sender, EventArgs args)
         {
             this.view.Close();
-        }
-
-        private void redDownHandler(object sender, EventArgs args)
-        {
-            foreach (GlowDevice dev in devices)
-                dev.settings.redBias -= 1;
-        }
-
-        private void greenDownHandler(object sender, EventArgs args)
-        {
-            foreach (GlowDevice dev in devices)
-                dev.settings.greenBias -= 1;
-        }
-
-        private void blueDownHandler(object sender, EventArgs args)
-        {
-            foreach (GlowDevice dev in devices)
-                dev.settings.blueBias -= 1;
-        }
-
-        private void redUpHandler(object sender, EventArgs args)
-        {
-            foreach (GlowDevice dev in devices)
-                dev.settings.redBias += 1;
-        }
-
-        private void greenUpHandler(object sender, EventArgs args)
-        {
-            foreach (GlowDevice dev in devices)
-                dev.settings.greenBias += 1;
-        }
-
-        private void blueUpHandler(object sender, EventArgs args)
-        {
-            foreach (GlowDevice dev in devices)
-                dev.settings.blueBias += 1;
         }
 
         public void Show()
