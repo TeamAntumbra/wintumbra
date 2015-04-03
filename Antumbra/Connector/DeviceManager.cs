@@ -104,8 +104,9 @@ namespace Antumbra.Glow.Connector
             var dev = this.getDevice(id);
             if (dev == null)//no device
                 return;
-            if (!dev.Stop())
-                this.Log("Device " + id + " reported that it did not stop correctly.");
+            if (dev.settings.powerState)//currently on
+                if (!dev.Stop())
+                    this.Log("Device " + id + " reported that it did not stop correctly.");
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop != null) {
                 loop.Dispose();
