@@ -40,6 +40,7 @@ namespace Antumbra.Glow.Controller
         private int id;
         private bool manual;
         private Color16Bit lastManualColor;
+        private Color16Bit controlColor;
         public MainWindowController(String productVersion, EventHandler quitHandler)
         {
             this.manual = false;
@@ -94,6 +95,7 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
+            this.controlColor = new Color16Bit(new Utility.HslColor(0,0,.5).ToRgbColor());
         }
 
         public void ConfigurationUpdate(Configurable config)
@@ -115,7 +117,7 @@ namespace Antumbra.Glow.Controller
                 return;//can't open, controller is most likely null anyways
             }
             NewGlowCmdAvailEvent(new StopCommand(-1));
-            NewGlowCmdAvailEvent(new SendColorCommand(-1, new Color16Bit(Color.White)));
+            NewGlowCmdAvailEvent(new SendColorCommand(-1, this.controlColor));
             this.whiteBalController.Show();
         }
 
