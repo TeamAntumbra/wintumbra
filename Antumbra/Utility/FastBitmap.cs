@@ -24,7 +24,7 @@ namespace Antumbra.Glow.Utility
                   //  this.Unlock();  TODO check if this is needed
                 return this.bitmap;
             }
-            private set;
+            private set { this.bitmap = value; }
         }
         private bool locked;
         private IntPtr scan0;
