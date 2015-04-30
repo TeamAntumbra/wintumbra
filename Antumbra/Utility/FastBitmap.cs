@@ -16,7 +16,16 @@ namespace Antumbra.Glow.Utility
         public int BPP { get; private set; }
         public BitmapData data { get; private set; }
         public byte[] pxData { get; private set; }
-        private Bitmap bitmap;
+        public Bitmap bitmap
+        {
+            get
+            {
+                //if (this.locked)
+                  //  this.Unlock();  TODO check if this is needed
+                return this.bitmap;
+            }
+            private set;
+        }
         private bool locked;
         private IntPtr scan0;
         private int depth;
