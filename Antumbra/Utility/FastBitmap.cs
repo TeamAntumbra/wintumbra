@@ -9,14 +9,16 @@ using System.Runtime.InteropServices;
 
 namespace Antumbra.Glow.Utility
 {
-    public class FastBitmap
+    public class FastBitmap : IDisposable
     {
         private Bitmap bitmap;
         private BitmapData data;
         private bool locked;
         private byte[] pxData;
         private IntPtr scan0;
-        private int height, width, depth;
+        public int height { get; private set; }
+        public int width { get; private set; }
+        private int depth;
         public FastBitmap(Bitmap bm)
         {
             this.bitmap = bm;
@@ -37,8 +39,8 @@ namespace Antumbra.Glow.Utility
                 }
                 this.data = this.bitmap.LockBits(new Rectangle(new Point(0, 0), size), ImageLockMode.ReadOnly,
                     pxFormat);
-                int step = this.depth / 8;
-                this.pxData = new byte[step * this.width * this.height];
+                int bpp = this.depth / 8;
+                this.pxData = new byte[bpp * this.width * this.height];
                 this.scan0 = this.data.Scan0;
                 Marshal.Copy(this.scan0, this.pxData, 0, this.pxData.Length);
                 this.locked = true;
@@ -68,8 +70,8 @@ namespace Antumbra.Glow.Utility
          */
         public byte[] GetPixel(int x, int y) {
             byte[] color;
-            int compCount = this.depth / 8;
-            int startLoc = (y * this.width + x) * compCount;
+            int bpp = this.depth / 8;
+            int startLoc = (y * this.width + x) * bpp;
             switch (this.depth) {
                 case 32:
                     color = new byte[4];
@@ -94,6 +96,13 @@ namespace Antumbra.Glow.Utility
                 default:
                     throw new Exception("invalid bitmap depth found in FastBitmap");
             }
+        }
+
+        void IDisposable.Dispose()
+        {
+            if (this.locked)
+                this.Unlock();
+            this.bitmap.Dispose();
         }
     }
 }
