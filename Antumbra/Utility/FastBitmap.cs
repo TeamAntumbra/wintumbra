@@ -14,10 +14,10 @@ namespace Antumbra.Glow.Utility
         public int height { get; private set; }
         public int width { get; private set; }
         public int BPP { get; private set; }
+        public BitmapData data { get; private set; }
+        public byte[] pxData { get; private set; }
         private Bitmap bitmap;
-        private BitmapData data;
         private bool locked;
-        private byte[] pxData;
         private IntPtr scan0;
         private int depth;
 
@@ -39,7 +39,7 @@ namespace Antumbra.Glow.Utility
                 if (this.depth != 8 && this.depth != 24 && this.depth != 32) {
                     throw new ArgumentException("Only 8, 24 and 32 bpp images are supported.");
                 }
-                this.data = this.bitmap.LockBits(new Rectangle(new Point(0, 0), size), ImageLockMode.ReadOnly,
+                this.data = this.bitmap.LockBits(new Rectangle(0, 0, this.width, this.height), ImageLockMode.ReadOnly,
                     pxFormat);
                 this.BPP = this.depth / 8;
                 this.pxData = new byte[this.BPP * this.width * this.height];
@@ -100,7 +100,7 @@ namespace Antumbra.Glow.Utility
             }
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             if (this.locked)
                 this.Unlock();
