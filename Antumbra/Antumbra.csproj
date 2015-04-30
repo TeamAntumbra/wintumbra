@@ -137,6 +137,8 @@
     <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="Observer\Colors\Color16Bit.cs" />
+    <Compile Include="Utility\BandingRemover.cs" />
+    <Compile Include="Utility\FastBitmap.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
