@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using Antumbra.Glow.Observer.Bitmaps;
 
 namespace Antumbra.Glow.Utility
 {
@@ -17,6 +18,11 @@ namespace Antumbra.Glow.Utility
      */
     public static class BandingRemover
     {
+        public static Bitmap ReplaceBandingWithTransparent(Bitmap orig)
+        {
+            orig.MakeTransparent(Color.FromArgb(255, 0, 0, 0));
+            return orig;
+        }
         /*
          * Removes all banding from passed image,
          * however this function takes in the byte array of pixel data
@@ -38,16 +44,19 @@ namespace Antumbra.Glow.Utility
                 return orig;
             Console.WriteLine(top + " " + bottom + " " + left + " " + right);
             //else crop and return cropped
-            int newWidth = orig.width - left - right;
-            int newHeight = orig.height - top - bottom;
-            int BPP = orig.depth / 8;
+            int newWidth = orig.Width - left - right;
+            int newHeight = orig.Height - top - bottom;
+            Bitmap cropped = new Bitmap(newWidth, newHeight);
+            orig.GetBitmap().MakeTransparent(Color.FromArgb(255,0,0,0));
+            Console.WriteLine(orig.GetPixel(5, 5));
+            int BPP = orig.Depth / 8;
             byte[] newBytes = new byte[newWidth * newHeight * BPP];
-            for (int row = 0; row < orig.height; row += 1) {
-                for (int col = 0; col < orig.width * BPP; col += BPP) {
-                    int origIndex = (left * orig.data.Stride) + (row * orig.data.Stride) + (top * BPP) + col;
+            for (int row = 0; row < orig.Height -1; row += 1) {
+                for (int col = 0; col < (orig.Width - 1) * BPP; col += BPP) {
+                    int origIndex = (left * orig.Data.Stride) + (row * orig.Data.Stride) + (top * BPP) + col;
                     int newIndex = row * newWidth * BPP + col;
                     for (int bit = 0; bit < BPP; bit += 1)
-                        newBytes[newIndex + bit] = orig.pxData[origIndex + bit];
+                        newBytes[newIndex + bit] = orig.PxData[origIndex + bit];
                 }
             }
             Bitmap resultBm = new Bitmap(newWidth, newHeight);
@@ -58,25 +67,19 @@ namespace Antumbra.Glow.Utility
             return new FastBitmap(resultBm);
         }
 
-        public static bool IsBlackPixel(byte[] pixelInfo)
+        public static bool IsBlack(Color color)
         {
-            int len = pixelInfo.Length;
-            if (len == 4 || len == 3) {
-                return (pixelInfo[len - 3] == 0 && pixelInfo[len - 2] == 0 && pixelInfo[len - 1] == 0);
-            }
-            else
-                throw new ArgumentException("pixelInfo array not of size 3 or 4 as expected.");
+            return color.R == 0 && color.G == 0 && color.B == 0;
         }
 
         public static int FindTopBanding(FastBitmap bm)
         {
             int blackRows = 0;
-            for (int row = 0; row < bm.height - 1; row += 1) {
+            for (int row = 0; row < bm.Height - 1; row += 1) {
                 bool blackRow = true;
-                for (int col = 0; col < bm.width - 1; col += 1) {
-                    byte[] pixel = bm.GetPixel(col, row);
-                    int length = pixel.Length;
-                    if (!IsBlackPixel(pixel))//not a black pixel
+                for (int col = 0; col < bm.Width - 1; col += 1) {
+                    Color color = bm.GetPixel(col, row);
+                    if (!IsBlack(color))//not a black pixel
                         blackRow = false;
                 }
                 if (blackRow)
@@ -90,12 +93,11 @@ namespace Antumbra.Glow.Utility
         public static int FindLeftBanding(FastBitmap bm)
         {
             int blackCols = 0;
-            for (int col = 0; col < bm.width - 1; col += 1) {
+            for (int col = 0; col < bm.Width - 1; col += 1) {
                 bool blackCol = true;
-                for (int row = 0; row < bm.height - 1; row += 1) {
-                    byte[] pixel = bm.GetPixel(col, row);
-                    int len = pixel.Length;
-                    if (!IsBlackPixel(pixel))
+                for (int row = 0; row < bm.Height - 1; row += 1) {
+                    Color color = bm.GetPixel(col, row);
+                    if (!IsBlack(color))
                         blackCol = false;
                 }
                 if (blackCol)
@@ -109,12 +111,11 @@ namespace Antumbra.Glow.Utility
         public static int FindRightBanding(FastBitmap bm)
         {
             int blackCols = 0;
-            for (int col = bm.width - 1; col > 0; col -= 1) {//right to left
+            for (int col = bm.Width - 1; col > 0; col -= 1) {//right to left
                 bool blackCol = true;
-                for (int row = 0; row < bm.height - 1; row += 1) {
-                    byte[] pixel = bm.GetPixel(col, row);
-                    int len = pixel.Length;
-                    if (!IsBlackPixel(pixel))
+                for (int row = 0; row < bm.Height - 1; row += 1) {
+                    Color color = bm.GetPixel(col, row);
+                    if (!IsBlack(color))
                         blackCol = false;
                 }
                 if (blackCol)
@@ -128,12 +129,11 @@ namespace Antumbra.Glow.Utility
         public static int FindBottomBanding(FastBitmap bm)
         {
             int blackRows = 0;
-            for (int row = bm.height - 1; row > 0; row -= 1) {//bottom to top
+            for (int row = bm.Height - 1; row > 0; row -= 1) {//bottom to top
                 bool blackRow = true;
-                for (int col = 0; col < bm.width - 1; col += 1) {
-                    byte[] pixel = bm.GetPixel(col, row);
-                    int length = pixel.Length;
-                    if (!IsBlackPixel(pixel))//not a black pixel
+                for (int col = 0; col < bm.Width - 1; col += 1) {
+                    Color pixel = bm.GetPixel(col, row);
+                    if (!IsBlack(pixel))//not a black pixel
                         blackRow = false;
                 }
                 if (blackRow)
