@@ -21,6 +21,8 @@ namespace Antumbra.Glow
                     MessageBox.Show("Instance already running");
                     return;
                 }
+                if (Environment.OSVersion.Version.Major >= 6)
+                    SetProcessDPIAware();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 ToolbarIconController controller = new ToolbarIconController();
@@ -29,5 +31,8 @@ namespace Antumbra.Glow
         }
 
         private static string appGuid = "5e20e0ce-ca88-4e48-b4da-a5de166f5a3d";
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
     }
 }
