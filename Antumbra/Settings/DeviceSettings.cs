@@ -239,11 +239,10 @@ namespace Antumbra.Glow.Settings
         public void Reset()//reset everything except power state
         {
             this.id = id;
-            this.x = 0;
-            this.y = 0;
-            var bounds = Screen.PrimaryScreen.Bounds;
-            this.width = bounds.Width;
-            this.height = bounds.Height;
+            this.x = Screen.PrimaryScreen.Bounds.X;
+            this.y = Screen.PrimaryScreen.Bounds.Y;
+            this.width = Screen.PrimaryScreen.Bounds.Width;
+            this.height = Screen.PrimaryScreen.Bounds.Height;
             this.stepSleep = 1;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
