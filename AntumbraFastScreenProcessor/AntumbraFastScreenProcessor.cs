@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.ComponentModel.Composition;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.Utility;
+using Antumbra.Glow.Observer.Bitmaps;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
@@ -71,11 +70,22 @@ namespace AntumbraFastScreenProcessor
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
-        private Color16Bit Process(Bitmap bm)
+        private Color16Bit Process(FastBitmap bm)
         {
+            //FastBitmap fastBm = new FastBitmap(bm);
+            //bm.Lock();
+            //FastBitmap newBm = 
+            //bm = Antumbra.Glow.Utility.BandingRemover.RemoveBanding(bm);
+            Bitmap newBitmap = Antumbra.Glow.Utility.BandingRemover.ReplaceBandingWithTransparent(bm.GetBitmap());
+            //fastBm.Unlock();
+            //bm.Unlock();
             Bitmap small = new Bitmap(1, 1);
-            using (Graphics g = Graphics.FromImage(small))//resize to 1X1 Bitmap using GDI+ Graphics class
-                g.DrawImage(bm, 0, 0, 1, 1);
+            using (Graphics g = Graphics.FromImage(small)) {//resize to 1X1 Bitmap using GDI+ Graphics class
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(bm.GetBitmap(), 0, 0, 1, 1);
+                g.Save();
+            }
+            bm.Dispose();
             return new Color16Bit(small.GetPixel(0, 0));
         }
 
@@ -84,16 +94,19 @@ namespace AntumbraFastScreenProcessor
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override void NewBitmapAvail(Bitmap bm, EventArgs args)
+        public override void NewBitmapAvail(FastBitmap bm, EventArgs args)
         {
             try {
-                NewColorAvailEvent(Process(bm));
+                lock (bm.sync) {
+                    NewColorAvailEvent(this.Process(bm));
+                }
             }
             catch (Exception) {
                 this.Stop();
             }
             finally {
                 bm.Dispose();
+                bm = null;
             }
         }
 
