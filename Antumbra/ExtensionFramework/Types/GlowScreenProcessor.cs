@@ -11,7 +11,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
 {
     public abstract class GlowScreenProcessor : GlowExtension, AntumbraBitmapObserver, AntumbraColorSource
     {
-        public abstract void NewBitmapAvail(Bitmap image, EventArgs args);
+        public abstract void NewBitmapAvail(FastBitmap image, EventArgs args);
         public abstract void AttachObserver(AntumbraColorObserver observer);
     }
 }

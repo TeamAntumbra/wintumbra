@@ -19,7 +19,7 @@ namespace ThumbnailGrabber
     [Export(typeof(GlowExtension))]
     public class ThumbnailGrabber : GlowScreenGrabber, AntumbraBitmapSource
     {
-        public delegate void NewBitMapAvail(Bitmap bm, EventArgs args);
+        public delegate void NewBitMapAvail(FastBitmap bm, EventArgs args);
         public event NewBitMapAvail NewBitMapAvailEvent;
         private IntPtr window;
         private Task driver;

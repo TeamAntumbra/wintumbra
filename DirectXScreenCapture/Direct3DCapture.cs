@@ -26,7 +26,7 @@ namespace DirectXScreenCapture
     [Export(typeof(GlowExtension))]
     public class Direct3DCapture : GlowScreenGrabber, Loggable, ToolbarNotificationSource, GlowCommandSender
     {
-        public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
+        public delegate void NewScreenAvail(FastBitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -169,7 +169,7 @@ namespace DirectXScreenCapture
                 try {
                     Capture();
                     if (null != _capturedImage)
-                        NewScreenAvailEvent(_capturedImage, EventArgs.Empty);
+                        NewScreenAvailEvent(new FastBitmap(_capturedImage), EventArgs.Empty);
                 }
                 catch (Exception e) {
                     NewLogMsgEvent(this.ToString(), this.TargetProcess.ToString() + " - " + e.ToString());
