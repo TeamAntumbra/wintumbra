@@ -46,8 +46,10 @@ namespace Antumbra.Glow.View
 
         public void SetOnSelection(bool value)
         {
-            this.offBtn.Checked = !value;
-            this.onBtn.Checked = value;
+            if (value)
+                this.onBtn.Checked = true;
+            else
+                this.offBtn.Checked = false;
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
