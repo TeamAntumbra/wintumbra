@@ -16,16 +16,7 @@ namespace Antumbra.Glow.Utility
         public int BPP { get; private set; }
         public BitmapData data { get; private set; }
         public byte[] pxData { get; private set; }
-        public Bitmap bitmap
-        {
-            get
-            {
-                //if (this.locked)
-                  //  this.Unlock();  TODO check if this is needed
-                return this.bitmap;
-            }
-            private set { this.bitmap = value; }
-        }
+        private Bitmap bitmap;
         private bool locked;
         private IntPtr scan0;
         private int depth;
@@ -33,6 +24,11 @@ namespace Antumbra.Glow.Utility
         public FastBitmap(Bitmap bm)
         {
             this.bitmap = bm;
+        }
+
+        public Bitmap GetBitmap()
+        {
+            return this.bitmap;
         }
         /*
          * Locks the underlying Bitmap object for faster manipulation of bits.
