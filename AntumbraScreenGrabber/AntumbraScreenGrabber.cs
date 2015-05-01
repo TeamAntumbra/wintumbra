@@ -18,7 +18,7 @@ namespace AntumbraScreenDriver
     [Export(typeof(GlowExtension))]
     public class AntumbraScreenGrabber : GlowScreenGrabber, Loggable, AntumbraBitmapSource
     {
-        public delegate void NewScreenAvail(Bitmap image, EventArgs args);
+        public delegate void NewScreenAvail(FastBitmap image, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -108,7 +108,14 @@ namespace AntumbraScreenDriver
                     grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
                     grphx.Save();
                     if (null != screen && NewScreenAvailEvent != null) {
-                        NewScreenAvailEvent(screen, EventArgs.Empty);
+                        FastBitmap fastBm = new FastBitmap(screen);
+                        try {
+                            fastBm.Lock();
+                        }
+                        catch (InvalidOperationException e) {
+                            //already locked
+                        }
+                        NewScreenAvailEvent(fastBm, EventArgs.Empty);
                     }
                 }
                 catch (Exception e) {
