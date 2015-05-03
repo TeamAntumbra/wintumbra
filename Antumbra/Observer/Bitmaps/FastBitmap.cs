@@ -1,4 +1,4 @@
-/*
+﻿/*
     The MIT License (MIT)
     
     Copyright (c) 2014 Luiz Fernando Silva
@@ -27,7 +27,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace FastBitmap
+namespace Antumbra.Glow.Observer.Bitmaps
 {
     /// <summary>
     /// Encapsulates a Bitmap for fast bitmap pixel operations using 32bpp images
