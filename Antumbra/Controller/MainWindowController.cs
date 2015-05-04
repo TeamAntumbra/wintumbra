@@ -67,19 +67,24 @@ namespace Antumbra.Glow.Controller
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
         }
 
-        public void Setup(string productVersion, EventHandler quitHandler)
+        public bool Setup(string productVersion, EventHandler quitHandler)
         {
             ExtensionLibrary extLibrary = null;
             try {
                 extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
             }
-            catch (System.Reflection.ReflectionTypeLoadException e) {
+            catch (Exception ex) {
                 string msg = "";
-                foreach (var err in e.LoaderExceptions)
-                    msg += err.Message;
+                if (ex is System.Reflection.ReflectionTypeLoadException) {
+                    System.Reflection.ReflectionTypeLoadException e = (System.Reflection.ReflectionTypeLoadException)ex;
+                    foreach (var err in e.LoaderExceptions)
+                        msg += err.Message;
+                }
+                else
+                    msg = ex.Message;
                 ShowMessage(10000, "Exception Occured While Loading Extensions", msg, 2);
                 Thread.Sleep(10000);//wait for message
-                throw e;//pass up
+                return true;//failed
             }
             this.Log("Creating DeviceManager");
             this.deviceMgr = new DeviceManager(0x16D0, 0x0A85, extLibrary, productVersion);//find devices
@@ -103,6 +108,7 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
             this.controlColor = new Color16Bit(new Utility.HslColor(0, 0, .5).ToRgbColor());
+            return false;
         }
 
         public void ConfigurationUpdate(Configurable config)
