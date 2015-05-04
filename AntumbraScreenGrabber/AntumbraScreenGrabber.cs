@@ -7,7 +7,6 @@ using System;
 using Antumbra.Glow;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
 using System.Reflection;
@@ -108,13 +107,7 @@ namespace AntumbraScreenDriver
                     grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
                     grphx.Save();
                     if (null != screen && NewScreenAvailEvent != null) {
-                        FastBitmap fastBm = new FastBitmap(screen);
-                        try {
-                            fastBm.Lock();
-                        }
-                        catch (InvalidOperationException e) {
-                            //already locked
-                        }
+                        FastBitmap fastBm = screen.FastLock();
                         NewScreenAvailEvent(fastBm, EventArgs.Empty);
                     }
                 }
