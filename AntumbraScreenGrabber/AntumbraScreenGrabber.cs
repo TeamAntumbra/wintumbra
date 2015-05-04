@@ -115,6 +115,7 @@ namespace AntumbraScreenDriver
                     NewLogMsgEvent(this.Name, e.ToString());
                 }
                 finally {
+                    this.Stop();
                     if (screen != null)
                         screen.Dispose();
                     if (grphx != null)
@@ -142,7 +143,5 @@ namespace AntumbraScreenDriver
                 return null;
             }
         }
-
     }
-
 }
