@@ -84,7 +84,7 @@ namespace Antumbra.Glow.Controller
                     msg = ex.Message;
                 ShowMessage(10000, "Exception Occured While Loading Extensions", msg, 2);
                 Thread.Sleep(10000);//wait for message
-                return true;//failed
+                return false;//failed
             }
             this.Log("Creating DeviceManager");
             this.deviceMgr = new DeviceManager(0x16D0, 0x0A85, extLibrary, productVersion);//find devices
@@ -108,7 +108,7 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
             this.controlColor = new Color16Bit(new Utility.HslColor(0, 0, .5).ToRgbColor());
-            return false;
+            return true;
         }
 
         public void ConfigurationUpdate(Configurable config)
