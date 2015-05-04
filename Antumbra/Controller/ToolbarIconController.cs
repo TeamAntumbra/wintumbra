@@ -43,7 +43,7 @@ namespace Antumbra.Glow.Controller
 
         private void Quit(object sender, EventArgs args)
         {
-            this.toolbarIcon.Dispose();
+            this.Dispose();
             System.Windows.Forms.Application.Exit();
         }
 
