@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThumbnailGrabber", "Thumbna
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeonFade", "NeonFade\NeonFade.csproj", "{F6165C6E-E483-49E7-8E70-B7431335A1A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenshotProcessor", "AntumbraScreenshotProcessor\AntumbraScreenshotProcessor.csproj", "{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -237,6 +239,16 @@ Global
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|x86.ActiveCfg = Release|x86
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Release|x86.Build.0 = Release|x86
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
