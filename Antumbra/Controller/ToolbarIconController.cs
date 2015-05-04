@@ -20,23 +20,25 @@ namespace Antumbra.Glow.Controller
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
-        private DeviceManager GlowManager;
         private const string extPath = "./Extensions/";
-        private ExtensionLibrary extLibrary;
         private Antumbra.Glow.View.ToolbarIcon toolbarIcon;
+        public bool failed { get; private set; }
         public ToolbarIconController()
         {
+            this.failed = false;
             this.toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             this.toolbarIcon.Hide();
             this.AttachObserver(this.toolbarIcon);
             MainWindowController mainController = new MainWindowController();
             mainController.AttachObserver(this);
-            mainController.Setup(this.toolbarIcon.ProductVersion, new EventHandler(Quit));
-            this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
-            this.AttachObserver(LoggerHelper.GetInstance());
-            this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
-            NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
-                "application window.", 0);
+            this.failed = !mainController.Setup(this.toolbarIcon.ProductVersion, new EventHandler(Quit));
+            if (!this.failed) {//continue if so far so good
+                this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
+                this.AttachObserver(LoggerHelper.GetInstance());
+                this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
+                NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
+                    "application window.", 0);
+            }
         }
 
         private void Quit(object sender, EventArgs args)
