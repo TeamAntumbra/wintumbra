@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace Antumbra.Glow.Controller
 {
-    public class ToolbarIconController : Loggable, ToolbarNotificationObserver, ToolbarNotificationSource
+    public class ToolbarIconController : Loggable, ToolbarNotificationObserver, ToolbarNotificationSource, IDisposable
     {
         public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
@@ -72,6 +72,11 @@ namespace Antumbra.Glow.Controller
         {
             if (NewToolbarNotifAvailEvent != null)
                 NewToolbarNotifAvailEvent(time, title, msg, icon);
+        }
+
+        public void Dispose()
+        {
+            this.toolbarIcon.Dispose();
         }
     }
 }
