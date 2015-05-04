@@ -69,20 +69,26 @@ namespace AntumbraScreenshotProcessor
 
         private Color16Bit Process(FastBitmap bm)
         {
+            int total = 0;
             long[] colors = new long[] { 0, 0, 0 };
-            for (int x = 0; x < bm.Width; x += 1) {
-                for (int y = 0; y < bm.Height; y += 1) {
+            int skip = bm.Width * bm.Height / 50000;
+            for (int x = 0; x < bm.Width; x += skip) {
+                for (int y = 0; y < bm.Height; y += skip) {
                     Color pixel = bm.GetPixel(x, y);
+                    if (pixel.R == 0 && pixel.G == 0 && pixel.B == 0)
+                        continue;//skip
                     colors[0] += pixel.R;
                     colors[1] += pixel.G;
                     colors[2] += pixel.B;
+                    total += 1;
                 }
             }
             byte red, green, blue;
-            red = (byte)(colors[0] / colors.Length);
-            green = (byte)(colors[1] / colors.Length);
-            blue = (byte)(colors[2] / colors.Length);
-            return new Color16Bit(red, green, blue);
+            red = (byte)((double)colors[0] / total);
+            green = (byte)((double)colors[1] / total);
+            blue = (byte)((double)colors[2] / total);
+            Color col = Color.FromArgb(red, green, blue);
+            return new Color16Bit(col);
         }
 
         public override void AttachObserver(AntumbraColorObserver observer)
