@@ -41,7 +41,7 @@ namespace Antumbra.Glow.Controller
         private bool manual;
         private Color16Bit lastManualColor;
         private Color16Bit controlColor;
-        public MainWindowController(String productVersion, EventHandler quitHandler)
+        public MainWindowController()
         {
             this.manual = false;
             this.AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
@@ -65,6 +65,10 @@ namespace Antumbra.Glow.Controller
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
             this.window.advancedDevSelectionChanged += new EventHandler(advDevSelectionChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
+        }
+
+        public void Setup(string productVersion, EventHandler quitHandler)
+        {
             ExtensionLibrary extLibrary = null;
             try {
                 extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
@@ -79,6 +83,9 @@ namespace Antumbra.Glow.Controller
             }
             this.Log("Creating DeviceManager");
             this.deviceMgr = new DeviceManager(0x16D0, 0x0A85, extLibrary, productVersion);//find devices
+            if (deviceMgr.GlowsFound == 0)
+                ShowMessage(3000, "No Glows Found", "No Glow devices were found.  Please ensure " +
+                    "your device is connected and glowing green before starting the application", 2);
             this.deviceMgr.AttachObserver(this);
             this.AttachObserver((GlowCommandObserver)this.deviceMgr);
             this.quitEventHandler += quitHandler;
@@ -87,7 +94,7 @@ namespace Antumbra.Glow.Controller
                 this.RegisterDevice(dev.id);
                 foreach (GlowDevice device in this.deviceMgr.Glows) {
                     this.window.AddDeviceId(device.id);
-                    device.AttachObserver(this);
+                    device.AttachObserver((ConfigurationObserver)this);
                 }
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
@@ -95,7 +102,7 @@ namespace Antumbra.Glow.Controller
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
             this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
-            this.controlColor = new Color16Bit(new Utility.HslColor(0,0,.5).ToRgbColor());
+            this.controlColor = new Color16Bit(new Utility.HslColor(0, 0, .5).ToRgbColor());
         }
 
         public void ConfigurationUpdate(Configurable config)
