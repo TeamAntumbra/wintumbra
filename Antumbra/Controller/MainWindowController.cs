@@ -29,7 +29,6 @@ namespace Antumbra.Glow.Controller
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
-        public bool goodStart { get; private set; }
         private event EventHandler quitEventHandler;
         private const string extPath = "./Extensions/";
         private MainWindow window;
@@ -88,9 +87,6 @@ namespace Antumbra.Glow.Controller
             }
             this.Log("Creating DeviceManager");
             this.deviceMgr = new DeviceManager(0x16D0, 0x0A85, extLibrary, productVersion);//find devices
-            if (deviceMgr.GlowsFound == 0)
-                ShowMessage(3000, "No Glows Found", "No Glow devices were found.  Please ensure " +
-                    "your device is connected and glowing green before starting the application", 2);
             this.deviceMgr.AttachObserver(this);
             this.AttachObserver((GlowCommandObserver)this.deviceMgr);
             this.quitEventHandler += quitHandler;
@@ -102,6 +98,11 @@ namespace Antumbra.Glow.Controller
                     device.AttachObserver((ConfigurationObserver)this);
                 }
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
+            }
+            else {//no devices found
+                ShowMessage(3000, "No Glows Found", "No Glow devices were found.  Please ensure " +
+                    "your device is connected and glowing green before starting the application", 2);
+                Thread.Sleep(3000);
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
