@@ -113,9 +113,9 @@ namespace AntumbraScreenDriver
                 }
                 catch (Exception e) {
                     NewLogMsgEvent(this.Name, e.ToString());
+                    this.Stop();
                 }
                 finally {
-                    this.Stop();
                     if (screen != null)
                         screen.Dispose();
                     if (grphx != null)
