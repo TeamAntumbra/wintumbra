@@ -221,7 +221,8 @@ Global
 		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|x86.ActiveCfg = Release|Any CPU
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|x86.ActiveCfg = Release|x86
+		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
