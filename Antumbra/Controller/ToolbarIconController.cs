@@ -63,11 +63,6 @@ namespace Antumbra.Glow.Controller
             this.NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
-        private void Log(string msg)
-        {
-            NewLogMsgAvailEvent("ToolbarIconController", msg);
-        }
-
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
         {
             if (NewToolbarNotifAvailEvent != null)
