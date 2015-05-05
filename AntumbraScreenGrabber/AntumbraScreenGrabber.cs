@@ -113,7 +113,6 @@ namespace AntumbraScreenDriver
                 }
                 catch (Exception e) {
                     NewLogMsgEvent(this.Name, e.ToString());
-                    this.Stop();
                 }
                 finally {
                     if (screen != null)
