@@ -8,7 +8,7 @@ AppPublisherURL = "https://antumbra.io"
 AppSupportURL = "https://github.com/TeamAntumbra/wintumbra"
 AppUpdatesURL = "https://github.com/TeamAntumbra/wintumbra"
 DefaultDirName = "{pf32}\Antumbra"
-UsePreviousAppDir = no
+UsePreviousAppDir = yes
 
 [Icons]
 Name: "{commonprograms}\Antumbra"; Filename: "{app}\Antumbra.exe"
