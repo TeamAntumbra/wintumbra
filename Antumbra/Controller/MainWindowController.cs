@@ -100,9 +100,9 @@ namespace Antumbra.Glow.Controller
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
             else {//no devices found
-                ShowMessage(3000, "No Glows Found", "No Glow devices were found.  Please ensure " +
+                ShowMessage(5000, "No Glows Found", "No Glow devices were found.  Please ensure " +
                     "your device is connected and glowing green before starting the application", 2);
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
