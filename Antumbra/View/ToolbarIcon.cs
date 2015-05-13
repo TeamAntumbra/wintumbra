@@ -69,7 +69,6 @@ namespace Antumbra.Glow.View
         /// <param name="icon"></param>
         private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
         {
-            //    this.logger.Log("Message shown to user in bubble. Message following.\n" + msg);
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
     }
