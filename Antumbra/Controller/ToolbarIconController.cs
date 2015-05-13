@@ -35,7 +35,7 @@ namespace Antumbra.Glow.Controller
             if (!this.failed) {//continue if so far so good
                 this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
                 this.AttachObserver(LoggerHelper.GetInstance());
-                this.LogMsg("Wintumbra starting @ " + DateTime.Now.ToString());
+                this.LogMsg("ToolbarIconController", "Wintumbra starting @ " + DateTime.Now.ToString());
                 NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
                     "application window.", 0);
             }
@@ -47,10 +47,10 @@ namespace Antumbra.Glow.Controller
             System.Windows.Forms.Application.Exit();
         }
 
-        private void LogMsg(String msg)
+        private void LogMsg(string source, string msg)
         {
             if (NewLogMsgAvailEvent != null)
-                NewLogMsgAvailEvent("ToolbarIconController", msg);
+                NewLogMsgAvailEvent(source, msg);
         }
 
         public void AttachObserver(LogMsgObserver observer)
@@ -65,8 +65,10 @@ namespace Antumbra.Glow.Controller
 
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
         {
-            if (NewToolbarNotifAvailEvent != null)
+            if (NewToolbarNotifAvailEvent != null) {
                 NewToolbarNotifAvailEvent(time, title, msg, icon);
+                LogMsg(title, msg);
+            }
         }
 
         public void Dispose()
