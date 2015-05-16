@@ -114,7 +114,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void Dispose()
         {
-            this.container.Dispose();
+            if (this.container != null)
+                this.container.Dispose();
         }
     }
 }
