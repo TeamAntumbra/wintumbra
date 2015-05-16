@@ -33,8 +33,8 @@ namespace SlimDXCapture
         private AdapterInformation adapterInfo;
         private PresentParameters parameters;
 
-        public Bitmap CaptureScreen(IntPtr hwnd)//Capture this at a reasonable rate (i.e. throttle this bitch so it doesn't destroy the experience of game in general)
-        {//FIXME currently always captures full screen
+        public Bitmap CaptureScreen(IntPtr hwnd)
+        {
             Bitmap bm = null;
             try {
                 using (Direct3D d3 = new Direct3D()) {
@@ -51,16 +51,9 @@ namespace SlimDXCapture
                     d = new Device(d3, adapterInfo.Adapter, DeviceType.Hardware, hwnd, CreateFlags.SoftwareVertexProcessing, parameters);
                         using (SlimDX.Direct3D9.Surface surface = SlimDX.Direct3D9.Surface.CreateOffscreenPlain(d, adapterInfo.CurrentDisplayMode.Width, adapterInfo.CurrentDisplayMode.Height, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.Scratch)) {
                             d.GetFrontBufferData(0, surface);
-
-                            // Update: thanks digitalutopia1 for pointing out that SlimDX have fixed a bug
-                            // where they previously expected a RECT type structure for their Rectangle
                             bm = new Bitmap(SlimDX.Direct3D9.Surface.ToStream(surface, SlimDX.Direct3D9.ImageFileFormat.Bmp));
-                            // Previous SlimDX bug workaround: new Rectangle(region.Left, region.Top, region.Right, region.Bottom)));
 
                         }
-                        //s = Surface.CreateOffscreenPlain(d, this.width, this.height, Format.A8R8G8B8, Pool.Scratch);
-                        //d.GetFrontBufferData(0, s);
-                        //Bitmap bm = new Bitmap(SlimDX.Direct3D9.Surface.ToStream(s, SlimDX.Direct3D9.ImageFileFormat.Bmp));//as gross as it is temp file method is faster (approx 100ms according to others)
                         return bm;
                 }
             }
@@ -72,8 +65,6 @@ namespace SlimDXCapture
                     d.Dispose();
                 if (s != null)
                     s.Dispose();
-                //if (d3 != null)
-               //     d3.Dispose();
             }
             return bm;
         }
@@ -137,8 +128,6 @@ namespace SlimDXCapture
         private void target()
         {
             while (this.IsRunning) {
-                //if (NewScreenAvailEvent != null)
-                //    NewScreenAvailEvent(new FastBitmap(CaptureScreen()), EventArgs.Empty);
                 Bitmap result = CaptureScreen(FindForegroundPrcs());
                 if (NewScreenAvailEvent != null && result != null) {
                     FastBitmap fast = new FastBitmap(result);
@@ -156,6 +145,7 @@ namespace SlimDXCapture
 
         public override bool Start()
         {
+            Thread.Sleep(7500);
             this.driver = new Thread(new ThreadStart(target));
             this.running = true;
             this.driver.Start();
