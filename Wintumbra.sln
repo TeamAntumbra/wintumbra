@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeonFade", "NeonFade\NeonFa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenshotProcessor", "AntumbraScreenshotProcessor\AntumbraScreenshotProcessor.csproj", "{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimDXCapture", "SlimDXCapture\SlimDXCapture.csproj", "{A32EE510-2183-446D-8DD9-BB7E29BAF66B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +225,17 @@ Global
 		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|x86.ActiveCfg = Release|x86
 		{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}.Release|x86.Build.0 = Release|x86
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Debug|x86.ActiveCfg = Debug|x86
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Debug|x86.Build.0 = Debug|x86
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
