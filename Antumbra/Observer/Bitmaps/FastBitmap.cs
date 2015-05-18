@@ -160,6 +160,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
             {
                 Unlock();
             }
+            this._bitmap.Dispose();
         }
 
         /// <summary>
@@ -651,7 +652,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
     }
 
     /// <summary>
-    /// Static class that contains fast bitmap extension methdos for the Bitmap class
+    /// Static class that contains fast bitmap extension methods for the Bitmap class
     /// </summary>
     public static class FastBitmapExtensions
     {
