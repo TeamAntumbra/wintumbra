@@ -139,15 +139,14 @@ namespace SlimDXCapture
                         fast.Dispose();
                     }
                 }
-                Thread.Sleep(150);
+                Thread.Sleep(150);//TODO perfect this value
             }
         }
 
         public override bool Start()
         {
-            Thread.Sleep(7500);
-            this.driver = new Thread(new ThreadStart(target));
             this.running = true;
+            this.driver = new Thread(new ThreadStart(target));
             this.driver.Start();
             return true;
         }
