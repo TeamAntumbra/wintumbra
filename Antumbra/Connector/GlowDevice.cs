@@ -18,10 +18,12 @@ namespace Antumbra.Glow.Connector
     /// <summary>
     /// Represents a physical Antumbra|Glow unit.
     /// </summary>
-    public class GlowDevice : ConfigurationObserver, Configurable
+    public class GlowDevice : ConfigurationObserver, Configurable, ToolbarNotificationSource, ToolbarNotificationObserver
     {
         public delegate void ConfigUpdate(Configurable obj);
         public event ConfigUpdate ConfigUpdateAvail;
+        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
+        public event NewToolbarNotif NewToolbarNotifEvent;
         /// <summary>
         /// Device pointer
         /// </summary>
@@ -107,6 +109,7 @@ namespace Antumbra.Glow.Connector
             this.settings = new DeviceSettings(id);
             this.settings.AttachObserver(this);
             this.extMgr = new ExtensionManager(lib, id);
+            this.extMgr.AttachObserver((ToolbarNotificationObserver)this);
             this.extMgr.activeExts.AttachObserver(this);
             this.settings.AttachObserver(this.extMgr);
         }
@@ -213,6 +216,17 @@ namespace Antumbra.Glow.Connector
         public bool GetExtSettingsWin(Guid id)
         {
             return this.extMgr.GetExtSettingsWin(id);
+        }
+
+        public void AttachObserver(ToolbarNotificationObserver observer)
+        {
+            this.NewToolbarNotifEvent += observer.NewToolbarNotifAvail;
+        }
+
+        public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
+        {
+            if (this.NewToolbarNotifEvent != null)
+                this.NewToolbarNotifEvent(time, title, msg, icon);
         }
     }
 }
