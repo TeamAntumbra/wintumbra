@@ -96,6 +96,7 @@ namespace Antumbra.Glow.Controller
                 foreach (GlowDevice device in this.deviceMgr.Glows) {
                     this.window.AddDeviceId(device.id);
                     device.AttachObserver((ConfigurationObserver)this);
+                    device.AttachObserver((ToolbarNotificationObserver)this);
                 }
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
