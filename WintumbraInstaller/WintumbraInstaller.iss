@@ -32,7 +32,6 @@ Source: "dependencies\DirectXHelper.dll"; DestDir: {app}
 [InstallDelete]
 Type: files; Name: "{app}\*.exe"
 Type: files; Name: "{app}\*.dll"
-Type: files; Name: "{app}\Extensions\*.dll"
 Type: files; Name: "%appdata%\Antumbra\wintumbra.log"
 
 [Run]
