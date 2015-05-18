@@ -13,25 +13,24 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using Antumbra.Glow.Observer.Bitmaps;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
 using System.Reflection;
 using System.Diagnostics;
 
 namespace SlimDXCapture
 {
     [Export(typeof(GlowExtension))]
-    public class DxScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable
+    public class DxScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
     {
         public delegate void NewScreenAvail(FastBitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
+        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
+        public event NewToolbarNotif NewToolbarNotifEvent;
         private Thread driver;
         private bool running = false;
-        private Device d;
-        private Surface s;
-        //private Direct3D d3;
-        private AdapterInformation adapterInfo;
-        private PresentParameters parameters;
+        //private Device d;
 
         public Bitmap CaptureScreen(IntPtr hwnd)
         {
@@ -48,23 +47,21 @@ namespace SlimDXCapture
                     parameters.DeviceWindowHandle = hwnd;
                     parameters.PresentationInterval = SlimDX.Direct3D9.PresentInterval.Default;
                     parameters.FullScreenRefreshRateInHertz = 0;
-                    d = new Device(d3, adapterInfo.Adapter, DeviceType.Hardware, hwnd, CreateFlags.SoftwareVertexProcessing, parameters);
-                        using (SlimDX.Direct3D9.Surface surface = SlimDX.Direct3D9.Surface.CreateOffscreenPlain(d, adapterInfo.CurrentDisplayMode.Width, adapterInfo.CurrentDisplayMode.Height, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.Scratch)) {
+                    using (Device d = new Device(d3, adapterInfo.Adapter, DeviceType.Hardware, hwnd, CreateFlags.SoftwareVertexProcessing, parameters)) {
+                        using (SlimDX.Direct3D9.Surface surface = SlimDX.Direct3D9.Surface.CreateOffscreenPlain(d, adapterInfo.CurrentDisplayMode.Width, adapterInfo.CurrentDisplayMode.Height, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.SystemMemory)) {
                             d.GetFrontBufferData(0, surface);
                             bm = new Bitmap(SlimDX.Direct3D9.Surface.ToStream(surface, SlimDX.Direct3D9.ImageFileFormat.Bmp));
-
                         }
                         return bm;
+                    }
                 }
             }
             catch (Exception) {
                 bm = null;
             }
             finally {
-                if (d != null)
-                    d.Dispose();
-                if (s != null)
-                    s.Dispose();
+                //if (d != null)
+               //     d.Dispose();
             }
             return bm;
         }
@@ -127,6 +124,7 @@ namespace SlimDXCapture
 
         private void target()
         {
+            Thread.Sleep(5000);
             while (this.IsRunning) {
                 Bitmap result = CaptureScreen(FindForegroundPrcs());
                 if (NewScreenAvailEvent != null && result != null) {
@@ -145,6 +143,7 @@ namespace SlimDXCapture
 
         public override bool Start()
         {
+            AnnounceMessage(5000, "In 5 seconds the capture plugin will start grabbing content from the application in focus.", 1);
             this.running = true;
             this.driver = new Thread(new ThreadStart(target));
             this.driver.Start();
@@ -184,6 +183,17 @@ namespace SlimDXCapture
 
             [DllImport("user32.dll")]
             internal static extern IntPtr GetForegroundWindow();
+        }
+
+        public void AttachObserver(ToolbarNotificationObserver observer)
+        {
+            this.NewToolbarNotifEvent += observer.NewToolbarNotifAvail;
+        }
+
+        private void AnnounceMessage(int time, string msg, int icon)
+        {
+            if (this.NewToolbarNotifEvent != null)
+                this.NewToolbarNotifEvent(time, "DxScreenCapture", msg, icon);
         }
     }
 }
