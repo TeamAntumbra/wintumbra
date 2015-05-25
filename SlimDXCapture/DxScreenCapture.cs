@@ -59,10 +59,6 @@ namespace SlimDXCapture
             catch (Exception) {
                 bm = null;
             }
-            finally {
-                //if (d != null)
-               //     d.Dispose();
-            }
             return bm;
         }
 
@@ -78,8 +74,7 @@ namespace SlimDXCapture
 
         public void Dispose()
         {
-           // if (d != null)
-            //    d.Dispose();
+
         }
 
         public override Guid id
@@ -94,12 +89,12 @@ namespace SlimDXCapture
 
         public override string Author
         {
-            get { throw new NotImplementedException(); }
+            get { return "Team Antumbra"; }
         }
 
         public override string Description
         {
-            get { throw new NotImplementedException(); }
+            get { return "A plugin that will capture DirectX content as well as normal content, however at a lower rate due to its process."; }
         }
 
         public override string Website
@@ -143,7 +138,7 @@ namespace SlimDXCapture
 
         public override bool Start()
         {
-            AnnounceMessage(5000, "In 5 seconds the capture plugin will start grabbing content from the application in focus.", 1);
+            AnnounceMessage(5000, "In 5 seconds the capture plugin will start grabbing content.", 1);
             this.running = true;
             this.driver = new Thread(new ThreadStart(target));
             this.driver.Start();
