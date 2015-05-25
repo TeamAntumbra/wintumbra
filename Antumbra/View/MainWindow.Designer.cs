@@ -37,6 +37,7 @@
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.mirrorTab = new System.Windows.Forms.TabPage();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
@@ -57,7 +58,6 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
@@ -95,7 +95,7 @@
             this.flatTabControl.Name = "flatTabControl";
             this.flatTabControl.SelectedIndex = 0;
             this.flatTabControl.Size = new System.Drawing.Size(855, 522);
-            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.flatTabControl.TabIndex = 74;
             // 
             // manualTab
@@ -176,6 +176,15 @@
             this.onBtn.Text = "On";
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
+            // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(476, 433);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // mirrorTab
             // 
@@ -405,15 +414,6 @@
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(0, 28);
             this.versionLabel.TabIndex = 76;
-            // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(476, 433);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // MainWindow
             // 
