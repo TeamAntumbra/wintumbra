@@ -104,9 +104,8 @@ namespace Antumbra.Glow.Connector
             var dev = this.getDevice(id);
             if (dev == null)//no device
                 return;
-            if (dev.settings.powerState)//currently on
-                if (!dev.Stop())
-                    this.Log("Device " + id + " reported that it did not stop correctly.");
+            if (!dev.Stop())
+                this.Log("Device " + id + " reported that it did not stop correctly.");
             var loop = this.outManager.FindLoopOrReturnNull(id);
             if (loop != null) {
                 loop.Dispose();
@@ -148,8 +147,8 @@ namespace Antumbra.Glow.Connector
                 }
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
-            if (status != 0)//did not work as expected
-                status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);//try again
+            //if (status != 0)//did not work as expected
+            //    status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);//try again
             this.status = status;
         }
 
