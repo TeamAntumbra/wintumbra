@@ -1,0 +1,5 @@
+site_name: Wintumbra Documentation
+pages:
+- [index.md, Home]
+theme: readthedocs
+
