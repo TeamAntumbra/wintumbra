@@ -104,6 +104,7 @@ namespace Antumbra.Glow.Controller
                 ShowMessage(5000, "No Glows Found", "No Glow devices were found.  Please ensure " +
                     "your device is connected and glowing green before starting the application", 2);
                 Thread.Sleep(5000);
+                return false;
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
@@ -172,6 +173,9 @@ namespace Antumbra.Glow.Controller
             PollingAreaWindowController cont = new PollingAreaWindowController();
             cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
             cont.AttachObserver(this);
+            DeviceSettings settings = this.deviceMgr.Glows.First<GlowDevice>().settings;//FIXME this makes using multi-glow impossible unless user uses advanced settings window
+            cont.RegisterDevice(settings.id);
+            cont.SetBounds(settings.x, settings.y, settings.width, settings.height);
             cont.Show();
         }
 
@@ -183,6 +187,7 @@ namespace Antumbra.Glow.Controller
                 dev.settings.width = width;
                 dev.settings.height = height;
             }
+            deviceMgr.Start(-1);//re-start all
         }
 
         private void OnOffValueChangedHandler(object sender, EventArgs args)
