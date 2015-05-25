@@ -75,7 +75,7 @@
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.closeBtn.Location = new System.Drawing.Point(520, -2);
+            this.closeBtn.Location = new System.Drawing.Point(794, -3);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(33, 34);
             this.closeBtn.TabIndex = 73;
@@ -94,8 +94,8 @@
             this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.flatTabControl.Name = "flatTabControl";
             this.flatTabControl.SelectedIndex = 0;
-            this.flatTabControl.Size = new System.Drawing.Size(577, 284);
-            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.flatTabControl.Size = new System.Drawing.Size(855, 522);
+            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.flatTabControl.TabIndex = 74;
             // 
             // manualTab
@@ -111,7 +111,7 @@
             this.manualTab.Location = new System.Drawing.Point(4, 25);
             this.manualTab.Name = "manualTab";
             this.manualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manualTab.Size = new System.Drawing.Size(569, 255);
+            this.manualTab.Size = new System.Drawing.Size(847, 493);
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
@@ -124,7 +124,7 @@
             this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
             this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.whiteBalanceBtn.Location = new System.Drawing.Point(399, 156);
+            this.whiteBalanceBtn.Location = new System.Drawing.Point(582, 217);
             this.whiteBalanceBtn.Name = "whiteBalanceBtn";
             this.whiteBalanceBtn.Size = new System.Drawing.Size(131, 32);
             this.whiteBalanceBtn.TabIndex = 78;
@@ -136,7 +136,7 @@
             // 
             this.brightnessLabel.AutoSize = true;
             this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            this.brightnessLabel.Location = new System.Drawing.Point(358, 82);
+            this.brightnessLabel.Location = new System.Drawing.Point(584, 82);
             this.brightnessLabel.Name = "brightnessLabel";
             this.brightnessLabel.Size = new System.Drawing.Size(127, 29);
             this.brightnessLabel.TabIndex = 4;
@@ -144,7 +144,7 @@
             // 
             // brightnessTrackBar
             // 
-            this.brightnessTrackBar.Location = new System.Drawing.Point(273, 44);
+            this.brightnessTrackBar.Location = new System.Drawing.Point(522, 42);
             this.brightnessTrackBar.Maximum = 100;
             this.brightnessTrackBar.Name = "brightnessTrackBar";
             this.brightnessTrackBar.Size = new System.Drawing.Size(244, 69);
@@ -157,7 +157,7 @@
             this.offBtn.AutoSize = true;
             this.offBtn.Checked = true;
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.offBtn.Location = new System.Drawing.Point(464, 214);
+            this.offBtn.Location = new System.Drawing.Point(657, 334);
             this.offBtn.Name = "offBtn";
             this.offBtn.Size = new System.Drawing.Size(56, 28);
             this.offBtn.TabIndex = 2;
@@ -169,7 +169,7 @@
             // 
             this.onBtn.AutoSize = true;
             this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.onBtn.Location = new System.Drawing.Point(406, 214);
+            this.onBtn.Location = new System.Drawing.Point(599, 334);
             this.onBtn.Name = "onBtn";
             this.onBtn.Size = new System.Drawing.Size(59, 28);
             this.onBtn.TabIndex = 1;
@@ -190,7 +190,7 @@
             this.mirrorTab.Location = new System.Drawing.Point(4, 25);
             this.mirrorTab.Name = "mirrorTab";
             this.mirrorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mirrorTab.Size = new System.Drawing.Size(569, 255);
+            this.mirrorTab.Size = new System.Drawing.Size(847, 493);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
@@ -198,7 +198,7 @@
             // 
             this.setPollingSizeBtn.AutoSize = true;
             this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setPollingSizeBtn.Location = new System.Drawing.Point(403, 218);
+            this.setPollingSizeBtn.Location = new System.Drawing.Point(652, 425);
             this.setPollingSizeBtn.Name = "setPollingSizeBtn";
             this.setPollingSizeBtn.Size = new System.Drawing.Size(161, 36);
             this.setPollingSizeBtn.TabIndex = 5;
@@ -210,7 +210,7 @@
             // 
             this.modeDescs.Location = new System.Drawing.Point(6, 107);
             this.modeDescs.Name = "modeDescs";
-            this.modeDescs.Size = new System.Drawing.Size(531, 116);
+            this.modeDescs.Size = new System.Drawing.Size(736, 293);
             this.modeDescs.TabIndex = 4;
             this.modeDescs.Text = resources.GetString("modeDescs.Text");
             // 
@@ -218,7 +218,7 @@
             // 
             this.gameBtn.AutoSize = true;
             this.gameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gameBtn.Location = new System.Drawing.Point(423, 44);
+            this.gameBtn.Location = new System.Drawing.Point(652, 44);
             this.gameBtn.Name = "gameBtn";
             this.gameBtn.Size = new System.Drawing.Size(75, 36);
             this.gameBtn.TabIndex = 3;
@@ -230,7 +230,7 @@
             // 
             this.smoothBtn.AutoSize = true;
             this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(307, 44);
+            this.smoothBtn.Location = new System.Drawing.Point(466, 44);
             this.smoothBtn.Name = "smoothBtn";
             this.smoothBtn.Size = new System.Drawing.Size(87, 36);
             this.smoothBtn.TabIndex = 2;
@@ -242,7 +242,7 @@
             // 
             this.augmentBtn.AutoSize = true;
             this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(174, 44);
+            this.augmentBtn.Location = new System.Drawing.Point(258, 44);
             this.augmentBtn.Name = "augmentBtn";
             this.augmentBtn.Size = new System.Drawing.Size(99, 36);
             this.augmentBtn.TabIndex = 1;
@@ -254,7 +254,7 @@
             // 
             this.mirrorBtn.AutoSize = true;
             this.mirrorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mirrorBtn.Location = new System.Drawing.Point(64, 44);
+            this.mirrorBtn.Location = new System.Drawing.Point(65, 44);
             this.mirrorBtn.Name = "mirrorBtn";
             this.mirrorBtn.Size = new System.Drawing.Size(75, 36);
             this.mirrorBtn.TabIndex = 0;
@@ -273,7 +273,7 @@
             this.fadeTab.Location = new System.Drawing.Point(4, 25);
             this.fadeTab.Name = "fadeTab";
             this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(569, 255);
+            this.fadeTab.Size = new System.Drawing.Size(847, 493);
             this.fadeTab.TabIndex = 2;
             this.fadeTab.Text = "Fade";
             // 
@@ -281,7 +281,7 @@
             // 
             this.label1.Location = new System.Drawing.Point(6, 95);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(531, 127);
+            this.label1.Size = new System.Drawing.Size(793, 344);
             this.label1.TabIndex = 9;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -289,7 +289,7 @@
             // 
             this.neonBtn.AutoSize = true;
             this.neonBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.neonBtn.Location = new System.Drawing.Point(405, 32);
+            this.neonBtn.Location = new System.Drawing.Point(673, 32);
             this.neonBtn.Name = "neonBtn";
             this.neonBtn.Size = new System.Drawing.Size(75, 36);
             this.neonBtn.TabIndex = 7;
@@ -301,7 +301,7 @@
             // 
             this.sinBtn.AutoSize = true;
             this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sinBtn.Location = new System.Drawing.Point(233, 32);
+            this.sinBtn.Location = new System.Drawing.Point(375, 32);
             this.sinBtn.Name = "sinBtn";
             this.sinBtn.Size = new System.Drawing.Size(98, 36);
             this.sinBtn.TabIndex = 6;
@@ -331,14 +331,14 @@
             this.customTab.Location = new System.Drawing.Point(4, 25);
             this.customTab.Name = "customTab";
             this.customTab.Padding = new System.Windows.Forms.Padding(3);
-            this.customTab.Size = new System.Drawing.Size(569, 255);
+            this.customTab.Size = new System.Drawing.Size(847, 493);
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
             // idDevLabel
             // 
             this.idDevLabel.AutoSize = true;
-            this.idDevLabel.Location = new System.Drawing.Point(147, 186);
+            this.idDevLabel.Location = new System.Drawing.Point(297, 238);
             this.idDevLabel.Name = "idDevLabel";
             this.idDevLabel.Size = new System.Drawing.Size(134, 24);
             this.idDevLabel.TabIndex = 9;
@@ -350,7 +350,7 @@
             this.devIDList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.devIDList.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.devIDList.FormattingEnabled = true;
-            this.devIDList.Location = new System.Drawing.Point(297, 183);
+            this.devIDList.Location = new System.Drawing.Point(447, 235);
             this.devIDList.Name = "devIDList";
             this.devIDList.Size = new System.Drawing.Size(106, 32);
             this.devIDList.TabIndex = 8;
@@ -360,7 +360,7 @@
             // 
             this.customConfigBtn.AutoSize = true;
             this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customConfigBtn.Location = new System.Drawing.Point(171, 108);
+            this.customConfigBtn.Location = new System.Drawing.Point(321, 160);
             this.customConfigBtn.Name = "customConfigBtn";
             this.customConfigBtn.Size = new System.Drawing.Size(232, 36);
             this.customConfigBtn.TabIndex = 7;
@@ -377,7 +377,7 @@
             this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
             this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.quitBtn.Location = new System.Drawing.Point(460, -2);
+            this.quitBtn.Location = new System.Drawing.Point(734, -3);
             this.quitBtn.Name = "quitBtn";
             this.quitBtn.Size = new System.Drawing.Size(54, 32);
             this.quitBtn.TabIndex = 77;
@@ -411,7 +411,7 @@
             this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.colorWheel.Location = new System.Drawing.Point(22, 19);
             this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(202, 215);
+            this.colorWheel.Size = new System.Drawing.Size(476, 433);
             this.colorWheel.TabIndex = 0;
             this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
@@ -420,7 +420,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.ClientSize = new System.Drawing.Size(576, 334);
+            this.ClientSize = new System.Drawing.Size(852, 572);
             this.Controls.Add(this.quitBtn);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.antumbraLabel);
