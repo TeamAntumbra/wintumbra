@@ -235,9 +235,13 @@ Global
 		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|x86.ActiveCfg = Release|Any CPU
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|x86.ActiveCfg = Release|x86
+		{A32EE510-2183-446D-8DD9-BB7E29BAF66B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
