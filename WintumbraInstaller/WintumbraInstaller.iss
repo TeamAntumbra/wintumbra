@@ -8,7 +8,7 @@ AppPublisherURL = "https://antumbra.io"
 AppSupportURL = "https://github.com/TeamAntumbra/wintumbra"
 AppUpdatesURL = "https://github.com/TeamAntumbra/wintumbra"
 DefaultDirName = "{pf32}\Antumbra"
-UsePreviousAppDir = yes
+UsePreviousAppDir = no
 
 [Icons]
 Name: "{commonprograms}\Antumbra"; Filename: "{app}\Antumbra.exe"
@@ -33,6 +33,7 @@ Source: "dependencies\DirectXHelper.dll"; DestDir: {app}
 Type: files; Name: "{app}\*.exe"
 Type: files; Name: "{app}\*.dll"
 Type: files; Name: "%appdata%\Antumbra\wintumbra.log"
+Type: files; Name: "{app}\Extensions\*.dll"
 
 [Run]
 Filename: "{tmp}\dotNetFx40_Full_x86_x64.exe"; Check: FrameworkIsNotInstalled
