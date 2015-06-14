@@ -1,7 +1,7 @@
 #Wintumbra
 ####Windows Antumbra|Glow Client Software
 
-##Quick Start
+##[Documentation](http://wintumbra.readthedocs.org/en/latest/)
 
 [Latest Release Download](https://github.com/TeamAntumbra/wintumbra/releases/latest)
 
@@ -14,10 +14,6 @@
 Run `Antumbra.exe` and enjoy!
 
 ------
-
-##Documentation
-
-[Follow me!](http://wintumbra.readthedocs.org/en/latest/)
 
 See the `Licenses` dir for license information.
 
