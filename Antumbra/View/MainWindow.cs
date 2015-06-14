@@ -52,6 +52,11 @@ namespace Antumbra.Glow.View
                 this.offBtn.Checked = false;
         }
 
+        public void SetPollingBtnText(String newText)
+        {
+            this.setPollingSizeBtn.Text = newText;
+        }
+
         private void closeBtn_Click(object sender, EventArgs e)
         {
             if (closeBtn_ClickEvent != null)
