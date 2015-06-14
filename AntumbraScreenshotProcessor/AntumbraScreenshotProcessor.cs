@@ -80,8 +80,6 @@ namespace AntumbraScreenshotProcessor
             for (int x = 0; x < bm.Width; x += skip) {
                 for (int y = 0; y < bm.Height; y += skip) {
                     Color pixel = bm.GetPixel(x, y);
-                    if (pixel.R == 0 && pixel.G == 0 && pixel.B == 0)
-                        continue;//skip
                     colors[0] += pixel.R;
                     colors[1] += pixel.G;
                     colors[2] += pixel.B;
