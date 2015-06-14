@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenGrabber", "An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatTabControl", "FlatTabControl\FlatTabControl.csproj", "{96002CA1-D295-4ED5-9B08-92346C1BFA18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThumbnailGrabber", "ThumbnailGrabber\ThumbnailGrabber.csproj", "{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeonFade", "NeonFade\NeonFade.csproj", "{F6165C6E-E483-49E7-8E70-B7431335A1A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenshotProcessor", "AntumbraScreenshotProcessor\AntumbraScreenshotProcessor.csproj", "{AADAEF16-30FF-48DC-9B6A-97F40E0C7E17}"
@@ -189,18 +187,6 @@ Global
 		{96002CA1-D295-4ED5-9B08-92346C1BFA18}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{96002CA1-D295-4ED5-9B08-92346C1BFA18}.Release|x86.ActiveCfg = Release|Any CPU
 		{96002CA1-D295-4ED5-9B08-92346C1BFA18}.Release|x86.Build.0 = Release|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Debug|x86.Build.0 = Debug|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Release|x86.ActiveCfg = Release|x86
-		{427175FC-DA54-4DF8-8EE5-D9A49A878A2A}.Release|x86.Build.0 = Release|x86
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6165C6E-E483-49E7-8E70-B7431335A1A7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
