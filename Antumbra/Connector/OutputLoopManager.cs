@@ -21,11 +21,10 @@ namespace Antumbra.Glow.Connector
         }
 
         public OutputLoop FindLoopOrReturnNull(int id) {
-            OutputLoop result = null;
             foreach (var loop in loops)
                 if (loop.id == id)
-                    result = loop;
-            return result;
+                    return loop;
+            return null;
         }
 
         public string GetSpeedsStr()

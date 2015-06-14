@@ -17,7 +17,7 @@ namespace Antumbra.Glow.Connector
         public int id { get; private set; }
         private Color16Bit color;
         private Color16Bit weightedAvg;
-        private bool weightingEnabled;//TODO move to decorator
+        private bool weightingEnabled;
         private double newColorWeight;
 
         public double FPS { get { return outputFPS.FPS; } }
