@@ -49,6 +49,11 @@ namespace ExampleGlowDriver
             this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
+        public override GlowExtension Create()
+        {
+            return new ExampleGlowDriver();
+        }
+
         public override bool Start()
         {
             this.driver = new Task(target);

@@ -62,6 +62,11 @@ namespace ColorClock
             get { return "https://antumbra.io/docs/extensions/drivers/colorClock"; }
         }
 
+        public override GlowExtension Create()
+        {
+            return new ColorClock();
+        }
+
         public override void AttachColorObserver(AntumbraColorObserver observer)
         {
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);

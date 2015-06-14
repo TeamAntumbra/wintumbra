@@ -55,6 +55,11 @@ namespace Saturator
             get { return "https://antumbra.io"; }
         }
 
+        public override GlowExtension Create()
+        {
+            return new Saturator();
+        }
+
         public override Color16Bit Decorate(Color16Bit origColor)
         {
             HslColor boringHSL = new HslColor(origColor.ToRGBColor());

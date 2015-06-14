@@ -22,6 +22,11 @@ namespace SinFade
         private Task driver;
         private bool running;
 
+        public override GlowExtension Create()
+        {
+            return new SinFade();
+        }
+
         public override Guid id
         {
             get { return Guid.Parse("31cae25b-72c0-4ffc-860b-234fb931bc15"); }

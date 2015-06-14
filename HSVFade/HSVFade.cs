@@ -62,6 +62,11 @@ namespace HSVFade
             return false;
         }
 
+        public override GlowExtension Create()
+        {
+            return new HSVFade();
+        }
+
         public override bool Start()
         {
             this.running = true;

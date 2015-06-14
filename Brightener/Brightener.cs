@@ -45,6 +45,11 @@ namespace Brightener
             get { return true; }
         }
 
+        public override GlowExtension Create()
+        {
+            return new Brightener();
+        }
+
         public override Color16Bit Decorate(Color16Bit origColor)
         {
             HslColor hsl = new HslColor(origColor.ToRGBColor());

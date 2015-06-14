@@ -72,6 +72,11 @@ namespace NeonFade
             this.NewColorAvailEvent += observer.NewColorAvail;
         }
 
+        public override GlowExtension Create()
+        {
+            return new NeonFade();
+        }
+
         public override bool Start()
         {
             this.running = true;

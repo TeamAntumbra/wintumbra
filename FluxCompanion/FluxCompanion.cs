@@ -45,6 +45,11 @@ namespace FluxCompanion
             get { return false; }
         }
 
+        public override GlowExtension Create()
+        {
+            return new FluxCompanion();
+        }
+
         public override bool Start()
         {
             this.running = true;
