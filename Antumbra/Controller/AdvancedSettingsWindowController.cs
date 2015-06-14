@@ -405,13 +405,13 @@ namespace Antumbra.Glow.Controller
 
         private void pollingArea_Click(object sender, EventArgs e)
         {
-            PollingAreaWindowController cont = new PollingAreaWindowController();
+            PollingAreaWindowController cont = new PollingAreaWindowController(this.dev.id);
             cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelections);
             cont.AttachObserver(this);
             cont.Show();
         }
 
-        private void UpdatePollingSelections(int x, int y, int width, int height)
+        private void UpdatePollingSelections(int id, int x, int y, int width, int height)
         {
             this.dev.settings.x = x;
             this.dev.settings.y = y;

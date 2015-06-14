@@ -14,15 +14,16 @@ namespace Antumbra.Glow.Controller
 {
     public class PollingAreaWindowController : GlowCommandSender
     {
-        public delegate void PollingAreaUpdated(int x, int y, int width, int height);
+        public delegate void PollingAreaUpdated(int id, int x, int y, int width, int height);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private View.pollingAreaSetter pollingWindow;
         private Color color;
         public int id { get; private set; }
-        public PollingAreaWindowController()
+        public PollingAreaWindowController(int id)
         {
+            this.id = id;
             this.color = UniqueColorGenerator.GetInstance().GetUniqueColor();
             this.pollingWindow = new View.pollingAreaSetter(this.color);
             this.pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
@@ -31,8 +32,8 @@ namespace Antumbra.Glow.Controller
         public void Show()
         {
             this.pollingWindow.Show();
-            SendCommand(new StopCommand(this.id));//stop device
-            SendCommand(new SendColorCommand(this.id,new Color16Bit(this.color)));//set to unique color to match its window
+            SendCommand(new StopCommand(-1));//stop all
+            SendCommand(new SendColorCommand(this.id, new Color16Bit(this.color)));//set to unique color to match its window
         }
 
         public void SetBounds(int x, int y, int width, int height)
@@ -45,8 +46,6 @@ namespace Antumbra.Glow.Controller
             if (this.pollingWindow == null || this.pollingWindow.IsDisposed) {
                 var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
                 this.pollingWindow = new View.pollingAreaSetter(back);
-                SendCommand(new StopCommand(this.id));
-                SendCommand(new SendColorCommand(this.id, new Color16Bit(back)));
                 this.pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
             }
             this.pollingWindow.Show();
@@ -73,8 +72,9 @@ namespace Antumbra.Glow.Controller
             if (sender is System.Windows.Forms.Form) {
                 System.Windows.Forms.Form form = (System.Windows.Forms.Form)sender;
                 if (PollingAreaUpdatedEvent != null)
-                    PollingAreaUpdatedEvent(form.Location.X, form.Location.Y, form.Width, form.Height);
+                    PollingAreaUpdatedEvent(this.id, form.Location.X, form.Location.Y, form.Width, form.Height);
                 UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
+                form.Hide();
             }
         }
 
