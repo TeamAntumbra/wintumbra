@@ -15,20 +15,20 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         public delegate void CollectionUpdate(List<GlowExtension> exts);
         public event CollectionUpdate CollectionUpdateEvent;
-        public List<GlowDriver> AvailDrivers { get; private set; }
-        public List<GlowScreenGrabber> AvailGrabbers { get; private set; }
-        public List<GlowScreenProcessor> AvailProcessors { get; private set; }
-        public List<GlowDecorator> AvailDecorators { get; private set; }
-        public List<GlowNotifier> AvailNotifiers { get; private set; }
-        public List<GlowExtension> AvailExtensions { get; private set; }
-        public bool ready { get; private set; }
-        public ExtensionLibrary(string path)
+        private List<GlowDriver> AvailDrivers;
+        private List<GlowScreenGrabber> AvailGrabbers;
+        private List<GlowScreenProcessor> AvailProcessors;
+        private List<GlowDecorator> AvailDecorators;
+        private List<GlowNotifier> AvailNotifiers;
+        private List<GlowExtension> AvailExtensions;
+        private String path;
+        public ExtensionLibrary(String path)
         {
+            this.path = path;
             this.AttachObserver(LoggerHelper.GetInstance());
-            MEFHelper helper = new MEFHelper(path);
+            MEFHelper helper = new MEFHelper(this.path);
             if (helper.failed) {
                 this.Log("MEFHelper failed to initalize correctly.");
-                this.ready = false;
                 return;//cannot continue
             }
             this.AvailExtensions = new List<GlowExtension>();
@@ -46,14 +46,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             LogFoundExtensions();
             if (CollectionUpdateEvent != null)
                 CollectionUpdateEvent(this.AvailExtensions);
-            this.ready = true;
         }
 
         public GlowExtension LookupExt(Guid id)
         {
             foreach (GlowExtension ext in this.AvailExtensions)
-                if (ext.id.Equals(id))//it's a match
-                    return ext;
+                if (ext.id.Equals(id)) {//it's a match
+                    return ext.Create();//TODO share single capture instances
+                }
             return null;//not found
         }
 
