@@ -198,6 +198,7 @@ namespace Antumbra.Glow.Settings
         public DeviceSettings(int id)
         {
             Reset();
+            this.id = id;
         }
 
         private String SerializeSettings()
