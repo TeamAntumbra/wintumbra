@@ -165,5 +165,10 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         {
             return false;
         }
+
+        public override GlowExtension Create()
+        {
+            return this;
+        }
     }
 }
