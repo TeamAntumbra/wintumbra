@@ -22,7 +22,7 @@ namespace SlimDXCapture
     [Export(typeof(GlowExtension))]
     public class DxScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
     {
-        public delegate void NewScreenAvail(FastBitmap screen, EventArgs args);
+        public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -30,7 +30,11 @@ namespace SlimDXCapture
         public event NewToolbarNotif NewToolbarNotifEvent;
         private Thread driver;
         private bool running = false;
-        //private Device d;
+
+        public override GlowExtension Create()
+        {
+            return new DxScreenCapture();
+        }
 
         public Bitmap CaptureScreen(IntPtr hwnd)
         {
@@ -123,13 +127,11 @@ namespace SlimDXCapture
             while (this.IsRunning) {
                 Bitmap result = CaptureScreen(FindForegroundPrcs());
                 if (NewScreenAvailEvent != null && result != null) {
-                    FastBitmap fast = new FastBitmap(result);
                     try {
-                        fast.Lock();
-                        NewScreenAvailEvent(fast, EventArgs.Empty);
+                        NewScreenAvailEvent(result, EventArgs.Empty);
                     }
                     finally {
-                        fast.Dispose();
+                        result.Dispose();
                     }
                 }
                 Thread.Sleep(150);//TODO perfect this value

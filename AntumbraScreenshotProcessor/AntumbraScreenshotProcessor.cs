@@ -67,6 +67,11 @@ namespace AntumbraScreenshotProcessor
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
+        public override GlowExtension Create()
+        {
+            return new AntumbraScreenshotProcessor();
+        }
+
         private Color16Bit Process(FastBitmap bm)
         {
             int total = 0;
@@ -96,10 +101,13 @@ namespace AntumbraScreenshotProcessor
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override void NewBitmapAvail(FastBitmap bm, EventArgs args)
+        public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
             try {
-                NewColorAvailEvent(this.Process(bm));
+                FastBitmap fb = new FastBitmap(bm);
+                fb.Lock();
+                NewColorAvailEvent(this.Process(fb));
+                fb.Dispose();
             }
             catch (Exception) {
                 this.Stop();
