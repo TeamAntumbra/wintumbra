@@ -58,8 +58,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 else if (extension is GlowNotifier) {
                     this.AvailNotifiers.Add((GlowNotifier)extension);
                 }
-                else {
-                }
             }
         }
 
