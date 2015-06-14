@@ -30,6 +30,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.closeBtn = new System.Windows.Forms.Button();
+            this.quitBtn = new System.Windows.Forms.Button();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.antumbraLabel = new System.Windows.Forms.Label();
+            this.versionLabel = new System.Windows.Forms.Label();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.manualTab = new System.Windows.Forms.TabPage();
             this.whiteBalanceBtn = new System.Windows.Forms.Button();
@@ -54,17 +58,13 @@
             this.idDevLabel = new System.Windows.Forms.Label();
             this.devIDList = new System.Windows.Forms.ComboBox();
             this.customConfigBtn = new System.Windows.Forms.Button();
-            this.quitBtn = new System.Windows.Forms.Button();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.antumbraLabel = new System.Windows.Forms.Label();
-            this.versionLabel = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             this.mirrorTab.SuspendLayout();
             this.fadeTab.SuspendLayout();
             this.customTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -82,6 +82,44 @@
             this.closeBtn.Text = "X";
             this.closeBtn.UseVisualStyleBackColor = false;
             this.closeBtn.Click += new System.EventHandler(this.closeBtn_Click);
+            // 
+            // quitBtn
+            // 
+            this.quitBtn.AutoSize = true;
+            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.quitBtn.Location = new System.Drawing.Point(734, -3);
+            this.quitBtn.Name = "quitBtn";
+            this.quitBtn.Size = new System.Drawing.Size(54, 32);
+            this.quitBtn.TabIndex = 77;
+            this.quitBtn.Text = "Quit";
+            this.quitBtn.UseVisualStyleBackColor = false;
+            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
+            // 
+            // antumbraLabel
+            // 
+            this.antumbraLabel.AutoSize = true;
+            this.antumbraLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.antumbraLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.antumbraLabel.Location = new System.Drawing.Point(17, 9);
+            this.antumbraLabel.Name = "antumbraLabel";
+            this.antumbraLabel.Size = new System.Drawing.Size(189, 44);
+            this.antumbraLabel.TabIndex = 75;
+            this.antumbraLabel.Text = "antumbra";
+            // 
+            // versionLabel
+            // 
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versionLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.versionLabel.Location = new System.Drawing.Point(274, 14);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(0, 28);
+            this.versionLabel.TabIndex = 76;
             // 
             // flatTabControl
             // 
@@ -207,11 +245,11 @@
             // 
             this.setPollingSizeBtn.AutoSize = true;
             this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setPollingSizeBtn.Location = new System.Drawing.Point(652, 425);
+            this.setPollingSizeBtn.Location = new System.Drawing.Point(567, 425);
             this.setPollingSizeBtn.Name = "setPollingSizeBtn";
-            this.setPollingSizeBtn.Size = new System.Drawing.Size(161, 36);
+            this.setPollingSizeBtn.Size = new System.Drawing.Size(230, 36);
             this.setPollingSizeBtn.TabIndex = 5;
-            this.setPollingSizeBtn.Text = "Set Capture Size";
+            this.setPollingSizeBtn.Text = "Set Capture Area";
             this.setPollingSizeBtn.UseVisualStyleBackColor = true;
             this.setPollingSizeBtn.Click += new System.EventHandler(this.setPollingSizeBtn_Click);
             // 
@@ -377,44 +415,6 @@
             this.customConfigBtn.UseVisualStyleBackColor = true;
             this.customConfigBtn.Click += new System.EventHandler(this.customConfigBtn_Click);
             // 
-            // quitBtn
-            // 
-            this.quitBtn.AutoSize = true;
-            this.quitBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.quitBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.quitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-            this.quitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.quitBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
-            this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.quitBtn.Location = new System.Drawing.Point(734, -3);
-            this.quitBtn.Name = "quitBtn";
-            this.quitBtn.Size = new System.Drawing.Size(54, 32);
-            this.quitBtn.TabIndex = 77;
-            this.quitBtn.Text = "Quit";
-            this.quitBtn.UseVisualStyleBackColor = false;
-            this.quitBtn.Click += new System.EventHandler(this.quitBtn_Click);
-            // 
-            // antumbraLabel
-            // 
-            this.antumbraLabel.AutoSize = true;
-            this.antumbraLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.antumbraLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.antumbraLabel.Location = new System.Drawing.Point(17, 9);
-            this.antumbraLabel.Name = "antumbraLabel";
-            this.antumbraLabel.Size = new System.Drawing.Size(189, 44);
-            this.antumbraLabel.TabIndex = 75;
-            this.antumbraLabel.Text = "antumbra";
-            // 
-            // versionLabel
-            // 
-            this.versionLabel.AutoSize = true;
-            this.versionLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.versionLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.versionLabel.Location = new System.Drawing.Point(274, 14);
-            this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(0, 28);
-            this.versionLabel.TabIndex = 76;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 22F);
@@ -434,6 +434,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainWindow";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.flatTabControl.ResumeLayout(false);
             this.manualTab.ResumeLayout(false);
             this.manualTab.PerformLayout();
@@ -444,7 +445,6 @@
             this.fadeTab.PerformLayout();
             this.customTab.ResumeLayout(false);
             this.customTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
