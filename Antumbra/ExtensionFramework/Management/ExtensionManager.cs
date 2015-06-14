@@ -94,6 +94,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
+        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
+        {
+            if (NewColorAvailEvent != null) {
+                NewColorAvailEvent(newColor);
+            }
+        }
+
         public void Reset()
         {
             this.Stop();
@@ -273,15 +280,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             if (NewGlowCommandEvent != null)
                 NewGlowCommandEvent(command);//pass it up
         }
-        /// <summary>
-        /// Event handler for the NewColorAvail event
-        /// </summary>
-        /// <param name="newColor"></param>
-        /// <param name="args"></param>
-        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
-        {
-            NewColorAvailEvent(newColor);//pass up, device manager will decorate
-        }
 
         public Color16Bit ApplyBrightnessSettings(Color16Bit decorated)
         {
@@ -389,7 +387,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 }
                 this.activeExts.ActiveGrabber.x = this.x;//set screen related settings for grabber
                 this.activeExts.ActiveGrabber.y = this.y;
-                this.activeExts.ActiveGrabber.width = this.width;//TODO potential, convert these to be changed via observer in extensions of certain type
+                this.activeExts.ActiveGrabber.width = this.width;
                 this.activeExts.ActiveGrabber.height = this.height;
                 this.activeExts.ActiveDriver = new GlowScreenDriverCoupler(this.activeExts.ActiveGrabber, this.activeExts.ActiveProcessor);
             }
