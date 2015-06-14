@@ -79,7 +79,9 @@ namespace Antumbra.Glow.Controller
         }
 
         /// <summary>
-        /// The MoveWindow function changes the position and dimensions of the specified window. For a top-level window, the position and dimensions are relative to the upper-left corner of the screen. For a child window, they are relative to the upper-left corner of the parent window's client area.
+        /// The MoveWindow function changes the position and dimensions of the specified window. For a top-level window,
+        /// the position and dimensions are relative to the upper-left corner of the screen. For a child window,
+        /// they are relative to the upper-left corner of the parent window's client area.
         /// </summary>
         /// <param name="hWnd">Handle to the window.</param>
         /// <param name="X">Specifies the new position of the left side of the window.</param>
