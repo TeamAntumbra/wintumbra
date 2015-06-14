@@ -194,9 +194,9 @@ namespace Antumbra.Glow.Controller
             dev.settings.y = y;
             dev.settings.width = width;
             dev.settings.height = height;
-            this.deviceMgr.Start(dev.id);//re-start device
             this.pollingIndex -= 1;
-            if (this.pollingIndex == 0) {//time to reset btn text
+            if (this.pollingIndex == 0) {//time to reset btn text & restart
+                this.deviceMgr.Start(-1);//re-start all
                 this.window.SetPollingBtnText("Set Capture Area");
             }
         }
