@@ -189,6 +189,7 @@ namespace Antumbra.Glow.Controller
 
         private void UpdatePollingSelection(int id, int x, int y, int width, int height)
         {
+            this.manual = false;//force false to stop resending of manual color
             GlowDevice dev = this.deviceMgr.getDevice(id);
             dev.settings.x = x;
             dev.settings.y = y;
@@ -318,54 +319,46 @@ namespace Antumbra.Glow.Controller
             NewGlowCmdAvailEvent(new StartCommand(id));
         }
 
-        private void SetupAllWith(ActiveExtensions shared)
-        {
-            foreach (GlowDevice dev in this.deviceMgr.Glows) {
-                ApplyNewSetup(dev.id, shared);
-            }
-        }
-
         public void hsvBtnClicked(object sender, EventArgs args)
         {
-            SetupAllWith(this.presetBuilder.GetHSVFadePreset());
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
+                ApplyNewSetup(dev.id, this.presetBuilder.GetHSVFadePreset());
         }
 
         public void sinBtnClicked(object sender, EventArgs args)
         {
-            SetupAllWith(this.presetBuilder.GetSinFadePreset());
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
+                ApplyNewSetup(dev.id, this.presetBuilder.GetSinFadePreset());
         }
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
-            SetupAllWith(this.presetBuilder.GetNeonFadePreset());
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
+                ApplyNewSetup(dev.id, this.presetBuilder.GetNeonFadePreset());
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
-            foreach (GlowDevice dev in this.deviceMgr.Glows) {
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetMirrorPreset());
-            }
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
         {
-            foreach (GlowDevice dev in this.deviceMgr.Glows) {
-                ApplyNewSetup(dev.id, this.presetBuilder.GetAugmentMirrorPreset(), 0, true, .05);
-            }
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
+                ApplyNewSetup(dev.id, this.presetBuilder.GetAugmentMirrorPreset(), 1, true, .05);
         }
 
         public void smoothBtnClicked(object sender, EventArgs args)
         {
-            foreach (GlowDevice dev in this.deviceMgr.Glows) {
-                ApplyNewSetup(dev.id, this.presetBuilder.GetSmoothMirrorPreset(), 1, true, .05);
-            }
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
+                ApplyNewSetup(dev.id, this.presetBuilder.GetSmoothMirrorPreset(), 1, true, .1);
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
         {
-            foreach (GlowDevice dev in this.deviceMgr.Glows) {
+            foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetGameMirrorPreset());
-            }
         }
 
         public void customConfigBtnClicked(object sender, EventArgs args)
