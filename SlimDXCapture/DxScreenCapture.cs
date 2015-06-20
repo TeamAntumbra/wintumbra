@@ -123,7 +123,6 @@ namespace SlimDXCapture
 
         private void target()
         {
-            Thread.Sleep(5000);
             while (this.IsRunning) {
                 Bitmap result = CaptureScreen(FindForegroundPrcs());
                 if (NewScreenAvailEvent != null && result != null) {
@@ -140,7 +139,7 @@ namespace SlimDXCapture
 
         public override bool Start()
         {
-            AnnounceMessage(5000, "In 5 seconds the capture plugin will start grabbing content.", 1);
+            AnnounceMessage(3000, "The capture plugin is now grabbing content.", 1);
             this.running = true;
             this.driver = new Thread(new ThreadStart(target));
             this.driver.Start();
