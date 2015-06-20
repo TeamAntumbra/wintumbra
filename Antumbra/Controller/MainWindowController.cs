@@ -316,41 +316,31 @@ namespace Antumbra.Glow.Controller
             GlowDevice dev = this.deviceMgr.getDevice(id);
             dev.SetActives(actives);
             dev.ApplyDriverRecomSettings();
-            NewGlowCmdAvailEvent(new StartCommand(id));
-        }
-
-        private void ApplyNewSetupAndStartAll(int id, ActiveExtensions actives)
-        {
-            manual = false;
-            NewGlowCmdAvailEvent(new StopCommand(-1));
-            GlowDevice dev = this.deviceMgr.getDevice(id);
-            dev.SetActives(actives);
-            dev.ApplyDriverRecomSettings();
             NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void hsvBtnClicked(object sender, EventArgs args)
         {
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetupAndStartAll(dev.id, this.presetBuilder.GetHSVFadePreset());
+                ApplyNewSetup(dev.id, this.presetBuilder.GetHSVFadePreset());
         }
 
         public void sinBtnClicked(object sender, EventArgs args)
         {
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetupAndStartAll(dev.id, this.presetBuilder.GetSinFadePreset());
+                ApplyNewSetup(dev.id, this.presetBuilder.GetSinFadePreset());
         }
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetupAndStartAll(dev.id, this.presetBuilder.GetNeonFadePreset());
+                ApplyNewSetup(dev.id, this.presetBuilder.GetNeonFadePreset());
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetupAndStartAll(dev.id, this.presetBuilder.GetMirrorPreset());
+                ApplyNewSetup(dev.id, this.presetBuilder.GetMirrorPreset());
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
