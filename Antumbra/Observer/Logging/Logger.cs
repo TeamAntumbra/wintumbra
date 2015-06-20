@@ -38,7 +38,7 @@ namespace Antumbra.Glow.Observer.Logging
             private void Log(String lines)
             {
                 lock (sync) {
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + name, false)) {
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + name, true)) {
                         file.WriteLine(lines);
                     }
                 }
