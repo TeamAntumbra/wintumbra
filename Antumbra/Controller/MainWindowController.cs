@@ -358,7 +358,7 @@ namespace Antumbra.Glow.Controller
         public void gameBtnClicked(object sender, EventArgs args)
         {
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetup(dev.id, this.presetBuilder.GetGameMirrorPreset());
+                ApplyNewSetup(dev.id, this.presetBuilder.GetGameMirrorPreset(), 1, true, .1);
         }
 
         public void customConfigBtnClicked(object sender, EventArgs args)

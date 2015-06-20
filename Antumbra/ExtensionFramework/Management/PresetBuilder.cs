@@ -17,9 +17,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private Guid ScreenDriverCoupler = Guid.Parse("70987576-1a00-4a34-b787-4c08516cd1b8");
         private Guid ScreenGrabber = Guid.Parse("15115e91-ed5c-49e6-b7a8-4ebbd4dabb2e");
         private Guid ScreenshotProcesor = Guid.Parse("3eea8b48-82e3-4db4-a04a-2b9865929993");
-        //private Guid SmartProcessor = Guid.Parse("f4f3692d-a405-4dca-82fd-a9f3e9f93afe");
-        //private Guid FastProcessor = Guid.Parse("07eda8bc-28e6-4d57-a085-7f204785630f");
-        private Guid DXGrabber = Guid.Parse("ad1e6255-d9b4-4e6d-995f-a094e6ea5f7b");//Guid.Parse("ae53796b-ac50-4cef-a335-2d75dea9f1ea");
+        private Guid DXGrabber = Guid.Parse("ad1e6255-d9b4-4e6d-995f-a094e6ea5f7b");
         private Guid Saturator = Guid.Parse("2acba4a6-af21-47a9-9551-964a750fea06");
         private Guid Brightener = Guid.Parse("1a271e63-5f7e-43c0-bbb1-7d80d23d8db7");
         public PresetBuilder(ExtensionLibrary lib)
