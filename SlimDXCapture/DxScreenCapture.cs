@@ -133,7 +133,7 @@ namespace SlimDXCapture
                         result.Dispose();
                     }
                 }
-                Thread.Sleep(150);//TODO perfect this value
+                Thread.Sleep(50);//TODO perfect this value
             }
         }
 
