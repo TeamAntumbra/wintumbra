@@ -19,10 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxCompanion", "FluxCompan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleGlowDriver", "ExampleGlowDriver\ExampleGlowDriver.csproj", "{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectXScreenCapture", "DirectXScreenCapture\DirectXScreenCapture.csproj", "{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectXHelper", "DirectXScreenCapture\Afterglow.DirectX\DirectXHelper.csproj", "{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenGrabber", "AntumbraScreenGrabber\AntumbraScreenGrabber.csproj", "{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatTabControl", "FlatTabControl\FlatTabControl.csproj", "{96002CA1-D295-4ED5-9B08-92346C1BFA18}"
@@ -139,30 +135,6 @@ Global
 		{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}.Release|Mixed Platforms.Build.0 = Release|x86
 		{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}.Release|x86.ActiveCfg = Release|x86
 		{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}.Release|x86.Build.0 = Release|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Debug|x86.ActiveCfg = Debug|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Debug|x86.Build.0 = Debug|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Release|Mixed Platforms.Build.0 = Release|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Release|x86.ActiveCfg = Release|x86
-		{DE6ED890-7EF2-403A-BF90-99EFF2968CE7}.Release|x86.Build.0 = Release|x86
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Debug|x86.Build.0 = Debug|Any CPU
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Release|Mixed Platforms.Build.0 = Release|x86
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Release|x86.ActiveCfg = Release|x86
-		{703FE443-B4D3-41D1-B227-CF1CFF1CA5D4}.Release|x86.Build.0 = Release|x86
 		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
