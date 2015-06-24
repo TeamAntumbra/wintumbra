@@ -25,6 +25,7 @@ namespace Antumbra.Glow.Controller
         public bool failed { get; private set; }
         public ToolbarIconController()
         {
+            this.AttachObserver(LoggerHelper.GetInstance());
             this.failed = false;
             this.toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             this.toolbarIcon.Hide();

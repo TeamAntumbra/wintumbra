@@ -83,6 +83,7 @@ namespace Antumbra.Glow.Controller
                 else
                     msg = ex.Message;
                 ShowMessage(10000, "Exception Occured While Loading Extensions", msg, 2);
+                this.Log(msg);
                 Thread.Sleep(10000);//wait for message
                 return false;//failed
             }

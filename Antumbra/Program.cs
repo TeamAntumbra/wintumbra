@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using Antumbra.Glow.Controller;
+using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow
 {
@@ -16,20 +17,28 @@ namespace Antumbra.Glow
         [STAThread]
         static void Main()
         {
+            LoggerHelper.Logger logger = LoggerHelper.GetInstance();
+            logger.NewLogMsgAvail("Program Class", "Starting...");
             using (Mutex mutex = new Mutex(false, "Global\\" + appGuid)) {
                 if (!mutex.WaitOne(0, false)) {
                     MessageBox.Show("Instance already running");
+                    logger.NewLogMsgAvail("Program Class", "MUTEX TAKEN...");
                     return;
                 }
                 if (Environment.OSVersion.Version.Major >= 6)
                     SetProcessDPIAware();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                logger.NewLogMsgAvail("Program Class", "Starting initialization of objects...");
                 ToolbarIconController controller = new ToolbarIconController();
-                if (!controller.failed)//did setup succeed
+                if (!controller.failed) {//did setup succeed
+                    logger.NewLogMsgAvail("Program Class", "Starting run...");
                     Application.Run();//start independent of form
-                else//failed
+                }
+                else {//failed
                     controller.Dispose();
+                    logger.NewLogMsgAvail("Program Class", "SETUP FAILED! FATAL");
+                }
             }
         }
 

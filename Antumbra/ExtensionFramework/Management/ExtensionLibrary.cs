@@ -26,26 +26,34 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             this.path = path;
             this.AttachObserver(LoggerHelper.GetInstance());
-            MEFHelper helper = new MEFHelper(this.path);
-            if (helper.failed) {
-                this.Log("MEFHelper failed to initalize correctly.");
-                return;//cannot continue
+            try {
+                MEFHelper helper = new MEFHelper(this.path);
+                if (helper.failed) {
+                    this.Log("MEFHelper failed to initalize correctly.");
+                    return;//cannot continue
+                }
+                this.AvailExtensions = new List<GlowExtension>();
+                this.AvailDrivers = helper.AvailDrivers;
+                this.AvailExtensions.AddRange(this.AvailDrivers);
+                this.AvailGrabbers = helper.AvailScreenDrivers;
+                this.AvailExtensions.AddRange(this.AvailGrabbers);
+                this.AvailProcessors = helper.AvailScreenProcessors;
+                this.AvailExtensions.AddRange(this.AvailProcessors);
+                this.AvailDecorators = helper.AvailDecorators;
+                this.AvailExtensions.AddRange(this.AvailDecorators);
+                this.AvailNotifiers = helper.AvailNotifiers;
+                this.AvailExtensions.AddRange(this.AvailNotifiers);
+                helper.Dispose();
+                LogFoundExtensions();
+                if (CollectionUpdateEvent != null)
+                    CollectionUpdateEvent(this.AvailExtensions);
             }
-            this.AvailExtensions = new List<GlowExtension>();
-            this.AvailDrivers = helper.AvailDrivers;
-            this.AvailExtensions.AddRange(this.AvailDrivers);
-            this.AvailGrabbers = helper.AvailScreenDrivers;
-            this.AvailExtensions.AddRange(this.AvailGrabbers);
-            this.AvailProcessors = helper.AvailScreenProcessors;
-            this.AvailExtensions.AddRange(this.AvailProcessors);
-            this.AvailDecorators = helper.AvailDecorators;
-            this.AvailExtensions.AddRange(this.AvailDecorators);
-            this.AvailNotifiers = helper.AvailNotifiers;
-            this.AvailExtensions.AddRange(this.AvailNotifiers);
-            helper.Dispose();
-            LogFoundExtensions();
-            if (CollectionUpdateEvent != null)
-                CollectionUpdateEvent(this.AvailExtensions);
+            catch (TypeAccessException ex) {
+                this.Log(ex.StackTrace + '\n' + ex.Message);
+            }
+            catch (TypeLoadException ex) {
+                this.Log(ex.StackTrace + '\n' + ex.Message);
+            }
         }
 
         public GlowExtension LookupExt(Guid id)
@@ -59,8 +67,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void AttachObserver(LogMsgObserver observer)
         {
-            if (this.NewLogMsgAvailEvent != null)
-                this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+            this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
         private void LogFoundExtensions()
