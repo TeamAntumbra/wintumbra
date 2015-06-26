@@ -17,6 +17,8 @@ namespace Antumbra.Glow
         [STAThread]
         static void Main()
         {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += Application_ThreadException;
             LoggerHelper.Logger logger = LoggerHelper.GetInstance();
             logger.NewLogMsgAvail("Program Class", "Starting...");
             using (Mutex mutex = new Mutex(false, "Global\\" + appGuid)) {
@@ -40,6 +42,12 @@ namespace Antumbra.Glow
                     logger.NewLogMsgAvail("Program Class", "SETUP FAILED! FATAL");
                 }
             }
+        }
+
+        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            LoggerHelper.Logger logger = LoggerHelper.GetInstance();
+            logger.NewLogMsgAvail(sender.ToString(), e.Exception.StackTrace);
         }
 
         private static string appGuid = "5e20e0ce-ca88-4e48-b4da-a5de166f5a3d";
