@@ -418,6 +418,13 @@ namespace Antumbra.Glow.Controller
             if (e.Mode == PowerModes.Suspend) {
                 NewGlowCmdAvailEvent(new PowerOffCommand(-1));
             }
+            else if (e.Mode == PowerModes.Resume) {
+                Thread.Sleep(2500);//wait for system to be ready
+                if (manual)
+                    ResendManualColor(-1);
+                else
+                    NewGlowCmdAvailEvent(new StartCommand(-1));//start all
+            }
         }
 
         public void mouseDownEvent(object sender, System.Windows.Forms.MouseEventArgs args)
