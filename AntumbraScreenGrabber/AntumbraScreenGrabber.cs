@@ -35,7 +35,7 @@ namespace AntumbraScreenDriver
 
         //DLL declaration
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        private static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+        private static extern bool BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, CopyPixelOperation rop);
         //BitBlt - used to get screen info
 
         public override String Name { get { return "Antumbra Screen Grabber (Default)"; } }
@@ -111,6 +111,7 @@ namespace AntumbraScreenDriver
                     grphx = Graphics.FromImage(screen);
                     grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
                     grphx.Save();
+                    //screen = getPixelBitBlt(runX, runY, runW, runH);
                     if (null != screen && NewScreenAvailEvent != null) {
                         NewScreenAvailEvent(screen, EventArgs.Empty);
                     }
@@ -124,6 +125,7 @@ namespace AntumbraScreenDriver
                     if (grphx != null)
                         grphx.Dispose();
                 }
+                Thread.Sleep(75);
             }
         }
 
@@ -135,7 +137,7 @@ namespace AntumbraScreenDriver
                     using (Graphics gsrc = Graphics.FromHwnd(IntPtr.Zero)) {
                         IntPtr hSrcDC = gsrc.GetHdc();
                         IntPtr hDC = gdest.GetHdc();
-                        int retval = BitBlt(hDC, x, y, width, height, hSrcDC, 0, 0, (int)0x00CC0020);
+                        bool retval = BitBlt(hDC, x, y, width, height, hSrcDC, 0, 0, CopyPixelOperation.SourceCopy);
                         gdest.ReleaseHdc();
                         gsrc.ReleaseHdc();
                     }
