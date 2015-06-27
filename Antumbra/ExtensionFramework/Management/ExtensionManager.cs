@@ -69,28 +69,38 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void Save()
         {
-            Saver saver = Saver.GetInstance();
-            saver.Save(ExtensionManager.configFileBase + this.id, this.activeExts.ToString());
+            if (this.activeExts != null) {
+                Saver saver = Saver.GetInstance();
+                saver.Save(ExtensionManager.configFileBase + this.id, this.activeExts.ToString());
+            }
         }
 
         public void LoadSave(String settings)
         {
             this.Stop();
             String[] parts = settings.Split(',');
-            this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
-            this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
-            this.activeExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
-            this.activeExts.ActiveDecorators.Clear();
-            foreach (String dec in parts[3].Split(' ')) {
-                if (dec.Equals(""))
-                    break;
-                this.activeExts.ActiveDecorators.Add((GlowDecorator)this.lib.findExt(Guid.Parse(dec)));
+            if (this.activeExts == null) {
+                this.activeExts = new ActiveExtensions();
             }
-            this.activeExts.ActiveNotifiers.Clear();
-            foreach (String notf in parts[4].Split(' ')) {
-                if (notf.Equals(""))
-                    break;
-                this.activeExts.ActiveNotifiers.Add((GlowNotifier)this.lib.findExt(Guid.Parse(notf)));
+            try {
+                this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
+                this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
+                this.activeExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
+                this.activeExts.ActiveDecorators.Clear();
+                foreach (String dec in parts[3].Split(' ')) {
+                    if (dec.Equals(""))
+                        break;
+                    this.activeExts.ActiveDecorators.Add((GlowDecorator)this.lib.findExt(Guid.Parse(dec)));
+                }
+                this.activeExts.ActiveNotifiers.Clear();
+                foreach (String notf in parts[4].Split(' ')) {
+                    if (notf.Equals(""))
+                        break;
+                    this.activeExts.ActiveNotifiers.Add((GlowNotifier)this.lib.findExt(Guid.Parse(notf)));
+                }
+            }
+            catch(Exception e) {
+                this.NewLogMsgAvail("Ext Mgr", "Loading settings failed!" + e.StackTrace + '\n' + e.Message);
             }
         }
 
