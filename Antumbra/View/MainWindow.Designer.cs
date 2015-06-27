@@ -34,13 +34,11 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.flatTabControl = new FlatTabControl.FlatTabControl();
-            this.manualTab = new System.Windows.Forms.TabPage();
-            this.whiteBalanceBtn = new System.Windows.Forms.Button();
-            this.brightnessLabel = new System.Windows.Forms.Label();
-            this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
-            this.offBtn = new System.Windows.Forms.RadioButton();
-            this.onBtn = new System.Windows.Forms.RadioButton();
+            this.fadeTab = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.neonBtn = new System.Windows.Forms.Button();
+            this.sinBtn = new System.Windows.Forms.Button();
+            this.hsvBtn = new System.Windows.Forms.Button();
             this.mirrorTab = new System.Windows.Forms.TabPage();
             this.rateDescLabel = new System.Windows.Forms.Label();
             this.slowestLabel = new System.Windows.Forms.Label();
@@ -52,19 +50,21 @@
             this.smoothBtn = new System.Windows.Forms.Button();
             this.augmentBtn = new System.Windows.Forms.Button();
             this.mirrorBtn = new System.Windows.Forms.Button();
-            this.fadeTab = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.neonBtn = new System.Windows.Forms.Button();
-            this.sinBtn = new System.Windows.Forms.Button();
-            this.hsvBtn = new System.Windows.Forms.Button();
+            this.manualTab = new System.Windows.Forms.TabPage();
+            this.whiteBalanceBtn = new System.Windows.Forms.Button();
+            this.brightnessLabel = new System.Windows.Forms.Label();
+            this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
+            this.offBtn = new System.Windows.Forms.RadioButton();
+            this.onBtn = new System.Windows.Forms.RadioButton();
             this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
+            this.flatTabControl = new FlatTabControl.FlatTabControl();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            this.flatTabControl.SuspendLayout();
-            this.manualTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
+            this.fadeTab.SuspendLayout();
             this.mirrorTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.throttleBar)).BeginInit();
-            this.fadeTab.SuspendLayout();
+            this.manualTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
+            this.flatTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -121,98 +121,64 @@
             this.versionLabel.Size = new System.Drawing.Size(0, 23);
             this.versionLabel.TabIndex = 76;
             // 
-            // flatTabControl
+            // fadeTab
             // 
-            this.flatTabControl.Controls.Add(this.manualTab);
-            this.flatTabControl.Controls.Add(this.mirrorTab);
-            this.flatTabControl.Controls.Add(this.fadeTab);
-            this.flatTabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.flatTabControl.Location = new System.Drawing.Point(-1, 51);
-            this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.flatTabControl.Name = "flatTabControl";
-            this.flatTabControl.SelectedIndex = 0;
-            this.flatTabControl.Size = new System.Drawing.Size(855, 522);
-            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.flatTabControl.TabIndex = 74;
+            this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.fadeTab.Controls.Add(this.label1);
+            this.fadeTab.Controls.Add(this.neonBtn);
+            this.fadeTab.Controls.Add(this.sinBtn);
+            this.fadeTab.Controls.Add(this.hsvBtn);
+            this.fadeTab.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.fadeTab.Location = new System.Drawing.Point(4, 29);
+            this.fadeTab.Name = "fadeTab";
+            this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
+            this.fadeTab.Size = new System.Drawing.Size(847, 489);
+            this.fadeTab.TabIndex = 2;
+            this.fadeTab.Text = "Fade";
             // 
-            // manualTab
+            // label1
             // 
-            this.manualTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.manualTab.Controls.Add(this.whiteBalanceBtn);
-            this.manualTab.Controls.Add(this.brightnessLabel);
-            this.manualTab.Controls.Add(this.brightnessTrackBar);
-            this.manualTab.Controls.Add(this.offBtn);
-            this.manualTab.Controls.Add(this.onBtn);
-            this.manualTab.Controls.Add(this.colorWheel);
-            this.manualTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.manualTab.Location = new System.Drawing.Point(4, 29);
-            this.manualTab.Name = "manualTab";
-            this.manualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manualTab.Size = new System.Drawing.Size(847, 489);
-            this.manualTab.TabIndex = 0;
-            this.manualTab.Text = "Manual";
+            this.label1.Location = new System.Drawing.Point(6, 95);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(793, 344);
+            this.label1.TabIndex = 9;
+            this.label1.Text = resources.GetString("label1.Text");
             // 
-            // whiteBalanceBtn
+            // neonBtn
             // 
-            this.whiteBalanceBtn.AutoSize = true;
-            this.whiteBalanceBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.whiteBalanceBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.whiteBalanceBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-            this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
-            this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.whiteBalanceBtn.Location = new System.Drawing.Point(582, 217);
-            this.whiteBalanceBtn.Name = "whiteBalanceBtn";
-            this.whiteBalanceBtn.Size = new System.Drawing.Size(114, 29);
-            this.whiteBalanceBtn.TabIndex = 78;
-            this.whiteBalanceBtn.Text = "White Balance";
-            this.whiteBalanceBtn.UseVisualStyleBackColor = false;
-            this.whiteBalanceBtn.Click += new System.EventHandler(this.whiteBalanceBtn_Click);
+            this.neonBtn.AutoSize = true;
+            this.neonBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.neonBtn.Location = new System.Drawing.Point(673, 32);
+            this.neonBtn.Name = "neonBtn";
+            this.neonBtn.Size = new System.Drawing.Size(75, 36);
+            this.neonBtn.TabIndex = 7;
+            this.neonBtn.Text = "Neon";
+            this.neonBtn.UseVisualStyleBackColor = true;
+            this.neonBtn.Click += new System.EventHandler(this.neonBtn_Click);
             // 
-            // brightnessLabel
+            // sinBtn
             // 
-            this.brightnessLabel.AutoSize = true;
-            this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            this.brightnessLabel.Location = new System.Drawing.Point(584, 82);
-            this.brightnessLabel.Name = "brightnessLabel";
-            this.brightnessLabel.Size = new System.Drawing.Size(98, 24);
-            this.brightnessLabel.TabIndex = 4;
-            this.brightnessLabel.Text = "Brightness";
+            this.sinBtn.AutoSize = true;
+            this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.sinBtn.Location = new System.Drawing.Point(375, 32);
+            this.sinBtn.Name = "sinBtn";
+            this.sinBtn.Size = new System.Drawing.Size(98, 36);
+            this.sinBtn.TabIndex = 6;
+            this.sinBtn.Text = "Sin Fade";
+            this.sinBtn.UseVisualStyleBackColor = true;
+            this.sinBtn.Click += new System.EventHandler(this.sinBtn_Click);
             // 
-            // brightnessTrackBar
+            // hsvBtn
             // 
-            this.brightnessTrackBar.Location = new System.Drawing.Point(522, 42);
-            this.brightnessTrackBar.Maximum = 100;
-            this.brightnessTrackBar.Name = "brightnessTrackBar";
-            this.brightnessTrackBar.Size = new System.Drawing.Size(244, 56);
-            this.brightnessTrackBar.TabIndex = 3;
-            this.brightnessTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
-            // 
-            // offBtn
-            // 
-            this.offBtn.AutoSize = true;
-            this.offBtn.Checked = true;
-            this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.offBtn.Location = new System.Drawing.Point(657, 334);
-            this.offBtn.Name = "offBtn";
-            this.offBtn.Size = new System.Drawing.Size(51, 24);
-            this.offBtn.TabIndex = 2;
-            this.offBtn.TabStop = true;
-            this.offBtn.Text = "Off";
-            this.offBtn.UseVisualStyleBackColor = true;
-            // 
-            // onBtn
-            // 
-            this.onBtn.AutoSize = true;
-            this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.onBtn.Location = new System.Drawing.Point(599, 334);
-            this.onBtn.Name = "onBtn";
-            this.onBtn.Size = new System.Drawing.Size(50, 24);
-            this.onBtn.TabIndex = 1;
-            this.onBtn.Text = "On";
-            this.onBtn.UseVisualStyleBackColor = true;
-            this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
+            this.hsvBtn.AutoSize = true;
+            this.hsvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hsvBtn.Location = new System.Drawing.Point(72, 32);
+            this.hsvBtn.Name = "hsvBtn";
+            this.hsvBtn.Size = new System.Drawing.Size(75, 36);
+            this.hsvBtn.TabIndex = 5;
+            this.hsvBtn.Text = "HSV";
+            this.hsvBtn.UseVisualStyleBackColor = true;
+            this.hsvBtn.Click += new System.EventHandler(this.hsvBtn_Click);
             // 
             // mirrorTab
             // 
@@ -340,64 +306,84 @@
             this.mirrorBtn.UseVisualStyleBackColor = true;
             this.mirrorBtn.Click += new System.EventHandler(this.mirrorBtn_Click);
             // 
-            // fadeTab
+            // manualTab
             // 
-            this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.fadeTab.Controls.Add(this.label1);
-            this.fadeTab.Controls.Add(this.neonBtn);
-            this.fadeTab.Controls.Add(this.sinBtn);
-            this.fadeTab.Controls.Add(this.hsvBtn);
-            this.fadeTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.fadeTab.Location = new System.Drawing.Point(4, 29);
-            this.fadeTab.Name = "fadeTab";
-            this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(847, 489);
-            this.fadeTab.TabIndex = 2;
-            this.fadeTab.Text = "Fade";
+            this.manualTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.manualTab.Controls.Add(this.whiteBalanceBtn);
+            this.manualTab.Controls.Add(this.brightnessLabel);
+            this.manualTab.Controls.Add(this.brightnessTrackBar);
+            this.manualTab.Controls.Add(this.offBtn);
+            this.manualTab.Controls.Add(this.onBtn);
+            this.manualTab.Controls.Add(this.colorWheel);
+            this.manualTab.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.manualTab.Location = new System.Drawing.Point(4, 29);
+            this.manualTab.Name = "manualTab";
+            this.manualTab.Padding = new System.Windows.Forms.Padding(3);
+            this.manualTab.Size = new System.Drawing.Size(847, 489);
+            this.manualTab.TabIndex = 0;
+            this.manualTab.Text = "Manual";
             // 
-            // label1
+            // whiteBalanceBtn
             // 
-            this.label1.Location = new System.Drawing.Point(6, 95);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(793, 344);
-            this.label1.TabIndex = 9;
-            this.label1.Text = resources.GetString("label1.Text");
+            this.whiteBalanceBtn.AutoSize = true;
+            this.whiteBalanceBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.whiteBalanceBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.whiteBalanceBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
+            this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.whiteBalanceBtn.Location = new System.Drawing.Point(582, 217);
+            this.whiteBalanceBtn.Name = "whiteBalanceBtn";
+            this.whiteBalanceBtn.Size = new System.Drawing.Size(114, 29);
+            this.whiteBalanceBtn.TabIndex = 78;
+            this.whiteBalanceBtn.Text = "White Balance";
+            this.whiteBalanceBtn.UseVisualStyleBackColor = false;
+            this.whiteBalanceBtn.Click += new System.EventHandler(this.whiteBalanceBtn_Click);
             // 
-            // neonBtn
+            // brightnessLabel
             // 
-            this.neonBtn.AutoSize = true;
-            this.neonBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.neonBtn.Location = new System.Drawing.Point(673, 32);
-            this.neonBtn.Name = "neonBtn";
-            this.neonBtn.Size = new System.Drawing.Size(75, 36);
-            this.neonBtn.TabIndex = 7;
-            this.neonBtn.Text = "Neon";
-            this.neonBtn.UseVisualStyleBackColor = true;
-            this.neonBtn.Click += new System.EventHandler(this.neonBtn_Click);
+            this.brightnessLabel.AutoSize = true;
+            this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.brightnessLabel.Location = new System.Drawing.Point(584, 82);
+            this.brightnessLabel.Name = "brightnessLabel";
+            this.brightnessLabel.Size = new System.Drawing.Size(98, 24);
+            this.brightnessLabel.TabIndex = 4;
+            this.brightnessLabel.Text = "Brightness";
             // 
-            // sinBtn
+            // brightnessTrackBar
             // 
-            this.sinBtn.AutoSize = true;
-            this.sinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sinBtn.Location = new System.Drawing.Point(375, 32);
-            this.sinBtn.Name = "sinBtn";
-            this.sinBtn.Size = new System.Drawing.Size(98, 36);
-            this.sinBtn.TabIndex = 6;
-            this.sinBtn.Text = "Sin Fade";
-            this.sinBtn.UseVisualStyleBackColor = true;
-            this.sinBtn.Click += new System.EventHandler(this.sinBtn_Click);
+            this.brightnessTrackBar.Location = new System.Drawing.Point(522, 42);
+            this.brightnessTrackBar.Maximum = 100;
+            this.brightnessTrackBar.Name = "brightnessTrackBar";
+            this.brightnessTrackBar.Size = new System.Drawing.Size(244, 56);
+            this.brightnessTrackBar.TabIndex = 3;
+            this.brightnessTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
             // 
-            // hsvBtn
+            // offBtn
             // 
-            this.hsvBtn.AutoSize = true;
-            this.hsvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hsvBtn.Location = new System.Drawing.Point(72, 32);
-            this.hsvBtn.Name = "hsvBtn";
-            this.hsvBtn.Size = new System.Drawing.Size(75, 36);
-            this.hsvBtn.TabIndex = 5;
-            this.hsvBtn.Text = "HSV";
-            this.hsvBtn.UseVisualStyleBackColor = true;
-            this.hsvBtn.Click += new System.EventHandler(this.hsvBtn_Click);
+            this.offBtn.AutoSize = true;
+            this.offBtn.Checked = true;
+            this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.offBtn.Location = new System.Drawing.Point(657, 334);
+            this.offBtn.Name = "offBtn";
+            this.offBtn.Size = new System.Drawing.Size(51, 24);
+            this.offBtn.TabIndex = 2;
+            this.offBtn.TabStop = true;
+            this.offBtn.Text = "Off";
+            this.offBtn.UseVisualStyleBackColor = true;
+            // 
+            // onBtn
+            // 
+            this.onBtn.AutoSize = true;
+            this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.onBtn.Location = new System.Drawing.Point(599, 334);
+            this.onBtn.Name = "onBtn";
+            this.onBtn.Size = new System.Drawing.Size(50, 24);
+            this.onBtn.TabIndex = 1;
+            this.onBtn.Text = "On";
+            this.onBtn.UseVisualStyleBackColor = true;
+            this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
             // 
             // colorWheel
             // 
@@ -407,6 +393,20 @@
             this.colorWheel.Size = new System.Drawing.Size(476, 433);
             this.colorWheel.TabIndex = 0;
             this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
+            // 
+            // flatTabControl
+            // 
+            this.flatTabControl.Controls.Add(this.manualTab);
+            this.flatTabControl.Controls.Add(this.mirrorTab);
+            this.flatTabControl.Controls.Add(this.fadeTab);
+            this.flatTabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.flatTabControl.Location = new System.Drawing.Point(-1, 51);
+            this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.flatTabControl.Name = "flatTabControl";
+            this.flatTabControl.SelectedIndex = 0;
+            this.flatTabControl.Size = new System.Drawing.Size(855, 522);
+            this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.flatTabControl.TabIndex = 74;
             // 
             // MainWindow
             // 
@@ -428,15 +428,15 @@
             this.Text = "MainWindow";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            this.flatTabControl.ResumeLayout(false);
-            this.manualTab.ResumeLayout(false);
-            this.manualTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
+            this.fadeTab.ResumeLayout(false);
+            this.fadeTab.PerformLayout();
             this.mirrorTab.ResumeLayout(false);
             this.mirrorTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.throttleBar)).EndInit();
-            this.fadeTab.ResumeLayout(false);
-            this.fadeTab.PerformLayout();
+            this.manualTab.ResumeLayout(false);
+            this.manualTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
+            this.flatTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -445,33 +445,33 @@
         #endregion
 
         private System.Windows.Forms.Button closeBtn;
-        private FlatTabControl.FlatTabControl flatTabControl;
-        private System.Windows.Forms.TabPage manualTab;
-        private System.Windows.Forms.TabPage fadeTab;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Label antumbraLabel;
-        private System.Windows.Forms.RadioButton offBtn;
-        private System.Windows.Forms.RadioButton onBtn;
-        private System.Windows.Forms.Label brightnessLabel;
-        private System.Windows.Forms.TrackBar brightnessTrackBar;
+        private System.Windows.Forms.Label versionLabel;
+        private System.Windows.Forms.Button quitBtn;
+        private System.Windows.Forms.TabPage fadeTab;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button neonBtn;
+        private System.Windows.Forms.Button sinBtn;
+        private System.Windows.Forms.Button hsvBtn;
         private System.Windows.Forms.TabPage mirrorTab;
+        private System.Windows.Forms.Label rateDescLabel;
+        private System.Windows.Forms.Label slowestLabel;
+        private System.Windows.Forms.Label fastestLabel;
+        private System.Windows.Forms.Button setPollingSizeBtn;
         private System.Windows.Forms.Label modeDescs;
         private System.Windows.Forms.Button gameBtn;
         private System.Windows.Forms.Button smoothBtn;
         private System.Windows.Forms.Button augmentBtn;
         private System.Windows.Forms.Button mirrorBtn;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button neonBtn;
-        private System.Windows.Forms.Button sinBtn;
-        private System.Windows.Forms.Button hsvBtn;
-        private System.Windows.Forms.Label versionLabel;
-        private System.Windows.Forms.Button quitBtn;
-        private System.Windows.Forms.Button setPollingSizeBtn;
+        private System.Windows.Forms.TabPage manualTab;
         private System.Windows.Forms.Button whiteBalanceBtn;
+        private System.Windows.Forms.Label brightnessLabel;
+        private System.Windows.Forms.RadioButton offBtn;
+        private System.Windows.Forms.RadioButton onBtn;
         public CyotekColorWheel.ColorWheel colorWheel;
-        private System.Windows.Forms.Label rateDescLabel;
-        private System.Windows.Forms.Label slowestLabel;
-        private System.Windows.Forms.Label fastestLabel;
+        private FlatTabControl.FlatTabControl flatTabControl;
         private System.Windows.Forms.TrackBar throttleBar;
+        private System.Windows.Forms.TrackBar brightnessTrackBar;
     }
 }
