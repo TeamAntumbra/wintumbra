@@ -77,7 +77,7 @@
             this.closeBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.closeBtn.Location = new System.Drawing.Point(794, -3);
             this.closeBtn.Name = "closeBtn";
-            this.closeBtn.Size = new System.Drawing.Size(28, 28);
+            this.closeBtn.Size = new System.Drawing.Size(29, 30);
             this.closeBtn.TabIndex = 73;
             this.closeBtn.Text = "X";
             this.closeBtn.UseVisualStyleBackColor = false;
@@ -94,7 +94,7 @@
             this.quitBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.quitBtn.Location = new System.Drawing.Point(734, -3);
             this.quitBtn.Name = "quitBtn";
-            this.quitBtn.Size = new System.Drawing.Size(42, 27);
+            this.quitBtn.Size = new System.Drawing.Size(49, 29);
             this.quitBtn.TabIndex = 77;
             this.quitBtn.Text = "Quit";
             this.quitBtn.UseVisualStyleBackColor = false;
@@ -107,7 +107,7 @@
             this.antumbraLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.antumbraLabel.Location = new System.Drawing.Point(17, 9);
             this.antumbraLabel.Name = "antumbraLabel";
-            this.antumbraLabel.Size = new System.Drawing.Size(124, 28);
+            this.antumbraLabel.Size = new System.Drawing.Size(159, 37);
             this.antumbraLabel.TabIndex = 75;
             this.antumbraLabel.Text = "antumbra";
             // 
@@ -118,7 +118,7 @@
             this.versionLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.versionLabel.Location = new System.Drawing.Point(274, 14);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(0, 20);
+            this.versionLabel.Size = new System.Drawing.Size(0, 23);
             this.versionLabel.TabIndex = 76;
             // 
             // flatTabControl
@@ -146,10 +146,10 @@
             this.manualTab.Controls.Add(this.onBtn);
             this.manualTab.Controls.Add(this.colorWheel);
             this.manualTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.manualTab.Location = new System.Drawing.Point(4, 25);
+            this.manualTab.Location = new System.Drawing.Point(4, 29);
             this.manualTab.Name = "manualTab";
             this.manualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manualTab.Size = new System.Drawing.Size(847, 493);
+            this.manualTab.Size = new System.Drawing.Size(847, 489);
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
@@ -164,7 +164,7 @@
             this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.whiteBalanceBtn.Location = new System.Drawing.Point(582, 217);
             this.whiteBalanceBtn.Name = "whiteBalanceBtn";
-            this.whiteBalanceBtn.Size = new System.Drawing.Size(91, 27);
+            this.whiteBalanceBtn.Size = new System.Drawing.Size(114, 29);
             this.whiteBalanceBtn.TabIndex = 78;
             this.whiteBalanceBtn.Text = "White Balance";
             this.whiteBalanceBtn.UseVisualStyleBackColor = false;
@@ -176,7 +176,7 @@
             this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.brightnessLabel.Location = new System.Drawing.Point(584, 82);
             this.brightnessLabel.Name = "brightnessLabel";
-            this.brightnessLabel.Size = new System.Drawing.Size(78, 18);
+            this.brightnessLabel.Size = new System.Drawing.Size(98, 24);
             this.brightnessLabel.TabIndex = 4;
             this.brightnessLabel.Text = "Brightness";
             // 
@@ -185,7 +185,7 @@
             this.brightnessTrackBar.Location = new System.Drawing.Point(522, 42);
             this.brightnessTrackBar.Maximum = 100;
             this.brightnessTrackBar.Name = "brightnessTrackBar";
-            this.brightnessTrackBar.Size = new System.Drawing.Size(244, 45);
+            this.brightnessTrackBar.Size = new System.Drawing.Size(244, 56);
             this.brightnessTrackBar.TabIndex = 3;
             this.brightnessTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.brightnessTrackBar.Scroll += new System.EventHandler(this.brightnessTrackBar_Scroll);
@@ -197,7 +197,7 @@
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.offBtn.Location = new System.Drawing.Point(657, 334);
             this.offBtn.Name = "offBtn";
-            this.offBtn.Size = new System.Drawing.Size(41, 20);
+            this.offBtn.Size = new System.Drawing.Size(51, 24);
             this.offBtn.TabIndex = 2;
             this.offBtn.TabStop = true;
             this.offBtn.Text = "Off";
@@ -209,7 +209,7 @@
             this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.onBtn.Location = new System.Drawing.Point(599, 334);
             this.onBtn.Name = "onBtn";
-            this.onBtn.Size = new System.Drawing.Size(42, 20);
+            this.onBtn.Size = new System.Drawing.Size(50, 24);
             this.onBtn.TabIndex = 1;
             this.onBtn.Text = "On";
             this.onBtn.UseVisualStyleBackColor = true;
@@ -234,10 +234,10 @@
             this.mirrorTab.Controls.Add(this.augmentBtn);
             this.mirrorTab.Controls.Add(this.mirrorBtn);
             this.mirrorTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.mirrorTab.Location = new System.Drawing.Point(4, 25);
+            this.mirrorTab.Location = new System.Drawing.Point(4, 29);
             this.mirrorTab.Name = "mirrorTab";
             this.mirrorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mirrorTab.Size = new System.Drawing.Size(847, 493);
+            this.mirrorTab.Size = new System.Drawing.Size(847, 489);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
@@ -317,10 +317,10 @@
             this.fadeTab.Controls.Add(this.sinBtn);
             this.fadeTab.Controls.Add(this.hsvBtn);
             this.fadeTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.fadeTab.Location = new System.Drawing.Point(4, 25);
+            this.fadeTab.Location = new System.Drawing.Point(4, 29);
             this.fadeTab.Name = "fadeTab";
             this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(847, 493);
+            this.fadeTab.Size = new System.Drawing.Size(847, 489);
             this.fadeTab.TabIndex = 2;
             this.fadeTab.Text = "Fade";
             // 
@@ -375,10 +375,10 @@
             this.customTab.Controls.Add(this.devIDList);
             this.customTab.Controls.Add(this.customConfigBtn);
             this.customTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.customTab.Location = new System.Drawing.Point(4, 25);
+            this.customTab.Location = new System.Drawing.Point(4, 29);
             this.customTab.Name = "customTab";
             this.customTab.Padding = new System.Windows.Forms.Padding(3);
-            this.customTab.Size = new System.Drawing.Size(847, 493);
+            this.customTab.Size = new System.Drawing.Size(847, 489);
             this.customTab.TabIndex = 3;
             this.customTab.Text = "Custom";
             // 
@@ -387,7 +387,7 @@
             this.idDevLabel.AutoSize = true;
             this.idDevLabel.Location = new System.Drawing.Point(297, 238);
             this.idDevLabel.Name = "idDevLabel";
-            this.idDevLabel.Size = new System.Drawing.Size(96, 16);
+            this.idDevLabel.Size = new System.Drawing.Size(114, 20);
             this.idDevLabel.TabIndex = 9;
             this.idDevLabel.Text = "For Device ID: ";
             // 
@@ -399,14 +399,13 @@
             this.devIDList.FormattingEnabled = true;
             this.devIDList.Location = new System.Drawing.Point(447, 235);
             this.devIDList.Name = "devIDList";
-            this.devIDList.Size = new System.Drawing.Size(106, 23);
+            this.devIDList.Size = new System.Drawing.Size(106, 26);
             this.devIDList.TabIndex = 8;
             this.devIDList.SelectedIndexChanged += new System.EventHandler(this.devIDList_SelectedIndexChanged);
             // 
             // customConfigBtn
             // 
             this.customConfigBtn.AutoSize = true;
-            this.customConfigBtn.Enabled = false;
             this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.customConfigBtn.Location = new System.Drawing.Point(321, 160);
             this.customConfigBtn.Name = "customConfigBtn";
@@ -418,7 +417,7 @@
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(852, 572);
