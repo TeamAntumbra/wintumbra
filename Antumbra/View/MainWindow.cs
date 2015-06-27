@@ -27,21 +27,14 @@ namespace Antumbra.Glow.View
         public event EventHandler quitBtn_ClickEvent;
         public event EventHandler setPollingBtn_ClickEvent;
         public event EventHandler onOffValueChanged;
-        public event EventHandler advancedDevSelectionChanged;
         public event EventHandler whiteBalanceBtn_ClickEvent;
+        public event EventHandler throttleBar_ValueChange;
 
         public MainWindow()
         {
             InitializeComponent();
             this.brightnessTrackBar.Value = this.brightnessTrackBar.Maximum;
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
-        }
-
-        public void AddDeviceId(int id)
-        {
-            this.devIDList.Items.Add(id);
-            if (this.devIDList.SelectedItem == null)
-                this.devIDList.SelectedIndex = 0;
         }
 
         public void SetOnSelection(bool value)
@@ -151,16 +144,18 @@ namespace Antumbra.Glow.View
                 onOffValueChanged(onBtn.Checked, e);
         }
 
-        private void devIDList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (advancedDevSelectionChanged != null)
-                advancedDevSelectionChanged(this.devIDList.SelectedItem, e);
-        }
-
         private void whiteBalanceBtn_Click(object sender, EventArgs e)
         {
             if (whiteBalanceBtn_ClickEvent != null)
                 whiteBalanceBtn_ClickEvent(sender, e);
+        }
+
+        private void throttleBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (throttleBar_ValueChange != null) {
+                TrackBar bar = (TrackBar)sender;
+                throttleBar_ValueChange(bar.Value, e);
+            }
         }
     }
 }

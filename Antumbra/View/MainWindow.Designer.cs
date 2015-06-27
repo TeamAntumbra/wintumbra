@@ -41,8 +41,11 @@
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.mirrorTab = new System.Windows.Forms.TabPage();
+            this.rateDescLabel = new System.Windows.Forms.Label();
+            this.slowestLabel = new System.Windows.Forms.Label();
+            this.fastestLabel = new System.Windows.Forms.Label();
+            this.throttleBar = new System.Windows.Forms.TrackBar();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
             this.gameBtn = new System.Windows.Forms.Button();
@@ -54,17 +57,14 @@
             this.neonBtn = new System.Windows.Forms.Button();
             this.sinBtn = new System.Windows.Forms.Button();
             this.hsvBtn = new System.Windows.Forms.Button();
-            this.customTab = new System.Windows.Forms.TabPage();
-            this.idDevLabel = new System.Windows.Forms.Label();
-            this.devIDList = new System.Windows.Forms.ComboBox();
-            this.customConfigBtn = new System.Windows.Forms.Button();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.flatTabControl.SuspendLayout();
             this.manualTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             this.mirrorTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.throttleBar)).BeginInit();
             this.fadeTab.SuspendLayout();
-            this.customTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -126,7 +126,6 @@
             this.flatTabControl.Controls.Add(this.manualTab);
             this.flatTabControl.Controls.Add(this.mirrorTab);
             this.flatTabControl.Controls.Add(this.fadeTab);
-            this.flatTabControl.Controls.Add(this.customTab);
             this.flatTabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.flatTabControl.Location = new System.Drawing.Point(-1, 51);
             this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
@@ -215,18 +214,13 @@
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
             // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(476, 433);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
-            // 
             // mirrorTab
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.mirrorTab.Controls.Add(this.rateDescLabel);
+            this.mirrorTab.Controls.Add(this.slowestLabel);
+            this.mirrorTab.Controls.Add(this.fastestLabel);
+            this.mirrorTab.Controls.Add(this.throttleBar);
             this.mirrorTab.Controls.Add(this.setPollingSizeBtn);
             this.mirrorTab.Controls.Add(this.modeDescs);
             this.mirrorTab.Controls.Add(this.gameBtn);
@@ -240,6 +234,43 @@
             this.mirrorTab.Size = new System.Drawing.Size(847, 489);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
+            // 
+            // rateDescLabel
+            // 
+            this.rateDescLabel.AutoSize = true;
+            this.rateDescLabel.Location = new System.Drawing.Point(549, 370);
+            this.rateDescLabel.Name = "rateDescLabel";
+            this.rateDescLabel.Size = new System.Drawing.Size(288, 20);
+            this.rateDescLabel.TabIndex = 9;
+            this.rateDescLabel.Text = "Rate directly impacts CPU / GPU usage";
+            // 
+            // slowestLabel
+            // 
+            this.slowestLabel.AutoSize = true;
+            this.slowestLabel.Location = new System.Drawing.Point(748, 330);
+            this.slowestLabel.Name = "slowestLabel";
+            this.slowestLabel.Size = new System.Drawing.Size(65, 20);
+            this.slowestLabel.TabIndex = 8;
+            this.slowestLabel.Text = "Slowest";
+            // 
+            // fastestLabel
+            // 
+            this.fastestLabel.AutoSize = true;
+            this.fastestLabel.Location = new System.Drawing.Point(549, 330);
+            this.fastestLabel.Name = "fastestLabel";
+            this.fastestLabel.Size = new System.Drawing.Size(63, 20);
+            this.fastestLabel.TabIndex = 7;
+            this.fastestLabel.Text = "Fastest";
+            // 
+            // throttleBar
+            // 
+            this.throttleBar.Location = new System.Drawing.Point(553, 294);
+            this.throttleBar.Maximum = 125;
+            this.throttleBar.Name = "throttleBar";
+            this.throttleBar.Size = new System.Drawing.Size(244, 56);
+            this.throttleBar.TabIndex = 6;
+            this.throttleBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.throttleBar.ValueChanged += new System.EventHandler(this.throttleBar_ValueChanged);
             // 
             // setPollingSizeBtn
             // 
@@ -368,52 +399,14 @@
             this.hsvBtn.UseVisualStyleBackColor = true;
             this.hsvBtn.Click += new System.EventHandler(this.hsvBtn_Click);
             // 
-            // customTab
+            // colorWheel
             // 
-            this.customTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.customTab.Controls.Add(this.idDevLabel);
-            this.customTab.Controls.Add(this.devIDList);
-            this.customTab.Controls.Add(this.customConfigBtn);
-            this.customTab.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.customTab.Location = new System.Drawing.Point(4, 29);
-            this.customTab.Name = "customTab";
-            this.customTab.Padding = new System.Windows.Forms.Padding(3);
-            this.customTab.Size = new System.Drawing.Size(847, 489);
-            this.customTab.TabIndex = 3;
-            this.customTab.Text = "Custom";
-            // 
-            // idDevLabel
-            // 
-            this.idDevLabel.AutoSize = true;
-            this.idDevLabel.Location = new System.Drawing.Point(297, 238);
-            this.idDevLabel.Name = "idDevLabel";
-            this.idDevLabel.Size = new System.Drawing.Size(114, 20);
-            this.idDevLabel.TabIndex = 9;
-            this.idDevLabel.Text = "For Device ID: ";
-            // 
-            // devIDList
-            // 
-            this.devIDList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.devIDList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.devIDList.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.devIDList.FormattingEnabled = true;
-            this.devIDList.Location = new System.Drawing.Point(447, 235);
-            this.devIDList.Name = "devIDList";
-            this.devIDList.Size = new System.Drawing.Size(106, 26);
-            this.devIDList.TabIndex = 8;
-            this.devIDList.SelectedIndexChanged += new System.EventHandler(this.devIDList_SelectedIndexChanged);
-            // 
-            // customConfigBtn
-            // 
-            this.customConfigBtn.AutoSize = true;
-            this.customConfigBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customConfigBtn.Location = new System.Drawing.Point(321, 160);
-            this.customConfigBtn.Name = "customConfigBtn";
-            this.customConfigBtn.Size = new System.Drawing.Size(232, 36);
-            this.customConfigBtn.TabIndex = 7;
-            this.customConfigBtn.Text = "Open Advanced Settings";
-            this.customConfigBtn.UseVisualStyleBackColor = true;
-            this.customConfigBtn.Click += new System.EventHandler(this.customConfigBtn_Click);
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(476, 433);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // MainWindow
             // 
@@ -441,10 +434,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             this.mirrorTab.ResumeLayout(false);
             this.mirrorTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.throttleBar)).EndInit();
             this.fadeTab.ResumeLayout(false);
             this.fadeTab.PerformLayout();
-            this.customTab.ResumeLayout(false);
-            this.customTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -456,7 +448,6 @@
         private FlatTabControl.FlatTabControl flatTabControl;
         private System.Windows.Forms.TabPage manualTab;
         private System.Windows.Forms.TabPage fadeTab;
-        private System.Windows.Forms.TabPage customTab;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Label antumbraLabel;
         private System.Windows.Forms.RadioButton offBtn;
@@ -474,12 +465,13 @@
         private System.Windows.Forms.Button sinBtn;
         private System.Windows.Forms.Button hsvBtn;
         private System.Windows.Forms.Label versionLabel;
-        private System.Windows.Forms.Button customConfigBtn;
         private System.Windows.Forms.Button quitBtn;
         private System.Windows.Forms.Button setPollingSizeBtn;
-        private System.Windows.Forms.Label idDevLabel;
-        private System.Windows.Forms.ComboBox devIDList;
         private System.Windows.Forms.Button whiteBalanceBtn;
         public CyotekColorWheel.ColorWheel colorWheel;
+        private System.Windows.Forms.Label rateDescLabel;
+        private System.Windows.Forms.Label slowestLabel;
+        private System.Windows.Forms.Label fastestLabel;
+        private System.Windows.Forms.TrackBar throttleBar;
     }
 }

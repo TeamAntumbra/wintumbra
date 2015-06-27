@@ -48,6 +48,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private int stepSleep, x, y, width, height, redBias, greenBias, blueBias;//local copies of just these rather than entire DeviceSettings obj
         private UInt16 maxBrightness;
         public const String configFileBase = "ActiveExtsDev_";
+        private int captureThrottle;
         /// <summary>
         /// Constructor - Creates a new ExtensionManager relating to the GlowDevice
         /// with the same id as passed.
@@ -131,6 +132,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.redBias = settings.redBias;
                 this.greenBias = settings.greenBias;
                 this.blueBias = settings.blueBias;
+                this.captureThrottle = settings.captureThrottle;
             }
             //ignore ActiveExtensions events, already knows about it
         }
@@ -399,6 +401,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.activeExts.ActiveGrabber.y = this.y;
                 this.activeExts.ActiveGrabber.width = this.width;
                 this.activeExts.ActiveGrabber.height = this.height;
+                this.activeExts.ActiveGrabber.captureThrottle = this.captureThrottle;
                 this.activeExts.ActiveDriver = new GlowScreenDriverCoupler(this.activeExts.ActiveGrabber, this.activeExts.ActiveProcessor);
             }
             this.activeExts.ActiveDriver.stepSleep = this.stepSleep;

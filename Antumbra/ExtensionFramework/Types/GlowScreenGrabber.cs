@@ -17,5 +17,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public int y { get; set; }
         public int width { get; set; }
         public int height { get; set; }
+        public int captureThrottle { get; set; }
     }
 }

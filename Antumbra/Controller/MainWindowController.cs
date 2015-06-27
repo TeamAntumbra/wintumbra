@@ -59,12 +59,19 @@ namespace Antumbra.Glow.Controller
             this.window.smoothBtn_ClickEvent += new EventHandler(smoothBtnClicked);
             this.window.gameBtn_ClickEvent += new EventHandler(gameBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
-            this.window.customConfigBtn_ClickEvent += new EventHandler(customConfigBtnClicked);
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
-            this.window.advancedDevSelectionChanged += new EventHandler(advDevSelectionChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
+            this.window.throttleBar_ValueChange += new EventHandler(throttleBarValueChanged);
+        }
+
+        private void throttleBarValueChanged(object sender, EventArgs e)
+        {
+            int value = int.Parse(sender.ToString());
+            foreach (GlowDevice dev in deviceMgr.Glows) {
+                dev.settings.captureThrottle = value;
+            }
         }
 
         public bool Setup(string productVersion, EventHandler quitHandler)
@@ -97,7 +104,6 @@ namespace Antumbra.Glow.Controller
                 GlowDevice dev = this.deviceMgr.getDevice(0);
                 this.RegisterDevice(dev.id);
                 foreach (GlowDevice device in this.deviceMgr.Glows) {
-                    this.window.AddDeviceId(device.id);
                     device.AttachObserver((ConfigurationObserver)this);
                     device.AttachObserver((ToolbarNotificationObserver)this);
                 }
@@ -110,9 +116,6 @@ namespace Antumbra.Glow.Controller
                 return false;
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
-            this.advSettingsMgr = new AdvancedSettingsWindowManager(productVersion, extLibrary);
-            this.advSettingsMgr.AttachObserver((ToolbarNotificationObserver)this);
-            this.advSettingsMgr.AttachObserver((GlowCommandObserver)this);
             this.controlColor = new Color16Bit(new Utility.HslColor(0, 0, .5).ToRgbColor());
             return true;
         }
@@ -362,25 +365,11 @@ namespace Antumbra.Glow.Controller
                 ApplyNewSetup(dev.id, this.presetBuilder.GetGameMirrorPreset(), 1, true, .1);
         }
 
-        public void customConfigBtnClicked(object sender, EventArgs args)
-        {
-            if (this.deviceMgr.GlowsFound == 0) {
-                this.ShowMessage(3000, "No Glows Found",
-                    "Settings cannot be opened because no Glow devices were found.", 2);
-                return;//can't open
-            }
-            if (!this.advSettingsMgr.Show(this.id)) {
-                this.advSettingsMgr.CreateAndAddNewController(this.deviceMgr.getDevice(this.id));
-                this.advSettingsMgr.Show(this.id);
-            }
-        }
-
         public void quitBtnClicked(object sender, EventArgs args)
         {
             this.window.Close();
             NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all devices off
             this.deviceMgr.CleanUp();
-            this.advSettingsMgr.CleanUp();
             if (quitEventHandler != null)
                 quitEventHandler(sender, args);
         }

@@ -198,6 +198,22 @@ namespace Antumbra.Glow.Settings
             }
         }
         private bool _powerState;
+
+        public int captureThrottle
+        {
+            get
+            {
+                return _captureThrottle;
+            }
+            set
+            {
+                if (value != _captureThrottle) {
+                    _captureThrottle = value;
+                    Notify();
+                }
+            }
+        }
+        private int _captureThrottle;
         public DeviceSettings(int id)
         {
             Reset();
