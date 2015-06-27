@@ -184,6 +184,9 @@ namespace Antumbra.Glow.Connector
 
         public void CleanUp()
         {
+            foreach (GlowDevice dev in this.Glows) {
+                dev.SaveSettings();
+            }
             CloseAll();
             FreeList();
         }
