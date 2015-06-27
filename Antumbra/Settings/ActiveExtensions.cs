@@ -91,25 +91,35 @@ namespace Antumbra.Glow.Settings
         public override string ToString()
         {
             String result = "";
-            result += this.ActiveDriver.id.ToString() + ',';
-            result += this.ActiveGrabber.id.ToString() + ',';
-            result += this.ActiveProcessor.id.ToString() + ',';
-            int count = this.ActiveDecorators.Count;
-            for (int i = 0; i < count; i += 1) {
-                GlowDecorator dec = this.ActiveDecorators[i];
-                result += dec.id.ToString();
-                if (i != count - 1)//not the last one
-                    result += ' ';
+            if (this.ActiveDriver != null) {
+                result += this.ActiveDriver.id.ToString() + ',';
             }
-            result += ',';
-            count = this.ActiveNotifiers.Count;
-            for (int i = 0; i < count; i += 1) {
-                GlowNotifier notf = this.ActiveNotifiers[i];
-                result += notf.id.ToString();
-                if (i != count - 1)//not the last one
-                    result += ' ';
+            if (this.ActiveGrabber != null) {
+                result += this.ActiveGrabber.id.ToString() + ',';
             }
-            result += ',';
+            if (ActiveProcessor != null) {
+                result += this.ActiveProcessor.id.ToString() + ',';
+            }
+            if (this.ActiveDecorators != null) {
+                int count = this.ActiveDecorators.Count;
+                for (int i = 0; i < count; i += 1) {
+                    GlowDecorator dec = this.ActiveDecorators[i];
+                    result += dec.id.ToString();
+                    if (i != count - 1)//not the last one
+                        result += ' ';
+                }
+                result += ',';
+            }
+            if (this.ActiveNotifiers != null) {
+                int count = this.ActiveNotifiers.Count;
+                for (int i = 0; i < count; i += 1) {
+                    GlowNotifier notf = this.ActiveNotifiers[i];
+                    result += notf.id.ToString();
+                    if (i != count - 1)//not the last one
+                        result += ' ';
+                }
+                result += ',';
+            }
             return result;
         }
     }
