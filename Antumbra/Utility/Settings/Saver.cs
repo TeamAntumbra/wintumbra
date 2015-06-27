@@ -38,9 +38,14 @@ namespace Antumbra.Glow.Utility.Settings
         public String Load(String id)
         {
             lock (sync) {
-                using (System.IO.StreamReader file = new System.IO.StreamReader(this.path + id.ToString(), true)) {
-                    String contents = file.ReadToEnd();
-                    return contents;
+                try {
+                    using (System.IO.StreamReader file = new System.IO.StreamReader(this.path + id.ToString(), true)) {
+                        String contents = file.ReadToEnd();
+                        return contents;
+                    }
+                }
+                catch (System.IO.FileNotFoundException) {
+                    return null;
                 }
             }
         }
