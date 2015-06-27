@@ -34,7 +34,6 @@ namespace Antumbra.Glow.Controller
         private MainWindow window;
         private PresetBuilder presetBuilder;
         private DeviceManager deviceMgr;
-        private AdvancedSettingsWindowManager advSettingsMgr;
         private WhiteBalanceWindowController whiteBalController;
         private int id;
         private bool manual;
@@ -106,6 +105,8 @@ namespace Antumbra.Glow.Controller
                 foreach (GlowDevice device in this.deviceMgr.Glows) {
                     device.AttachObserver((ConfigurationObserver)this);
                     device.AttachObserver((ToolbarNotificationObserver)this);
+                    device.LoadSettings();
+                    device.Notify();
                 }
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
@@ -125,6 +126,8 @@ namespace Antumbra.Glow.Controller
             if (config is DeviceSettings) {//settings changed
                 DeviceSettings settings = (DeviceSettings)config;
                 this.window.SetOnSelection(settings.powerState);
+                this.window.SetCaptureThrottleValue(settings.captureThrottle);
+                this.window.SetBrightnessValue(settings.maxBrightness);
                 if (manual)//manual mode enabled
                     ResendManualColor(-1);//re-send to all devices
             }
