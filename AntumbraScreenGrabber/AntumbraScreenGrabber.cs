@@ -99,17 +99,13 @@ namespace AntumbraScreenDriver
 
         private void captureTarget()
         {
-            int runX = x;
-            int runY = y;
-            int runW = width;
-            int runH = height;
             while (this.running) {
                 Bitmap screen = null;
                 Graphics grphx = null;
                 try {
-                    screen = new Bitmap(runW, runH, PixelFormat.Format32bppArgb);
+                    screen = new Bitmap(width, height, PixelFormat.Format32bppArgb);
                     grphx = Graphics.FromImage(screen);
-                    grphx.CopyFromScreen(runX, runY, 0, 0, new Size(runW, runH));
+                    grphx.CopyFromScreen(x, y, 0, 0, new Size(width, height));
                     grphx.Save();
                     //screen = getPixelBitBlt(runX, runY, runW, runH);
                     if (null != screen && NewScreenAvailEvent != null) {
@@ -125,7 +121,7 @@ namespace AntumbraScreenDriver
                     if (grphx != null)
                         grphx.Dispose();
                 }
-                Thread.Sleep(75);
+                Thread.Sleep(captureThrottle);
             }
         }
 
