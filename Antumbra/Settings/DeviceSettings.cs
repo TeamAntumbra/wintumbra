@@ -7,13 +7,16 @@ using System.Windows.Forms;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Utility.Settings;
 using Antumbra.Glow.Observer.Configuration;
+using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.Settings
 {
-    public class DeviceSettings : Savable, Configurable
+    public class DeviceSettings : Savable, Configurable, Loggable
     {
         public delegate void ConfigurationChange(Configurable settings);
         public event ConfigurationChange ConfigChangeEvent;
+        public delegate void NewLogMsgAvail(String source, String msg);
+        public event NewLogMsgAvail NewLogMsgAvailEvent;
         public int id { get; private set; }
         public int x
         {
@@ -199,6 +202,7 @@ namespace Antumbra.Glow.Settings
         {
             Reset();
             this.id = id;
+            this.AttachObserver(LoggerHelper.GetInstance());
         }
 
         private String SerializeSettings()
@@ -220,15 +224,20 @@ namespace Antumbra.Glow.Settings
             return result;
         }
 
+        public void AttachObserver(LogMsgObserver observer)
+        {
+            NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+        }
+
         public void Save()
         {
             Saver saver = Saver.GetInstance();
-            saver.Save(this.id.ToString(), SerializeSettings());
+            saver.Save(id.ToString(), SerializeSettings());
         }
 
         public void AttachObserver(ConfigurationObserver o)
         {
-            this.ConfigChangeEvent += o.ConfigurationUpdate;
+            ConfigChangeEvent += o.ConfigurationUpdate;
         }
 
         public void Notify()
@@ -257,20 +266,33 @@ namespace Antumbra.Glow.Settings
         public void LoadSave(String settings)
         {
             String[] parts = settings.Split(',');
-            this.id = int.Parse(parts[0]);
-            this.x = int.Parse(parts[1]);
-            this.y = int.Parse(parts[2]);
-            this.width = int.Parse(parts[3]);
-            this.height = int.Parse(parts[4]);
-            this.stepSleep = int.Parse(parts[5]);
-            this.weightingEnabled = Boolean.Parse(parts[6]);
-            this.newColorWeight = double.Parse(parts[7]);
-            this.maxBrightness = UInt16.Parse(parts[8]);
-            this.redBias = int.Parse(parts[9]);
-            this.greenBias = int.Parse(parts[10]);
-            this.blueBias = int.Parse(parts[11]);
-            this.compoundDecoration = Boolean.Parse(parts[9]);
-            Notify();
+            try {
+                id = int.Parse(parts[0]);
+                x = int.Parse(parts[1]);
+                y = int.Parse(parts[2]);
+                width = int.Parse(parts[3]);
+                height = int.Parse(parts[4]);
+                stepSleep = int.Parse(parts[5]);
+                weightingEnabled = Boolean.Parse(parts[6]);
+                newColorWeight = double.Parse(parts[7]);
+                maxBrightness = UInt16.Parse(parts[8]);
+                redBias = int.Parse(parts[9]);
+                greenBias = int.Parse(parts[10]);
+                blueBias = int.Parse(parts[11]);
+                compoundDecoration = Boolean.Parse(parts[9]);
+            }
+            catch (Exception e) {
+                this.Log("Loading settings failed!" + e.StackTrace + '\n' + e.Message);
+                this.Reset();
+            }
+            this.Notify();
+        }
+
+        private void Log(String msg)
+        {
+            if (this.NewLogMsgAvailEvent != null) {
+                NewLogMsgAvailEvent("DeviceSettings id#" + this.id, msg);
+            }
         }
     }
 }
