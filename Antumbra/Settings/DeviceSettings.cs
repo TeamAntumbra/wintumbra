@@ -236,7 +236,8 @@ namespace Antumbra.Glow.Settings
             result += this.redBias.ToString() + ',';
             result += this.greenBias.ToString() + ',';
             result += this.blueBias.ToString() + ',';
-            result += this.compoundDecoration.ToString() + '\n';
+            result += this.compoundDecoration.ToString() + ',';
+            result += this.captureThrottle.ToString() + '\n';
             return result;
         }
 
@@ -281,8 +282,8 @@ namespace Antumbra.Glow.Settings
 
         public void LoadSave(String settings)
         {
-            String[] parts = settings.Split(',');
             try {
+                String[] parts = settings.Split(',');
                 id = int.Parse(parts[0]);
                 x = int.Parse(parts[1]);
                 y = int.Parse(parts[2]);
@@ -295,7 +296,8 @@ namespace Antumbra.Glow.Settings
                 redBias = int.Parse(parts[9]);
                 greenBias = int.Parse(parts[10]);
                 blueBias = int.Parse(parts[11]);
-                compoundDecoration = Boolean.Parse(parts[9]);
+                compoundDecoration = Boolean.Parse(parts[12]);
+                captureThrottle = int.Parse(parts[13]);
             }
             catch (Exception e) {
                 this.Log("Loading settings failed!" + e.StackTrace + '\n' + e.Message);

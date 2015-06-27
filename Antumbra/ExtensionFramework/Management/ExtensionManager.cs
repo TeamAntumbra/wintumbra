@@ -79,11 +79,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void LoadSave(String settings)
         {
             this.Stop();
-            String[] parts = settings.Split(',');
             if (this.activeExts == null) {
                 this.activeExts = new ActiveExtensions();
             }
             try {
+                String[] parts = settings.Split(',');
                 this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
                 this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
                 this.activeExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
