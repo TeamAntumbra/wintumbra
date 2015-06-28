@@ -86,7 +86,8 @@ namespace SlimDXCapture
 
         public void Dispose()
         {
-            driver.Abort();
+            if(driver != null && driver.IsAlive)
+                driver.Abort();
         }
 
         public override Guid id

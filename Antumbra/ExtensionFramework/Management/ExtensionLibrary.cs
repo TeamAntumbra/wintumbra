@@ -43,7 +43,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.AvailExtensions.AddRange(this.AvailFilters);
                 this.AvailNotifiers = helper.AvailNotifiers;
                 this.AvailExtensions.AddRange(this.AvailNotifiers);
-                helper.Dispose();
+                if (helper != null)
+                    helper.Dispose();
                 LogFoundExtensions();
                 if (CollectionUpdateEvent != null)
                     CollectionUpdateEvent(this.AvailExtensions);
