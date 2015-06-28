@@ -100,8 +100,6 @@ namespace Antumbra.Glow.Controller
             this.AttachObserver((GlowCommandObserver)this.deviceMgr);
             this.quitEventHandler += quitHandler;
             if (this.deviceMgr.GlowsFound > 0) {//ready first device for output if any are found
-                GlowDevice dev = this.deviceMgr.getDevice(0);
-                this.RegisterDevice(dev.id);
                 foreach (GlowDevice device in this.deviceMgr.Glows) {
                     device.AttachObserver((ConfigurationObserver)this);
                     device.AttachObserver((ToolbarNotificationObserver)this);
