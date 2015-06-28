@@ -15,7 +15,7 @@ namespace Brightener
 {
     public partial class BrightenerSettings : Form
     {
-        private GlowDecorator ext;
+        private GlowFilter ext;
         /// <summary>
         /// Move form dependencies
         /// </summary>
@@ -25,7 +25,7 @@ namespace Brightener
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public BrightenerSettings(GlowDecorator ext)
+        public BrightenerSettings(GlowFilter ext)
         {
             this.ext = ext;
             InitializeComponent();

@@ -44,7 +44,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public int id { get; private set; }
         public ActiveExtensions activeExts { get; private set; }
         private ExtensionLibrary lib;
-        private bool compoundDecoration;
+        private bool compoundFilter;
         private int stepSleep, x, y, width, height, redBias, greenBias, blueBias;//local copies of just these rather than entire DeviceSettings obj
         private UInt16 maxBrightness;
         public const String configFileBase = "ActiveExtsDev_";
@@ -87,11 +87,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
                 this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
                 this.activeExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
-                this.activeExts.ActiveDecorators.Clear();
-                foreach (String dec in parts[3].Split(' ')) {
-                    if (dec.Equals(""))
+                this.activeExts.ActiveFilters.Clear();
+                foreach (String filt in parts[3].Split(' ')) {
+                    if (filt.Equals(""))
                         break;
-                    this.activeExts.ActiveDecorators.Add((GlowDecorator)this.lib.findExt(Guid.Parse(dec)));
+                    this.activeExts.ActiveFilters.Add((GlowFilter)this.lib.findExt(Guid.Parse(filt)));
                 }
                 this.activeExts.ActiveNotifiers.Clear();
                 foreach (String notf in parts[4].Split(' ')) {
@@ -122,7 +122,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             if (config is DeviceSettings) {//update local settings
                 DeviceSettings settings = (DeviceSettings)config;
-                this.compoundDecoration = settings.compoundDecoration;
+                this.compoundFilter = settings.compoundFilter;
                 this.x = settings.x;
                 this.y = settings.y;
                 this.width = settings.width;
@@ -148,22 +148,22 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.activeExts.ActiveGrabber = (GlowScreenGrabber)ext;
             else if (ext is GlowScreenProcessor)
                 this.activeExts.ActiveProcessor = (GlowScreenProcessor)ext;
-            //decorators and notifiers are handled through their toggler
+            //filters and notifiers are handled through their toggler
         }
 
-        public bool ToggleDecOrNotf(Guid id)
+        public bool ToggleFiltOrNotf(Guid id)
         {
             GlowExtension ext = this.lib.findExt(id);
             if (ext == null)
                 throw new Exception("Invalid extension id when toggling extension");
             bool isActive = false;
-            if (ext is GlowDecorator) {
-                GlowDecorator dec = (GlowDecorator)ext;
-                isActive = CheckForActiveDec(dec.id);
+            if (ext is GlowFilter) {
+                GlowFilter filt = (GlowFilter)ext;
+                isActive = CheckForActiveFilt(filt.id);
                 if (isActive)
-                    RemoveDec(dec.id);
+                    RemoveFilt(filt.id);
                 else
-                    this.activeExts.ActiveDecorators.Add(dec);
+                    this.activeExts.ActiveFilters.Add(filt);
             }
             else if (ext is GlowNotifier) {
                 GlowNotifier notf = (GlowNotifier)ext;
@@ -184,22 +184,22 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return ext.Settings();
         }
 
-        private bool CheckForActiveDec(Guid id)
+        private bool CheckForActiveFilt(Guid id)
         {
-            foreach (GlowDecorator dec in this.activeExts.ActiveDecorators)
-                if (dec.id.Equals(id))
+            foreach (GlowFilter filt in this.activeExts.ActiveFilters)
+                if (filt.id.Equals(id))
                     return true;
             return false;
         }
 
-        private void RemoveDec(Guid id)
+        private void RemoveFilt(Guid id)
         {
-            GlowDecorator holder = null;
-            foreach (GlowDecorator dec in this.activeExts.ActiveDecorators)
-                if (dec.id.Equals(id))
-                    holder = dec;
+            GlowFilter holder = null;
+            foreach (GlowFilter filt in this.activeExts.ActiveFilters)
+                if (filt.id.Equals(id))
+                    holder = filt;
             if (holder != null)
-                this.activeExts.ActiveDecorators.Remove(holder);
+                this.activeExts.ActiveFilters.Remove(holder);
         }
 
         private bool CheckForActiveNotf(Guid id)
@@ -238,9 +238,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
             else
                 result += this.activeExts.ActiveDriver.ToString();
-            result += "\nDecorators: ";
-            foreach (var dec in this.activeExts.ActiveDecorators)
-                result += dec.ToString() + ' ';
+            result += "\nFilters: ";
+            foreach (var filt in this.activeExts.ActiveFilters)
+                result += filt.ToString() + ' ';
             result += "\nNotifiers: ";
             foreach (var notf in this.activeExts.ActiveNotifiers)
                 result += notf.ToString() + ' ';
@@ -293,33 +293,33 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 NewGlowCommandEvent(command);//pass it up
         }
 
-        public Color16Bit ApplyBrightnessSettings(Color16Bit decorated)
+        public Color16Bit ApplyBrightnessSettings(Color16Bit filtered)
         {
-            UInt16 red = Convert.ToUInt16(((double)decorated.red / UInt16.MaxValue) * this.maxBrightness);
-            UInt16 green = Convert.ToUInt16(((double)decorated.green / UInt16.MaxValue) * this.maxBrightness);
-            UInt16 blue = Convert.ToUInt16(((double)decorated.blue / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 red = Convert.ToUInt16(((double)filtered.red / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 green = Convert.ToUInt16(((double)filtered.green / UInt16.MaxValue) * this.maxBrightness);
+            UInt16 blue = Convert.ToUInt16(((double)filtered.blue / UInt16.MaxValue) * this.maxBrightness);
             return new Color16Bit(red, green, blue);
         }
 
-        public Color16Bit ApplyDecorations(Color16Bit orig)
+        public Color16Bit ApplyFilters(Color16Bit orig)
         {
-            List<GlowDecorator> decs = this.activeExts.ActiveDecorators;
-            int count = decs.Count;
+            List<GlowFilter> filts = this.activeExts.ActiveFilters;
+            int count = filts.Count;
             if (count == 0) {
                 return orig;
             }
-            if (this.compoundDecoration) {
-                foreach (var dec in decs)//decorate
-                    orig = dec.Decorate(orig);
+            if (this.compoundFilter) {
+                foreach (var filt in filts)
+                    orig = filt.Filter(orig);
                 return orig;
             }
-            //average decorators output
+            //average filters output
             int r = 0, g = 0, b = 0;
-            foreach (var dec in decs) {
-                Color16Bit decorated = dec.Decorate(orig);
-                r += decorated.red;
-                g += decorated.green;
-                b += decorated.blue;
+            foreach (var filt in filts) {
+                Color16Bit filtered = filt.Filter(orig);
+                r += filtered.red;
+                g += filtered.green;
+                b += filtered.blue;
             }
             UInt16 red = Convert.ToUInt16(r / count);
             UInt16 green = Convert.ToUInt16(g / count);
@@ -377,8 +377,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
             if (!this.activeExts.ActiveDriver.Start())
                 return false;
-            foreach (var dec in this.activeExts.ActiveDecorators)
-                if (!dec.Start())
+            foreach (var filt in this.activeExts.ActiveFilters)
+                if (!filt.Start())
                     return false;
             foreach (var notf in this.activeExts.ActiveNotifiers)
                 if (!notf.Start())
@@ -419,8 +419,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                     return false;
                 if (!this.activeExts.ActiveDriver.Stop())//coupler will stop grabber & processor
                     result = false;
-                foreach (var dec in this.activeExts.ActiveDecorators)
-                    if (!dec.Stop())
+                foreach (var filt in this.activeExts.ActiveFilters)
+                    if (!filt.Stop())
                         result = false;
                 foreach (var notf in this.activeExts.ActiveNotifiers)
                     if (!notf.Stop())

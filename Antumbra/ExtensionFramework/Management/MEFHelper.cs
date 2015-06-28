@@ -23,7 +23,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public List<GlowDriver> AvailDrivers { get; private set; }
         public List<GlowScreenGrabber> AvailScreenDrivers { get; private set; }
         public List<GlowScreenProcessor> AvailScreenProcessors { get; private set; }
-        public List<GlowDecorator> AvailDecorators { get; private set; }
+        public List<GlowFilter> AvailFilters { get; private set; }
         public List<GlowNotifier> AvailNotifiers { get; private set; }
 
         public MEFHelper(String pathToExtensions)
@@ -34,7 +34,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.AvailDrivers.Add(new GlowScreenDriverCoupler(null, null));//add coupler placeholder
             this.AvailScreenDrivers = new List<GlowScreenGrabber>();
             this.AvailScreenProcessors = new List<GlowScreenProcessor>();
-            this.AvailDecorators = new List<GlowDecorator>();
+            this.AvailFilters = new List<GlowFilter>();
             this.AvailNotifiers = new List<GlowNotifier>();
 
             Compose();
@@ -52,8 +52,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 else if (extension is GlowScreenProcessor) {
                     this.AvailScreenProcessors.Add((GlowScreenProcessor)extension);
                 }
-                else if (extension is GlowDecorator) {
-                    this.AvailDecorators.Add((GlowDecorator)extension);
+                else if (extension is GlowFilter) {
+                    this.AvailFilters.Add((GlowFilter)extension);
                 }
                 else if (extension is GlowNotifier) {
                     this.AvailNotifiers.Add((GlowNotifier)extension);
@@ -92,12 +92,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return null;
         }
 
-        public List<GlowDecorator> GetDefaultDecorators()
+        public List<GlowFilter> GetDefaultFilters()
         {
-            List<GlowDecorator> result = new List<GlowDecorator>();
-            foreach (var dctr in this.AvailDecorators)
-                if (dctr.IsDefault)
-                    result.Add(dctr);
+            List<GlowFilter> result = new List<GlowFilter>();
+            foreach (var filt in this.AvailFilters)
+                if (filt.IsDefault)
+                    result.Add(filt);
             return result;
         }
 

@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace Saturator
 {
     [Export(typeof(GlowExtension))]
-    public class Saturator : GlowDecorator
+    public class Saturator : GlowFilter
     {
         private bool running = false;
         private SaturatorSettings settingsWin;
@@ -47,7 +47,7 @@ namespace Saturator
 
         public override string Description
         {
-            get { return "A decorator to saturate the output color for richer, more satisfying color output."; }
+            get { return "A filter to saturate the output color for richer, more satisfying color output."; }
         }
 
         public override string Website
@@ -60,7 +60,7 @@ namespace Saturator
             return new Saturator();
         }
 
-        public override Color16Bit Decorate(Color16Bit origColor)
+        public override Color16Bit Filter(Color16Bit origColor)
         {
             HslColor boringHSL = new HslColor(origColor.ToRGBColor());
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;

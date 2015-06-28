@@ -117,7 +117,7 @@ namespace Antumbra.Glow.Connector
         {
             if (id == -1) {
                 foreach (GlowDevice device in this.Glows) {
-                    newColor = device.ApplyDecorations(newColor);
+                    newColor = device.ApplyFilters(newColor);
                     newColor = device.ApplyBrightness(newColor);
                     newColor = device.ApplyWhiteBalance(newColor);
                     sendColor(newColor.red, newColor.green, newColor.blue, device.id);
@@ -127,7 +127,7 @@ namespace Antumbra.Glow.Connector
             GlowDevice dev = this.getDevice(id);
             if (dev == null)
                 return;//no device found matching passed id
-            newColor = dev.ApplyDecorations(newColor);
+            newColor = dev.ApplyFilters(newColor);
             newColor = dev.ApplyBrightness(newColor);
             newColor = dev.ApplyWhiteBalance(newColor);
             sendColor(newColor.red, newColor.green, newColor.blue, id);
@@ -164,7 +164,7 @@ namespace Antumbra.Glow.Connector
                 NewToolbarNotifAvailEvent(time, title, msg, icon);
         }
 
-        public string GetDeviceSetupDecs()
+        public string GetDeviceSetupDescs()
         {
             string result = "";
             foreach (var dev in this.Glows)

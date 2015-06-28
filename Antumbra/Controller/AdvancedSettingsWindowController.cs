@@ -44,8 +44,8 @@ namespace Antumbra.Glow.Controller
             this.window.sleepSize_TextChangedEvent += new EventHandler(UpdateStepSleep);
             this.window.newColorWeight_TextChangedEvent += new EventHandler(UpdateNewColorWeight);
             this.window.updateGrabberProcessorChoiceEvent += new EventHandler(UpdateGrabberProcessorChoice);
-            this.window.decoratorComboBx_SelectedIndexChangedEvent += new EventHandler(updateSelectedDecorator);
-            this.window.toggleDecoratorEvent += new EventHandler(toggleDecorator);
+            this.window.filterComboBx_SelectedIndexChangedEvent += new EventHandler(updateSelectedFilter);
+            this.window.toggleFilterEvent += new EventHandler(toggleFilter);
             this.window.pollingArea_ClickEvent += new EventHandler(pollingArea_Click);
             this.window.startBtn_ClickEvent += new EventHandler(StartBtnClickHandler);
             this.window.stopBtn_ClickEvent += new EventHandler(StopBtnClickHandler);
@@ -56,11 +56,11 @@ namespace Antumbra.Glow.Controller
             this.window.weightingEnabled_CheckedChangedEvent += new EventHandler(UpdateWeightingEnabled);
             this.window.loadBtn_ClickEvent += new EventHandler(LoadBtnClickHandler);
             this.window.saveBtn_ClickEvent += new EventHandler(SaveBtnClickHandler);
-            this.window.decoratorSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
+            this.window.filterSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
             this.window.processorSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
             this.window.driverSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
-            this.window.decoratorComboBx_SelectedIndexChangedEvent += new EventHandler(DecoratorSelectedItemChangeHandler);
-            this.window.compoundDecorationCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundDecorationCheck);
+            this.window.filterComboBx_SelectedIndexChangedEvent += new EventHandler(FilterSelectedItemChangeHandler);
+            this.window.compoundFilterCheck_CheckedChangedEvent += new EventHandler(UpdateCompoundFilterCheck);
             this.window.grabberSettingsBtn_ClickEvent += new EventHandler(ExtSettingsBtnClickHandler);
             this.window.resetBtn_ClickEvent += new EventHandler(ResetBtnClickHandler);
         }
@@ -76,11 +76,11 @@ namespace Antumbra.Glow.Controller
                 NewGlowCommandAvailEvent(cmd);//pass it up
         }
 
-        private void DecoratorSelectedItemChangeHandler(object sender, EventArgs args)
+        private void FilterSelectedItemChangeHandler(object sender, EventArgs args)
         {
-            GlowDecorator dec = (GlowDecorator)this.window.decoratorComboBx.SelectedItem;
-            if (dec != null)
-                this.window.SetCurrentDecStatus(this.dev.GetDecOrNotfStatus(dec.id).ToString());
+            GlowFilter filt = (GlowFilter)this.window.filterComboBx.SelectedItem;
+            if (filt != null)
+                this.window.SetCurrentFiltStatus(this.dev.GetFiltOrNotfStatus(filt.id).ToString());
         }
 
         private void ExtSettingsBtnClickHandler(object sender, EventArgs args)
@@ -168,9 +168,9 @@ namespace Antumbra.Glow.Controller
                     this.window.UpdatedComboBoxSelectedExt(actives.ActiveGrabber.id, this.window.grabberComboBx);
                 if (actives.ActiveProcessor != null)
                     this.window.UpdatedComboBoxSelectedExt(actives.ActiveProcessor.id, this.window.processorComboBx);
-                List<GlowDecorator> decs = actives.ActiveDecorators;
-                if (decs.Count != 0)
-                    this.window.UpdatedComboBoxSelectedExt(decs.First<GlowDecorator>().id, this.window.decoratorComboBx);
+                List<GlowFilter> filts = actives.ActiveFilters;
+                if (filts.Count != 0)
+                    this.window.UpdatedComboBoxSelectedExt(filts.First<GlowFilter>().id, this.window.filterComboBx);
                 //TODO notifier
             }
         }
@@ -184,7 +184,7 @@ namespace Antumbra.Glow.Controller
                 current.Add(ext);
             foreach (GlowExtension ext in this.window.processorComboBx.Items)
                 current.Add(ext);
-            foreach (GlowExtension ext in this.window.decoratorComboBx.Items)
+            foreach (GlowExtension ext in this.window.filterComboBx.Items)
                 current.Add(ext);
             foreach (GlowExtension ext in exts) {
                 if (CheckForExtInList(ext, current))//already have it
@@ -199,8 +199,8 @@ namespace Antumbra.Glow.Controller
                 else if (ext is GlowScreenProcessor) {
                     this.window.processorComboBx.Items.Add(ext);
                 }
-                else if (ext is GlowDecorator) {
-                    this.window.decoratorComboBx.Items.Add(ext);
+                else if (ext is GlowFilter) {
+                    this.window.filterComboBx.Items.Add(ext);
                 }
                 else if (ext is GlowNotifier) {
                     //TODO
@@ -309,11 +309,11 @@ namespace Antumbra.Glow.Controller
             }
         }
 
-        private void UpdateCompoundDecorationCheck(object sender, EventArgs a)
+        private void UpdateCompoundFilterCheck(object sender, EventArgs a)
         {
             try {
                 CheckBox box = (CheckBox)sender;
-                this.dev.settings.compoundDecoration = box.Checked;
+                this.dev.settings.compoundFilter = box.Checked;
             }
             catch (Exception) {
                 //TODO report
@@ -351,26 +351,26 @@ namespace Antumbra.Glow.Controller
             this.dev.SetDvrGbbrOrPrcsrExt(ext.id);
         }
 
-        private void updateSelectedDecorator(object sender, EventArgs a)
+        private void updateSelectedFilter(object sender, EventArgs a)
         {
             try {
                 ComboBox box = (ComboBox)sender;
-                GlowDecorator dec = (GlowDecorator)box.SelectedItem;
-                if (dec != null)
-                    this.window.SetCurrentDecStatus(this.dev.GetDecOrNotfStatus(dec.id).ToString());
+                GlowFilter filt = (GlowFilter)box.SelectedItem;
+                if (filt != null)
+                    this.window.SetCurrentFiltStatus(this.dev.GetFiltOrNotfStatus(filt.id).ToString());
             }
             catch (Exception) {
                 //TODO report
             }
         }
 
-        private void toggleDecorator(object sender, EventArgs args)
+        private void toggleFilter(object sender, EventArgs args)
         {
             try {
-                if (HandleToggle(this.window.decoratorComboBx))
-                    this.window.SetCurrentDecStatus("True");
+                if (HandleToggle(this.window.filterComboBx))
+                    this.window.SetCurrentFiltStatus("True");
                 else
-                    this.window.SetCurrentDecStatus("False");
+                    this.window.SetCurrentFiltStatus("False");
             }
             catch (Exception) {
                 //TODO report
@@ -383,7 +383,7 @@ namespace Antumbra.Glow.Controller
             if (ext == null)
                 return false;
             SendStopCommand();
-            return this.dev.SetDecOrNotf(ext.id);
+            return this.dev.SetFiltOrNotf(ext.id);
         }
 
         private void AttemptToOpenSettingsWindow(Guid id)

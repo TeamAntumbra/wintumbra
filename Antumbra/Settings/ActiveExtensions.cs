@@ -51,13 +51,13 @@ namespace Antumbra.Glow.Settings
                 Notify();
             }
         }
-        private List<GlowDecorator> _ActiveDecorators;
-        public List<GlowDecorator> ActiveDecorators
+        private List<GlowFilter> _ActiveFilters;
+        public List<GlowFilter> ActiveFilters
         {
-            get { return this._ActiveDecorators; }
+            get { return this._ActiveFilters; }
             set
             {
-                this._ActiveDecorators = value;
+                this._ActiveFilters = value;
                 Notify();
             }
         }
@@ -73,7 +73,7 @@ namespace Antumbra.Glow.Settings
         }
         public ActiveExtensions()
         {
-            this._ActiveDecorators = new List<GlowDecorator>();
+            this._ActiveFilters = new List<GlowFilter>();
             this._ActiveNotifiers = new List<GlowNotifier>();
         }
 
@@ -100,11 +100,11 @@ namespace Antumbra.Glow.Settings
             if (ActiveProcessor != null) {
                 result += this.ActiveProcessor.id.ToString() + ',';
             }
-            if (this.ActiveDecorators != null) {
-                int count = this.ActiveDecorators.Count;
+            if (this.ActiveFilters != null) {
+                int count = this.ActiveFilters.Count;
                 for (int i = 0; i < count; i += 1) {
-                    GlowDecorator dec = this.ActiveDecorators[i];
-                    result += dec.id.ToString();
+                    GlowFilter filt = this.ActiveFilters[i];
+                    result += filt.id.ToString();
                     if (i != count - 1)//not the last one
                         result += ' ';
                 }

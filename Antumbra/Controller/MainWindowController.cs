@@ -294,11 +294,11 @@ namespace Antumbra.Glow.Controller
             }
         }
 
-        private Color16Bit ApplyBrightnessSettings(Color16Bit decorated, UInt16 maxBrightness)
+        private Color16Bit ApplyBrightnessSettings(Color16Bit filtered, UInt16 maxBrightness)
         {
-            UInt16 red = Convert.ToUInt16(((double)decorated.red / UInt16.MaxValue) * maxBrightness);
-            UInt16 green = Convert.ToUInt16(((double)decorated.green / UInt16.MaxValue) * maxBrightness);
-            UInt16 blue = Convert.ToUInt16(((double)decorated.blue / UInt16.MaxValue) * maxBrightness);
+            UInt16 red = Convert.ToUInt16(((double)filtered.red / UInt16.MaxValue) * maxBrightness);
+            UInt16 green = Convert.ToUInt16(((double)filtered.green / UInt16.MaxValue) * maxBrightness);
+            UInt16 blue = Convert.ToUInt16(((double)filtered.blue / UInt16.MaxValue) * maxBrightness);
             return new Color16Bit(red, green, blue);
         }
 

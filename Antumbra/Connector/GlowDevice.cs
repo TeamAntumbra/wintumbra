@@ -73,9 +73,9 @@ namespace Antumbra.Glow.Connector
             this.extMgr.UpdateExtension(id);
         }
 
-        public bool SetDecOrNotf(Guid id)
+        public bool SetFiltOrNotf(Guid id)
         {
-            bool result = this.extMgr.ToggleDecOrNotf(id);
+            bool result = this.extMgr.ToggleFiltOrNotf(id);
             return result;
         }
 
@@ -85,10 +85,10 @@ namespace Antumbra.Glow.Connector
             this.extMgr.activeExts.Notify();
         }
 
-        public bool GetDecOrNotfStatus(Guid id)
+        public bool GetFiltOrNotfStatus(Guid id)
         {
-            foreach (GlowDecorator dec in this.extMgr.activeExts.ActiveDecorators)
-                if (dec.id.Equals(id))
+            foreach (GlowFilter filt in this.extMgr.activeExts.ActiveFilters)
+                if (filt.id.Equals(id))
                     return true;
             foreach (GlowNotifier notf in this.extMgr.activeExts.ActiveNotifiers)
                 if (notf.id.Equals(id))
@@ -152,9 +152,9 @@ namespace Antumbra.Glow.Connector
             this.extMgr.AttachObserver(observer);
         }
 
-        public Color16Bit ApplyDecorations(Color16Bit orig)
+        public Color16Bit ApplyFilters(Color16Bit orig)
         {
-            return this.extMgr.ApplyDecorations(orig);
+            return this.extMgr.ApplyFilters(orig);
         }
 
         public Color16Bit ApplyBrightness(Color16Bit orig)
