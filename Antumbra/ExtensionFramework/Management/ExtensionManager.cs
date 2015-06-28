@@ -101,7 +101,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 }
             }
             catch(Exception e) {
-                this.NewLogMsgAvail("Ext Mgr", "Loading settings failed!" + e.StackTrace + '\n' + e.Message);
+                this.NewLogMsgAvail("Ext Mgr", "Loading settings encountered an Exception!" + e.StackTrace + '\n' + e.Message);
             }
         }
 
