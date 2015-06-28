@@ -20,7 +20,7 @@ using System.Diagnostics;
 namespace SlimDXCapture
 {
     [Export(typeof(GlowExtension))]
-    public class DxScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
+    public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
     {
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
@@ -33,7 +33,7 @@ namespace SlimDXCapture
 
         public override GlowExtension Create()
         {
-            return new DxScreenCapture();
+            return new SlimDXScreenCapture();
         }
 
         public Bitmap CaptureScreen(IntPtr hwnd)
