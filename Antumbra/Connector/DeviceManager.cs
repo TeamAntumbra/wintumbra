@@ -147,8 +147,6 @@ namespace Antumbra.Glow.Connector
                 }
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
-            //if (status != 0)//did not work as expected
-            //    status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);//try again
             this.status = status;
         }
 
@@ -184,11 +182,11 @@ namespace Antumbra.Glow.Connector
 
         public void CleanUp()
         {
-            sendColor(new Observer.Colors.Color16Bit(0, 0, 0), -1);
             foreach (GlowDevice dev in this.Glows) {
                 dev.SaveSettings();
                 dev.Stop();
             }
+            sendColor(new Observer.Colors.Color16Bit(0, 0, 0), -1);
             CloseAll();
             FreeList();
         }
