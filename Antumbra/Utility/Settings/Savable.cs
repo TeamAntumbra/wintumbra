@@ -9,7 +9,7 @@ namespace Antumbra.Glow.Utility.Settings
     public interface Savable
     {
         void Save();
-        void LoadSave(String settings);
+        Object LoadSave(String settings);
         void Reset();
     }
 }

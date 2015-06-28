@@ -279,7 +279,7 @@ namespace Antumbra.Glow.Settings
             this.maxBrightness = UInt16.MaxValue;
         }
 
-        public void LoadSave(String settings)
+        public Object LoadSave(String settings)
         {
             try {
                 String[] parts = settings.Split(',');
@@ -303,6 +303,7 @@ namespace Antumbra.Glow.Settings
                 this.Reset();
             }
             this.Notify();
+            return null;//unused
         }
 
         private void Log(String msg)

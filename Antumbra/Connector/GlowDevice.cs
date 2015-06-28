@@ -125,9 +125,11 @@ namespace Antumbra.Glow.Connector
 
         public void LoadSettings()
         {
+            this.Stop();
             Saver saver = Saver.GetInstance();
             this.settings.LoadSave(saver.Load(this.id.ToString()));
-            this.extMgr.LoadSave(saver.Load(ExtensionManager.configFileBase + this.id));
+            ActiveExtensions newActives = (ActiveExtensions)this.extMgr.LoadSave(saver.Load(ExtensionManager.configFileBase + this.id));
+            this.SetActives(newActives);
         }
 
         public void Reset()

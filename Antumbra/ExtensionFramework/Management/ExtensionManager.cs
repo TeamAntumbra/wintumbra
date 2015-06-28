@@ -76,29 +76,30 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
-        public void LoadSave(String settings)
+        public Object LoadSave(String settings)
         {
             this.Stop();
-            this.activeExts = new ActiveExtensions();
+            ActiveExtensions newActiveExts = new ActiveExtensions();
             try {
                 String[] parts = settings.Split(',');
-                this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
-                this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
-                this.activeExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
+                newActiveExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
+                newActiveExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
+                newActiveExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
                 foreach (String filt in parts[3].Split(' ')) {
                     if (filt.Equals(""))
                         break;
-                    this.activeExts.ActiveFilters.Add((GlowFilter)this.lib.findExt(Guid.Parse(filt)));
+                    newActiveExts.ActiveFilters.Add((GlowFilter)this.lib.findExt(Guid.Parse(filt)));
                 }
                 foreach (String notf in parts[4].Split(' ')) {
                     if (notf.Equals(""))
                         break;
-                    this.activeExts.ActiveNotifiers.Add((GlowNotifier)this.lib.findExt(Guid.Parse(notf)));
+                    newActiveExts.ActiveNotifiers.Add((GlowNotifier)this.lib.findExt(Guid.Parse(notf)));
                 }
             }
             catch(Exception e) {
                 this.NewLogMsgAvail("Ext Mgr", "Loading settings encountered an Exception!" + e.StackTrace + '\n' + e.Message);
             }
+            return newActiveExts;
         }
 
         void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
