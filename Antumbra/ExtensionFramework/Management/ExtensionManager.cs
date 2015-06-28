@@ -79,21 +79,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void LoadSave(String settings)
         {
             this.Stop();
-            if (this.activeExts == null) {
-                this.activeExts = new ActiveExtensions();
-            }
+            this.activeExts = new ActiveExtensions();
             try {
                 String[] parts = settings.Split(',');
                 this.activeExts.ActiveDriver = (GlowDriver)this.lib.findExt(Guid.Parse(parts[0]));
                 this.activeExts.ActiveGrabber = (GlowScreenGrabber)this.lib.findExt(Guid.Parse(parts[1]));
                 this.activeExts.ActiveProcessor = (GlowScreenProcessor)this.lib.findExt(Guid.Parse(parts[2]));
-                this.activeExts.ActiveFilters.Clear();
                 foreach (String filt in parts[3].Split(' ')) {
                     if (filt.Equals(""))
                         break;
                     this.activeExts.ActiveFilters.Add((GlowFilter)this.lib.findExt(Guid.Parse(filt)));
                 }
-                this.activeExts.ActiveNotifiers.Clear();
                 foreach (String notf in parts[4].Split(' ')) {
                     if (notf.Equals(""))
                         break;
@@ -361,7 +357,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             if (!Verify())
                 return false;
-            GlowDriver activeDriver = this.activeExts.ActiveDriver;
             this.activeExts.ActiveDriver.AttachColorObserver(this);
             if (this.activeExts.ActiveDriver is Loggable) {
                 Loggable log = (Loggable)this.activeExts.ActiveDriver;
@@ -393,18 +388,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             if (this.activeExts.ActiveDriver == null)
                 return false;
-            if (this.activeExts.ActiveDriver is GlowScreenDriverCoupler) {//screen based driver selected
-                if (null == this.activeExts.ActiveGrabber || this.activeExts.ActiveProcessor == null) {//no grabber or processor set
-                    return false;
+            else  {
+                if (this.activeExts.ActiveGrabber != null && this.activeExts.ActiveProcessor != null) {
+                    this.activeExts.ActiveGrabber.x = this.x;//set screen related settings for grabber
+                    this.activeExts.ActiveGrabber.y = this.y;
+                    this.activeExts.ActiveGrabber.width = this.width;
+                    this.activeExts.ActiveGrabber.height = this.height;
+                    this.activeExts.ActiveGrabber.captureThrottle = this.captureThrottle;
+                    this.activeExts.ActiveDriver = new GlowScreenDriverCoupler(this.activeExts.ActiveGrabber, this.activeExts.ActiveProcessor);
                 }
-                this.activeExts.ActiveGrabber.x = this.x;//set screen related settings for grabber
-                this.activeExts.ActiveGrabber.y = this.y;
-                this.activeExts.ActiveGrabber.width = this.width;
-                this.activeExts.ActiveGrabber.height = this.height;
-                this.activeExts.ActiveGrabber.captureThrottle = this.captureThrottle;
-                this.activeExts.ActiveDriver = new GlowScreenDriverCoupler(this.activeExts.ActiveGrabber, this.activeExts.ActiveProcessor);
+                this.activeExts.ActiveDriver.stepSleep = this.stepSleep;
             }
-            this.activeExts.ActiveDriver.stepSleep = this.stepSleep;
             return true;
         }
         /// <summary>

@@ -122,7 +122,7 @@ namespace Antumbra.Glow.Connector
                     newColor = device.ApplyWhiteBalance(newColor);
                     sendColor(newColor.red, newColor.green, newColor.blue, device.id);
                 }
-                return; //cancel this call
+                return;//call completed
             }
             GlowDevice dev = this.getDevice(id);
             if (dev == null)

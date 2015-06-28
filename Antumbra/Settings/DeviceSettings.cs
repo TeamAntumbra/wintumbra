@@ -216,7 +216,6 @@ namespace Antumbra.Glow.Settings
         private int _captureThrottle;
         public DeviceSettings(int id)
         {
-            Reset();
             this.id = id;
             this.AttachObserver(LoggerHelper.GetInstance());
         }

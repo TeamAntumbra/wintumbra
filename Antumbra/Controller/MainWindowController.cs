@@ -75,7 +75,7 @@ namespace Antumbra.Glow.Controller
 
         public bool Setup(string productVersion, EventHandler quitHandler)
         {
-            ExtensionLibrary extLibrary = null;
+            ExtensionLibrary extLibrary;
             try {
                 extLibrary = new ExtensionLibrary(extPath);//load extensions into lib
             }
@@ -84,10 +84,10 @@ namespace Antumbra.Glow.Controller
                 if (ex is System.Reflection.ReflectionTypeLoadException) {
                     System.Reflection.ReflectionTypeLoadException e = (System.Reflection.ReflectionTypeLoadException)ex;
                     foreach (var err in e.LoaderExceptions)
-                        msg += err.Message;
+                        msg += err.Message + '\n' + err.StackTrace;
                 }
                 else
-                    msg = ex.Message;
+                    msg = ex.Message + '\n' + ex.StackTrace;
                 ShowMessage(10000, "Exception Occured While Loading Extensions", msg, 2);
                 this.Log(msg);
                 Thread.Sleep(10000);//wait for message
@@ -104,7 +104,6 @@ namespace Antumbra.Glow.Controller
                     device.AttachObserver((ConfigurationObserver)this);
                     device.AttachObserver((ToolbarNotificationObserver)this);
                     device.LoadSettings();
-                    device.Notify();
                 }
                 this.whiteBalController = new WhiteBalanceWindowController(this.deviceMgr.Glows);//setup white balancer to control all devices
             }
@@ -116,6 +115,7 @@ namespace Antumbra.Glow.Controller
             }
             this.presetBuilder = new PresetBuilder(extLibrary);
             this.controlColor = new Color16Bit(new Utility.HslColor(0, 0, .5).ToRgbColor());
+            NewGlowCmdAvailEvent(new StartCommand(-1));
             return true;
         }
 
@@ -304,66 +304,75 @@ namespace Antumbra.Glow.Controller
 
         private void ApplyNewSetup(int id, ActiveExtensions actives, int stepSleep, bool weighted, double weight)
         {
-            manual = false;
-            NewGlowCmdAvailEvent(new StopCommand(id));
+            ApplyNewSetup(id, actives);
             GlowDevice dev = this.deviceMgr.getDevice(id);
-            dev.SetActives(actives);
             dev.settings.weightingEnabled = weighted;
             dev.settings.newColorWeight = weight;
             dev.settings.stepSleep = stepSleep;
-            NewGlowCmdAvailEvent(new StartCommand(id));
         }
 
         private void ApplyNewSetup(int id, ActiveExtensions actives)
         {
             manual = false;
-            NewGlowCmdAvailEvent(new StopCommand(-1));
             GlowDevice dev = this.deviceMgr.getDevice(id);
             dev.SetActives(actives);
             dev.ApplyDriverRecomSettings();
-            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void hsvBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetHSVFadePreset());
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void sinBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetSinFadePreset());
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetNeonFadePreset());
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetup(dev.id, this.presetBuilder.GetMirrorPreset());
+                ApplyNewSetup(dev.id, this.presetBuilder.GetMirrorPreset(), 1, true, 0.25);
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetAugmentMirrorPreset(), 1, true, .05);
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void smoothBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetSmoothMirrorPreset(), 1, true, .1);
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
         {
+            NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
                 ApplyNewSetup(dev.id, this.presetBuilder.GetGameMirrorPreset(), 1, true, .1);
+            NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
         public void quitBtnClicked(object sender, EventArgs args)
