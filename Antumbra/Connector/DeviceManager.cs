@@ -184,9 +184,7 @@ namespace Antumbra.Glow.Connector
         {
             foreach (GlowDevice dev in this.Glows) {
                 dev.SaveSettings();
-                dev.Stop();
             }
-            sendColor(new Observer.Colors.Color16Bit(0, 0, 0), -1);
             CloseAll();
             FreeList();
         }
