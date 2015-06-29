@@ -261,6 +261,12 @@ namespace Antumbra.Glow.Controller
                 this.window.Show();
         }
 
+        public void restartEventHandler(object sender, EventArgs args)
+        {
+            this.NewGlowCmdAvailEvent(new StopCommand(-1));
+            this.NewGlowCmdAvailEvent(new StartCommand(-1));
+        }
+
         public void closeBtnClicked(object sender, EventArgs args)
         {
             this.window.Hide();

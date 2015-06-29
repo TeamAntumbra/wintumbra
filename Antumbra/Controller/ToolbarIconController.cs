@@ -35,6 +35,7 @@ namespace Antumbra.Glow.Controller
             this.failed = !mainController.Setup(this.toolbarIcon.ProductVersion, new EventHandler(Quit));
             if (!this.failed) {//continue if so far so good
                 this.toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
+                this.toolbarIcon.notifyIcon_DoubleClickEvent += new EventHandler(mainController.restartEventHandler);
                 this.AttachObserver(LoggerHelper.GetInstance());
                 this.LogMsg("ToolbarIconController", "Wintumbra starting @ " + DateTime.Now.ToString());
                 NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
