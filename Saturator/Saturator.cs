@@ -64,11 +64,12 @@ namespace Saturator
         {
             HslColor boringHSL = new HslColor(origColor.ToRGBColor());
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;
-            if (boringHSL.S < satAmnt) { }//skip low saturation colors TODO make this its own value
-            else if (boringHSL.S <= (1.0-satAmnt))
-                boringHSL.S += satAmnt; //saturate
+            double diff = Math.Abs(.5 - boringHSL.L);
+            int dir = boringHSL.L > .5 ? -1 : 1;
+            if (diff < satAmnt)
+                boringHSL.L = .5;
             else
-                boringHSL.S = 1.0;
+                boringHSL.L += dir * satAmnt;
             return new Color16Bit(boringHSL.ToRgbColor());
         }
 
