@@ -353,7 +353,7 @@ namespace Antumbra.Glow.Controller
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetup(dev.id, this.presetBuilder.GetMirrorPreset(), 1, true, 0.25);
+                ApplyNewSetup(dev.id, this.presetBuilder.GetMirrorPreset(), 1, true, .05);
             NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
@@ -361,7 +361,7 @@ namespace Antumbra.Glow.Controller
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetup(dev.id, this.presetBuilder.GetAugmentMirrorPreset(), 1, true, .05);
+                ApplyNewSetup(dev.id, this.presetBuilder.GetAugmentMirrorPreset(), 1, true, .03);
             NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
@@ -369,7 +369,7 @@ namespace Antumbra.Glow.Controller
         {
             NewGlowCmdAvailEvent(new StopCommand(-1));
             foreach (GlowDevice dev in this.deviceMgr.Glows)
-                ApplyNewSetup(dev.id, this.presetBuilder.GetSmoothMirrorPreset(), 1, true, .1);
+                ApplyNewSetup(dev.id, this.presetBuilder.GetSmoothMirrorPreset(), 1, true, .01);
             NewGlowCmdAvailEvent(new StartCommand(-1));
         }
 
