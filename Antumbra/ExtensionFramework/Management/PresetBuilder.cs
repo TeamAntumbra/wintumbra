@@ -97,9 +97,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             ext = this.lib.LookupExt(Saturator);
             if (ext != null)
                 result.ActiveFilters.Add((GlowFilter)ext);
-            ext = this.lib.LookupExt(Brightener);
-            if (ext != null)
-                result.ActiveFilters.Add((GlowFilter)ext);
             return result;
         }
 
