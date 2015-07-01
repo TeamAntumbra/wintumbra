@@ -62,6 +62,9 @@ namespace Saturator
 
         public override Color16Bit Filter(Color16Bit origColor)
         {
+            // Too dark to saturate with good results
+            if (origColor.red < 5000 && origColor.green < 5000 && origColor.blue < 5000)
+                return origColor;
             HslColor boringHSL = new HslColor(origColor.ToRGBColor());
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;
             double diff = Math.Abs(.5 - boringHSL.L);
