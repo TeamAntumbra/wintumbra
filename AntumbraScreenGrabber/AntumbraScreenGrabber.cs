@@ -33,11 +33,6 @@ namespace AntumbraScreenDriver
             get { return Guid.Parse("15115e91-ed5c-49e6-b7a8-4ebbd4dabb2e"); }
         }
 
-        //DLL declaration
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        private static extern bool BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, CopyPixelOperation rop);
-        //BitBlt - used to get screen info
-
         public override String Name { get { return "Antumbra Screen Grabber (Default)"; } }
         public override String Description
         {
@@ -103,48 +98,22 @@ namespace AntumbraScreenDriver
             int runY = y;
             Size runSize = new Size(width, height);
             while (this.running) {
-                Bitmap screen = null;
-                Graphics grphx = null;
-                try {
-                    screen = new Bitmap(runSize.Width, runSize.Height, PixelFormat.Format32bppArgb);
-                    grphx = Graphics.FromImage(screen);
-                    grphx.CopyFromScreen(runX, runY, 0, 0, runSize);
-                    grphx.Save();
-                    //screen = getPixelBitBlt(runX, runY, runW, runH);
-                    if (null != screen && NewScreenAvailEvent != null) {
-                        NewScreenAvailEvent(screen, EventArgs.Empty);
+                using (Bitmap screen = new Bitmap(runSize.Width, runSize.Height, PixelFormat.Format32bppPArgb)) {
+                    using (Graphics grphx = Graphics.FromImage(screen)) {
+                        try {
+                            grphx.CopyFromScreen(runX, runY, 0, 0, runSize, CopyPixelOperation.SourceCopy);
+                            grphx.Save();
+                            //screen = getPixelBitBlt(runX, runY, runW, runH);
+                            if (null != screen && NewScreenAvailEvent != null) {
+                                NewScreenAvailEvent(screen, EventArgs.Empty);
+                            }
+                        }
+                        catch (Exception e) {
+                            NewLogMsgEvent(this.Name, e.ToString());
+                        }
+                        Thread.Sleep(captureThrottle);
                     }
                 }
-                catch (Exception e) {
-                    NewLogMsgEvent(this.Name, e.ToString());
-                }
-                finally {
-                    if (screen != null)
-                        screen.Dispose();
-                    if (grphx != null)
-                        grphx.Dispose();
-                }
-                Thread.Sleep(captureThrottle);
-            }
-        }
-
-        private Bitmap getPixelBitBlt(int x, int y, int width, int height)
-        {
-            try {
-                Bitmap screen = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-                using (Graphics gdest = Graphics.FromImage(screen)) {
-                    using (Graphics gsrc = Graphics.FromHwnd(IntPtr.Zero)) {
-                        IntPtr hSrcDC = gsrc.GetHdc();
-                        IntPtr hDC = gdest.GetHdc();
-                        bool retval = BitBlt(hDC, x, y, width, height, hSrcDC, 0, 0, CopyPixelOperation.SourceCopy);
-                        gdest.ReleaseHdc();
-                        gsrc.ReleaseHdc();
-                    }
-                }
-                return screen;
-            }
-            catch (System.ArgumentException) {
-                return null;
             }
         }
     }
