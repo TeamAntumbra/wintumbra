@@ -18,7 +18,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private List<GlowDriver> AvailDrivers;
         private List<GlowScreenGrabber> AvailGrabbers;
         private List<GlowScreenProcessor> AvailProcessors;
-        private List<GlowDecorator> AvailDecorators;
+        private List<GlowFilter> AvailFilters;
         private List<GlowNotifier> AvailNotifiers;
         private List<GlowExtension> AvailExtensions;
         private String path;
@@ -39,11 +39,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 this.AvailExtensions.AddRange(this.AvailGrabbers);
                 this.AvailProcessors = helper.AvailScreenProcessors;
                 this.AvailExtensions.AddRange(this.AvailProcessors);
-                this.AvailDecorators = helper.AvailDecorators;
-                this.AvailExtensions.AddRange(this.AvailDecorators);
+                this.AvailFilters = helper.AvailFilters;
+                this.AvailExtensions.AddRange(this.AvailFilters);
                 this.AvailNotifiers = helper.AvailNotifiers;
                 this.AvailExtensions.AddRange(this.AvailNotifiers);
-                helper.Dispose();
+                if (helper != null)
+                    helper.Dispose();
                 LogFoundExtensions();
                 if (CollectionUpdateEvent != null)
                     CollectionUpdateEvent(this.AvailExtensions);
@@ -76,7 +77,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             LogExtensions("Drivers", this.AvailDrivers.ToList<GlowExtension>());
             LogExtensions("Screen Grabbers", this.AvailGrabbers.ToList<GlowExtension>());
             LogExtensions("Screen Processors", this.AvailProcessors.ToList<GlowExtension>());
-            LogExtensions("Decorators", this.AvailDecorators.ToList<GlowExtension>());
+            LogExtensions("Filters", this.AvailFilters.ToList<GlowExtension>());
             LogExtensions("Notifiers", this.AvailNotifiers.ToList<GlowExtension>());
         }
 
@@ -110,10 +111,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             result.ActiveDriver = this.GetDefaultDriver();
             result.ActiveGrabber = this.GetDefaultGrabber();
             result.ActiveProcessor = this.GetDefaultProcessor();
-            foreach (GlowDecorator dec in this.GetDefaultDecorators())
-                result.ActiveDecorators.Add(dec);
-            foreach (GlowNotifier notf in this.GetDefaultNotifiers())
-                result.ActiveNotifiers.Add(notf);
+            result.ActiveFilters = this.GetDefaultFilters();
+            result.ActiveNotifiers = this.GetDefaultNotifiers();
             return result;
         }
 
@@ -121,7 +120,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             foreach (GlowDriver dvr in this.AvailDrivers)
                 if (dvr.IsDefault)
-                    return dvr;
+                    return (GlowDriver)dvr.Create();
             return null;
         }
 
@@ -129,7 +128,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             foreach (GlowScreenGrabber gbr in this.AvailGrabbers)
                 if (gbr.IsDefault)
-                    return gbr;
+                    return (GlowScreenGrabber)gbr.Create();
             return null;
         }
 
@@ -137,16 +136,16 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             foreach (GlowScreenProcessor pcr in this.AvailProcessors)
                 if (pcr.IsDefault)
-                    return pcr;
+                    return (GlowScreenProcessor)pcr.Create();
             return null;
         }
 
-        private List<GlowDecorator> GetDefaultDecorators()
+        private List<GlowFilter> GetDefaultFilters()
         {
-            List<GlowDecorator> result = new List<GlowDecorator>();
-            foreach (GlowDecorator dec in this.AvailDecorators)
-                if (dec.IsDefault)
-                    result.Add(dec);
+            List<GlowFilter> result = new List<GlowFilter>();
+            foreach (GlowFilter filt in this.AvailFilters)
+                if (filt.IsDefault)
+                    result.Add((GlowFilter)filt.Create());
             return result;
         }
 
@@ -155,7 +154,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             List<GlowNotifier> result = new List<GlowNotifier>();
             foreach (GlowNotifier notf in this.AvailNotifiers)
                 if (notf.IsDefault)
-                    result.Add(notf);
+                    result.Add((GlowNotifier)notf.Create());
             return result;
         }
 
@@ -163,7 +162,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             foreach (var e in AvailExtensions)
                 if (e.id.Equals(id))
-                    return e;
+                    return e.Create();
             return null;
         }
     }

@@ -54,7 +54,7 @@
             this.deviceNameLabel = new System.Windows.Forms.Label();
             this.deviceName = new System.Windows.Forms.Label();
             this.driverRecBtn = new System.Windows.Forms.Button();
-            this.compoundDecorationCheck = new System.Windows.Forms.CheckBox();
+            this.compoundFilterCheck = new System.Windows.Forms.CheckBox();
             this.versionLabel = new System.Windows.Forms.Label();
             this.aboutPage = new FlatTabControl.FlatTabControl();
             this.driverPage = new System.Windows.Forms.TabPage();
@@ -68,14 +68,14 @@
             this.driverSettingsBtn = new System.Windows.Forms.PictureBox();
             this.driverComboBox = new System.Windows.Forms.ComboBox();
             this.driverLabel = new System.Windows.Forms.Label();
-            this.decoratorPage = new System.Windows.Forms.TabPage();
+            this.filterPage = new System.Windows.Forms.TabPage();
             this.toggleActiveBtn = new System.Windows.Forms.Button();
-            this.currentDecStatus = new System.Windows.Forms.Label();
-            this.currentDecStatusLabel = new System.Windows.Forms.Label();
-            this.decoratorSettingsBtn = new System.Windows.Forms.PictureBox();
-            this.decoratorComboBx = new System.Windows.Forms.ComboBox();
-            this.decoratorLabel = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.currentFiltStatus = new System.Windows.Forms.Label();
+            this.currentFiltStatusLabel = new System.Windows.Forms.Label();
+            this.filterSettingsBtn = new System.Windows.Forms.PictureBox();
+            this.filterComboBx = new System.Windows.Forms.ComboBox();
+            this.filterLabel = new System.Windows.Forms.Label();
+            this.notifierPage = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.saveBtn = new System.Windows.Forms.Button();
             this.loadBtn = new System.Windows.Forms.Button();
@@ -85,9 +85,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).BeginInit();
-            this.decoratorPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.filterPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.filterSettingsBtn)).BeginInit();
+            this.notifierPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepSleepLabel
@@ -404,22 +404,22 @@
             this.driverRecBtn.UseVisualStyleBackColor = false;
             this.driverRecBtn.Click += new System.EventHandler(this.driverRecBtn_Click);
             // 
-            // compoundDecorationCheck
+            // compoundFilterCheck
             // 
-            this.compoundDecorationCheck.AutoSize = true;
-            this.compoundDecorationCheck.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.compoundDecorationCheck.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.compoundDecorationCheck.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.compoundDecorationCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.compoundDecorationCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.compoundDecorationCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.compoundDecorationCheck.Location = new System.Drawing.Point(632, 647);
-            this.compoundDecorationCheck.Name = "compoundDecorationCheck";
-            this.compoundDecorationCheck.Size = new System.Drawing.Size(326, 36);
-            this.compoundDecorationCheck.TabIndex = 85;
-            this.compoundDecorationCheck.Text = "Compound Decoration \r\n(Each Decorator Acts on the Output of the Previous)";
-            this.compoundDecorationCheck.UseVisualStyleBackColor = false;
-            this.compoundDecorationCheck.CheckedChanged += new System.EventHandler(this.compoundDecorationCheck_CheckedChanged);
+            this.compoundFilterCheck.AutoSize = true;
+            this.compoundFilterCheck.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.compoundFilterCheck.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.compoundFilterCheck.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.compoundFilterCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.compoundFilterCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.compoundFilterCheck.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.compoundFilterCheck.Location = new System.Drawing.Point(632, 647);
+            this.compoundFilterCheck.Name = "compoundFilterCheck";
+            this.compoundFilterCheck.Size = new System.Drawing.Size(326, 36);
+            this.compoundFilterCheck.TabIndex = 85;
+            this.compoundFilterCheck.Text = "Compound Filter \r\n(Each Filter Acts on the Output of the Previous)";
+            this.compoundFilterCheck.UseVisualStyleBackColor = false;
+            this.compoundFilterCheck.CheckedChanged += new System.EventHandler(this.compoundFilterCheck_CheckedChanged);
             // 
             // versionLabel
             // 
@@ -432,8 +432,8 @@
             // aboutPage
             // 
             this.aboutPage.Controls.Add(this.driverPage);
-            this.aboutPage.Controls.Add(this.decoratorPage);
-            this.aboutPage.Controls.Add(this.tabPage3);
+            this.aboutPage.Controls.Add(this.filterPage);
+            this.aboutPage.Controls.Add(this.notifierPage);
             this.aboutPage.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.aboutPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.aboutPage.HotTrack = true;
@@ -580,22 +580,22 @@
             this.driverLabel.TabIndex = 0;
             this.driverLabel.Text = "Driver: ";
             // 
-            // decoratorPage
+            // filterPage
             // 
-            this.decoratorPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.decoratorPage.Controls.Add(this.toggleActiveBtn);
-            this.decoratorPage.Controls.Add(this.currentDecStatus);
-            this.decoratorPage.Controls.Add(this.currentDecStatusLabel);
-            this.decoratorPage.Controls.Add(this.decoratorSettingsBtn);
-            this.decoratorPage.Controls.Add(this.decoratorComboBx);
-            this.decoratorPage.Controls.Add(this.decoratorLabel);
-            this.decoratorPage.Location = new System.Drawing.Point(4, 25);
-            this.decoratorPage.Margin = new System.Windows.Forms.Padding(2);
-            this.decoratorPage.Name = "decoratorPage";
-            this.decoratorPage.Padding = new System.Windows.Forms.Padding(2);
-            this.decoratorPage.Size = new System.Drawing.Size(831, 351);
-            this.decoratorPage.TabIndex = 1;
-            this.decoratorPage.Text = "Decorators";
+            this.filterPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.filterPage.Controls.Add(this.toggleActiveBtn);
+            this.filterPage.Controls.Add(this.currentFiltStatus);
+            this.filterPage.Controls.Add(this.currentFiltStatusLabel);
+            this.filterPage.Controls.Add(this.filterSettingsBtn);
+            this.filterPage.Controls.Add(this.filterComboBx);
+            this.filterPage.Controls.Add(this.filterLabel);
+            this.filterPage.Location = new System.Drawing.Point(4, 25);
+            this.filterPage.Margin = new System.Windows.Forms.Padding(2);
+            this.filterPage.Name = "filterPage";
+            this.filterPage.Padding = new System.Windows.Forms.Padding(2);
+            this.filterPage.Size = new System.Drawing.Size(831, 351);
+            this.filterPage.TabIndex = 1;
+            this.filterPage.Text = "Filters";
             // 
             // toggleActiveBtn
             // 
@@ -610,69 +610,69 @@
             this.toggleActiveBtn.TabIndex = 8;
             this.toggleActiveBtn.Text = "Toggle Active";
             this.toggleActiveBtn.UseVisualStyleBackColor = true;
-            this.toggleActiveBtn.Click += new System.EventHandler(this.ToggleDecorator);
+            this.toggleActiveBtn.Click += new System.EventHandler(this.ToggleFilter);
             // 
-            // currentDecStatus
+            // currentFiltStatus
             // 
-            this.currentDecStatus.AutoSize = true;
-            this.currentDecStatus.Location = new System.Drawing.Point(244, 148);
-            this.currentDecStatus.Name = "currentDecStatus";
-            this.currentDecStatus.Size = new System.Drawing.Size(0, 16);
-            this.currentDecStatus.TabIndex = 7;
+            this.currentFiltStatus.AutoSize = true;
+            this.currentFiltStatus.Location = new System.Drawing.Point(244, 148);
+            this.currentFiltStatus.Name = "currentFiltStatus";
+            this.currentFiltStatus.Size = new System.Drawing.Size(0, 16);
+            this.currentFiltStatus.TabIndex = 7;
             // 
-            // currentDecStatusLabel
+            // currentFiltStatusLabel
             // 
-            this.currentDecStatusLabel.AutoSize = true;
-            this.currentDecStatusLabel.Location = new System.Drawing.Point(187, 148);
-            this.currentDecStatusLabel.Name = "currentDecStatusLabel";
-            this.currentDecStatusLabel.Size = new System.Drawing.Size(58, 16);
-            this.currentDecStatusLabel.TabIndex = 6;
-            this.currentDecStatusLabel.Text = "Active?: ";
+            this.currentFiltStatusLabel.AutoSize = true;
+            this.currentFiltStatusLabel.Location = new System.Drawing.Point(187, 148);
+            this.currentFiltStatusLabel.Name = "currentFiltStatusLabel";
+            this.currentFiltStatusLabel.Size = new System.Drawing.Size(58, 16);
+            this.currentFiltStatusLabel.TabIndex = 6;
+            this.currentFiltStatusLabel.Text = "Active?: ";
             // 
-            // decoratorSettingsBtn
+            // filterSettingsBtn
             // 
-            this.decoratorSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
-            this.decoratorSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
-            this.decoratorSettingsBtn.Location = new System.Drawing.Point(599, 81);
-            this.decoratorSettingsBtn.Name = "decoratorSettingsBtn";
-            this.decoratorSettingsBtn.Size = new System.Drawing.Size(24, 21);
-            this.decoratorSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.decoratorSettingsBtn.TabIndex = 5;
-            this.decoratorSettingsBtn.TabStop = false;
-            this.decoratorSettingsBtn.Click += new System.EventHandler(this.decoratorSettingsBtn_Click);
+            this.filterSettingsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.filterSettingsBtn.Image = global::Antumbra.Glow.Properties.Resources.gear;
+            this.filterSettingsBtn.Location = new System.Drawing.Point(599, 81);
+            this.filterSettingsBtn.Name = "filterSettingsBtn";
+            this.filterSettingsBtn.Size = new System.Drawing.Size(24, 21);
+            this.filterSettingsBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.filterSettingsBtn.TabIndex = 5;
+            this.filterSettingsBtn.TabStop = false;
+            this.filterSettingsBtn.Click += new System.EventHandler(this.filterSettingsBtn_Click);
             // 
-            // decoratorComboBx
+            // filterComboBx
             // 
-            this.decoratorComboBx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.decoratorComboBx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.decoratorComboBx.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.decoratorComboBx.FormattingEnabled = true;
-            this.decoratorComboBx.Location = new System.Drawing.Point(244, 79);
-            this.decoratorComboBx.Name = "decoratorComboBx";
-            this.decoratorComboBx.Size = new System.Drawing.Size(345, 23);
-            this.decoratorComboBx.TabIndex = 4;
-            this.decoratorComboBx.SelectedIndexChanged += new System.EventHandler(this.decoratorComboBx_SelectedIndexChanged);
+            this.filterComboBx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.filterComboBx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.filterComboBx.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.filterComboBx.FormattingEnabled = true;
+            this.filterComboBx.Location = new System.Drawing.Point(244, 79);
+            this.filterComboBx.Name = "filterComboBx";
+            this.filterComboBx.Size = new System.Drawing.Size(345, 23);
+            this.filterComboBx.TabIndex = 4;
+            this.filterComboBx.SelectedIndexChanged += new System.EventHandler(this.filterComboBx_SelectedIndexChanged);
             // 
-            // decoratorLabel
+            // filterLabel
             // 
-            this.decoratorLabel.AutoSize = true;
-            this.decoratorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.decoratorLabel.Location = new System.Drawing.Point(110, 82);
-            this.decoratorLabel.Name = "decoratorLabel";
-            this.decoratorLabel.Size = new System.Drawing.Size(128, 16);
-            this.decoratorLabel.TabIndex = 3;
-            this.decoratorLabel.Text = "Selected Decorator:";
+            this.filterLabel.AutoSize = true;
+            this.filterLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.filterLabel.Location = new System.Drawing.Point(110, 82);
+            this.filterLabel.Name = "FilterLabel";
+            this.filterLabel.Size = new System.Drawing.Size(128, 16);
+            this.filterLabel.TabIndex = 3;
+            this.filterLabel.Text = "Selected Filter:";
             // 
-            // tabPage3
+            // notifierPage
             // 
-            this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(831, 351);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Notifiers";
+            this.notifierPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.notifierPage.Controls.Add(this.label3);
+            this.notifierPage.Location = new System.Drawing.Point(4, 25);
+            this.notifierPage.Name = "notifierPage";
+            this.notifierPage.Padding = new System.Windows.Forms.Padding(3);
+            this.notifierPage.Size = new System.Drawing.Size(831, 351);
+            this.notifierPage.TabIndex = 2;
+            this.notifierPage.Text = "Notifiers";
             // 
             // label3
             // 
@@ -741,7 +741,7 @@
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.aboutPage);
             this.Controls.Add(this.versionLabel);
-            this.Controls.Add(this.compoundDecorationCheck);
+            this.Controls.Add(this.compoundFilterCheck);
             this.Controls.Add(this.driverRecBtn);
             this.Controls.Add(this.deviceName);
             this.Controls.Add(this.deviceNameLabel);
@@ -783,11 +783,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.processorSettingsBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grabberSettingsBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.driverSettingsBtn)).EndInit();
-            this.decoratorPage.ResumeLayout(false);
-            this.decoratorPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.decoratorSettingsBtn)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.filterPage.ResumeLayout(false);
+            this.filterPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.filterSettingsBtn)).EndInit();
+            this.notifierPage.ResumeLayout(false);
+            this.notifierPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -823,8 +823,8 @@
         private System.Windows.Forms.Label versionLabel;
         private FlatTabControl.FlatTabControl aboutPage;
         private System.Windows.Forms.TabPage driverPage;
-        private System.Windows.Forms.TabPage decoratorPage;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage filterPage;
+        private System.Windows.Forms.TabPage notifierPage;
         private System.Windows.Forms.Label driverLabel;
         private System.Windows.Forms.PictureBox processorSettingsBtn;
         private System.Windows.Forms.Label processorLabel;
@@ -832,21 +832,21 @@
         private System.Windows.Forms.Label grabberLabel;
         private System.Windows.Forms.PictureBox driverSettingsBtn;
         private System.Windows.Forms.Label instructions;
-        private System.Windows.Forms.PictureBox decoratorSettingsBtn;
-        private System.Windows.Forms.Label decoratorLabel;
+        private System.Windows.Forms.PictureBox filterSettingsBtn;
+        private System.Windows.Forms.Label filterLabel;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label currentDecStatus;
-        private System.Windows.Forms.Label currentDecStatusLabel;
+        private System.Windows.Forms.Label currentFiltStatus;
+        private System.Windows.Forms.Label currentFiltStatusLabel;
         private System.Windows.Forms.Button toggleActiveBtn;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button loadBtn;
         private System.Windows.Forms.TextBox sleepSize;
         private System.Windows.Forms.CheckBox weightingEnabled;
-        private System.Windows.Forms.CheckBox compoundDecorationCheck;
+        private System.Windows.Forms.CheckBox compoundFilterCheck;
         public System.Windows.Forms.ComboBox driverComboBox;
         public System.Windows.Forms.ComboBox processorComboBx;
         public System.Windows.Forms.ComboBox grabberComboBx;
-        public System.Windows.Forms.ComboBox decoratorComboBx;
+        public System.Windows.Forms.ComboBox filterComboBx;
         private System.Windows.Forms.Button resetBtn;
     }
 }

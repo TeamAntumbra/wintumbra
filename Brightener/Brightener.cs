@@ -17,7 +17,7 @@ using System.Reflection;
 namespace Brightener
 {
     [Export(typeof(GlowExtension))]
-    public class Brightener : GlowDecorator
+    public class Brightener : GlowFilter
     {
         private bool running;
         private BrightenerSettings settingsWin;
@@ -50,7 +50,7 @@ namespace Brightener
             return new Brightener();
         }
 
-        public override Color16Bit Decorate(Color16Bit origColor)
+        public override Color16Bit Filter(Color16Bit origColor)
         {
             HslColor hsl = new HslColor(origColor.ToRGBColor());
             if (hsl.L > (1.0 - (double)Properties.Settings.Default.amountToLighten))

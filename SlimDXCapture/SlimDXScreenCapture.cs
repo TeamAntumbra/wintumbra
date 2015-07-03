@@ -20,7 +20,7 @@ using System.Diagnostics;
 namespace SlimDXCapture
 {
     [Export(typeof(GlowExtension))]
-    public class DxScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
+    public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
     {
         public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
@@ -33,7 +33,8 @@ namespace SlimDXCapture
 
         public override GlowExtension Create()
         {
-            return new DxScreenCapture();
+            NewLogMsgEvent += LoggerHelper.GetInstance().NewLogMsgAvail;
+            return new SlimDXScreenCapture();
         }
 
         public Bitmap CaptureScreen(IntPtr hwnd)
@@ -44,8 +45,8 @@ namespace SlimDXCapture
                     AdapterInformation adapterInfo = d3.Adapters.DefaultAdapter;
                     PresentParameters parameters = new PresentParameters();
                     parameters.BackBufferFormat = adapterInfo.CurrentDisplayMode.Format;
-                    parameters.BackBufferHeight = this.height;
-                    parameters.BackBufferWidth = this.width;
+                    parameters.BackBufferHeight = adapterInfo.CurrentDisplayMode.Height;
+                    parameters.BackBufferWidth = adapterInfo.CurrentDisplayMode.Width;
                     parameters.Multisample = SlimDX.Direct3D9.MultisampleType.None;
                     parameters.SwapEffect = SlimDX.Direct3D9.SwapEffect.Discard;
                     parameters.DeviceWindowHandle = hwnd;
@@ -60,10 +61,17 @@ namespace SlimDXCapture
                     }
                 }
             }
-            catch (Exception) {
+            catch (Exception e) {
                 bm = null;
+                this.Log(e.StackTrace + '\n' + e.Message);
             }
             return bm;
+        }
+
+        private void Log(String msg)
+        {
+            if (NewLogMsgEvent != null)
+                NewLogMsgEvent("SlimDXCapture", msg);
         }
 
         private IntPtr FindForegroundPrcs()
@@ -78,7 +86,8 @@ namespace SlimDXCapture
 
         public void Dispose()
         {
-
+            if(driver != null && driver.IsAlive)
+                driver.Abort();
         }
 
         public override Guid id
@@ -126,14 +135,10 @@ namespace SlimDXCapture
             while (this.IsRunning) {
                 Bitmap result = CaptureScreen(FindForegroundPrcs());
                 if (NewScreenAvailEvent != null && result != null) {
-                    try {
-                        NewScreenAvailEvent(result, EventArgs.Empty);
-                    }
-                    finally {
-                        result.Dispose();
-                    }
+                    NewScreenAvailEvent(result, EventArgs.Empty);
+                    result.Dispose();
                 }
-                Thread.Sleep(50);//TODO perfect this value
+                Thread.Sleep(captureThrottle);
             }
         }
 

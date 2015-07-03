@@ -148,7 +148,7 @@
     <Compile Include="ExtensionFramework\Management\ExtensionLibrary.cs" />
     <Compile Include="ExtensionFramework\Management\ExtensionManager.cs" />
     <Compile Include="ExtensionFramework\IGlowExtension.cs" />
-    <Compile Include="ExtensionFramework\Types\GlowDecorator.cs" />
+    <Compile Include="ExtensionFramework\Types\GlowFilter.cs" />
     <Compile Include="ExtensionFramework\Types\GlowDriver.cs" />
     <Compile Include="ExtensionFramework\Types\GlowIndependentDriver.cs" />
     <Compile Include="ExtensionFramework\Types\GlowNotifier.cs" />
@@ -238,6 +238,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="View\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>

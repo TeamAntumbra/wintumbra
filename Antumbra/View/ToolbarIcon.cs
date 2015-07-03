@@ -26,6 +26,7 @@ namespace Antumbra.Glow.View
     public partial class ToolbarIcon : Form, ToolbarNotificationObserver
     {
         public event EventHandler notifyIcon_MouseClickEvent;
+        public event EventHandler notifyIcon_DoubleClickEvent;
         /// <summary>
         /// ToolbarIcon Constructor
         /// </summary>
@@ -70,6 +71,12 @@ namespace Antumbra.Glow.View
         private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
         {
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (notifyIcon_DoubleClickEvent != null)
+                notifyIcon_DoubleClickEvent(sender, e);
         }
     }
 }

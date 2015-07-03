@@ -56,8 +56,8 @@
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
-            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             this.flatTabControl = new FlatTabControl.FlatTabControl();
+            this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.fadeTab.SuspendLayout();
             this.mirrorTab.SuspendLayout();
@@ -231,7 +231,7 @@
             // throttleBar
             // 
             this.throttleBar.Location = new System.Drawing.Point(553, 294);
-            this.throttleBar.Maximum = 125;
+            this.throttleBar.Maximum = 200;
             this.throttleBar.Name = "throttleBar";
             this.throttleBar.Size = new System.Drawing.Size(244, 56);
             this.throttleBar.TabIndex = 6;
@@ -385,15 +385,6 @@
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
             // 
-            // colorWheel
-            // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(476, 433);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
-            // 
             // flatTabControl
             // 
             this.flatTabControl.Controls.Add(this.manualTab);
@@ -407,6 +398,15 @@
             this.flatTabControl.Size = new System.Drawing.Size(855, 522);
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.flatTabControl.TabIndex = 74;
+            // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(476, 433);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
             // MainWindow
             // 

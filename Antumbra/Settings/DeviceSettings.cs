@@ -108,21 +108,21 @@ namespace Antumbra.Glow.Settings
             }
         }
         private double _newColorWeight;
-        public bool compoundDecoration
+        public bool compoundFilter
         {
             get
             {
-                return _compoundDecoration;
+                return _compoundFilter;
             }
             set
             {
-                if (value != _compoundDecoration) {
-                    _compoundDecoration = value;
+                if (value != _compoundFilter) {
+                    _compoundFilter = value;
                     Notify();
                 }
             }
         }
-        private bool _compoundDecoration;
+        private bool _compoundFilter;
         public UInt16 maxBrightness
         {
             get
@@ -216,7 +216,6 @@ namespace Antumbra.Glow.Settings
         private int _captureThrottle;
         public DeviceSettings(int id)
         {
-            Reset();
             this.id = id;
             this.AttachObserver(LoggerHelper.GetInstance());
         }
@@ -236,7 +235,7 @@ namespace Antumbra.Glow.Settings
             result += this.redBias.ToString() + ',';
             result += this.greenBias.ToString() + ',';
             result += this.blueBias.ToString() + ',';
-            result += this.compoundDecoration.ToString() + ',';
+            result += this.compoundFilter.ToString() + ',';
             result += this.captureThrottle.ToString() + '\n';
             return result;
         }
@@ -273,14 +272,14 @@ namespace Antumbra.Glow.Settings
             this.stepSleep = 1;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
-            this.compoundDecoration = false;
+            this.compoundFilter = false;
             this.redBias = 0;
             this.greenBias = 0;
             this.blueBias = 0;
             this.maxBrightness = UInt16.MaxValue;
         }
 
-        public void LoadSave(String settings)
+        public Object LoadSave(String settings)
         {
             try {
                 String[] parts = settings.Split(',');
@@ -296,7 +295,7 @@ namespace Antumbra.Glow.Settings
                 redBias = int.Parse(parts[9]);
                 greenBias = int.Parse(parts[10]);
                 blueBias = int.Parse(parts[11]);
-                compoundDecoration = Boolean.Parse(parts[12]);
+                compoundFilter = Boolean.Parse(parts[12]);
                 captureThrottle = int.Parse(parts[13]);
             }
             catch (Exception e) {
@@ -304,6 +303,7 @@ namespace Antumbra.Glow.Settings
                 this.Reset();
             }
             this.Notify();
+            return null;//unused
         }
 
         private void Log(String msg)

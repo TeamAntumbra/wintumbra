@@ -99,13 +99,16 @@ namespace AntumbraScreenDriver
 
         private void captureTarget()
         {
+            int runX = x;
+            int runY = y;
+            Size runSize = new Size(width, height);
             while (this.running) {
                 Bitmap screen = null;
                 Graphics grphx = null;
                 try {
-                    screen = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                    screen = new Bitmap(runSize.Width, runSize.Height, PixelFormat.Format32bppArgb);
                     grphx = Graphics.FromImage(screen);
-                    grphx.CopyFromScreen(x, y, 0, 0, new Size(width, height));
+                    grphx.CopyFromScreen(runX, runY, 0, 0, runSize);
                     grphx.Save();
                     //screen = getPixelBitBlt(runX, runY, runW, runH);
                     if (null != screen && NewScreenAvailEvent != null) {

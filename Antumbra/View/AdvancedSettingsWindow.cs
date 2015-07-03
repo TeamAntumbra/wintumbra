@@ -31,18 +31,18 @@ namespace Antumbra.Glow.View
         public event EventHandler newColorWeight_TextChangedEvent;
         public event EventHandler weightingEnabled_CheckedChangedEvent;
         public event FormClosingEventHandler settingsWindow_FormClosingEvent;
-        public event EventHandler compoundDecorationCheck_CheckedChangedEvent;
+        public event EventHandler compoundFilterCheck_CheckedChangedEvent;
         public event EventHandler driverComboBox_SelectedIndexChangedEvent;
         public event EventHandler loadBtn_ClickEvent;
         public event EventHandler saveBtn_ClickEvent;
         public event EventHandler resetBtn_ClickEvent;
-        public event EventHandler decoratorSettingsBtn_ClickEvent;
+        public event EventHandler filterSettingsBtn_ClickEvent;
         public event EventHandler processorSettingsBtn_ClickEvent;
         public event EventHandler driverSettingsBtn_ClickEvent;
         public event EventHandler grabberSettingsBtn_ClickEvent;
-        public event EventHandler decoratorComboBx_SelectedIndexChangedEvent;
+        public event EventHandler filterComboBx_SelectedIndexChangedEvent;
         public event EventHandler updateGrabberProcessorChoiceEvent;
-        public event EventHandler toggleDecoratorEvent;
+        public event EventHandler toggleFilterEvent;
         //end UI events
         private int devId;
         public AdvancedSettingsWindow(String version)
@@ -60,7 +60,7 @@ namespace Antumbra.Glow.View
 
         public void UpdateConfiguration(DeviceSettings settings, String status)//TODO move to controller
         {
-            compoundDecorationCheck.Checked = settings.compoundDecoration;
+            compoundFilterCheck.Checked = settings.compoundFilter;
             newColorWeight.Text = (settings.newColorWeight * 100).ToString();
             weightingEnabled.Checked = settings.weightingEnabled;
             sleepSize.Text = settings.stepSleep.ToString();
@@ -97,9 +97,9 @@ namespace Antumbra.Glow.View
             this.processorComboBx.Enabled = screenBased;
         }
 
-        public void SetCurrentDecStatus(String status)
+        public void SetCurrentFiltStatus(String status)
         {
-            this.currentDecStatus.Text = status;
+            this.currentFiltStatus.Text = status;
         }
 
         public void CleanUp()
@@ -173,10 +173,10 @@ namespace Antumbra.Glow.View
                 settingsWindow_FormClosingEvent(sender, e);
         }
 
-        private void compoundDecorationCheck_CheckedChanged(object sender, EventArgs e)
+        private void compoundFilterCheck_CheckedChanged(object sender, EventArgs e)
         {
-            if (compoundDecorationCheck_CheckedChangedEvent != null)
-                compoundDecorationCheck_CheckedChangedEvent(sender, e);
+            if (compoundFilterCheck_CheckedChangedEvent != null)
+                compoundFilterCheck_CheckedChangedEvent(sender, e);
         }
 
         private void driverComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -191,16 +191,16 @@ namespace Antumbra.Glow.View
                 updateGrabberProcessorChoiceEvent(sender, args);
         }
 
-        private void ToggleDecorator(object sender, EventArgs e)
+        private void ToggleFilter(object sender, EventArgs e)
         {
-            if (toggleDecoratorEvent != null)
-                toggleDecoratorEvent(this.decoratorComboBx.SelectedItem, e);
+            if (toggleFilterEvent != null)
+                toggleFilterEvent(this.filterComboBx.SelectedItem, e);
         }
 
-        private void decoratorComboBx_SelectedIndexChanged(object sender, EventArgs e)
+        private void filterComboBx_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (decoratorComboBx_SelectedIndexChangedEvent != null)
-                decoratorComboBx_SelectedIndexChangedEvent(sender, e);
+            if (filterComboBx_SelectedIndexChangedEvent != null)
+                filterComboBx_SelectedIndexChangedEvent(sender, e);
         }
 
         private void driverSettingsBtn_Click(object sender, EventArgs e)
@@ -221,10 +221,10 @@ namespace Antumbra.Glow.View
                 processorSettingsBtn_ClickEvent(this.processorComboBx.SelectedItem, e);
         }
 
-        private void decoratorSettingsBtn_Click(object sender, EventArgs e)
+        private void filterSettingsBtn_Click(object sender, EventArgs e)
         {
-            if (decoratorSettingsBtn_ClickEvent != null)
-                decoratorSettingsBtn_ClickEvent(this.decoratorComboBx.SelectedItem, e);
+            if (filterSettingsBtn_ClickEvent != null)
+                filterSettingsBtn_ClickEvent(this.filterComboBx.SelectedItem, e);
         }
 
         private void saveBtn_Click(object sender, EventArgs e)

@@ -7,8 +7,8 @@ using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.ExtensionFramework.Types
 {
-    public abstract class GlowDecorator : GlowExtension
+    public abstract class GlowFilter : GlowExtension
     {
-        abstract public Color16Bit Decorate(Color16Bit origColor);//Returns decorated color
+        abstract public Color16Bit Filter(Color16Bit origColor);//Returns filtered color
     }
 }

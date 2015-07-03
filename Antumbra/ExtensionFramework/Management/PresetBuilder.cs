@@ -96,10 +96,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 result.ActiveProcessor = (GlowScreenProcessor)ext;
             ext = this.lib.LookupExt(Saturator);
             if (ext != null)
-                result.ActiveDecorators.Add((GlowDecorator)ext);
-            ext = this.lib.LookupExt(Brightener);
-            if (ext != null)
-                result.ActiveDecorators.Add((GlowDecorator)ext);
+                result.ActiveFilters.Add((GlowFilter)ext);
             return result;
         }
 

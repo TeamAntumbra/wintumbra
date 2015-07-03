@@ -117,17 +117,17 @@ namespace Antumbra.Glow.Connector
         {
             if (id == -1) {
                 foreach (GlowDevice device in this.Glows) {
-                    newColor = device.ApplyDecorations(newColor);
+                    newColor = device.ApplyFilters(newColor);
                     newColor = device.ApplyBrightness(newColor);
                     newColor = device.ApplyWhiteBalance(newColor);
                     sendColor(newColor.red, newColor.green, newColor.blue, device.id);
                 }
-                return; //cancel this call
+                return;//call completed
             }
             GlowDevice dev = this.getDevice(id);
             if (dev == null)
                 return;//no device found matching passed id
-            newColor = dev.ApplyDecorations(newColor);
+            newColor = dev.ApplyFilters(newColor);
             newColor = dev.ApplyBrightness(newColor);
             newColor = dev.ApplyWhiteBalance(newColor);
             sendColor(newColor.red, newColor.green, newColor.blue, id);
@@ -147,8 +147,6 @@ namespace Antumbra.Glow.Connector
                 }
             }
             int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
-            //if (status != 0)//did not work as expected
-            //    status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);//try again
             this.status = status;
         }
 
@@ -164,7 +162,7 @@ namespace Antumbra.Glow.Connector
                 NewToolbarNotifAvailEvent(time, title, msg, icon);
         }
 
-        public string GetDeviceSetupDecs()
+        public string GetDeviceSetupDescs()
         {
             string result = "";
             foreach (var dev in this.Glows)
@@ -184,10 +182,8 @@ namespace Antumbra.Glow.Connector
 
         public void CleanUp()
         {
-            sendColor(new Observer.Colors.Color16Bit(0, 0, 0), -1);
             foreach (GlowDevice dev in this.Glows) {
                 dev.SaveSettings();
-                dev.Stop();
             }
             CloseAll();
             FreeList();

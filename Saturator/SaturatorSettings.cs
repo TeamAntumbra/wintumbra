@@ -15,7 +15,7 @@ namespace Saturator
 {
     public partial class SaturatorSettings : Form
     {
-        private GlowDecorator ext;
+        private GlowFilter ext;
         /// <summary>
         /// Move form dependencies
         /// </summary>
@@ -25,7 +25,7 @@ namespace Saturator
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public SaturatorSettings(GlowDecorator ext)
+        public SaturatorSettings(GlowFilter ext)
         {
             this.ext = ext;
             InitializeComponent();

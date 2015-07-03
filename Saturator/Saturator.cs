@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace Saturator
 {
     [Export(typeof(GlowExtension))]
-    public class Saturator : GlowDecorator
+    public class Saturator : GlowFilter
     {
         private bool running = false;
         private SaturatorSettings settingsWin;
@@ -47,7 +47,7 @@ namespace Saturator
 
         public override string Description
         {
-            get { return "A decorator to saturate the output color for richer, more satisfying color output."; }
+            get { return "A filter to saturate the output color for richer, more satisfying color output."; }
         }
 
         public override string Website
@@ -60,15 +60,19 @@ namespace Saturator
             return new Saturator();
         }
 
-        public override Color16Bit Decorate(Color16Bit origColor)
+        public override Color16Bit Filter(Color16Bit origColor)
         {
+            // Too dark to saturate with good results
+            if (origColor.red < 5000 && origColor.green < 5000 && origColor.blue < 5000)
+                return origColor;
             HslColor boringHSL = new HslColor(origColor.ToRGBColor());
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;
-            if (boringHSL.S < satAmnt) { }//skip low saturation colors TODO make this its own value
-            else if (boringHSL.S <= (1.0-satAmnt))
-                boringHSL.S += satAmnt; //saturate
+            double diff = Math.Abs(.5 - boringHSL.L);
+            int dir = boringHSL.L > .5 ? -1 : 1;
+            if (diff < satAmnt)
+                boringHSL.L = .5;
             else
-                boringHSL.S = 1.0;
+                boringHSL.L += dir * satAmnt;
             return new Color16Bit(boringHSL.ToRgbColor());
         }
 
