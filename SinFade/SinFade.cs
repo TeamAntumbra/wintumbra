@@ -65,18 +65,17 @@ namespace SinFade
         /// </summary>
         private void target()
         {
-            int deg = 0;
+            double i = 0;
             while (running) {
-                double rad = (Math.PI / 180.0) * deg;
-                double value = Math.Abs(Math.Sin(rad) * UInt16.MaxValue);
-                UInt16 v = Convert.ToUInt16(value);
+                double value = Math.Abs(Math.Sin(i) * UInt16.MaxValue);
+                ushort v = Convert.ToUInt16(value);
                 Color16Bit result = new Color16Bit(v, v, v);
-                try {
+                if(NewColorAvailEvent != null)
                     NewColorAvailEvent(result);
-                    Thread.Sleep(this.stepSleep);
-                    deg += 1;
-                }
-                catch (System.NullReferenceException) { }
+                if (v == 0)
+                    Thread.Sleep(this.stepSleep * 39);
+                Thread.Sleep(this.stepSleep);
+                i += .03;
             }
         }
 
