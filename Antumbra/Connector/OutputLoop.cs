@@ -52,6 +52,7 @@ namespace Antumbra.Glow.Connector
 
         public bool Start(bool weightEnabled, double newColorWeight)
         {
+            this.outputFPS = new FPSCalc();
             this.weightingEnabled = weightEnabled;
             this.newColorWeight = newColorWeight;
             this.weightedAvg = new Color16Bit(0,0,0);
@@ -80,6 +81,7 @@ namespace Antumbra.Glow.Connector
         {
             this._active = false;
             if (this.outputLoopTask != null) {
+                this.outputLoopTask.Wait();
                 if (this.outputLoopTask.IsCompleted)
                     this.outputLoopTask.Dispose();
                 else {
