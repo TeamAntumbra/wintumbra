@@ -73,7 +73,6 @@ namespace Antumbra.Glow.Connector
                 }
                 else
                     this.mgr.sendColor(color, this.id);
-                Console.WriteLine(outputFPS.FPS);
             }
         }
 

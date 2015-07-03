@@ -104,18 +104,18 @@ namespace NeonFade
 
         private void Target()
         {
-            List<Color> colors = new List<Color>();
-            colors.Add(Color.Red);
-            colors.Add(Color.Teal);
-            colors.Add(Color.Blue);
-            colors.Add(Color.Yellow);
-            colors.Add(Color.Green);
-            colors.Add(Color.Purple);
+            List<Color16Bit> colors = new List<Color16Bit>();
+            colors.Add(new Color16Bit(Color.Red));
+            colors.Add(new Color16Bit(Color.Teal));
+            colors.Add(new Color16Bit(Color.Blue));
+            colors.Add(new Color16Bit(Color.Yellow));
+            colors.Add(new Color16Bit(Color.Green));
+            colors.Add(new Color16Bit(Color.Purple));
             int index = 0;
-            Color prev = Color.Black;
+            Color16Bit prev = new Color16Bit();
             while (running) {
-                Color newColor = colors[index];
-                FadeFromTo(new Color16Bit(prev), new Color16Bit(newColor));
+                Color16Bit newColor = colors[index];
+                FadeFromTo(prev, newColor);
                 prev = newColor;
                 index += 1;
                 if (index == colors.Count)
@@ -131,10 +131,9 @@ namespace NeonFade
 
         private void FadeFromTo(Color16Bit col1, Color16Bit col2)
         {
-            for (int i = 1; i <= 100; i += 1) {
+            for (double frac = 0; frac <= 1; frac += .001) {
                 if (!running)
                     return;//cancel fade, we've been stopped
-                double frac = i / 100.0;
                 Color16Bit newColor = Mixer.MixColorPercIn(col2, col1, frac);
                 SendColor(newColor);
                 Thread.Sleep(this.stepSleep);
