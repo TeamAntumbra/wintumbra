@@ -189,6 +189,20 @@ namespace Antumbra.Glow.Connector
             FreeList();
         }
 
+        public String GetOutputRates()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (GlowDevice dev in Glows) {
+                sb.Append("Glow id: ").Append(dev.id);
+                OutputLoop loop = this.outManager.FindLoopOrReturnNull(dev.id);
+                if (loop != null)
+                    sb.Append(" outputting @ ").Append(loop.FPS).Append(" hz.;\n");
+                else
+                    sb.Append(" not outputting.\n");
+            }
+            return sb.ToString();
+        }
+
         private void CloseAll()
         {
             foreach (var active in this.Glows) {

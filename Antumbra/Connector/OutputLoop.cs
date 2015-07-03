@@ -20,7 +20,7 @@ namespace Antumbra.Glow.Connector
         private bool weightingEnabled;
         private double newColorWeight;
 
-        public double FPS { get { return outputFPS.FPS; } }
+        public double FPS { get { return Math.Round(outputFPS.FPS, 2); } }
         /// <summary>
         /// Synchronisation object
         /// </summary>
@@ -73,6 +73,7 @@ namespace Antumbra.Glow.Connector
                 }
                 else
                     this.mgr.sendColor(color, this.id);
+                Console.WriteLine(outputFPS.FPS);
             }
         }
 
@@ -98,9 +99,7 @@ namespace Antumbra.Glow.Connector
         void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
         {
             outputFPS.Tick();
-            lock (sync) {
-                color = newColor;
-            }
+            color = newColor;
         }
     }
 }

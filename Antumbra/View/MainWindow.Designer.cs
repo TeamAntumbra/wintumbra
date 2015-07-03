@@ -56,8 +56,9 @@
             this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.offBtn = new System.Windows.Forms.RadioButton();
             this.onBtn = new System.Windows.Forms.RadioButton();
-            this.flatTabControl = new FlatTabControl.FlatTabControl();
             this.colorWheel = new Antumbra.Glow.View.CyotekColorWheel.ColorWheel();
+            this.flatTabControl = new FlatTabControl.FlatTabControl();
+            this.captureRateBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.fadeTab.SuspendLayout();
             this.mirrorTab.SuspendLayout();
@@ -183,6 +184,7 @@
             // mirrorTab
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.mirrorTab.Controls.Add(this.captureRateBtn);
             this.mirrorTab.Controls.Add(this.rateDescLabel);
             this.mirrorTab.Controls.Add(this.slowestLabel);
             this.mirrorTab.Controls.Add(this.fastestLabel);
@@ -385,6 +387,15 @@
             this.onBtn.UseVisualStyleBackColor = true;
             this.onBtn.CheckedChanged += new System.EventHandler(this.onBtn_CheckedChanged);
             // 
+            // colorWheel
+            // 
+            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.colorWheel.Location = new System.Drawing.Point(22, 19);
+            this.colorWheel.Name = "colorWheel";
+            this.colorWheel.Size = new System.Drawing.Size(476, 433);
+            this.colorWheel.TabIndex = 0;
+            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
+            // 
             // flatTabControl
             // 
             this.flatTabControl.Controls.Add(this.manualTab);
@@ -399,14 +410,17 @@
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.flatTabControl.TabIndex = 74;
             // 
-            // colorWheel
+            // captureRateBtn
             // 
-            this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(22, 19);
-            this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(476, 433);
-            this.colorWheel.TabIndex = 0;
-            this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
+            this.captureRateBtn.AutoSize = true;
+            this.captureRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.captureRateBtn.Location = new System.Drawing.Point(305, 425);
+            this.captureRateBtn.Name = "captureRateBtn";
+            this.captureRateBtn.Size = new System.Drawing.Size(230, 36);
+            this.captureRateBtn.TabIndex = 10;
+            this.captureRateBtn.Text = "Announce Capture Rate";
+            this.captureRateBtn.UseVisualStyleBackColor = true;
+            this.captureRateBtn.Click += new System.EventHandler(this.captureRateBtn_Click);
             // 
             // MainWindow
             // 
@@ -473,5 +487,6 @@
         private FlatTabControl.FlatTabControl flatTabControl;
         private System.Windows.Forms.TrackBar throttleBar;
         private System.Windows.Forms.TrackBar brightnessTrackBar;
+        private System.Windows.Forms.Button captureRateBtn;
     }
 }

@@ -63,6 +63,12 @@ namespace Antumbra.Glow.Controller
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
             this.window.throttleBar_ValueChange += new EventHandler(throttleBarValueChanged);
+            this.window.captureRateBtn_ClickEvent += new EventHandler(AnnounceFPS);
+        }
+
+        private void AnnounceFPS(object sender, EventArgs e)
+        {
+            ShowMessage(3500, "Color Output Rates", deviceMgr.GetOutputRates(), 1);
         }
 
         private void throttleBarValueChanged(object sender, EventArgs e)
@@ -202,7 +208,7 @@ namespace Antumbra.Glow.Controller
             dev.settings.height = height;
             this.pollingIndex -= 1;
             if (this.pollingIndex == 0) {//time to reset btn text & restart
-                this.deviceMgr.Start(-1);//re-start all
+                NewGlowCommandAvail(new StartCommand(-1));
                 this.window.SetPollingBtnText("Set Capture Area");
             }
         }
