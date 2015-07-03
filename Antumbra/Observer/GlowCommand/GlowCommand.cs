@@ -9,7 +9,7 @@ namespace Antumbra.Glow.Observer.GlowCommands
 {
     public abstract class GlowCommand : IGlowCommand
     {
-        public int id { get; private set; }
+        public int id { get; protected set; }
         public GlowCommand(int id)
         {
             this.id = id;
