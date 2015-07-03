@@ -46,5 +46,10 @@ namespace Antumbra.Glow.Observer.Colors
             byte b = Convert.ToByte((double)this.blue / UInt16.MaxValue * byte.MaxValue);
             return Color.FromArgb(r, g, b);
         }
+
+        public override string ToString()
+        {
+            return "R: " + red + " G: " + green + " B: " + blue;
+        }
     }
 }

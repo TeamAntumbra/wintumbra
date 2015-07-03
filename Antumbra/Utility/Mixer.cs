@@ -19,27 +19,5 @@ namespace Antumbra.Glow.Utility
             UInt16 newB = Convert.ToUInt16((int)(prevColor.blue * prevWeight) + (int)(newColor.blue * newWeight));
             return new Color16Bit(newR, newG, newB);
         }
-
-        public static Color16Bit Interpolate(Color16Bit color1, Color16Bit color2, double fraction)
-        {
-            double r = Interpolate(color1.red, color2.red, fraction);
-            double g = Interpolate(color1.green, color2.green, fraction);
-            double b = Interpolate(color1.blue, color2.blue, fraction);
-            UInt16 rI = Convert.ToUInt16((int)Math.Round(r) % 255);
-            UInt16 gI = Convert.ToUInt16((int)Math.Round(g) % 255);
-            UInt16 bI = Convert.ToUInt16((int)Math.Round(b) % 255);
-            if (rI < 0)
-                rI = 0;
-            if (gI < 0)
-                gI = 0;
-            if (bI < 0)
-                bI = 0;
-            return new Color16Bit(rI, gI, bI);
-        }
-
-        private static double Interpolate(double d1, double d2, double fraction)
-        {
-            return d1 + (d1 - d2) * fraction;
-        }
     }
 }
