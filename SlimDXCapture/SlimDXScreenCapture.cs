@@ -39,33 +39,57 @@ namespace SlimDXCapture
 
         public Bitmap CaptureScreen(IntPtr hwnd)
         {
-            Bitmap bm = null;
+            Bitmap result = null;
+            List<Bitmap> screens = new List<Bitmap>();
             try {
                 using (Direct3D d3 = new Direct3D()) {
-                    AdapterInformation adapterInfo = d3.Adapters.DefaultAdapter;
-                    PresentParameters parameters = new PresentParameters();
-                    parameters.BackBufferFormat = adapterInfo.CurrentDisplayMode.Format;
-                    parameters.BackBufferHeight = adapterInfo.CurrentDisplayMode.Height;
-                    parameters.BackBufferWidth = adapterInfo.CurrentDisplayMode.Width;
-                    parameters.Multisample = SlimDX.Direct3D9.MultisampleType.None;
-                    parameters.SwapEffect = SlimDX.Direct3D9.SwapEffect.Discard;
-                    parameters.DeviceWindowHandle = hwnd;
-                    parameters.PresentationInterval = SlimDX.Direct3D9.PresentInterval.Default;
-                    parameters.FullScreenRefreshRateInHertz = 0;
-                    using (Device d = new Device(d3, adapterInfo.Adapter, DeviceType.Hardware, hwnd, CreateFlags.SoftwareVertexProcessing, parameters)) {
-                        using (SlimDX.Direct3D9.Surface surface = SlimDX.Direct3D9.Surface.CreateOffscreenPlain(d, adapterInfo.CurrentDisplayMode.Width, adapterInfo.CurrentDisplayMode.Height, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.SystemMemory)) {
-                            d.GetFrontBufferData(0, surface);
-                            bm = new Bitmap(SlimDX.Direct3D9.Surface.ToStream(surface, SlimDX.Direct3D9.ImageFileFormat.Bmp));
+                    foreach (AdapterInformation adapterInfo in d3.Adapters) {
+                        PresentParameters parameters = new PresentParameters();
+                        parameters.BackBufferFormat = adapterInfo.CurrentDisplayMode.Format;
+                        parameters.BackBufferHeight = adapterInfo.CurrentDisplayMode.Height;
+                        parameters.BackBufferWidth = adapterInfo.CurrentDisplayMode.Width;
+                        parameters.Multisample = SlimDX.Direct3D9.MultisampleType.None;
+                        parameters.SwapEffect = SlimDX.Direct3D9.SwapEffect.Discard;
+                        parameters.DeviceWindowHandle = hwnd;
+                        parameters.PresentationInterval = SlimDX.Direct3D9.PresentInterval.Default;
+                        parameters.FullScreenRefreshRateInHertz = 0;
+                        using (Device d = new Device(d3, adapterInfo.Adapter, DeviceType.Hardware, hwnd, CreateFlags.HardwareVertexProcessing, parameters)) {
+                            using (SlimDX.Direct3D9.Surface surface = SlimDX.Direct3D9.Surface.CreateOffscreenPlain(d, adapterInfo.CurrentDisplayMode.Width, adapterInfo.CurrentDisplayMode.Height, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.SystemMemory)) {
+                                d.GetFrontBufferData(0, surface);
+                                screens.Add(new Bitmap(SlimDX.Direct3D9.Surface.ToStream(surface, SlimDX.Direct3D9.ImageFileFormat.Bmp)));
+                            }
                         }
-                        return bm;
                     }
                 }
             }
             catch (Exception e) {
-                bm = null;
+                result = null;
                 this.Log(e.StackTrace + '\n' + e.Message);
             }
-            return bm;
+            int newWidth = 0;
+            int newHeight = 0;
+            float xDpi = 0;
+            float yDpi = 0;
+            foreach (Bitmap screen in screens) {
+                newWidth += screen.Width;
+                newHeight = newHeight > screen.Height ? newHeight : screen.Height;
+                xDpi = screen.HorizontalResolution;
+                yDpi = screen.VerticalResolution;
+            }
+            newHeight += 1;
+            result = new Bitmap(newWidth, newHeight);
+            result.SetResolution(xDpi, yDpi);
+            using (Graphics g = Graphics.FromImage(result)) {
+                int drawX = 0;
+                foreach(Bitmap screen in screens) {
+                    g.DrawImage(screen, new Point(drawX, 0));
+                    drawX += screen.Width;
+                }
+            }
+            foreach (Bitmap screen in screens) {
+                screen.Dispose();
+            }
+            return result;
         }
 
         private void Log(String msg)
