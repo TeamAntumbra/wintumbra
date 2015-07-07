@@ -50,7 +50,7 @@ namespace Antumbra.Glow
             logger.NewLogMsgAvail(sender.ToString(), e.Exception.StackTrace);
         }
 
-        private static string appGuid = "5e20e0ce-ca88-4e48-b4da-a5de166f5a3d";
+        private static string appGuid = "antumbra-ca88-4e48-b4da-a5de166f5a3d";
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
