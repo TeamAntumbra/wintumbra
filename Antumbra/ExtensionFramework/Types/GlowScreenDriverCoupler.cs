@@ -16,7 +16,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
     //generates color using a GlowScreenGrabber
     //and a GlowScreenProcessor
     {
-        public delegate void NewColorAvail(Color16Bit newCol);
+        public delegate void NewColorAvail(Color16Bit newCol, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
@@ -24,7 +24,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
-        private int devId;
+        public override int devId { get { return this.devId; } }
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
 
@@ -57,11 +57,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public void AttachObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
-        }
-
-        public void RegisterDevice(int devId)
-        {
-            this.devId = devId;
         }
 
         void GlowCommandObserver.NewGlowCommandAvail(GlowCommand cmd)
@@ -97,7 +92,9 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             get { return true; }
         }
         public sealed override Version Version
-        { get { return new Version(0, 1, 0, 0); } }
+        {
+            get { return new Version(0, 1, 0, 0); }
+        }
 
         public sealed override string Website
         {
@@ -109,9 +106,10 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        void AntumbraColorObserver.NewColorAvail(Color16Bit newCol)
+        void AntumbraColorObserver.NewColorAvail(Color16Bit newCol, int id, long index)
         {
-            NewColorAvailEvent(newCol);//pass it up
+            if(NewColorAvailEvent != null)
+                NewColorAvailEvent(newCol, id, index);//pass it up
         }
 
         public override bool Start()
