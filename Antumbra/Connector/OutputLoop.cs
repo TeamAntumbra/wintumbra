@@ -19,8 +19,11 @@ namespace Antumbra.Glow.Connector
         private Color16Bit weightedAvg;
         private bool weightingEnabled;
         private double newColorWeight;
+        private long index;
 
-        public double FPS { get { return Math.Round(outputFPS.FPS, 2); } }
+        public double FPS {
+            get { return Math.Round(outputFPS.FPS, 2); }
+        }
         /// <summary>
         /// Synchronisation object
         /// </summary>
@@ -44,10 +47,11 @@ namespace Antumbra.Glow.Connector
                     _active = value;
             }
         }
-        public OutputLoop(DeviceManager mgr, int devId)
+        public OutputLoop(DeviceManager mgr, int id)
         {
-            this.id = devId;
+            this.id = id;
             this.mgr = mgr;
+            this.index = long.MinValue;
         }
 
         public bool Start(bool weightEnabled, double newColorWeight)
@@ -90,6 +94,7 @@ namespace Antumbra.Glow.Connector
                         this.outputLoopTask.Dispose();
                 }
             }
+            this.index = long.MinValue;
         }
 
         public void Dispose()
@@ -97,10 +102,12 @@ namespace Antumbra.Glow.Connector
             this.Stop();
         }
 
-        void AntumbraColorObserver.NewColorAvail(Color16Bit newColor)
+        public void NewColorAvail(Color16Bit newColor, int id, long index)
         {
-            outputFPS.Tick();
-            color = newColor;
+            if (this.id == id && this.index < index) {
+                outputFPS.Tick();
+                color = newColor;
+            }
         }
     }
 }
