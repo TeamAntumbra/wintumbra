@@ -176,8 +176,6 @@
     <Compile Include="Observer\Logging\LogMsgObserver.cs" />
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
     <Compile Include="Settings\ActiveExtensions.cs" />
-    <Compile Include="Controller\AdvancedSettingsWindowController.cs" />
-    <Compile Include="Settings\AdvancedSettingsWindowManager.cs" />
     <Compile Include="Utility\Saving\Savable.cs" />
     <Compile Include="Utility\Saving\Saver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
@@ -212,12 +210,6 @@
     </Compile>
     <Compile Include="Utility\HslColor.cs" />
     <Compile Include="ExtensionFramework\GlowExtension.cs" />
-    <Compile Include="View\AdvancedSettingsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\AdvancedSettingsWindow.Designer.cs">
-      <DependentUpon>AdvancedSettingsWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utility\HSVRGGConverter.cs" />
     <Compile Include="Connector\SerialConnector.cs" />
     <Compile Include="Program.cs">
@@ -243,9 +235,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\pollingAreaSetter.resx">
       <DependentUpon>pollingAreaSetter.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\AdvancedSettingsWindow.resx">
-      <DependentUpon>AdvancedSettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
