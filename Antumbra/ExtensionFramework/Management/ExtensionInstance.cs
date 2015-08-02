@@ -33,14 +33,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewGlowCommand NewGlowCommandAvailEvent;
         public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
-        private DeviceSettings Settings;
         private ActiveExtensions Extensions;
         private int id;
         private static readonly String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
-        public ExtensionInstance(int id, ActiveExtensions extensions, DeviceSettings settings)
+        private static readonly String SAVE_FILE_PREFIX = "ExtensionInstance_";
+        public ExtensionInstance(int id, ActiveExtensions extensions)
         {
             this.id = id;
-            this.Settings = settings;
             this.AttachObserver(LoggerHelper.GetInstance());
             this.Extensions = extensions;
         }
@@ -96,7 +95,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             if (Extensions != null) {
                 Saver saver = Saver.GetInstance();
-                saver.Save(ExtensionManager.configFileBase + this.id, this.Extensions.ToString());
+                saver.Save(SAVE_FILE_PREFIX + this.id, this.Extensions.ToString());
             }
         }
 
@@ -107,7 +106,19 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void ConfigurationUpdate(Configurable config)
         {
-            // Do nothing, has direct Setting object access
+            if (config is DeviceSettings) {
+                DeviceSettings settings = (DeviceSettings)config;
+                Extensions.ActiveDriver.stepSleep = settings.stepSleep;
+                Extensions.ActiveDriver.weighted = settings.weightingEnabled;
+                Extensions.ActiveGrabber.captureThrottle = settings.captureThrottle;
+                Extensions.ActiveGrabber.x = settings.boundX;
+                Extensions.ActiveGrabber.y = settings.boundY;
+                Extensions.ActiveGrabber.width = settings.boundWidth;
+                Extensions.ActiveGrabber.height = settings.boundHeight;
+                foreach (var process in Extensions.ActiveProcessors)
+                    if (settings.id == process.devId)
+                        process.SetArea(settings.x, settings.y, settings.width, settings.height);
+            }
         }
 
         public void NewColorAvail(Color16Bit newColor, int id)

@@ -134,6 +134,7 @@
     <Compile Include="Controller\MainWindowController.cs" />
     <Compile Include="Controller\PollingAreaWindowController.cs" />
     <Compile Include="Controller\WhiteBalanceWindowController.cs" />
+    <Compile Include="ExtensionFramework\Management\ExtensionInstance.cs" />
     <Compile Include="ExtensionFramework\Management\PresetBuilder.cs" />
     <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
