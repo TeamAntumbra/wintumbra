@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.Utility.Settings;
+using Antumbra.Glow.Utility.Saving;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.ToolbarNotifications;
@@ -22,7 +22,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="newColor">The new color to send</param>
         /// <param name="id">The device id the color pertains to</param>
-        public delegate void NewColor(Color16Bit newColor, int id);
+        /// <param name="index">Index given to this color to ensure correct ordering of output</param>
+        public delegate void NewColor(Color16Bit newColor, int id, long index);
         /// <summary>
         /// NewColorAvail Event, occurs when a new color is available
         /// </summary>
@@ -121,10 +122,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
-        public void NewColorAvail(Color16Bit newColor, int id)
+        public void NewColorAvail(Color16Bit newColor, int id, long index)
         {
             if (NewColorAvailEvent != null)
-                NewColorAvailEvent(newColor, id);
+                NewColorAvailEvent(newColor, id, index);
         }
 
         public void NewLogMsgAvail(String source, String msg)
