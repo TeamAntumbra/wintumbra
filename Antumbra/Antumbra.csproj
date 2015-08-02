@@ -178,8 +178,8 @@
     <Compile Include="Settings\ActiveExtensions.cs" />
     <Compile Include="Controller\AdvancedSettingsWindowController.cs" />
     <Compile Include="Settings\AdvancedSettingsWindowManager.cs" />
-    <Compile Include="Utility\Settings\Savable.cs" />
-    <Compile Include="Utility\Settings\Saver.cs" />
+    <Compile Include="Utility\Saving\Savable.cs" />
+    <Compile Include="Utility\Saving\Saver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Observer\Logging\Logger.cs" />
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />

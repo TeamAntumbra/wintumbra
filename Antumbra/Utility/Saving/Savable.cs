@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Utility.Settings
+namespace Antumbra.Glow.Utility.Saving
 {
     public interface Savable
     {
         void Save();
-        Object LoadSave(String settings);
+        void Load(String settings);
         void Reset();
     }
 }
