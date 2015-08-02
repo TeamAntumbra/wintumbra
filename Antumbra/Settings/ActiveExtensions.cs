@@ -38,16 +38,16 @@ namespace Antumbra.Glow.Settings
                 Notify();
             }
         }
-        private GlowScreenProcessor _ActiveProcessor;
-        public GlowScreenProcessor ActiveProcessor
+        private List<GlowScreenProcessor> _ActiveProcessors;
+        public List<GlowScreenProcessor> ActiveProcessors
         {
             get
             {
-                return _ActiveProcessor;
+                return _ActiveProcessors;
             }
             set
             {
-                _ActiveProcessor = value;
+                _ActiveProcessors = value;
                 Notify();
             }
         }
