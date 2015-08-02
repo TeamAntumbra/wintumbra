@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Utility.Settings;
+using Antumbra.Glow.Utility.Saving;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.Logging;
 
@@ -66,6 +66,54 @@ namespace Antumbra.Glow.Settings
             }
         }
         private int _height;
+        public int boundX
+        {
+            get { return _boundX; }
+            set
+            {
+                if (value != _boundX) {
+                    _boundX = value;
+                    Notify();
+                }
+            }
+        }
+        private int _boundX;
+        public int boundY
+        {
+            get { return _boundY; }
+            set
+            {
+                if (value != _boundY) {
+                    _boundY = value;
+                    Notify();
+                }
+            }
+        }
+        private int _boundY;
+        public int boundWidth
+        {
+            get { return _boundWidth; }
+            set
+            {
+                if (value != _boundWidth) {
+                    _boundWidth = value;
+                    Notify();
+                }
+            }
+        }
+        private int _boundWidth;
+        public int boundHeight
+        {
+            get { return _boundHeight; }
+            set
+            {
+                if (value != _boundHeight) {
+                    _boundHeight = value;
+                    Notify();
+                }
+            }
+        }
+        private int _boundHeight;
         public int stepSleep
         {
             get { return _stepSleep; }
@@ -214,13 +262,18 @@ namespace Antumbra.Glow.Settings
             }
         }
         private int _captureThrottle;
+
+        private static readonly String FILE_NAME_PREFIX = "Dev_Settings_";
+        private String fileName;
+
         public DeviceSettings(int id)
         {
             this.id = id;
             this.AttachObserver(LoggerHelper.GetInstance());
+            this.fileName = FILE_NAME_PREFIX + this.id.ToString();
         }
 
-        private String SerializeSettings()
+        private String SerializeSettings()//TODO serialize entire object instead of CSV
         {
             String result = "";
             result += this.id.ToString() + ',';
@@ -251,6 +304,11 @@ namespace Antumbra.Glow.Settings
             saver.Save(id.ToString(), SerializeSettings());
         }
 
+        public void Load()
+        {
+            //TODO load serialized values from fileName
+        }
+
         public void AttachObserver(ConfigurationObserver o)
         {
             ConfigChangeEvent += o.ConfigurationUpdate;
@@ -277,33 +335,6 @@ namespace Antumbra.Glow.Settings
             this.greenBias = 0;
             this.blueBias = 0;
             this.maxBrightness = UInt16.MaxValue;
-        }
-
-        public Object LoadSave(String settings)
-        {
-            try {
-                String[] parts = settings.Split(',');
-                id = int.Parse(parts[0]);
-                x = int.Parse(parts[1]);
-                y = int.Parse(parts[2]);
-                width = int.Parse(parts[3]);
-                height = int.Parse(parts[4]);
-                stepSleep = int.Parse(parts[5]);
-                weightingEnabled = Boolean.Parse(parts[6]);
-                newColorWeight = double.Parse(parts[7]);
-                maxBrightness = UInt16.Parse(parts[8]);
-                redBias = int.Parse(parts[9]);
-                greenBias = int.Parse(parts[10]);
-                blueBias = int.Parse(parts[11]);
-                compoundFilter = Boolean.Parse(parts[12]);
-                captureThrottle = int.Parse(parts[13]);
-            }
-            catch (Exception e) {
-                this.Log("Loading settings failed!" + e.StackTrace + '\n' + e.Message);
-                this.Reset();
-            }
-            this.Notify();
-            return null;//unused
         }
 
         private void Log(String msg)
