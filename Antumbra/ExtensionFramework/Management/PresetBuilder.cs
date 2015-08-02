@@ -63,7 +63,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 result.ActiveGrabber = (GlowScreenGrabber)ext;
             ext = this.lib.LookupExt(ScreenshotProcesor);
             if (ext != null)
-                result.ActiveProcessor = (GlowScreenProcessor)ext;
+                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
             return result;
         }
 
@@ -78,7 +78,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 result.ActiveGrabber = (GlowScreenGrabber)ext;
             ext = this.lib.LookupExt(ScreenshotProcesor);
             if (ext != null)
-                result.ActiveProcessor = (GlowScreenProcessor)ext;
+                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
             return result;
         }
 
@@ -93,7 +93,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 result.ActiveGrabber = (GlowScreenGrabber)ext;
             ext = this.lib.LookupExt(ScreenshotProcesor);
             if (ext != null)
-                result.ActiveProcessor = (GlowScreenProcessor)ext;
+                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
             ext = this.lib.LookupExt(Saturator);
             if (ext != null)
                 result.ActiveFilters.Add((GlowFilter)ext);
@@ -108,7 +108,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 result.ActiveDriver = (GlowDriver)ext;
             ext = this.lib.LookupExt(ScreenshotProcesor);
             if (ext != null)
-                result.ActiveProcessor = (GlowScreenProcessor)ext;
+                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
             ext = this.lib.LookupExt(DXGrabber);
             if (ext != null)
                 result.ActiveGrabber = (GlowScreenGrabber)ext;
