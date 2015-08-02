@@ -17,6 +17,11 @@ namespace Antumbra.Glow.ExtensionFramework
         Guid id { get; }
 
         /// <summary>
+        /// The id for the device this extension is associated with
+        /// </summary>
+        int devId { get; }
+
+        /// <summary>
         /// The name of the extension.
         /// </summary>
         string Name { get; }
