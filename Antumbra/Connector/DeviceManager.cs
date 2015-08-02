@@ -22,6 +22,7 @@ namespace Antumbra.Glow.Connector
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewLogMsgAvail(string title, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
+        private int boundX, boundY, boundWidth, boundHeight;
         private SerialConnector Connector;
         private OutputLoopManager outManager;
         public List<GlowDevice> Glows { get; private set; }
@@ -201,6 +202,31 @@ namespace Antumbra.Glow.Connector
                     sb.Append(" not outputting.\n");
             }
             return sb.ToString();
+        }
+
+        public void UpdateBoundingBox()
+        {
+            int minTop = int.MaxValue, maxBot = 0, minLeft = int.MaxValue, maxRight = 0;
+            foreach (GlowDevice dev in Glows) {
+                int left = dev.settings.x;
+                int right = dev.settings.width + left;
+                int top = dev.settings.y;
+                int bot = top + dev.settings.height;
+                minTop = minTop < top ? minTop : top;
+                maxBot = maxBot > bot ? maxBot : bot;
+                minLeft = minLeft < left ? minLeft : left;
+                maxRight = maxRight > right ? maxRight : right;
+            }
+            boundX = minLeft;
+            boundY = minTop;
+            boundWidth = maxRight - minLeft;
+            boundHeight = maxBot - minTop;
+            foreach (GlowDevice device in Glows) {
+                device.settings.boundX = boundX;
+                device.settings.boundY = boundY;
+                device.settings.boundWidth = boundWidth;
+                device.settings.boundHeight = boundHeight;
+            }
         }
 
         private void CloseAll()
