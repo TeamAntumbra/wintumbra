@@ -10,6 +10,7 @@ using Antumbra.Glow.Utility.Saving;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.ToolbarNotifications;
+using Antumbra.Glow.ExtensionFramework.Types;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
 {
@@ -63,7 +64,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                         throw new Exception(FAILED_START_EXCEPTION_PREFIX + notifier.ToString());
             }
             catch (Exception ex) {
-                Log("Exception starting ExtensionsInstance " + id + ".\n" + ex.Message + '\n' + ex.StackTrace);
+                Log("Exception starting ExtensionInstance " + id + ".\n" + ex.Message + '\n' + ex.StackTrace);
                 Stop();
                 return false;
             }
@@ -124,8 +125,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void NewColorAvail(Color16Bit newColor, int id, long index)
         {
-            if (NewColorAvailEvent != null)
-                NewColorAvailEvent(newColor, id, index);
+            if (NewColorAvailEvent != null) {
+                long r = 0, g = 0, b = 0;
+                int i;
+                for (i = 0; i < Extensions.ActiveFilters.Count; i += 1) {
+                    r += newColor.red;
+                    g += newColor.green;
+                    b += newColor.blue;
+                }
+                Color16Bit filtered = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
+                NewColorAvailEvent(filtered, id, index);
+            }
         }
 
         public void NewLogMsgAvail(String source, String msg)

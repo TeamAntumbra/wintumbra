@@ -156,21 +156,6 @@ namespace Antumbra.Glow.Settings
             }
         }
         private double _newColorWeight;
-        public bool compoundFilter
-        {
-            get
-            {
-                return _compoundFilter;
-            }
-            set
-            {
-                if (value != _compoundFilter) {
-                    _compoundFilter = value;
-                    Notify();
-                }
-            }
-        }
-        private bool _compoundFilter;
         public UInt16 maxBrightness
         {
             get
@@ -288,7 +273,6 @@ namespace Antumbra.Glow.Settings
             result += this.redBias.ToString() + ',';
             result += this.greenBias.ToString() + ',';
             result += this.blueBias.ToString() + ',';
-            result += this.compoundFilter.ToString() + ',';
             result += this.captureThrottle.ToString() + '\n';
             return result;
         }
@@ -330,7 +314,6 @@ namespace Antumbra.Glow.Settings
             this.stepSleep = 1;
             this.weightingEnabled = true;
             this.newColorWeight = .05;
-            this.compoundFilter = false;
             this.redBias = 0;
             this.greenBias = 0;
             this.blueBias = 0;
