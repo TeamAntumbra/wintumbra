@@ -130,7 +130,7 @@
     <Compile Include="Connector\DeviceManager.cs" />
     <Compile Include="Connector\GlowDevice.cs" />
     <Compile Include="Connector\OutputLoop.cs" />
-    <Compile Include="Connector\OutputLoopManager.cs" />
+    <Compile Include="Connector\OutputManager.cs" />
     <Compile Include="Controller\MainWindowController.cs" />
     <Compile Include="Controller\PollingAreaWindowController.cs" />
     <Compile Include="Controller\WhiteBalanceWindowController.cs" />

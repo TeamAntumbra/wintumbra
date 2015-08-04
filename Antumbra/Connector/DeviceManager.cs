@@ -24,7 +24,6 @@ namespace Antumbra.Glow.Connector
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private int boundX, boundY, boundWidth, boundHeight;
         private SerialConnector Connector;
-        private OutputLoopManager outManager;
         public List<GlowDevice> Glows { get; private set; }
         public int status { get; private set; }
         public int GlowsFound { get; private set; }
@@ -36,11 +35,9 @@ namespace Antumbra.Glow.Connector
             this.Connector = new SerialConnector(vid, pid);
             this.Glows = new List<GlowDevice>();
             int len = this.Connector.UpdateDeviceList();
-            for (var i = 0; i < len; i += 1) {
+            for (int i = 0; i < len; i += 1)
                 this.Glows.Add(new GlowDevice(true, i, this.Connector.GetDeviceInfo(i), lib));
-            }
             this.GlowsFound = this.Glows.Count;
-            this.outManager = new OutputLoopManager();
         }
 
         public void AttachObserver(ToolbarNotificationObserver observer)
@@ -118,9 +115,6 @@ namespace Antumbra.Glow.Connector
         {
             if (id == -1) {
                 foreach (GlowDevice device in this.Glows) {
-                    newColor = device.ApplyFilters(newColor);
-                    newColor = device.ApplyBrightness(newColor);
-                    newColor = device.ApplyWhiteBalance(newColor);
                     sendColor(newColor.red, newColor.green, newColor.blue, device.id);
                 }
                 return;//call completed
@@ -128,9 +122,6 @@ namespace Antumbra.Glow.Connector
             GlowDevice dev = this.getDevice(id);
             if (dev == null)
                 return;//no device found matching passed id
-            newColor = dev.ApplyFilters(newColor);
-            newColor = dev.ApplyBrightness(newColor);
-            newColor = dev.ApplyWhiteBalance(newColor);
             sendColor(newColor.red, newColor.green, newColor.blue, id);
         }
 
