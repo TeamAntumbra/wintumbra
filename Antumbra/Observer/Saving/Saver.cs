@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Observer.Logging;
 
-namespace Antumbra.Glow.Utility.Saving
+namespace Antumbra.Glow.Observer.Saving
 {
     public class Saver : Loggable
     {

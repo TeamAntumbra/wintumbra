@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Utility.Saving;
+using Antumbra.Glow.Observer.Saving;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.Logging;
 
