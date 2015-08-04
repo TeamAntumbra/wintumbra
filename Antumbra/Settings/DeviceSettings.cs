@@ -156,7 +156,7 @@ namespace Antumbra.Glow.Settings
             }
         }
         private double _newColorWeight;
-        public UInt16 maxBrightness
+        public double maxBrightness
         {
             get
             {
@@ -170,8 +170,8 @@ namespace Antumbra.Glow.Settings
                 }
             }
         }
-        private UInt16 _maxBrightness;
-        public int redBias
+        private double _maxBrightness;
+        public Int16 redBias
         {
             get
             {
@@ -185,8 +185,8 @@ namespace Antumbra.Glow.Settings
                 }
             }
         }
-        private int _redBias;
-        public int greenBias
+        private Int16 _redBias;
+        public Int16 greenBias
         {
             get
             {
@@ -200,8 +200,8 @@ namespace Antumbra.Glow.Settings
                 }
             }
         }
-        private int _greenBias;
-        public int blueBias
+        private Int16 _greenBias;
+        public Int16 blueBias
         {
             get
             {
@@ -215,7 +215,7 @@ namespace Antumbra.Glow.Settings
                 }
             }
         }
-        private int _blueBias;
+        private Int16 _blueBias;
         public bool powerState
         {
             get
