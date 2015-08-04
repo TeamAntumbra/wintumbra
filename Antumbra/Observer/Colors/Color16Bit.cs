@@ -92,5 +92,33 @@ namespace Antumbra.Glow.Observer.Colors
             green = Convert.ToUInt16(green * scaleFactor);
             blue = Convert.ToUInt16(blue * scaleFactor);
         }
+
+        /// <summary>
+        /// Funnel the values into UInt16 bounds and create a Color16Bit object
+        /// </summary>
+        /// <param name="r">Red attribute</param>
+        /// <param name="g">Green attribute</param>
+        /// <param name="b">Blue attribute</param>
+        /// <returns>Color16Bit made from the funneled values</returns>
+        public static Color16Bit FunnelIntoColor(int r, int g, int b)
+        {
+            return new Color16Bit(Funnel(r), Funnel(g), Funnel(b));
+        }
+
+        /// <summary>
+        /// Funnel value into UInt16 bounds
+        /// </summary>
+        /// <param name="value">The value to funnel</param>
+        /// <returns>0 for negative values, 65535 for values larger than that, else the input value as a UInt16</returns>
+        private static UInt16 Funnel(int value)
+        {
+            if (value < 0) {
+                return 0;
+            }
+            if (value > UInt16.MaxValue) {
+                return UInt16.MaxValue;
+            }
+            return Convert.ToUInt16(value);
+        }
     }
 }
