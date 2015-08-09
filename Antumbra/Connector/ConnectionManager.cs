@@ -28,9 +28,7 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         /// <param name="vid"></param>
         /// <param name="pid"></param>
-        /// <param name="lib"></param>
-        /// <param name="productVersion"></param>
-        public ConnectionManager(int vid, int pid, ExtensionLibrary lib, string productVersion)
+        public ConnectionManager(int vid, int pid)
         {
             AttachObserver(LoggerHelper.GetInstance());
             Connector = new SerialConnector(vid, pid);
