@@ -116,6 +116,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -127,10 +128,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connector\DeviceManager.cs" />
-    <Compile Include="Connector\GlowDevice.cs" />
-    <Compile Include="Connector\OutputLoop.cs" />
-    <Compile Include="Connector\OutputManager.cs" />
+    <Compile Include="Connector\ConnectionManager.cs" />
+    <Compile Include="Connector\PreOutputProcessor.cs" />
     <Compile Include="Controller\MainWindowController.cs" />
     <Compile Include="Controller\PollingAreaWindowController.cs" />
     <Compile Include="Controller\WhiteBalanceWindowController.cs" />
@@ -140,6 +139,9 @@
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="Observer\Colors\Color16Bit.cs" />
     <Compile Include="Observer\Bitmaps\FastBitmap.cs" />
+    <Compile Include="Observer\Connection\ConnectionEventObserver.cs" />
+    <Compile Include="Observer\Connection\ConnectionEventSource.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,8 +178,8 @@
     <Compile Include="Observer\Logging\LogMsgObserver.cs" />
     <Compile Include="Observer\Notifications\AntumbraNotificationObserver.cs" />
     <Compile Include="Settings\ActiveExtensions.cs" />
-    <Compile Include="Utility\Saving\Savable.cs" />
-    <Compile Include="Utility\Saving\Saver.cs" />
+    <Compile Include="Observer\Saving\Savable.cs" />
+    <Compile Include="Observer\Saving\Saver.cs" />
     <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Observer\Logging\Logger.cs" />
     <Compile Include="Observer\ToolbarNotifications\ToolbarNotificationObserver.cs" />
