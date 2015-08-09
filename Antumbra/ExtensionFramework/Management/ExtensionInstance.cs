@@ -111,6 +111,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         public void Load()
         {
+            Stop();
+            Dispose();
             Saver saver = Saver.GetInstance();
             Extensions = (ActiveExtensions)saver.Load(SAVE_FILE_PREFIX + id);
         }
