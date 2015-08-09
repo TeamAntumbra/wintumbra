@@ -16,7 +16,7 @@ namespace Antumbra.Glow.ExtensionFramework
     /// <summary>
     /// Abstract definition of a Glow Extension
     /// </summary>
-    public abstract class GlowExtension : IGlowExtension
+    public abstract class GlowExtension : IGlowExtension, IDisposable
     {
         public override string ToString()
         {
@@ -97,5 +97,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// </summary>
         /// <returns></returns>
         public abstract GlowExtension Create();//TODO move this into inner factory object for MEF/Library use rather than holding an entire copy
+
+        public abstract void Dispose();
     }
 }
