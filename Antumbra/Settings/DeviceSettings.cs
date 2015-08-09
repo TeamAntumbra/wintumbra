@@ -8,11 +8,15 @@ using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Observer.Saving;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.Logging;
+using System.Runtime.Serialization;
 
 namespace Antumbra.Glow.Settings
 {
-    public class DeviceSettings : Savable, Configurable, Loggable
+    [Serializable()]
+    public class DeviceSettings : Savable, Configurable, Loggable, ISerializable
     {
+        public const String FILE_NAME_PREFIX = "Dev_Settings_";
+
         public delegate void ConfigurationChange(Configurable settings);
         public event ConfigurationChange ConfigChangeEvent;
         public delegate void NewLogMsgAvail(String source, String msg);
@@ -247,10 +251,12 @@ namespace Antumbra.Glow.Settings
             }
         }
         private int _captureThrottle;
-
-        private static readonly String FILE_NAME_PREFIX = "Dev_Settings_";
         private String fileName;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">Device id</param>
         public DeviceSettings(int id)
         {
             this.id = id;
@@ -258,68 +264,103 @@ namespace Antumbra.Glow.Settings
             this.fileName = FILE_NAME_PREFIX + this.id.ToString();
         }
 
-        private String SerializeSettings()//TODO serialize entire object instead of CSV
-        {
-            String result = "";
-            result += this.id.ToString() + ',';
-            result += this.x.ToString() + ',';
-            result += this.y.ToString() + ',';
-            result += this.width.ToString() + ',';
-            result += this.height.ToString() + ',';
-            result += this.stepSleep.ToString() + ',';
-            result += this.weightingEnabled.ToString() + ',';
-            result += this.newColorWeight.ToString() + ',';
-            result += this.maxBrightness.ToString() + ',';
-            result += this.redBias.ToString() + ',';
-            result += this.greenBias.ToString() + ',';
-            result += this.blueBias.ToString() + ',';
-            result += this.captureThrottle.ToString() + '\n';
-            return result;
-        }
-
+        /// <summary>
+        /// Attach a LogMsgObserver to this object
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
+        /// <summary>
+        /// Serialize and save this object
+        /// </summary>
         public void Save()
         {
-            Saver saver = Saver.GetInstance();
-            saver.Save(id.ToString(), SerializeSettings());
+            Saver.GetInstance().Save(FILE_NAME_PREFIX + id.ToString(), this);
         }
 
+        /// <summary>
+        /// Alert developer this method should not be used here.
+        /// </summary>
         public void Load()
         {
-            //TODO load serialized values from fileName
+            throw new NotImplementedException("SettingsManager should load and replace this object rather than calling its Load()");
         }
 
+        /// <summary>
+        /// Attach a ConfigurationObserver to this objectS
+        /// </summary>
+        /// <param name="o"></param>
         public void AttachObserver(ConfigurationObserver o)
         {
             ConfigChangeEvent += o.ConfigurationUpdate;
         }
 
+        /// <summary>
+        /// Notify any ConfigurationObservers of the current config
+        /// </summary>
         public void Notify()
         {
             if (ConfigChangeEvent != null)
                 ConfigChangeEvent(this);
         }
 
-        public void Reset()//reset everything except power state
+        /// <summary>
+        /// Serialize this object
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="cnxt"></param>
+        public DeviceSettings(SerializationInfo info, StreamingContext cnxt)
         {
-            this.id = id;
-            this.x = Screen.PrimaryScreen.Bounds.X;
-            this.y = Screen.PrimaryScreen.Bounds.Y;
-            this.width = Screen.PrimaryScreen.Bounds.Width;
-            this.height = Screen.PrimaryScreen.Bounds.Height;
-            this.stepSleep = 1;
-            this.weightingEnabled = true;
-            this.newColorWeight = .05;
-            this.redBias = 0;
-            this.greenBias = 0;
-            this.blueBias = 0;
-            this.maxBrightness = UInt16.MaxValue;
+            redBias = info.GetInt16("redBias");
+            greenBias = info.GetInt16("greenBias");
+            blueBias = info.GetInt16("blueBias");
+            maxBrightness = info.GetDouble("maxBrightness");
+            x = (int)info.GetValue("x", typeof(int));
+            y = (int)info.GetValue("y", typeof(int));
+            width = (int)info.GetValue("width", typeof(int));
+            height = (int)info.GetValue("height", typeof(int));
+            boundX = (int)info.GetValue("boundX", typeof(int));
+            boundY = (int)info.GetValue("boundY", typeof(int));
+            boundWidth = (int)info.GetValue("boundWidth", typeof(int));
+            boundHeight = (int)info.GetValue("boundHeight", typeof(int));
+            captureThrottle = (int)info.GetValue("captureThrottle", typeof(int));
+            stepSleep = (int)info.GetValue("stepSleep", typeof(int));
+            weightingEnabled = info.GetBoolean("weightingEnabled");
+            newColorWeight = info.GetDouble("newColorWeight");
         }
 
+        /// <summary>
+        /// Deserialize this object
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="cnxt"></param>
+        public void GetObjectData(SerializationInfo info, StreamingContext cnxt)
+        {
+            info.AddValue("redBias", redBias);
+            info.AddValue("greenBias", greenBias);
+            info.AddValue("blueBias", blueBias);
+            info.AddValue("maxBrightness", maxBrightness);
+            info.AddValue("x", x);
+            info.AddValue("y", y);
+            info.AddValue("width", width);
+            info.AddValue("height", height);
+            info.AddValue("boundX", boundX);
+            info.AddValue("boundY", boundY);
+            info.AddValue("boundWidth", boundWidth);
+            info.AddValue("boundHeight", boundHeight);
+            info.AddValue("captureThrottle", captureThrottle);
+            info.AddValue("stepSleep", stepSleep);
+            info.AddValue("weightingEnabled", weightingEnabled);
+            info.AddValue("newColorWeight", newColorWeight);
+        }
+
+        /// <summary>
+        /// Log a message
+        /// </summary>
+        /// <param name="msg"></param>
         private void Log(String msg)
         {
             if (this.NewLogMsgAvailEvent != null) {
