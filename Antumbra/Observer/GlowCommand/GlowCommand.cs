@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Antumbra.Glow.Connector;
+using Antumbra.Glow.ExtensionFramework.Management;
 
 namespace Antumbra.Glow.Observer.GlowCommands
 {
@@ -15,6 +15,6 @@ namespace Antumbra.Glow.Observer.GlowCommands
             this.id = id;
         }
 
-        public abstract void ExecuteCommand(DeviceManager mgr);
+        public abstract void ExecuteCommand(ExtensionManager mgr);
     }
 }

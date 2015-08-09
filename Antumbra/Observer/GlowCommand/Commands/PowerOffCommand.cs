@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Antumbra.Glow.Connector;
+using Antumbra.Glow.ExtensionFramework.Management;
 
 namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
@@ -15,17 +15,9 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         }
 
-        public override void ExecuteCommand(DeviceManager mgr)
+        public override void ExecuteCommand(ExtensionManager mgr)
         {
-            if (this.id == -1)//turn off all
-                foreach (GlowDevice dev in mgr.Glows) {
-                    mgr.Stop(dev.id);
-                    mgr.sendColor(0, 0, 0, dev.id);
-                }
-            else {
-                mgr.getDevice(id).Stop();
-                mgr.sendColor(0, 0, 0, id);
-            }
+            mgr.Off(id);
         }
     }
 }

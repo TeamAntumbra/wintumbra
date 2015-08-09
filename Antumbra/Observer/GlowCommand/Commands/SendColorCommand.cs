@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Antumbra.Glow.Connector;
+using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Observer.GlowCommands.Commands
@@ -17,7 +17,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
             this.newColor = newColor;
         }
 
-        public override void ExecuteCommand(DeviceManager mgr)
+        public override void ExecuteCommand(ExtensionManager mgr)
         {
             mgr.sendColor(newColor, id);
         }
