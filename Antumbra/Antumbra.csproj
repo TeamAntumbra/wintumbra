@@ -141,6 +141,7 @@
     <Compile Include="Observer\Bitmaps\FastBitmap.cs" />
     <Compile Include="Observer\Connection\ConnectionEventObserver.cs" />
     <Compile Include="Observer\Connection\ConnectionEventSource.cs" />
+    <Compile Include="Settings\SettingsDelta.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="View\AntumbraExtSettingsWindow.cs">
       <SubType>Form</SubType>

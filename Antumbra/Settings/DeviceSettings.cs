@@ -218,21 +218,6 @@ namespace Antumbra.Glow.Settings
             }
         }
         private Int16 _blueBias;
-        public bool powerState
-        {
-            get
-            {
-                return _powerState;
-            }
-            set
-            {
-                if (value != _powerState) {
-                    _powerState = value;
-                    Notify();
-                }
-            }
-        }
-        private bool _powerState;
 
         public int captureThrottle
         {
@@ -287,6 +272,64 @@ namespace Antumbra.Glow.Settings
         {
             if (ConfigChangeEvent != null)
                 ConfigChangeEvent(this);
+        }
+
+        public void ApplyChanges(SettingsDelta delta)
+        {
+            foreach (SettingValue variable in delta.changes.Keys) {
+                switch (variable) {
+                    case SettingValue.BLUEBIAS:
+                        blueBias = (Int16)delta.changes[SettingValue.BLUEBIAS];
+                        break;
+                    case SettingValue.BOUNDHEIGHT:
+                        boundHeight = (int)delta.changes[SettingValue.BOUNDHEIGHT];
+                        break;
+                    case SettingValue.BOUNDWIDTH:
+                        boundWidth = (int)delta.changes[SettingValue.BOUNDWIDTH];
+                        break;
+                    case SettingValue.BOUNDX:
+                        boundX = (int)delta.changes[SettingValue.BOUNDX];
+                        break;
+                    case SettingValue.BOUNDY:
+                        boundY = (int)delta.changes[SettingValue.BOUNDY];
+                        break;
+                    case SettingValue.CAPTURETHROTTLE:
+                        captureThrottle = (int)delta.changes[SettingValue.CAPTURETHROTTLE];
+                        break;
+                    case SettingValue.GREENBIAS:
+                        greenBias = (Int16)delta.changes[SettingValue.GREENBIAS];
+                        break;
+                    case SettingValue.HEIGHT:
+                        height = (int)delta.changes[SettingValue.HEIGHT];
+                        break;
+                    case SettingValue.MAXBRIGHTNESS:
+                        maxBrightness = (double)delta.changes[SettingValue.MAXBRIGHTNESS];
+                        break;
+                    case SettingValue.NEWCOLORWEIGHT:
+                        newColorWeight = (double)delta.changes[SettingValue.NEWCOLORWEIGHT];
+                        break;
+                    case SettingValue.REDBIAS:
+                        redBias = (Int16)delta.changes[SettingValue.REDBIAS];
+                        break;
+                    case SettingValue.STEPSLEEP:
+                        stepSleep = (int)delta.changes[SettingValue.STEPSLEEP];
+                        break;
+                    case SettingValue.WEIGHTINGENABLED:
+                        weightingEnabled = (bool)delta.changes[SettingValue.WEIGHTINGENABLED];
+                        break;
+                    case SettingValue.WIDTH:
+                        width = (int)delta.changes[SettingValue.WIDTH];
+                        break;
+                    case SettingValue.X:
+                        x = (int)delta.changes[SettingValue.X];
+                        break;
+                    case SettingValue.Y:
+                        y = (int)delta.changes[SettingValue.Y];
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown SettingValue " + variable);
+                }
+            }
         }
 
         /// <summary>

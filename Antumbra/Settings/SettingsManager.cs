@@ -24,6 +24,10 @@ namespace Antumbra.Glow.Settings
             Settings = new Dictionary<int, DeviceSettings>();
         }
 
+        public DeviceSettings getSettings(int id) {
+            return Settings[id];
+        }
+
         /// <summary>
         /// Update the bounding box which contains all device's mirroring zones
         /// </summary>
