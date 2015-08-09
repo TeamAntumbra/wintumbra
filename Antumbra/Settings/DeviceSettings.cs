@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.Observer.Saving;
-using Antumbra.Glow.Observer.Configuration;
+﻿using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.Logging;
+using System;
 using System.Runtime.Serialization;
 
 namespace Antumbra.Glow.Settings
 {
+    /// <summary>
+    /// Holds a Glow device's settings
+    /// Note: This class is Savable despite it not implementing the Savable interface
+    ///       The caveat here is that it cannot save itself
+    /// </summary>
     [Serializable()]
-    public class DeviceSettings : Savable, Configurable, Loggable, ISerializable
+    public class DeviceSettings : Configurable, Loggable, ISerializable
     {
         public const String FILE_NAME_PREFIX = "Dev_Settings_";
 
@@ -271,22 +269,6 @@ namespace Antumbra.Glow.Settings
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
-        }
-
-        /// <summary>
-        /// Serialize and save this object
-        /// </summary>
-        public void Save()
-        {
-            Saver.GetInstance().Save(FILE_NAME_PREFIX + id.ToString(), this);
-        }
-
-        /// <summary>
-        /// Alert developer this method should not be used here.
-        /// </summary>
-        public void Load()
-        {
-            throw new NotImplementedException("SettingsManager should load and replace this object rather than calling its Load()");
         }
 
         /// <summary>
