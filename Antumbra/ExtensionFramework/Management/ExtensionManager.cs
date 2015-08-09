@@ -49,6 +49,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Lib = extLib;
         }
 
+        public void SetInstance(int id, MODE mode)
+        {
+            Instances[id].Stop();
+            Instances[id].Dispose();
+            Instances[id] = CreateInstance(id, mode);
+        }
+
         /// <summary>
         /// Save all ExtensionInstances
         /// </summary>
