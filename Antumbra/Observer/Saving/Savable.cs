@@ -10,6 +10,5 @@ namespace Antumbra.Glow.Observer.Saving
     {
         void Save();
         void Load();
-        void Reset();
     }
 }

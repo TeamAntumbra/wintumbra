@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.Observer.Saving
@@ -30,12 +33,13 @@ namespace Antumbra.Glow.Observer.Saving
                 System.IO.Directory.CreateDirectory(this.path);
         }
 
-        public void Save(String fileName, String serializedSettings)
+        public void Save(String fileName, ISerializable serializable)
         {
             lock (sync) {
                 try {
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + fileName, false)) {
-                        file.WriteLine(serializedSettings);
+                    using (Stream stream = File.Open(this.path + fileName, FileMode.Create)) {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        formatter.Serialize(stream, serializable);
                     }
                 }
                 catch (Exception ex) {
@@ -44,13 +48,13 @@ namespace Antumbra.Glow.Observer.Saving
             }
         }
 
-        public String Load(String fileName)
+        public Object Load(String fileName)
         {
             lock (sync) {
                 try {
-                    using (System.IO.StreamReader file = new System.IO.StreamReader(this.path + fileName, true)) {
-                        String contents = file.ReadToEnd();
-                        return contents;
+                    using (Stream stream = File.Open(this.path + fileName, FileMode.Open)) {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        return formatter.Deserialize(stream);
                     }
                 }
                 catch (Exception ex) {
