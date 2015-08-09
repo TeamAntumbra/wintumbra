@@ -1,26 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Logging;
-using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Saving;
+using System;
+using System.Collections.Generic;
 
 namespace Antumbra.Glow.Settings
 {
-    public class SettingsManager : Loggable, ConnectionEventObserver, IDisposable
+    /// <summary>
+    /// Manages DeviceSettings objects and the bounding of all capture zones.
+    /// </summary>
+    public class SettingsManager : Loggable, ConnectionEventObserver
     {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvail;
         private Dictionary<int, DeviceSettings> Settings;
         private int boundX, boundY, boundWidth, boundHeight;
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SettingsManager()
         {
             AttachObserver(LoggerHelper.GetInstance());
             Settings = new Dictionary<int, DeviceSettings>();
         }
 
+        /// <summary>
+        /// Update the bounding box which contains all device's mirroring zones
+        /// </summary>
         public void UpdateBoundingBox()
         {
             int minTop = int.MaxValue, maxBot = 0, minLeft = int.MaxValue, maxRight = 0;
@@ -47,6 +53,10 @@ namespace Antumbra.Glow.Settings
             }
         }
 
+        /// <summary>
+        /// Handle ConnectionUpdateEvent
+        /// </summary>
+        /// <param name="deviceCount"></param>
         public void ConnectionUpdate(int deviceCount)
         {
             Settings.Clear();
@@ -57,7 +67,11 @@ namespace Antumbra.Glow.Settings
             }
         }
 
-        public void Dispose()
+
+        /// <summary>
+        /// Save all DeviceSettings objects
+        /// </summary>
+        public void SaveAll()
         {
             Saver saver = Saver.GetInstance();
             foreach (DeviceSettings settings in Settings.Values) {
@@ -65,11 +79,19 @@ namespace Antumbra.Glow.Settings
             }
         }
 
+        /// <summary>
+        /// Attach a LogMsgObserver
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvail += observer.NewLogMsgAvail;
         }
 
+        /// <summary>
+        /// Load a DeviceSettings object
+        /// </summary>
+        /// <param name="id">The desired device ID</param>
         private void Load(int id)
         {
             Saver saver = Saver.GetInstance();
