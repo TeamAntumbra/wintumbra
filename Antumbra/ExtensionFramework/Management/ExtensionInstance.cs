@@ -1,33 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Antumbra.Glow.Settings;
-using Antumbra.Glow.Observer.Logging;
-using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.Utility.Saving;
+﻿using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.GlowCommands;
-using Antumbra.Glow.Observer.ToolbarNotifications;
-using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.Saving;
+using Antumbra.Glow.Settings;
+using System;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
 {
     public class ExtensionInstance : Loggable, LogMsgObserver, AntumbraColorSource, AntumbraColorObserver,
                                      ConfigurationObserver, GlowCommandObserver, GlowCommandSender,
-                                     ToolbarNotificationObserver, ToolbarNotificationSource
+                                     IDisposable, Savable
     {
-        /// <summary>
-        /// Delegate for NewColorAvailEvent, handles a new Color being available
-        /// </summary>
-        /// <param name="newColor">The new color to send</param>
-        /// <param name="id">The device id the color pertains to</param>
-        /// <param name="index">Index given to this color to ensure correct ordering of output</param>
+        public const String SAVE_FILE_PREFIX = "ExtensionInstance_";
         public delegate void NewColor(Color16Bit newColor, int id, long index);
-        /// <summary>
-        /// NewColorAvail Event, occurs when a new color is available
-        /// </summary>
         public event NewColor NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
@@ -35,10 +21,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewGlowCommand NewGlowCommandAvailEvent;
         public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
+
+        private long prevIndex;
         private ActiveExtensions Extensions;
         private int id;
-        private static readonly String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
-        private static readonly String SAVE_FILE_PREFIX = "ExtensionInstance_";
+        private const String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="extensions"></param>
         public ExtensionInstance(int id, ActiveExtensions extensions)
         {
             this.id = id;
@@ -46,11 +39,15 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.Extensions = extensions;
         }
 
+        /// <summary>
+        /// Start this instance
+        /// </summary>
+        /// <returns>Did it start as expected?</returns>
         public bool Start()
         {
             try {
                 Extensions.ActiveDriver.AttachColorObserver(this);
-                ObserveAll(Extensions.ActiveDriver);
+                ObserveCmdsAndLog(Extensions.ActiveDriver);
                 if (!Extensions.ActiveDriver.Start())
                     return false;
                 foreach (var processor in Extensions.ActiveProcessors)
@@ -71,6 +68,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return true;
         }
 
+        /// <summary>
+        /// Stop this instance
+        /// </summary>
+        /// <returns>Did it stop as expected?</returns>
         public bool Stop()
         {
             try {
@@ -93,19 +94,51 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
+        /// <summary>
+        /// Save a serialized version of the ActiveExtensions object for this instance
+        /// </summary>
         public void Save()
         {
             if (Extensions != null) {
                 Saver saver = Saver.GetInstance();
-                saver.Save(SAVE_FILE_PREFIX + this.id, this.Extensions.ToString());
+                saver.Save(SAVE_FILE_PREFIX + id, Extensions);
             }
         }
 
-        public void NewGlowCommandAvail(GlowCommand command)
+        /// <summary>
+        /// Load the Serialized ActiveExtensions info
+        /// Note: The ExtensionInstance cannot be used until InitActives() is called
+        /// </summary>
+        public void Load()
         {
-
+            Saver saver = Saver.GetInstance();
+            Extensions = (ActiveExtensions)saver.Load(SAVE_FILE_PREFIX + id);
         }
 
+        /// <summary>
+        /// Initialize the Extensions
+        /// </summary>
+        /// <param name="lib"></param>
+        public void InitActives(ExtensionLibrary lib)
+        {
+            Extensions.Init(lib);
+        }
+
+        /// <summary>
+        /// Pass up any observed GlowCommands
+        /// </summary>
+        /// <param name="command"></param>
+        public void NewGlowCommandAvail(GlowCommand command)
+        {
+            if (NewGlowCommandAvailEvent != null) {
+                NewGlowCommandAvailEvent(command);
+            }
+        }
+
+        /// <summary>
+        /// Update Extensions when new Configuration is available
+        /// </summary>
+        /// <param name="config"></param>
         public void ConfigurationUpdate(Configurable config)
         {
             if (config is DeviceSettings) {
@@ -123,6 +156,23 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
+        /// <summary>
+        /// Fake a color announcement with the expected values
+        /// </summary>
+        /// <param name="newColor">Color to send</param>
+        public void FaslifyNewColorAvail(Color16Bit newColor)
+        {
+            if (NewColorAvailEvent != null) {
+                NewColorAvailEvent(newColor, id, prevIndex + 1);
+            }
+        }
+
+        /// <summary>
+        /// Filter and announce a new NewColorAvailEvent
+        /// </summary>
+        /// <param name="newColor"></param>
+        /// <param name="id"></param>
+        /// <param name="index"></param>
         public void NewColorAvail(Color16Bit newColor, int id, long index)
         {
             if (NewColorAvailEvent != null) {
@@ -134,43 +184,68 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                     b += newColor.blue;
                 }
                 Color16Bit filtered = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
+                prevIndex = index;
                 NewColorAvailEvent(filtered, id, index);
             }
         }
 
+        /// <summary>
+        /// Announce any observed NewLogMsgAvail events for the logger
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="msg"></param>
         public void NewLogMsgAvail(String source, String msg)
         {
             if (NewLogMsgAvailEvent != null)
                 NewLogMsgAvailEvent(source, msg);
         }
 
-        public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
-        {
-            if (NewToolbarNotifAvailEvent != null)
-                NewToolbarNotifAvailEvent(time, title, msg, icon);
-        }
-
-        public void AttachObserver(ToolbarNotificationObserver observer)
-        {
-            NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
-        }
-
+        /// <summary>
+        /// Attach a GlowCommandObserver
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
         }
 
+        /// <summary>
+        /// Attach a LogMsgObserver
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
+        /// <summary>
+        /// Attach an AntumbraColorObserver
+        /// </summary>
+        /// <param name="observer"></param>
         public void AttachObserver(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += observer.NewColorAvail;
         }
 
-        private void ObserveAll(GlowExtension extension) {
+        /// <summary>
+        /// Dipose of Extensions
+        /// </summary>
+        public void Dispose()
+        {
+            Extensions.ActiveDriver.Dispose();
+            foreach(var ext in Extensions.ActiveFilters) {
+                ext.Dispose();
+            }
+            foreach (var ext in Extensions.ActiveNotifiers) {
+                ext.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Attach this object as a LogMsgObserver and GlowCommandObserver if applicable
+        /// </summary>
+        /// <param name="extension"></param>
+        private void ObserveCmdsAndLog(GlowExtension extension) {
             if (extension is Loggable) {
                 Loggable log = (Loggable)extension;
                 log.AttachObserver(this);
@@ -179,12 +254,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 GlowCommandSender sender = (GlowCommandSender)extension;
                 sender.AttachObserver(this);
             }
-            if (extension is ToolbarNotificationSource) {
-                ToolbarNotificationSource src = (ToolbarNotificationSource)extension;
-                src.AttachObserver(this);
-            }
         }
 
+        /// <summary>
+        /// Log a message related to this object
+        /// </summary>
+        /// <param name="msg"></param>
         private void Log(String msg)
         {
             if (this.NewLogMsgAvailEvent != null)
