@@ -232,6 +232,42 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             instance.FaslifyNewColorAvail(new Color16Bit());
         }
 
+        internal void SendColor(Color16Bit newColor, int id)
+        {
+            if (id == -1) {
+                for (int i = 0; i < Instances.Count; i += 1) {
+                    SendColor(i, newColor);
+                }
+                return;
+            }
+
+            Instances[id].FaslifyNewColorAvail(newColor);
+        }
+
+        internal void Start(int id)
+        {
+            if (id == -1) {
+                for (var i = 0; i < Instances.Count; i += 1) {
+                    Start(id);
+                }
+                return;
+            }
+
+            Instances[id].Start();
+        }
+
+        internal void Stop(int id)
+        {
+            if (id == -1) {
+                for (var i = 0; i < Instances.Count; i += 1) {
+                    Stop(i);
+                }
+                return;
+            }
+
+            Instances[id].Stop();
+        }
+
         /// <summary>
         /// Log an ExtensionManager related message
         /// </summary>
