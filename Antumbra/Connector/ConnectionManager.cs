@@ -33,13 +33,12 @@ namespace Antumbra.Glow.Connector
             AttachObserver(LoggerHelper.GetInstance());
             Connector = new SerialConnector(vid, pid);
             Glows = new List<GlowDevice>();
-            Update();
         }
 
         /// <summary>
         /// Update Glow device connections
         /// </summary>
-        private void Update()
+        public void UpdateDeviceConnections()
         {
             int len = this.Connector.UpdateDeviceList();
             for (int i = 0; i < len; i += 1) {
