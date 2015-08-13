@@ -5,79 +5,70 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.View;
-using Antumbra.Glow.Connector;
-using Antumbra.Glow.Observer.Configuration;
+using Antumbra.Glow.Settings;
+using Antumbra.Glow.Observer.Connection;
 
 namespace Antumbra.Glow.Controller
 {
-    public class WhiteBalanceWindowController : ConfigurationObserver
+    public class WhiteBalanceWindowController : ConnectionEventObserver
     {
-        private WhiteBalanceWindow view;
-        private List<GlowDevice> devices;
+        private Dictionary<int, WhiteBalanceWindow> views;
+        private Dictionary<int, DeviceSettings> deviceSettings;
         private Color control;
-        public WhiteBalanceWindowController(GlowDevice dev)
+        public WhiteBalanceWindowController()
         {
-            this.devices = new List<GlowDevice>();
-            this.devices.Add(dev);
-            dev.AttachObserver(this);
-            this.control = new Utility.HslColor(0, 0, .5).ToRgbColor();
+            deviceSettings = new Dictionary<int,DeviceSettings>();
+            views = new Dictionary<int,WhiteBalanceWindow>();
+            control = new Utility.HslColor(0, 0, .5).ToRgbColor();
         }
 
-        public WhiteBalanceWindowController(List<GlowDevice> devs)
+        public void ConnectionUpdate(int devCount)
         {
-            this.devices = new List<GlowDevice>();
-            foreach (var dev in devs) {
-                this.devices.Add(dev);
-                dev.AttachObserver(this);
-            }
-            this.control = new Utility.HslColor(0, 0, .5).ToRgbColor();
-        }
-
-        public void ConfigurationUpdate(Configurable config)
-        {
-            if (config is Settings.DeviceSettings && this.view != null) {
-                Settings.DeviceSettings settings = (Settings.DeviceSettings)config;
-                SetColorFromBias(settings.redBias, settings.greenBias, settings.blueBias);
+            DisposeAll();
+            for (int i = 0; i < devCount; i += 1) {
+                Init(i);
             }
         }
 
-        private void SetColorFromBias(int redBias, int greenBias, int blueBias)
+        private void DisposeAll()
         {
-            Color newColor = Color.FromArgb(control.R - redBias, control.G - greenBias, control.B - blueBias);
-            this.view.SetColor(newColor);
-        }
-
-        private void Init()
-        {
-            this.view = new WhiteBalanceWindow();
-            GlowDevice dev = this.devices.First<GlowDevice>();
-            SetColorFromBias(dev.settings.redBias, dev.settings.greenBias, dev.settings.blueBias);
-            this.view.ColorWheelChangedEvent += new WhiteBalanceWindow.ColorWheelChanged(ColorWheelChangedHandler);
-            this.view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
-        }
-
-        private void ColorWheelChangedHandler(Color newColor)
-        {
-            foreach (GlowDevice dev in devices) {
-                
-                dev.settings.redBias = control.R - newColor.R;
-                dev.settings.greenBias = control.G - newColor.G;
-                dev.settings.blueBias = control.B - newColor.B;
+            foreach(WhiteBalanceWindow win in views.Values) {
+                win.Close();
+                win.Dispose();
             }
+            views.Clear();
+        }
+
+        private void Init(int id)
+        {
+            WhiteBalanceWindow view = new WhiteBalanceWindow(id);
+            view.ColorWheelChangedEvent += new WhiteBalanceWindow.ColorWheelChanged(ColorWheelChangedHandler);
+            view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
+            DeviceSettings settings = deviceSettings[id];
+            Color newColor = Color.FromArgb(control.R - settings.redBias, control.G - settings.greenBias, control.B - settings.blueBias);
+            view.SetColor(newColor);
+            views[id] = view;
+        }
+
+        private void ColorWheelChangedHandler(Color newColor, int id)
+        {
+            deviceSettings[id].redBias = Convert.ToInt16(control.R - newColor.R);
+            deviceSettings[id].greenBias = Convert.ToInt16(control.G - newColor.G);
+            deviceSettings[id].blueBias = Convert.ToInt16(control.B - newColor.B);
         }
 
         private void closeBtnHandler(object sender, EventArgs args)
         {
-            this.view.Close();
+            foreach (WhiteBalanceWindow view in views.Values) {
+                view.Close();
+            }
         }
 
-        public void Show(System.Windows.Forms.FormClosingEventHandler viewClosingHandler)
+        public void Show()
         {
-            if (this.view == null || this.view.IsDisposed)
-                Init();
-            this.view.Show();
-            if (viewClosingHandler != null)
-                this.view.FormClosing += viewClosingHandler;
+            foreach (WhiteBalanceWindow view in views.Values) {
+                view.Show();
+            }
         }
     }
 }
