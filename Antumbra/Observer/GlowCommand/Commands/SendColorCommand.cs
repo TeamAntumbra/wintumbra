@@ -19,7 +19,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         public override void ExecuteCommand(ExtensionManager mgr)
         {
-            mgr.sendColor(newColor, id);
+            mgr.SendColor(id, newColor);
         }
     }
 }

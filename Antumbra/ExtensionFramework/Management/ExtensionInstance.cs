@@ -13,14 +13,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                                      IDisposable, Savable
     {
         public const String SAVE_FILE_PREFIX = "ExtensionInstance_";
+
         public delegate void NewColor(Color16Bit newColor, int id, long index);
         public event NewColor NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
         public delegate void NewGlowCommand(GlowCommand command);
         public event NewGlowCommand NewGlowCommandAvailEvent;
-        public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
-        public event NewToolbarNotif NewToolbarNotifAvailEvent;
 
         private long prevIndex;
         private ActiveExtensions Extensions;

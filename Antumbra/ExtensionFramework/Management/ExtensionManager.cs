@@ -30,8 +30,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewColor NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
-        public delegate void NewToolbarNotif(int time, String title, String msg, int icon);
-        public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommand(GlowCommand command);
         public event NewGlowCommand NewGlowCommandEvent;
 
@@ -232,7 +230,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             instance.FaslifyNewColorAvail(new Color16Bit());
         }
 
-        internal void SendColor(Color16Bit newColor, int id)
+        public void SendColor(int id, Color16Bit newColor)
         {
             if (id == -1) {
                 for (int i = 0; i < Instances.Count; i += 1) {
@@ -244,7 +242,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Instances[id].FaslifyNewColorAvail(newColor);
         }
 
-        internal void Start(int id)
+        public void Start(int id)
         {
             if (id == -1) {
                 for (var i = 0; i < Instances.Count; i += 1) {
@@ -256,7 +254,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Instances[id].Start();
         }
 
-        internal void Stop(int id)
+        public void Stop(int id)
         {
             if (id == -1) {
                 for (var i = 0; i < Instances.Count; i += 1) {
