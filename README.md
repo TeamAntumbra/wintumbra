@@ -1,7 +1,7 @@
 #Wintumbra
 ####Windows Antumbra|Glow Client Software
 
-##[Documentation](http://wintumbra.readthedocs.org/en/latest/)
+##[Read the Docs](http://wintumbra.readthedocs.org/en/latest/)
 
 [Latest Release Download](https://github.com/TeamAntumbra/wintumbra/releases/latest)
 
