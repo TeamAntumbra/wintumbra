@@ -82,6 +82,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         public ActiveExtensions()
         {
+            this._ActiveProcessors = new List<GlowScreenProcessor>();
             this._ActiveFilters = new List<GlowFilter>();
             this._ActiveNotifiers = new List<GlowNotifier>();
         }
