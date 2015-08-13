@@ -33,6 +33,11 @@ namespace SlimDXCapture
         private Thread driver;
         private bool running = false;
 
+        public SlimDXScreenCapture()
+        {
+            AttachObserver(LoggerHelper.GetInstance());
+        }
+
         public override int devId
         {
             get
@@ -47,7 +52,6 @@ namespace SlimDXCapture
 
         public override GlowExtension Create()
         {
-            NewLogMsgEvent += LoggerHelper.GetInstance().NewLogMsgAvail;
             return new SlimDXScreenCapture();
         }
 
