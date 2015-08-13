@@ -110,7 +110,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Settings.ActiveExtensions result = new Settings.ActiveExtensions();
             result.ActiveDriver = this.GetDefaultDriver();
             result.ActiveGrabber = this.GetDefaultGrabber();
-            result.ActiveProcessor = this.GetDefaultProcessor();
+            result.ActiveProcessors = this.GetDefaultProcessor();
             result.ActiveFilters = this.GetDefaultFilters();
             result.ActiveNotifiers = this.GetDefaultNotifiers();
             return result;
@@ -132,12 +132,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return null;
         }
 
-        private GlowScreenProcessor GetDefaultProcessor()
+        private List<GlowScreenProcessor> GetDefaultProcessor()
         {
+            List<GlowScreenProcessor> result = new List<GlowScreenProcessor>();
             foreach (GlowScreenProcessor pcr in this.AvailProcessors)
                 if (pcr.IsDefault)
-                    return (GlowScreenProcessor)pcr.Create();
-            return null;
+                    result.Add((GlowScreenProcessor)pcr.Create());
+            return result;
         }
 
         private List<GlowFilter> GetDefaultFilters()
