@@ -13,10 +13,12 @@ namespace Antumbra.Glow.View
     public partial class WhiteBalanceWindow : Form
     {
         public event EventHandler closeBtn_ClickEvent;
-        public delegate void ColorWheelChanged(Color newColor);
+        public delegate void ColorWheelChanged(Color newColor, int id);
         public event ColorWheelChanged ColorWheelChangedEvent;
-        public WhiteBalanceWindow()
+        private int id;
+        public WhiteBalanceWindow(int id)
         {
+            this.id = id;
             InitializeComponent();
         }
 
@@ -34,7 +36,7 @@ namespace Antumbra.Glow.View
         private void colorWheel_ColorChanged(object sender, EventArgs e)
         {
             if (ColorWheelChangedEvent != null)
-                ColorWheelChangedEvent(this.colorWheel.HslColor.ToRgbColor());
+                ColorWheelChangedEvent(this.colorWheel.HslColor.ToRgbColor(), id);
         }
     }
 }
