@@ -19,7 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// The id for the device this extension is associated with
         /// </summary>
-        int devId { get; }
+        int devId { get; set; }
 
         /// <summary>
         /// The name of the extension.
@@ -75,7 +75,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// Create instance for use
         /// </summary>
-        /// <returns></returns>
+        /// <returns>GlowExtension Instance</returns>
         GlowExtension Create();
     }
 }

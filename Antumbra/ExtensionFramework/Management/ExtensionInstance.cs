@@ -36,6 +36,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             this.id = id;
             this.AttachObserver(LoggerHelper.GetInstance());
             this.Extensions = extensions;
+            Extensions.ActiveDriver.devId = id;
+            Extensions.ActiveGrabber.devId = id;
+            foreach (var extension in Extensions.ActiveProcessors) {
+                extension.devId = id;
+            }
+            foreach (var extension in Extensions.ActiveFilters) {
+                extension.devId = id;
+            }
+            foreach (var extension in Extensions.ActiveNotifiers) {
+                extension.devId = id;
+            }
         }
 
         /// <summary>

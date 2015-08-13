@@ -32,8 +32,7 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <summary>
         /// The id of the device associated with this extension
         /// </summary>
-        [ReadOnly(true)]
-        public abstract int devId { get; }
+        public abstract int devId { get; set; }
 
         /// <summary>
         /// The name of the current extension
