@@ -17,14 +17,28 @@ namespace ColorClock
     [Export(typeof(GlowExtension))]
     public class ColorClock : GlowDriver
     {
-        public delegate void NewColorAvail(Color16Bit newColor);
+        public delegate void NewColorAvail(Color16Bit newColor, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running = false;
+        private long index;
+        private int deviceId;
 
         public override bool IsDefault
         {
             get { return false; }
+        }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
         }
 
         public override Guid id
@@ -74,9 +88,10 @@ namespace ColorClock
 
         public override bool Start()
         {
-            this.running = true;
-            this.driver = new Task(driverTarget);
-            this.driver.Start();
+            running = true;
+            index = long.MinValue;
+            driver = new Task(driverTarget);
+            driver.Start();
             return true;
         }
 
@@ -88,13 +103,13 @@ namespace ColorClock
         public override bool Stop()
         {
             this.running = false;
-            if (null != this.driver) {
-                if (this.driver.IsCompleted)
-                    this.driver.Dispose();
+            if (null != driver) {
+                if (driver.IsCompleted)
+                    driver.Dispose();
                 else {
-                    this.driver.Wait(2000);
-                    if (this.driver.IsCompleted)
-                        this.driver.Dispose();
+                    driver.Wait(2000);
+                    if (driver.IsCompleted)
+                        driver.Dispose();
                 }
             }
             return true;
@@ -102,16 +117,23 @@ namespace ColorClock
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 1000;
+            stepSleep = 1000;
+        }
+
+        public override void Dispose()
+        {
+            if (driver != null) {
+                driver.Dispose();
+            }
         }
 
         private void driverTarget()
         {
-            while (this.running) {
+            while (running) {
                 if (NewColorAvailEvent == null) {}//no one is listening, do nothing...
                 else
-                    NewColorAvailEvent(getTimeColor(DateTime.Now));
-                Thread.Sleep(this.stepSleep);
+                    NewColorAvailEvent(getTimeColor(DateTime.Now), deviceId, index++);
+                Thread.Sleep(stepSleep);
             }
         }
 

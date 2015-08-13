@@ -20,6 +20,7 @@ namespace Brightener
     public class Brightener : GlowFilter
     {
         private bool running;
+        private int deviceId;
         private BrightenerSettings settingsWin;
         public override string Name
         {
@@ -43,6 +44,12 @@ namespace Brightener
         public override bool IsDefault
         {
             get { return true; }
+        }
+
+        public override int devId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
         }
 
         public override GlowExtension Create()
@@ -113,6 +120,11 @@ namespace Brightener
         public override string Website
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

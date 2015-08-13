@@ -17,11 +17,13 @@ namespace ExampleGlowDriver
     [Export(typeof(GlowExtension))]
     public class ExampleGlowDriver : GlowIndependentDriver, Loggable
     {
-        public delegate void NewColorAvail(Color16Bit newColor);
+        public delegate void NewColorAvail(Color16Bit newColor, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
         private Task driver;
+        private int deviceId;
+        private long index;
         private bool running;
 
         public override bool IsDefault
@@ -34,6 +36,18 @@ namespace ExampleGlowDriver
             get { return Guid.Parse("2c186c2f-3464-49b5-8737-50830231ff20"); }
         }
 
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
+        }
+
         public override bool Settings()
         {
             return false;//no custom window
@@ -41,12 +55,12 @@ namespace ExampleGlowDriver
         
         public override void AttachColorObserver(AntumbraColorObserver observer)
         {
-            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
         public void AttachObserver(LogMsgObserver observer)
         {
-            this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
+            NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
         public override GlowExtension Create()
@@ -56,15 +70,23 @@ namespace ExampleGlowDriver
 
         public override bool Start()
         {
-            this.driver = new Task(target);
-            this.driver.Start();
-            this.running = true;
+            index = long.MinValue;
+            driver = new Task(target);
+            driver.Start();
+            running = true;
             return true;
+        }
+
+        public override void Dispose()
+        {
+            if (driver != null) {
+                driver.Dispose();
+            }
         }
 
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { return running; }
         }
 
         private void target()
@@ -76,7 +98,7 @@ namespace ExampleGlowDriver
                 Color16Bit result = new Color16Bit(val, val, val);
                 //report new color event
                 try {
-                    NewColorAvailEvent(result);
+                    NewColorAvailEvent(result, deviceId, index++);
                 }
                 catch (Exception e) {
                     NewLogMsgEvent(this.Name, e.ToString());
@@ -87,14 +109,14 @@ namespace ExampleGlowDriver
 
         public override bool Stop()
         {
-            this.running = false;
-            if (this.driver != null) {
-                if (this.driver.IsCompleted)
-                    this.driver.Dispose();
+            running = false;
+            if (driver != null) {
+                if (driver.IsCompleted)
+                    driver.Dispose();
                 else {
-                    this.driver.Wait(1000);
-                    if (this.driver.IsCompleted)
-                        this.driver.Dispose();
+                    driver.Wait(1000);
+                    if (driver.IsCompleted)
+                        driver.Dispose();
                     else
                         return false;
                 }

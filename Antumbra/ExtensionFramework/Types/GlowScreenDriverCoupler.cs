@@ -24,7 +24,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public event NewToolbarNotifAvail NewToolbarNotifAvailEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
-        public override int devId { get { return this.devId; } }
+        public override int devId { get; set; }
         private GlowScreenGrabber grabber;
         private GlowScreenProcessor processor;
 

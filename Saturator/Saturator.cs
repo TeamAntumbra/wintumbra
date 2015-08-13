@@ -19,11 +19,24 @@ namespace Saturator
     public class Saturator : GlowFilter
     {
         private bool running = false;
+        private int deviceId;
         private SaturatorSettings settingsWin;
 
         public override Guid id
         {
             get { return Guid.Parse("2acba4a6-af21-47a9-9551-964a750fea06"); }
+        }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
         }
 
         public override bool IsDefault
@@ -89,6 +102,13 @@ namespace Saturator
             this.settingsWin.saturateAmtTxt.TextChanged += new EventHandler(SaturationTxtChanged);
             this.settingsWin.saveBtn.Click += new EventHandler(ApplyBtnClick);
             return true;
+        }
+
+        public override void Dispose()
+        {
+            if (settingsWin != null) {
+                settingsWin.Dispose();
+            }
         }
 
         private void ApplyBtnClick(object sender, EventArgs args)

@@ -17,14 +17,28 @@ namespace SinFade
     [Export(typeof(GlowExtension))]
     public class SinFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit newCol);
+        public delegate void NewColorAvail(Color16Bit newCol, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
+        private long index;
+        private int deviceId;
 
         public override GlowExtension Create()
         {
             return new SinFade();
+        }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
         }
 
         public override Guid id
@@ -39,25 +53,33 @@ namespace SinFade
         
         public override void AttachColorObserver(AntumbraColorObserver observer)
         {
-            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
         public override bool Start()
         {
-            this.running = true;
-            this.driver = new Task(target);
-            this.driver.Start();
+            running = true;
+            index = long.MinValue;
+            driver = new Task(target);
+            driver.Start();
             return true;
         }
 
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { return running; }
         }
 
         public override bool Settings()
         {
             return false;
+        }
+
+        public override void Dispose()
+        {
+            if (driver != null) {
+                driver.Dispose();
+            }
         }
 
         /// <summary>
@@ -71,7 +93,7 @@ namespace SinFade
                 ushort v = Convert.ToUInt16(value);
                 Color16Bit result = new Color16Bit(v, v, v);
                 if(NewColorAvailEvent != null)
-                    NewColorAvailEvent(result);
+                    NewColorAvailEvent(result, deviceId, index++);
                 if (v == 0)
                     Thread.Sleep(this.stepSleep * 39);
                 Thread.Sleep(this.stepSleep);

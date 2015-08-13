@@ -21,8 +21,10 @@ namespace AntumbraScreenDriver
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
+
+        private int deviceId;
         private Thread driver;
-        private bool running = false;
+        private bool running;
         public override bool IsDefault
         {
             get { return true; }
@@ -31,6 +33,18 @@ namespace AntumbraScreenDriver
         public override Guid id
         {
             get { return Guid.Parse("15115e91-ed5c-49e6-b7a8-4ebbd4dabb2e"); }
+        }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
         }
 
         public override String Name { get { return "Antumbra Screen Grabber (Default)"; } }
@@ -55,7 +69,7 @@ namespace AntumbraScreenDriver
 
         public void AttachObserver(LogMsgObserver observer)
         {
-            this.NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
+            NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
         public override GlowExtension Create()
@@ -65,9 +79,9 @@ namespace AntumbraScreenDriver
 
         public override bool Start()
         {
-            this.driver = new Thread(new ThreadStart(captureTarget));
-            this.driver.Start();
-            this.running = true;
+            driver = new Thread(new ThreadStart(captureTarget));
+            driver.Start();
+            running = true;
             return true;
         }
 
@@ -78,18 +92,25 @@ namespace AntumbraScreenDriver
 
         public override bool Stop()
         {
-            this.NewScreenAvailEvent = null;
-            this.running = false;
-            if (null != this.driver && this.driver.IsAlive) {
-                this.driver.Abort();
+            NewScreenAvailEvent = null;
+            running = false;
+            if (null != driver && driver.IsAlive) {
+                driver.Abort();
             }
-            this.driver = null;
+            driver = null;
             return true;
         }
 
         public override void AttachObserver(AntumbraBitmapObserver observer)
         {
             this.NewScreenAvailEvent += new NewScreenAvail(observer.NewBitmapAvail);
+        }
+
+        public override void Dispose()
+        {
+            if (driver != null && driver.IsAlive) {
+                driver.Abort();
+            }
         }
 
         private void captureTarget()

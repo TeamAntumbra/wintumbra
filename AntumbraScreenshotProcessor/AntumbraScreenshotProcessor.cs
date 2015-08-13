@@ -17,16 +17,33 @@ namespace AntumbraScreenshotProcessor
     [Export(typeof(GlowExtension))]
     public class AntumbraScreenshotProcessor : GlowScreenProcessor
     {
-        public delegate void NewColorAvail(Color16Bit color);
+        public delegate void NewColorAvail(Color16Bit color, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
+
+        private int deviceId, x, y, width, height;
+        private long index;
         private bool running;
+
         public override bool IsDefault
         {
             get { return false; }
         }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
+        }
+
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { return running; }
         }
 
         public override string Name
@@ -96,7 +113,7 @@ namespace AntumbraScreenshotProcessor
 
         public override void AttachObserver(AntumbraColorObserver observer)
         {
-            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
@@ -104,11 +121,11 @@ namespace AntumbraScreenshotProcessor
             try {
                 FastBitmap fb = new FastBitmap(bm);
                 fb.Lock();
-                NewColorAvailEvent(this.Process(fb));
+                NewColorAvailEvent(Process(fb), deviceId, index++);
                 fb.Dispose();
             }
             catch (Exception) {
-                this.Stop();
+                Stop();
             }
             finally {
                 bm.Dispose();
@@ -117,14 +134,28 @@ namespace AntumbraScreenshotProcessor
 
         public override bool Start()
         {
-            this.running = true;
+            index = long.MinValue;
+            running = true;
             return true;
         }
 
         public override bool Stop()
         {
-            this.running = false;
+            running = false;
             return true;
+        }
+
+        public override void Dispose()
+        {
+            
+        }
+
+        public override void SetArea(int x, int y, int width, int height)
+        {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
         }
     }
 }

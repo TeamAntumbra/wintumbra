@@ -16,14 +16,28 @@ namespace FluxCompanion
     [Export(typeof(GlowExtension))]
     public class FluxCompanion : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit newColor);
+        public delegate void NewColorAvail(Color16Bit newColor, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
         private bool running;
+        private int deviceId;
+        private long index;
         private Task driver;
 
         public override Guid id
         {
             get { return Guid.Parse("9d8efbe1-e33d-4047-a687-001883d5a124"); }
+        }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
         }
 
         public override bool IsRunning
@@ -52,9 +66,9 @@ namespace FluxCompanion
 
         public override bool Start()
         {
-            this.running = true;
-            this.driver = new Task(target);
-            this.driver.Start();
+            running = true;
+            driver = new Task(target);
+            driver.Start();
             return true;
         }
 
@@ -65,23 +79,30 @@ namespace FluxCompanion
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 1000;
+            stepSleep = 1000;
         }
 
         public override void AttachColorObserver(AntumbraColorObserver observer)
         {
-            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        public override void Dispose()
+        {
+            if (driver != null) {
+                driver.Dispose();
+            }
         }
 
         private void target()
         {
-            while (this.IsRunning) {
+            while (IsRunning) {
                 DateTime now = DateTime.Now;
                 int sec = now.Second;
                 int min = now.Minute;
                 int hour = now.Hour;
-                NewColorAvailEvent(ConvertKelvinToColor(ConvertTimeToKelvin(hour, min, sec)));
-                Thread.Sleep(this.stepSleep);
+                NewColorAvailEvent(ConvertKelvinToColor(ConvertTimeToKelvin(hour, min, sec)), deviceId, index++);
+                Thread.Sleep(stepSleep);
             }
         }
 
@@ -157,13 +178,13 @@ namespace FluxCompanion
         public override bool Stop()
         {
             this.running = false;
-            if (this.driver != null) {
-                if (this.driver.IsCompleted)
-                    this.driver.Dispose();
+            if (driver != null) {
+                if (driver.IsCompleted)
+                    driver.Dispose();
                 else {
-                    this.driver.Wait(2000);
-                    if (this.driver.IsCompleted)
-                        this.driver.Dispose();
+                    driver.Wait(2000);
+                    if (driver.IsCompleted)
+                        driver.Dispose();
                 }
             }
             return true;

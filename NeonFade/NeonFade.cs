@@ -17,14 +17,19 @@ namespace NeonFade
     [Export(typeof(GlowExtension))]
     public class NeonFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit color);
+        public delegate void NewColorAvail(Color16Bit color, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
+
         private bool running;
+        private int deviceId;
+        private long index;
         private Task driver;
+
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { return running; }
         }
+
         public override Guid id
         {
             get
@@ -32,6 +37,19 @@ namespace NeonFade
                 return Guid.Parse("9a310fae-2084-4dc5-ae6a-4f664faa1fe8");
             }
         }
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
+        }
+
         public override string Name
         {
             get { return "Neon Fade"; }
@@ -69,7 +87,7 @@ namespace NeonFade
 
         public override void AttachColorObserver(Antumbra.Glow.Observer.Colors.AntumbraColorObserver observer)
         {
-            this.NewColorAvailEvent += observer.NewColorAvail;
+            NewColorAvailEvent += observer.NewColorAvail;
         }
 
         public override GlowExtension Create()
@@ -79,27 +97,35 @@ namespace NeonFade
 
         public override bool Start()
         {
-            this.running = true;
-            this.driver = new Task(Target);
-            this.driver.Start();
+            index = long.MinValue;
+            running = true;
+            driver = new Task(Target);
+            driver.Start();
             return true;
         }
 
         public override bool Stop()
         {
-            this.running = false;
-            if (this.driver != null) {
-                if (this.driver.IsCompleted)
-                    this.driver.Dispose();
+            running = false;
+            if (driver != null) {
+                if (driver.IsCompleted)
+                    driver.Dispose();
                 else {
-                    this.driver.Wait(3000);
-                    if (this.driver.IsCompleted)
-                        this.driver.Dispose();
+                    driver.Wait(3000);
+                    if (driver.IsCompleted)
+                        driver.Dispose();
                     else
                         return false;
                 }
             }
             return true;
+        }
+
+        public override void Dispose()
+        {
+            if (driver != null) {
+                driver.Dispose();
+            }
         }
 
         private void Target()
@@ -126,7 +152,7 @@ namespace NeonFade
         private void SendColor(Color16Bit newColor)
         {
             if (NewColorAvailEvent != null)
-                NewColorAvailEvent(newColor);
+                NewColorAvailEvent(newColor, deviceId, index++);
         }
 
         private void FadeFromTo(Color16Bit col1, Color16Bit col2)
@@ -142,7 +168,7 @@ namespace NeonFade
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 200;
+            stepSleep = 200;
         }
     }
 }

@@ -17,19 +17,27 @@ namespace HSVFade
     [Export(typeof(GlowExtension))]
     public class HSVFade : GlowIndependentDriver
     {
-        public delegate void NewColorAvail(Color16Bit newColor);
+        public delegate void NewColorAvail(Color16Bit newColor, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
         private Task driver;
         private bool running;
+        private long index;
+        private int deviceId;
 
         public override Guid id
         {
             get { return Guid.Parse("8360550b-d599-4f0f-8806-bc323f9ce547"); }
         }
 
+        public override int devId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
+        }
+
         public override bool IsRunning
         {
-            get { return this.running; }
+            get { return running; }
         }
 
         public override string Name
@@ -69,9 +77,10 @@ namespace HSVFade
 
         public override bool Start()
         {
-            this.running = true;
-            this.driver = new Task(target);
-            this.driver.Start();
+            running = true;
+            index = long.MinValue;
+            driver = new Task(target);
+            driver.Start();
             return true;
         }
 
@@ -82,27 +91,27 @@ namespace HSVFade
                 h += 1;
                 h %= 360;
                 HslColor col = new HslColor(h, 1, .5);
-                NewColorAvailEvent(new Color16Bit(col.ToRgbColor()));
-                if (this.stepSleep != 0)
-                    Thread.Sleep(this.stepSleep);
+                NewColorAvailEvent(new Color16Bit(col.ToRgbColor()), deviceId, index++);
+                if (stepSleep != 0)
+                    Thread.Sleep(stepSleep);
             }
         }
 
         public override void AttachColorObserver(AntumbraColorObserver observer)
         {
-            this.NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
         public override bool Stop()
         {
-            this.running = false;
-            if (this.driver != null) {
-                if (this.driver.IsCompleted)
-                    this.driver.Dispose();
+            running = false;
+            if (driver != null) {
+                if (driver.IsCompleted)
+                    driver.Dispose();
                 else {
-                    this.driver.Wait(3000);
-                    if (this.driver.IsCompleted)
-                        this.driver.Dispose();
+                    driver.Wait(3000);
+                    if (driver.IsCompleted)
+                        driver.Dispose();
                     else
                         return false;
                 }
@@ -112,12 +121,17 @@ namespace HSVFade
 
         public override void RecmmndCoreSettings()
         {
-            this.stepSleep = 100;
+            stepSleep = 100;
         }
 
         public override string Website
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override void Dispose()
+        {
+            driver.Dispose();
         }
     }
 }

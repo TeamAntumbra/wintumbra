@@ -28,8 +28,22 @@ namespace SlimDXCapture
         public event NewLogMsg NewLogMsgEvent;
         public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
         public event NewToolbarNotif NewToolbarNotifEvent;
+
+        private int deviceId;
         private Thread driver;
         private bool running = false;
+
+        public override int devId
+        {
+            get
+            {
+                return deviceId;
+            }
+            set
+            {
+                deviceId = value;
+            }
+        }
 
         public override GlowExtension Create()
         {
@@ -108,10 +122,11 @@ namespace SlimDXCapture
             return IntPtr.Zero;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
-            if(driver != null && driver.IsAlive)
+            if (driver != null && driver.IsAlive) {
                 driver.Abort();
+            }
         }
 
         public override Guid id
