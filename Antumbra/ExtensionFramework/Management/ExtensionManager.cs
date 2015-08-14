@@ -1,5 +1,6 @@
 ﻿using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Connection;
+using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Settings;
@@ -11,8 +12,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     /// <summary>
     /// Manages the Extensions for use with a Glow device
     /// </summary>
-    public class ExtensionManager : AntumbraColorObserver, LogMsgObserver, Loggable,
-                                    GlowCommandObserver, ConnectionEventObserver//TODO add observer for notifiers
+    public class ExtensionManager : AntumbraColorObserver, AntumbraColorSource, LogMsgObserver, Loggable,
+                                    GlowCommandObserver, ConnectionEventObserver, ConfigurationObserver//TODO add observer for notifiers
     {
         public enum MODE
         {
@@ -30,11 +31,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewColor NewColorAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
-        public delegate void NewGlowCommand(GlowCommand command);
-        public event NewGlowCommand NewGlowCommandEvent;
 
         private ExtensionLibrary Lib;
         private Dictionary<int, ExtensionInstance> Instances;
+        private int MirrorIndex;
         private PresetBuilder PresetBuilder;
         /// <summary>
         /// Constructor - Creates a new ExtensionManager
@@ -43,8 +43,26 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="settings"></param>
         public ExtensionManager(ExtensionLibrary extLib)
         {
+            PresetBuilder = new Management.PresetBuilder(extLib);
             Instances = new Dictionary<int, ExtensionInstance>();
             Lib = extLib;
+        }
+
+        /// <summary>
+        /// Route the ConfigurationUpdate to the correct ExtensionInstance
+        /// </summary>
+        /// <param name="config"></param>
+        public void ConfigurationUpdate(Configurable config)
+        {
+            if (config is DeviceSettings) {
+                DeviceSettings settings = (DeviceSettings)config;
+                try {
+                    Instances[settings.id].ConfigurationUpdate(config);
+                }
+                catch (KeyNotFoundException) {
+                    //
+                }
+            }
         }
 
         public void SetInstance(int id, MODE mode)
@@ -52,6 +70,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Instances[id].Stop();
             Instances[id].Dispose();
             Instances[id] = CreateInstance(id, mode);
+            Instances[id].Start();
         }
 
         /// <summary>
@@ -96,9 +115,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <returns></returns>
         public ExtensionInstance CreateInstance(int id, MODE preset)
         {
-            if (Instances.ContainsKey(id)) {
+            /*if (Instances.ContainsKey(id)) {
                 throw new Exception("Instance already exists! Id: " + id);
-            }
+            }*/
             ActiveExtensions actives;
             switch(preset) {
                 case MODE.HSV:
@@ -127,7 +146,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                     actives = new ActiveExtensions();
                     break;
             }
-            return new ExtensionInstance(id, actives);
+            ExtensionInstance instance = new ExtensionInstance(id, actives);
+            instance.AttachObserver((AntumbraColorObserver)this);
+            return instance;
         }
 
         /// <summary>
@@ -155,7 +176,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                         Log("ExtensionInstance (id: " + id + ") loading failed (FileNotFound). Using EMPTY preset.");
                     }
                     finally {
-                        Instances.Add(id, instance);
+                        Instances[id] = instance;
                     }
                 }
             }
@@ -180,6 +201,15 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void Reset()
         {
             // dispose and create stock ones
+        }
+
+        /// <summary>
+        /// Attach a color observer
+        /// </summary>
+        /// <param name="observer"></param>
+        public void AttachObserver(AntumbraColorObserver observer)
+        {
+            NewColorAvailEvent += observer.NewColorAvail;
         }
 
         /// <summary>
@@ -215,7 +245,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Turn off the specified device, -1 for all
         /// </summary>
         /// <param name="id"></param>
-        internal void Off(int id)
+        public void Off(int id)
         {
             if (id == -1) {
                 // Stop & send black NewColorAvail call for each instance
