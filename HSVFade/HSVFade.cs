@@ -91,7 +91,9 @@ namespace HSVFade
                 h += 1;
                 h %= 360;
                 HslColor col = new HslColor(h, 1, .5);
-                NewColorAvailEvent(new Color16Bit(col.ToRgbColor()), deviceId, index++);
+                if (NewColorAvailEvent != null) {
+                    NewColorAvailEvent(new Color16Bit(col.ToRgbColor()), deviceId, index++);
+                }
                 if (stepSleep != 0)
                     Thread.Sleep(stepSleep);
             }
@@ -131,7 +133,9 @@ namespace HSVFade
 
         public override void Dispose()
         {
-            driver.Dispose();
+            if (driver != null) {
+                driver.Dispose();
+            }
         }
     }
 }
