@@ -10,14 +10,17 @@ using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.Connector
 {
-    public class PreOutputProcessor : ConfigurationObserver, AntumbraColorObserver, Loggable
+    public class PreOutputProcessor : ConfigurationObserver, AntumbraColorObserver, AntumbraColorSource, Loggable
     {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvail;
+        public delegate void NewColor(Color16Bit color, int id, long index);
+        public event NewColor NewColorAvailEvent;
+
         private Dictionary<int, OutputSettings> AllDeviceSettings;
         private Dictionary<int, long> OutputIndexes;
         public PreOutputProcessor() {
-            this.AttachObserver(LoggerHelper.GetInstance());
+            AttachObserver(LoggerHelper.GetInstance());
             AllDeviceSettings = new Dictionary<int,OutputSettings>();
             OutputIndexes = new Dictionary<int, long>();
         }
@@ -70,11 +73,17 @@ namespace Antumbra.Glow.Connector
             newCol = Color16Bit.FunnelIntoColor(red, green, blue);
             // Scale brightness
             newCol.ScaleColor(settings.MaxBrightness);
+            NewColorAvailEvent(newCol, id, index);
         }
 
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvail += observer.NewLogMsgAvail;
+        }
+
+        public void AttachObserver(AntumbraColorObserver observer)
+        {
+            NewColorAvailEvent += observer.NewColorAvail;
         }
 
         private void Log(String msg)
