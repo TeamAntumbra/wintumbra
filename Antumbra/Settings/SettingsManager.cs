@@ -1,4 +1,5 @@
-﻿using Antumbra.Glow.Observer.Connection;
+﻿using Antumbra.Glow.Observer.Configuration;
+using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.Saving;
 using System;
@@ -9,10 +10,12 @@ namespace Antumbra.Glow.Settings
     /// <summary>
     /// Manages DeviceSettings objects and the bounding of all capture zones.
     /// </summary>
-    public class SettingsManager : Loggable, ConnectionEventObserver
+    public class SettingsManager : Loggable, ConnectionEventObserver, ConfigurationObserver, Configurable
     {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvail;
+        public delegate void NewConfigUpdate(Configurable config);
+        public event NewConfigUpdate NewConfigUpdateAvail;
         private Dictionary<int, DeviceSettings> Settings;
         private int boundX, boundY, boundWidth, boundHeight;
         /// <summary>
@@ -24,6 +27,11 @@ namespace Antumbra.Glow.Settings
             Settings = new Dictionary<int, DeviceSettings>();
         }
 
+        /// <summary>
+        /// Get a specific device's DeviceSettings object
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public DeviceSettings getSettings(int id) {
             return Settings[id];
         }
@@ -63,10 +71,14 @@ namespace Antumbra.Glow.Settings
         /// <param name="deviceCount"></param>
         public void ConnectionUpdate(int deviceCount)
         {
+            SaveAll();
             Settings.Clear();
             for (var i = 0; i < deviceCount; i += 1) {
-                if (!Settings.ContainsKey(i)) {
-                    Settings[i] = new DeviceSettings(i);
+                Settings[i] = new DeviceSettings(i);
+                Load(i);
+                Settings[i].AttachObserver((ConfigurationObserver)this);
+                if (NewConfigUpdateAvail != null) {
+                    NewConfigUpdateAvail(Settings[i]);
                 }
             }
         }
@@ -81,6 +93,26 @@ namespace Antumbra.Glow.Settings
             foreach (DeviceSettings settings in Settings.Values) {
                 saver.Save(DeviceSettings.FILE_NAME_PREFIX + settings.id, settings);
             }
+        }
+
+        /// <summary>
+        /// Handle a ConfigurationUpdate
+        /// </summary>
+        /// <param name="config"></param>
+        public void ConfigurationUpdate(Configurable config)
+        {
+            if (NewConfigUpdateAvail != null) {
+                NewConfigUpdateAvail(config);
+            }
+        }
+
+        /// <summary>
+        /// Attach a ConfigurationObserver
+        /// </summary>
+        /// <param name="observer"></param>
+        public void AttachObserver(ConfigurationObserver observer)
+        {
+            NewConfigUpdateAvail += observer.ConfigurationUpdate;
         }
 
         /// <summary>
@@ -99,7 +131,17 @@ namespace Antumbra.Glow.Settings
         private void Load(int id)
         {
             Saver saver = Saver.GetInstance();
-            Settings[id] = (DeviceSettings)saver.Load(DeviceSettings.FILE_NAME_PREFIX + id);
+            DeviceSettings loaded = (DeviceSettings)saver.Load(DeviceSettings.FILE_NAME_PREFIX + id);
+            if (loaded != null) {
+                Settings[id] = loaded;
+            }
+        }
+
+        private void Log(string msg)
+        {
+            if (NewLogMsgAvail != null) {
+                NewLogMsgAvail("Settings Manager", msg);
+            }
         }
     }
 }
