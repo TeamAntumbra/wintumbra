@@ -137,7 +137,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="lib"></param>
         public void InitActives(ExtensionLibrary lib)
         {
-            Extensions.Init(lib);
+            if (Extensions != null) {
+                Extensions.Init(lib);
+            }
         }
 
         /// <summary>
@@ -161,11 +163,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 DeviceSettings settings = (DeviceSettings)config;
                 Extensions.ActiveDriver.stepSleep = settings.stepSleep;
                 Extensions.ActiveDriver.weighted = settings.weightingEnabled;
-                Extensions.ActiveGrabber.captureThrottle = settings.captureThrottle;
-                Extensions.ActiveGrabber.x = settings.boundX;
-                Extensions.ActiveGrabber.y = settings.boundY;
-                Extensions.ActiveGrabber.width = settings.boundWidth;
-                Extensions.ActiveGrabber.height = settings.boundHeight;
+                if (Extensions.ActiveGrabber != null) {
+                    Extensions.ActiveGrabber.captureThrottle = settings.captureThrottle;
+                    Extensions.ActiveGrabber.x = settings.boundX;
+                    Extensions.ActiveGrabber.y = settings.boundY;
+                    Extensions.ActiveGrabber.width = settings.boundWidth;
+                    Extensions.ActiveGrabber.height = settings.boundHeight;
+                }
                 foreach (var process in Extensions.ActiveProcessors)
                     if (settings.id == process.devId)
                         process.SetArea(settings.x, settings.y, settings.width, settings.height);
@@ -192,16 +196,18 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void NewColorAvail(Color16Bit newColor, int id, long index)
         {
             if (NewColorAvailEvent != null) {
-                long r = 0, g = 0, b = 0;
-                int i;
-                for (i = 0; i < Extensions.ActiveFilters.Count; i += 1) {
-                    r += newColor.red;
-                    g += newColor.green;
-                    b += newColor.blue;
+                if (Extensions.ActiveFilters.Count > 0) {
+                    long r = 0, g = 0, b = 0;
+                    int i;
+                    for (i = 0; i < Extensions.ActiveFilters.Count; i += 1) {
+                        r += newColor.red;
+                        g += newColor.green;
+                        b += newColor.blue;
+                    }
+                    newColor = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
                 }
-                Color16Bit filtered = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
                 prevIndex = index;
-                NewColorAvailEvent(filtered, id, index);
+                NewColorAvailEvent(newColor, id, index);
             }
         }
 
@@ -248,12 +254,20 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         public void Dispose()
         {
-            Extensions.ActiveDriver.Dispose();
-            foreach(var ext in Extensions.ActiveFilters) {
-                ext.Dispose();
-            }
-            foreach (var ext in Extensions.ActiveNotifiers) {
-                ext.Dispose();
+            if (Extensions != null) {
+                if (Extensions.ActiveDriver != null) {
+                    Extensions.ActiveDriver.Dispose();
+                }
+                if (Extensions.ActiveFilters != null) {
+                    foreach (var ext in Extensions.ActiveFilters) {
+                        ext.Dispose();
+                    }
+                }
+                if (Extensions.ActiveNotifiers != null) {
+                    foreach (var ext in Extensions.ActiveNotifiers) {
+                        ext.Dispose();
+                    }
+                }
             }
         }
 
