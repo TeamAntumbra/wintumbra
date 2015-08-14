@@ -55,13 +55,19 @@ namespace Antumbra.Glow.Controller
             settingsManager = new SettingsManager();
             extensionManager = new ExtensionManager(new ExtensionLibrary(EXTENSION_DIR_REL_PATH));
             preOutputProcessor = new PreOutputProcessor();
-            whiteBalController = new WhiteBalanceWindowController();
-            // Attach connection event observers
+            whiteBalController = new WhiteBalanceWindowController(settingsManager);
+            // Attach event observers
             connectionManager.AttachObserver((ConnectionEventObserver)settingsManager);
             connectionManager.AttachObserver((ConnectionEventObserver)extensionManager);
             connectionManager.AttachObserver((ConnectionEventObserver)whiteBalController);
+            preOutputProcessor.AttachObserver((AntumbraColorObserver)connectionManager);
+            extensionManager.AttachObserver((AntumbraColorObserver)preOutputProcessor);
+            settingsManager.AttachObserver((ConfigurationObserver)extensionManager);
+            settingsManager.AttachObserver((ConfigurationObserver)preOutputProcessor);
             // Find devices
             connectionManager.UpdateDeviceConnections();
+
+            AttachObserver((GlowCommandObserver)extensionManager);
 
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
@@ -78,6 +84,7 @@ namespace Antumbra.Glow.Controller
             this.window.gameBtn_ClickEvent += new EventHandler(gameBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
+            this.quitEventHandler += quitHandler;
             this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
