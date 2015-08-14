@@ -13,11 +13,11 @@ namespace Antumbra.Glow.Controller
     public class WhiteBalanceWindowController : ConnectionEventObserver
     {
         private Dictionary<int, WhiteBalanceWindow> views;
-        private Dictionary<int, DeviceSettings> deviceSettings;
+        private SettingsManager settingsManager;
         private Color control;
-        public WhiteBalanceWindowController()
+        public WhiteBalanceWindowController(SettingsManager settingsManager)
         {
-            deviceSettings = new Dictionary<int,DeviceSettings>();
+            this.settingsManager = settingsManager;
             views = new Dictionary<int,WhiteBalanceWindow>();
             control = new Utility.HslColor(0, 0, .5).ToRgbColor();
         }
@@ -44,7 +44,7 @@ namespace Antumbra.Glow.Controller
             WhiteBalanceWindow view = new WhiteBalanceWindow(id);
             view.ColorWheelChangedEvent += new WhiteBalanceWindow.ColorWheelChanged(ColorWheelChangedHandler);
             view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
-            DeviceSettings settings = deviceSettings[id];
+            DeviceSettings settings = settingsManager.getSettings(id);
             Color newColor = Color.FromArgb(control.R - settings.redBias, control.G - settings.greenBias, control.B - settings.blueBias);
             view.SetColor(newColor);
             views[id] = view;
@@ -52,9 +52,10 @@ namespace Antumbra.Glow.Controller
 
         private void ColorWheelChangedHandler(Color newColor, int id)
         {
-            deviceSettings[id].redBias = Convert.ToInt16(control.R - newColor.R);
-            deviceSettings[id].greenBias = Convert.ToInt16(control.G - newColor.G);
-            deviceSettings[id].blueBias = Convert.ToInt16(control.B - newColor.B);
+            DeviceSettings deviceSettings = settingsManager.getSettings(id);
+            deviceSettings.redBias = Convert.ToInt16(control.R - newColor.R);
+            deviceSettings.greenBias = Convert.ToInt16(control.G - newColor.G);
+            deviceSettings.blueBias = Convert.ToInt16(control.B - newColor.B);
         }
 
         private void closeBtnHandler(object sender, EventArgs args)
