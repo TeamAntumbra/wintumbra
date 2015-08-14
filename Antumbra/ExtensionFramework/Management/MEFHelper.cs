@@ -64,56 +64,15 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private void Compose()
         {
             DirectoryCatalog catalog = new DirectoryCatalog(this.path, "*.glow.dll");
-            this.container = new CompositionContainer(catalog);
-            this.container.ComposeParts(this);
-        }
-
-        public GlowDriver GetDefaultDriver()
-        {
-            foreach (var drv in this.AvailDrivers)
-                if (drv.IsDefault)
-                    return drv;
-            return null;
-        }
-
-        public GlowScreenGrabber GetDefaultGrabber()
-        {
-            foreach (var gbbr in this.AvailScreenDrivers)
-                if (gbbr.IsDefault)
-                    return gbbr;
-            return null;
-        }
-
-        public GlowScreenProcessor GetDefaultProcessor()
-        {
-            foreach (var pcsr in this.AvailScreenProcessors)
-                if (pcsr.IsDefault)
-                    return pcsr;
-            return null;
-        }
-
-        public List<GlowFilter> GetDefaultFilters()
-        {
-            List<GlowFilter> result = new List<GlowFilter>();
-            foreach (var filt in this.AvailFilters)
-                if (filt.IsDefault)
-                    result.Add(filt);
-            return result;
-        }
-
-        public List<GlowNotifier> GetDefaultNotifiers()
-        {
-            List<GlowNotifier> result = new List<GlowNotifier>();
-            foreach (var notf in this.AvailNotifiers)
-                if (notf.IsDefault)
-                    result.Add(notf);
-            return result;
+            container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
         }
 
         public void Dispose()
         {
-            if (this.container != null)
+            if (this.container != null) {
                 this.container.Dispose();
+            }
         }
     }
 }
