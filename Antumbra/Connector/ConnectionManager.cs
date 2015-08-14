@@ -1,5 +1,6 @@
 ﻿using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.Connection;
+using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using System;
@@ -10,7 +11,7 @@ namespace Antumbra.Glow.Connector
     /// <summary>
     /// Manages dealing with connected Glow units via the SerialConnector class.
     /// </summary>
-    public class ConnectionManager : ToolbarNotificationSource, Loggable, ConnectionEventSource, IDisposable
+    public class ConnectionManager : ToolbarNotificationSource, Loggable, ConnectionEventSource, IDisposable, AntumbraColorObserver
     {
         public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
@@ -55,6 +56,11 @@ namespace Antumbra.Glow.Connector
             if (NewConnectionEventAvailEvent != null) {
                 NewConnectionEventAvailEvent(GlowsFound);
             }
+        }
+
+        public void NewColorAvail(Color16Bit newColor, int id, long index)
+        {
+            sendColor(newColor, id);
         }
 
         /// <summary>
@@ -142,7 +148,7 @@ namespace Antumbra.Glow.Connector
                     return err;
                 }
             }
-            int status = this.Connector.SetDeviceColor(activeDev.id, activeDev.dev, r, g, b);
+            int status = this.Connector.SetDeviceColor(activeDev.dev, r, g, b);
             activeDev.status = status;
             return status;
         }

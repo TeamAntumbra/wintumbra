@@ -83,7 +83,7 @@ namespace Antumbra.Glow.Connector
         /// 7 - Command failure
         /// 8 - Unspecified protocol error
         /// </returns>
-        public int SetDeviceColor(int index, IntPtr dev, UInt16 r, UInt16 g, UInt16 b)
+        public int SetDeviceColor(IntPtr dev, UInt16 r, UInt16 g, UInt16 b)
         {
             LightInfo info;
             AnLight_Info_S(this.ctx, dev, out info);
