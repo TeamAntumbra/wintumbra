@@ -21,42 +21,42 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         //The Extension Bank
         public List<GlowDriver> AvailDrivers { get; private set; }
-        public List<GlowScreenGrabber> AvailScreenDrivers { get; private set; }
+        public List<GlowScreenGrabber> AvailScreenGrabbers { get; private set; }
         public List<GlowScreenProcessor> AvailScreenProcessors { get; private set; }
         public List<GlowFilter> AvailFilters { get; private set; }
         public List<GlowNotifier> AvailNotifiers { get; private set; }
 
         public MEFHelper(String pathToExtensions)
         {
-            this.failed = false;
-            this.path = pathToExtensions;
-            this.AvailDrivers = new List<GlowDriver>();
-            this.AvailDrivers.Add(new GlowScreenDriverCoupler(null, null));//add coupler placeholder
-            this.AvailScreenDrivers = new List<GlowScreenGrabber>();
-            this.AvailScreenProcessors = new List<GlowScreenProcessor>();
-            this.AvailFilters = new List<GlowFilter>();
-            this.AvailNotifiers = new List<GlowNotifier>();
+            failed = false;
+            path = pathToExtensions;
+            AvailDrivers = new List<GlowDriver>();
+            AvailDrivers.Add(new GlowScreenDriverCoupler(null, null));//add coupler placeholder
+            AvailScreenGrabbers = new List<GlowScreenGrabber>();
+            AvailScreenProcessors = new List<GlowScreenProcessor>();
+            AvailFilters = new List<GlowFilter>();
+            AvailNotifiers = new List<GlowNotifier>();
 
             Compose();
             if (null == extensions) {
                 failed = true;
                 return;//no plugins loaded
             }
-            foreach (var extension in extensions) {
+            foreach (GlowExtension extension in extensions) {//TODO: Investigate using Dictionary<Type, List<GlowExtension>> to hold extensions
                 if (extension is GlowDriver) {
-                    this.AvailDrivers.Add((GlowDriver)extension);
+                    AvailDrivers.Add((GlowDriver)extension);
                 }
                 else if (extension is GlowScreenGrabber) {
-                    this.AvailScreenDrivers.Add((GlowScreenGrabber)extension);
+                    AvailScreenGrabbers.Add((GlowScreenGrabber)extension);
                 }
                 else if (extension is GlowScreenProcessor) {
-                    this.AvailScreenProcessors.Add((GlowScreenProcessor)extension);
+                    AvailScreenProcessors.Add((GlowScreenProcessor)extension);
                 }
                 else if (extension is GlowFilter) {
-                    this.AvailFilters.Add((GlowFilter)extension);
+                    AvailFilters.Add((GlowFilter)extension);
                 }
                 else if (extension is GlowNotifier) {
-                    this.AvailNotifiers.Add((GlowNotifier)extension);
+                    AvailNotifiers.Add((GlowNotifier)extension);
                 }
             }
         }

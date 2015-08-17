@@ -25,44 +25,36 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public ExtensionLibrary(String path)
         {
             this.path = path;
-            this.AttachObserver(LoggerHelper.GetInstance());
-            try {
-                MEFHelper helper = new MEFHelper(this.path);
-                if (helper.failed) {
-                    this.Log("MEFHelper failed to initalize correctly.");
-                    return;//cannot continue
-                }
-                this.AvailExtensions = new List<GlowExtension>();
-                this.AvailDrivers = helper.AvailDrivers;
-                this.AvailExtensions.AddRange(this.AvailDrivers);
-                this.AvailGrabbers = helper.AvailScreenDrivers;
-                this.AvailExtensions.AddRange(this.AvailGrabbers);
-                this.AvailProcessors = helper.AvailScreenProcessors;
-                this.AvailExtensions.AddRange(this.AvailProcessors);
-                this.AvailFilters = helper.AvailFilters;
-                this.AvailExtensions.AddRange(this.AvailFilters);
-                this.AvailNotifiers = helper.AvailNotifiers;
-                this.AvailExtensions.AddRange(this.AvailNotifiers);
-                if (helper != null)
-                    helper.Dispose();
-                LogFoundExtensions();
-                if (CollectionUpdateEvent != null)
-                    CollectionUpdateEvent(this.AvailExtensions);
+            AttachObserver(LoggerHelper.GetInstance());
+            MEFHelper helper = new MEFHelper(this.path);
+            if (helper.failed) {
+                throw new Exception("MEFHelper failed to initalize correctly.");
             }
-            catch (TypeAccessException ex) {
-                this.Log(ex.StackTrace + '\n' + ex.Message);
-            }
-            catch (TypeLoadException ex) {
-                this.Log(ex.StackTrace + '\n' + ex.Message);
-            }
+            AvailExtensions = new List<GlowExtension>();
+            AvailDrivers = helper.AvailDrivers;
+            AvailExtensions.AddRange(AvailDrivers);
+            AvailGrabbers = helper.AvailScreenGrabbers;
+            AvailExtensions.AddRange(AvailGrabbers);
+            AvailProcessors = helper.AvailScreenProcessors;
+            AvailExtensions.AddRange(AvailProcessors);
+            AvailFilters = helper.AvailFilters;
+            AvailExtensions.AddRange(AvailFilters);
+            AvailNotifiers = helper.AvailNotifiers;
+            AvailExtensions.AddRange(AvailNotifiers);
+            if (helper != null)
+                helper.Dispose();
+            LogFoundExtensions();
+            if (CollectionUpdateEvent != null)
+                CollectionUpdateEvent(this.AvailExtensions);
         }
 
         public GlowExtension LookupExt(Guid id)
         {
-            foreach (GlowExtension ext in this.AvailExtensions)
+            foreach (GlowExtension ext in AvailExtensions) {
                 if (ext.id.Equals(id)) {//it's a match
-                    return ext.Create();//TODO share single capture instances
+                    return ext.Create();
                 }
+            }
             return null;//not found
         }
 
