@@ -87,6 +87,19 @@ namespace Antumbra.Glow.Settings
             this._ActiveNotifiers = new List<GlowNotifier>();
         }
 
+        public ActiveExtensions(Guid DriverGuid, Guid GrabberGuid, Guid[] ProcessorGuids,
+            Guid[] FilterGuids, Guid[] NotifierGuids)
+        {
+            this._ActiveProcessors = new List<GlowScreenProcessor>();
+            this._ActiveFilters = new List<GlowFilter>();
+            this._ActiveNotifiers = new List<GlowNotifier>();
+            this.DriverGuid = DriverGuid;
+            this.GrabberGuid = GrabberGuid;
+            this.ProcessorGuids = ProcessorGuids.ToList();
+            this.FilterGuids = FilterGuids.ToList();
+            this.NotifierGuids = NotifierGuids.ToList();
+        }
+
         /// <summary>
         /// Notify observers that this object's Configuration has changed
         /// </summary>
@@ -158,16 +171,16 @@ namespace Antumbra.Glow.Settings
         /// <param name="library">The ExtensionLibrary</param>
         public void Init(ExtensionFramework.Management.ExtensionLibrary library)
         {
-            ActiveDriver = (GlowDriver)library.findExt(DriverGuid);
-            ActiveGrabber = (GlowScreenGrabber)library.findExt(GrabberGuid);
+            ActiveDriver = library.LookupDriver(DriverGuid);
+            ActiveGrabber = library.LookupGrabber(GrabberGuid);
             foreach (Guid guid in ProcessorGuids) {
-                ActiveProcessors.Add((GlowScreenProcessor)library.findExt(guid));
+                ActiveProcessors.Add(library.LookupProcessor(guid));
             }
             foreach (Guid guid in FilterGuids) {
-                ActiveFilters.Add((GlowFilter)library.findExt(guid));
+                ActiveFilters.Add(library.LookupFilter(guid));
             }
             foreach (Guid guid in NotifierGuids) {
-                ActiveNotifiers.Add((GlowNotifier)library.findExt(guid));
+                ActiveNotifiers.Add(library.LookupNotifier(guid));
             }
         }
 
