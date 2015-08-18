@@ -29,9 +29,6 @@ namespace Antumbra.Glow
                 logger.NewLogMsgAvail("Program Class", "Starting run...");
                 Application.Run();//start independent of form
             }
-            catch (Exception ex) {
-                logger.NewLogMsgAvail("Program Class", ex.Message + '\n' + ex.StackTrace);
-            }
             finally {
                 if (controller != null) {
                     controller.Dispose();
