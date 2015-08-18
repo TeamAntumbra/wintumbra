@@ -21,10 +21,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public delegate void NewGlowCommand(GlowCommand command);
         public event NewGlowCommand NewGlowCommandAvailEvent;
 
+        private const String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
+
         private long prevIndex;
         private ActiveExtensions Extensions;
         private int id;
-        private const String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
 
         /// <summary>
         /// Constructor

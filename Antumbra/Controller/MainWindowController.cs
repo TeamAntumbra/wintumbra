@@ -36,13 +36,11 @@ namespace Antumbra.Glow.Controller
         private event EventHandler quitEventHandler;
         private MainWindow window;
         private int glowCount, pollingIndex, id;
-        private bool manual;
         private WhiteBalanceWindowController whiteBalController;
         private SettingsManager settingsManager;
         private ConnectionManager connectionManager;
         private ExtensionManager extensionManager;
         private PreOutputProcessor preOutputProcessor;
-        private Color16Bit lastManualColor;
         private Color16Bit controlColor;
         public MainWindowController(string productVersion, EventHandler quitHandler)
         {
@@ -63,6 +61,7 @@ namespace Antumbra.Glow.Controller
             extensionManager.AttachObserver((AntumbraColorObserver)preOutputProcessor);
             settingsManager.AttachObserver((ConfigurationObserver)extensionManager);
             settingsManager.AttachObserver((ConfigurationObserver)preOutputProcessor);
+            settingsManager.AttachObserver((ConfigurationObserver)this);
             // Find devices
             connectionManager.UpdateDeviceConnections();
 
@@ -101,18 +100,17 @@ namespace Antumbra.Glow.Controller
         /// <param name="config"></param>
         public void ConfigurationUpdate(Configurable config)
         {
-            if (config is DeviceSettings) {//settings changed
+            if (config is DeviceSettings && window != null) {//settings changed
                 DeviceSettings settings = (DeviceSettings)config;
-                this.window.SetCaptureThrottleValue(settings.captureThrottle);
-                this.window.SetBrightnessValue((int)(settings.maxBrightness * 100));
-                if (manual)//manual mode enabled
-                    ResendManualColor(-1);//re-send to all devices
+                window.SetCaptureThrottleValue(settings.captureThrottle);
+                window.SetBrightnessValue(Convert.ToInt32(settings.maxBrightness * 100));
+                ResendManualColor(-1);//re-send to all devices
             }
         }
 
         public void ResendManualColor(int id)
         {
-            this.colorWheelColorChanged(this.window.colorWheel.HslColor, EventArgs.Empty);
+            colorWheelColorChanged(window.colorWheel.HslColor, EventArgs.Empty);
         }
 
         private void throttleBarValueChanged(object sender, EventArgs args)
@@ -127,8 +125,7 @@ namespace Antumbra.Glow.Controller
                     "White balance cannot be opened because no Glow devices were found.", 2);
                 return;//can't open
             }
-            NewGlowCmdAvailEvent(new StopCommand(-1));
-            NewGlowCmdAvailEvent(new SendColorCommand(-1, this.controlColor));
+            NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, this.controlColor));
             window.colorWheel.HslColor = new Utility.HslColor(0,0,.5);//reset selector to center
             window.colorWheel.Enabled = false;//disable main color wheel until color balance window closed
             whiteBalController.Show();
@@ -170,12 +167,12 @@ namespace Antumbra.Glow.Controller
 
         private void UpdatePollingSelection(int id, int x, int y, int width, int height)
         {
-            manual = false;//force false to stop resending of manual color
-            DeviceSettings settings = settingsManager.getSettings(id);
-            settings.x = x;
-            settings.y = y;
-            settings.width = width;
-            settings.height = height;
+            SettingsDelta Delta = new SettingsDelta();
+            Delta.changes[SettingValue.X] = x;
+            Delta.changes[SettingValue.Y] = y;
+            Delta.changes[SettingValue.WIDTH] = width;
+            Delta.changes[SettingValue.HEIGHT] = height;
+            settingsManager.getSettings(id).ApplyChanges(Delta);
             this.pollingIndex -= 1;
             if (this.pollingIndex == 0) {//time to reset btn text & restart
                 NewGlowCommandAvail(new StartCommand(-1));
@@ -187,13 +184,17 @@ namespace Antumbra.Glow.Controller
         {
             if (sender is bool) {
                 bool on = (bool)sender;
-                if (on)
-                    if (manual)
-                        ResendManualColor(-1);//can't 'start' manual mode
-                    else
+                if (on) {
+                    try {
                         NewGlowCmdAvailEvent(new StartCommand(-1));
-                else
+                    }
+                    catch (Exception) {
+                        ResendManualColor(-1);
+                    }
+                }
+                else {
                     NewGlowCmdAvailEvent(new PowerOffCommand(-1));
+                }
             }
         }
 
@@ -251,11 +252,9 @@ namespace Antumbra.Glow.Controller
         public void colorWheelColorChanged(object sender, EventArgs args)
         {
             if (sender is Utility.HslColor) {
-                manual = true;
-                NewGlowCmdAvailEvent(new StopCommand(-1));//stop devices if running (dev mgr will check)
                 Utility.HslColor col = (Utility.HslColor)sender;
-                this.lastManualColor = new Color16Bit(col.ToRgbColor());
-                connectionManager.sendColor(lastManualColor, -1);
+                Color16Bit manualColor = new Color16Bit(col.ToRgbColor());
+                NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, manualColor));
             }
         }
 
@@ -264,8 +263,10 @@ namespace Antumbra.Glow.Controller
             if (sender is int[]) {
                 int[] values = (int[])sender;
                 double value = (double)values[0] / values[1];
+                SettingsDelta Delta = new SettingsDelta();
+                Delta.changes[SettingValue.MAXBRIGHTNESS] = value;
                 for (int i = 0; i < connectionManager.GlowsFound; i += 1) {
-                    settingsManager.getSettings(i).maxBrightness = value;
+                    settingsManager.getSettings(i).ApplyChanges(Delta);
                 }
             }
         }
