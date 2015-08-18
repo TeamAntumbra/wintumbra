@@ -14,21 +14,41 @@ namespace Antumbra.Glow.Observer.Logging
         public class Logger : LogMsgObserver {
             private object sync = new object();
             /// <summary>
-            /// Name of the log file for this Logger
+            /// Name of the log file
             /// </summary>
-            private string name;
+            private string filename;
+            /// <summary>
+            /// Path to the log file
+            /// </summary>
             private string path;
-            internal Logger(string name) {
-                this.name = name;
-                this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\Antumbra\\";
-                if (!System.IO.Directory.Exists(this.path))
-                    System.IO.Directory.CreateDirectory(this.path);
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="filename">log file filename</param>
+            public Logger(string filename) {
+                this.filename = filename;
+                path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Antumbra\\";
+                if (!System.IO.Directory.Exists(path))
+                    System.IO.Directory.CreateDirectory(path);
             }
 
-            public void NewLogMsgAvail(String source, String msg)
+            /// <summary>
+            /// Log the recieved information
+            /// </summary>
+            /// <param name="source"></param>
+            /// <param name="msg"></param>
+            public void NewLogMsgAvail(string source, string msg)
             {
-                this.Log(source + " - " + msg);
+                StringBuilder sb = new StringBuilder(source);
+                sb.Append("\t-");
+                foreach (string line in msg.Split('\n')) {
+                    sb.Append('\t').Append(line);
+                }
+                string fullMessage = sb.ToString();
+                Log(fullMessage);
+                Console.WriteLine(fullMessage);
+
             }
 
             /// <summary>
@@ -38,7 +58,7 @@ namespace Antumbra.Glow.Observer.Logging
             private void Log(String lines)
             {
                 lock (sync) {
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(this.path + name, true)) {
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(path + filename, true)) {
                         file.WriteLine(lines);
                     }
                 }
@@ -49,8 +69,9 @@ namespace Antumbra.Glow.Observer.Logging
 
         public static Logger GetInstance()
         {
-            if (instance == null)
+            if (instance == null) {
                 instance = new Logger("wintumbra.log");
+            }
             return instance;
         }
     }
