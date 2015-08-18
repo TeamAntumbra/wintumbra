@@ -52,7 +52,7 @@ namespace Antumbra.Glow.Controller
             // Create Manager instances
             connectionManager = new ConnectionManager(VID, PID);
             settingsManager = new SettingsManager();
-            extensionManager = new ExtensionManager(new ExtensionLibrary());
+            extensionManager = new ExtensionManager();
             preOutputProcessor = new PreOutputProcessor();
             whiteBalController = new WhiteBalanceWindowController(settingsManager);
             // Attach event observers

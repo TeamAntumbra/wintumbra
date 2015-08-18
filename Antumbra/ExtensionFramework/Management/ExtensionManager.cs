@@ -34,18 +34,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         private ExtensionLibrary Lib;
         private Dictionary<int, ExtensionInstance> Instances;
-        private int MirrorIndex;
         private PresetBuilder PresetBuilder;
         /// <summary>
         /// Constructor - Creates a new ExtensionManager
         /// </summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>
-        public ExtensionManager(ExtensionLibrary extLib)
+        public ExtensionManager()
         {
-            PresetBuilder = new Management.PresetBuilder(extLib);
+            Lib = new ExtensionLibrary();
+            PresetBuilder = new Management.PresetBuilder(Lib);
             Instances = new Dictionary<int, ExtensionInstance>();
-            Lib = extLib;
         }
 
         /// <summary>
