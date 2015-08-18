@@ -113,8 +113,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         private void Log(string msg)
         {
-            if (NewLogMsgAvailEvent != null)
+            if (NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent("Extension Library", msg);
+            }
         }
     }
 }

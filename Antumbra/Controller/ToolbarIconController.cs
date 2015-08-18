@@ -33,7 +33,6 @@ namespace Antumbra.Glow.Controller
 
             toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
             toolbarIcon.notifyIcon_DoubleClickEvent += new EventHandler(mainController.restartEventHandler);
-            AttachObserver(LoggerHelper.GetInstance());
             LogMsg("ToolbarIconController", "Wintumbra starting @ " + DateTime.Now.ToString());
             NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
                 "application window.", 0);
@@ -47,8 +46,9 @@ namespace Antumbra.Glow.Controller
 
         private void LogMsg(string source, string msg)
         {
-            if (NewLogMsgAvailEvent != null)
+            if (NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent(source, msg);
+            }
         }
 
         public void AttachObserver(LogMsgObserver observer)
