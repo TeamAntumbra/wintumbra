@@ -115,9 +115,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <returns></returns>
         public ExtensionInstance CreateInstance(int id, MODE preset)
         {
-            /*if (Instances.ContainsKey(id)) {
-                throw new Exception("Instance already exists! Id: " + id);
-            }*/
             ActiveExtensions actives;
             switch(preset) {
                 case MODE.HSV:
