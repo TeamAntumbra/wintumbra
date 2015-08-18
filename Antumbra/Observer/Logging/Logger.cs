@@ -12,7 +12,10 @@ namespace Antumbra.Glow.Observer.Logging
     public static class LoggerHelper
     {
         public class Logger : LogMsgObserver {
-            private object sync = new object();
+            /// <summary>
+            /// Sync object
+            /// </summary>
+            private static readonly object sync = new Object();
             /// <summary>
             /// Name of the log file
             /// </summary>
@@ -29,8 +32,9 @@ namespace Antumbra.Glow.Observer.Logging
             public Logger(string filename) {
                 this.filename = filename;
                 path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Antumbra\\";
-                if (!System.IO.Directory.Exists(path))
+                if (!System.IO.Directory.Exists(path)) {
                     System.IO.Directory.CreateDirectory(path);
+                }
             }
 
             /// <summary>
@@ -45,10 +49,8 @@ namespace Antumbra.Glow.Observer.Logging
                 foreach (string line in msg.Split('\n')) {
                     sb.Append('\t').Append(line);
                 }
-                string fullMessage = sb.ToString();
-                Log(fullMessage);
-                Console.WriteLine(fullMessage);
 
+                Log(sb.ToString());
             }
 
             /// <summary>
@@ -58,6 +60,7 @@ namespace Antumbra.Glow.Observer.Logging
             private void Log(String lines)
             {
                 lock (sync) {
+                    Console.WriteLine(lines);
                     using (System.IO.StreamWriter file = new System.IO.StreamWriter(path + filename, true)) {
                         file.WriteLine(lines);
                     }

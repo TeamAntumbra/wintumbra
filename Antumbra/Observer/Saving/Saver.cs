@@ -14,7 +14,9 @@ namespace Antumbra.Glow.Observer.Saving
     {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvailEvent;
-        private object sync = new Object();
+
+        private static readonly object sync = new Object();
+
         private string path;
         private static Saver instance;
 
