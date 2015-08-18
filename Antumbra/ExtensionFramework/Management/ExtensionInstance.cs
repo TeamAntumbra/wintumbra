@@ -159,10 +159,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="config"></param>
         public void ConfigurationUpdate(Configurable config)
         {
-            if (config is DeviceSettings) {
+            if (config is DeviceSettings && Extensions != null) {
                 DeviceSettings settings = (DeviceSettings)config;
-                Extensions.ActiveDriver.stepSleep = settings.stepSleep;
-                Extensions.ActiveDriver.weighted = settings.weightingEnabled;
+                if (Extensions.ActiveDriver != null) {
+                    Extensions.ActiveDriver.stepSleep = settings.stepSleep;
+                    Extensions.ActiveDriver.weighted = settings.weightingEnabled;
+                }
+
                 if (Extensions.ActiveGrabber != null) {
                     Extensions.ActiveGrabber.captureThrottle = settings.captureThrottle;
                     Extensions.ActiveGrabber.x = settings.boundX;
@@ -170,9 +173,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                     Extensions.ActiveGrabber.width = settings.boundWidth;
                     Extensions.ActiveGrabber.height = settings.boundHeight;
                 }
-                foreach (var process in Extensions.ActiveProcessors)
-                    if (settings.id == process.devId)
+
+                foreach (var process in Extensions.ActiveProcessors) {
+                    if (settings.id == process.devId) {
                         process.SetArea(settings.x, settings.y, settings.width, settings.height);
+                    }
+                }
             }
         }
 
