@@ -186,10 +186,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Fake a color announcement with the passed values
         /// </summary>
         /// <param name="newColor">Color to send</param>
-        public void FaslifyNewColorAvail(Color16Bit newColor)
+        public void FalsifyNewColorAvail(Color16Bit newColor)
         {
             if (NewColorAvailEvent != null) {
-                NewColorAvailEvent(newColor, id, prevIndex + 1);
+                NewColorAvailEvent(newColor, id, prevIndex++);
             }
         }
 

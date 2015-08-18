@@ -252,7 +252,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
             ExtensionInstance instance = Instances[id];
             instance.Stop();
-            instance.FaslifyNewColorAvail(new Color16Bit());
+            instance.FalsifyNewColorAvail(new Color16Bit());
         }
 
         public void SendColor(int id, Color16Bit newColor)
@@ -264,7 +264,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 return;
             }
 
-            Instances[id].FaslifyNewColorAvail(newColor);
+            Instances[id].FalsifyNewColorAvail(newColor);
         }
 
         public void Start(int id)
