@@ -186,7 +186,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public void NewColorAvail(Color16Bit newColor, int id, long index)
         {
             if (NewColorAvailEvent != null) {
-                NewColorAvailEvent(newColor, id, index);
+                try {
+                    NewColorAvailEvent(newColor, id, index);
+                }
+                catch (ArgumentException ex) {
+                    Log(ex.Message + '\n' + ex.StackTrace);
+                }
             }
         }
 
