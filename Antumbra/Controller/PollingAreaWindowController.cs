@@ -33,7 +33,7 @@ namespace Antumbra.Glow.Controller
         {
             this.pollingWindow.Show();
             SendCommand(new StopCommand(-1));//stop all
-            SendCommand(new SendColorCommand(this.id, new Color16Bit(this.color)));//set to unique color to match its window
+            SendCommand(new StopAndSendColorCommand(this.id, new Color16Bit(this.color)));//set to unique color to match its window
         }
 
         public void SetBounds(int x, int y, int width, int height)

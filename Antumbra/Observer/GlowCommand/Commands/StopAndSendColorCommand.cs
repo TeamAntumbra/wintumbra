@@ -8,10 +8,10 @@ using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
-    public class SendColorCommand : GlowCommand
+    public class StopAndSendColorCommand : GlowCommand
     {
         private Color16Bit newColor;
-        public SendColorCommand(int devId, Color16Bit newColor)
+        public StopAndSendColorCommand(int devId, Color16Bit newColor)
             : base(devId)
         {
             this.newColor = newColor;
@@ -19,6 +19,7 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 
         public override void ExecuteCommand(ExtensionManager mgr)
         {
+            mgr.Stop(id);
             mgr.SendColor(id, newColor);
         }
     }
