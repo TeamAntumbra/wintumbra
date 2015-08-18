@@ -17,9 +17,6 @@ namespace Antumbra.Glow
         [STAThread]
         static void Main()
         {
-            // Comment out these first two lines to allow exceptions to go uncaught
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ThreadException += Application_ThreadException;
             LoggerHelper.Logger logger = LoggerHelper.GetInstance();
             logger.NewLogMsgAvail("Program Class", "Starting...");
             if (Environment.OSVersion.Version.Major >= 6)
@@ -40,12 +37,6 @@ namespace Antumbra.Glow
                     controller.Dispose();
                 }
             }
-        }
-
-        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            LoggerHelper.Logger logger = LoggerHelper.GetInstance();
-            logger.NewLogMsgAvail(sender.ToString(), e.Exception.StackTrace);
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
