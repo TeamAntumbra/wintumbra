@@ -243,8 +243,29 @@ namespace Antumbra.Glow.Settings
         public DeviceSettings(int id)
         {
             this.id = id;
-            this.AttachObserver(LoggerHelper.GetInstance());
-            this.fileName = FILE_NAME_PREFIX + this.id.ToString();
+            AttachObserver(LoggerHelper.GetInstance());
+            fileName = FILE_NAME_PREFIX + id;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            x = 0;
+            y = 0;
+            width = 0;
+            height = 0;
+            boundX = 0;
+            boundY = 0;
+            boundWidth = 0;
+            boundHeight = 0;
+            stepSleep = 1;
+            captureThrottle = 100;
+            redBias = 0;
+            greenBias = 0;
+            blueBias = 0;
+            maxBrightness = 1.0;
+            weightingEnabled = true;
+            newColorWeight = 0.05;
         }
 
         /// <summary>
@@ -270,8 +291,9 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         public void Notify()
         {
-            if (ConfigChangeEvent != null)
+            if (ConfigChangeEvent != null) {
                 ConfigChangeEvent(this);
+            }
         }
 
         public void ApplyChanges(SettingsDelta delta)
