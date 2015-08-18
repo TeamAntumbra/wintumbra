@@ -25,19 +25,20 @@ namespace Antumbra.Glow.View
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        private AntumbraExtSettingsWindow(GlowExtension ext)
+        public AntumbraExtSettingsWindow(GlowExtension ext)
         {
             this.ext = ext;
             InitializeComponent();
-            this.ExtName.Text = ext.Name;
-            this.Author.Text = ext.Author;
-            this.Version.Text = ext.Version.ToString();
-            this.Description.Text = ext.Description;
+            ExtName.Text = ext.Name;
+            Author.Text = ext.Author;
+            Version.Text = ext.Version.ToString();
+            Description.Text = ext.Description;
+            Show();
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void AntumbraExtSettingsWindow_MouseDown(object sender, MouseEventArgs e)
@@ -46,22 +47,6 @@ namespace Antumbra.Glow.View
             if (e.Button == MouseButtons.Left) {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
-
-        public class ExtWindowFactory {
-            private ExtensionLibrary lib;
-            public ExtWindowFactory(ExtensionLibrary lib)
-            {
-                this.lib = lib;
-            }
-
-            public AntumbraExtSettingsWindow MakeAndShowWindow(Guid id)
-            {
-                GlowExtension ext = this.lib.findExt(id);
-                AntumbraExtSettingsWindow win = new AntumbraExtSettingsWindow(ext);
-                win.Show();
-                return win;
             }
         }
     }
