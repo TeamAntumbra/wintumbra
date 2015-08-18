@@ -11,7 +11,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
     {
         public abstract void AttachEvent(AntumbraNotificationObserver observer);
         public abstract GlowNotifier Create();
-        public new Type GetType()
+        public sealed override Type GetExtensionType()
         {
             return typeof(GlowNotifier);
         }

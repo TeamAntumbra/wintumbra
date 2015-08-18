@@ -57,7 +57,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Log("Extension Refresh complete.\nThe Following GlowExtensions were found:\n");
 
             foreach (GlowExtension extension in FullList) {
-                Type type = extension.GetType();
+                Type type = extension.GetExtensionType();
                 Log(type + extension.ToString());
                 ExtensionBank[type].Add(extension);
             }

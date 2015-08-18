@@ -91,6 +91,15 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <returns>true if window opened, else false</returns>
         public abstract bool Settings();
 
+        /// <summary>
+        /// Get the Type of this extension
+        /// </summary>
+        /// <returns>The Type of this extension</returns>
+        public abstract Type GetExtensionType();
+
+        /// <summary>
+        /// Clean up any used resources
+        /// </summary>
         public abstract void Dispose();
     }
 }

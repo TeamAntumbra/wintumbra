@@ -19,7 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public int height { get; set; }
         public int captureThrottle { get; set; }
         public abstract GlowScreenGrabber Create();
-        public new Type GetType()
+        public sealed override Type GetExtensionType()
         {
             return typeof(GlowScreenGrabber);
         }
