@@ -4,55 +4,105 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework.Types;
-using Antumbra.Glow.Observer.Extensions;
 using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
 {
-    public class ExtensionLibrary : GlowExtCollection, Loggable
+    public class ExtensionLibrary : Loggable
     {
+        private const string EXTENSION_DIR_REL_PATH = "./Extensions/";
+
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
-        public delegate void CollectionUpdate(List<GlowExtension> exts);
-        public event CollectionUpdate CollectionUpdateEvent;
-        private List<GlowDriver> AvailDrivers;
-        private List<GlowScreenGrabber> AvailGrabbers;
-        private List<GlowScreenProcessor> AvailProcessors;
-        private List<GlowFilter> AvailFilters;
-        private List<GlowNotifier> AvailNotifiers;
-        private List<GlowExtension> AvailExtensions;
-        private String path;
-        public ExtensionLibrary(String path)
+
+        private MEFHelper MefHelper;
+        private List<GlowDriver> Drivers;
+        private List<GlowScreenGrabber> Grabbers;
+        private List<GlowScreenProcessor> Processors;
+        private List<GlowFilter> Filters;
+        private List<GlowNotifier> Notifiers;
+        private List<GlowExtension> Extensions;
+
+        public ExtensionLibrary()
         {
-            this.path = path;
             AttachObserver(LoggerHelper.GetInstance());
-            MEFHelper helper = new MEFHelper(this.path);
-            if (helper.failed) {
-                throw new Exception("MEFHelper failed to initalize correctly.");
-            }
-            AvailExtensions = new List<GlowExtension>();
-            AvailDrivers = helper.AvailDrivers;
-            AvailExtensions.AddRange(AvailDrivers);
-            AvailGrabbers = helper.AvailScreenGrabbers;
-            AvailExtensions.AddRange(AvailGrabbers);
-            AvailProcessors = helper.AvailScreenProcessors;
-            AvailExtensions.AddRange(AvailProcessors);
-            AvailFilters = helper.AvailFilters;
-            AvailExtensions.AddRange(AvailFilters);
-            AvailNotifiers = helper.AvailNotifiers;
-            AvailExtensions.AddRange(AvailNotifiers);
-            if (helper != null)
-                helper.Dispose();
-            LogFoundExtensions();
-            if (CollectionUpdateEvent != null)
-                CollectionUpdateEvent(this.AvailExtensions);
+            MefHelper = new MEFHelper();
+            Drivers = new List<GlowDriver>();
+            Grabbers = new List<GlowScreenGrabber>();
+            Processors = new List<GlowScreenProcessor>();
+            Filters = new List<GlowFilter>();
+            Notifiers = new List<GlowNotifier>();
+            Extensions = new List<GlowExtension>();
         }
 
-        public GlowExtension LookupExt(Guid id)
+        public void Update()
         {
-            foreach (GlowExtension ext in AvailExtensions) {
-                if (ext.id.Equals(id)) {//it's a match
-                    return ext.Create();
+            Drivers.Clear();
+            Grabbers.Clear();
+            Processors.Clear();
+            Filters.Clear();
+            Notifiers.Clear();
+
+            Dictionary<Type, List<GlowExtension>> ExtensionBank = MefHelper.LoadExtensions(EXTENSION_DIR_REL_PATH);
+            Type current = typeof(GlowExtension);
+            Extensions = ExtensionBank[current];
+            current = typeof(GlowDriver);
+            Drivers = ExtensionBank[current].Cast<GlowDriver>().ToList();
+            current = typeof(GlowScreenGrabber);
+            Grabbers = ExtensionBank[current].Cast<GlowScreenGrabber>().ToList();
+            current = typeof(GlowScreenProcessor);
+            Processors = ExtensionBank[current].Cast<GlowScreenProcessor>().ToList();
+            current = typeof(GlowFilter);
+            Filters = ExtensionBank[current].Cast<GlowFilter>().ToList();
+            current = typeof(GlowNotifier);
+            Notifiers = ExtensionBank[current].Cast<GlowNotifier>().ToList();
+        }
+
+        public GlowDriver LookupDriver(Guid id)
+        {
+            foreach (GlowDriver driver in Drivers) {
+                if (driver.id.Equals(id)) {//it's a match
+                    return driver.Create();
+                }
+            }
+            return null;//not found
+        }
+
+        public GlowScreenGrabber LookupGrabber(Guid id)
+        {
+            foreach (GlowScreenGrabber grabber in Grabbers) {
+                if (grabber.id.Equals(id)) {//it's a match
+                    return grabber.Create();
+                }
+            }
+            return null;//not found
+        }
+
+        public GlowScreenProcessor LookupProcessor(Guid id)
+        {
+            foreach (GlowScreenProcessor proc in Processors) {
+                if (proc.id.Equals(id)) {//it's a match
+                    return proc.Create();
+                }
+            }
+            return null;//not found
+        }
+
+        public GlowFilter LookupFilter(Guid id)
+        {
+            foreach (GlowFilter filt in Filters) {
+                if (filt.id.Equals(id)) {//it's a match
+                    return filt.Create();
+                }
+            }
+            return null;//not found
+        }
+
+        public GlowNotifier LookupNotifier(Guid id)
+        {
+            foreach (GlowNotifier notf in Notifiers) {
+                if (notf.id.Equals(id)) {//it's a match
+                    return notf.Create();
                 }
             }
             return null;//not found
@@ -60,103 +110,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public void AttachObserver(LogMsgObserver observer)
         {
-            this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
-        }
-
-        private void LogFoundExtensions()
-        {
-            this.Log("Found Extensions:");
-            LogExtensions("Drivers", this.AvailDrivers.ToList<GlowExtension>());
-            LogExtensions("Screen Grabbers", this.AvailGrabbers.ToList<GlowExtension>());
-            LogExtensions("Screen Processors", this.AvailProcessors.ToList<GlowExtension>());
-            LogExtensions("Filters", this.AvailFilters.ToList<GlowExtension>());
-            LogExtensions("Notifiers", this.AvailNotifiers.ToList<GlowExtension>());
-        }
-
-        private void LogExtensions(String type, List<GlowExtension> exts)
-        {
-            this.Log("Found " + type + ":");
-            foreach (var ext in exts)
-                this.Log("\t" + ext.ToString());
+            NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
         private void Log(string msg)
         {
-            if (this.NewLogMsgAvailEvent != null)
-                this.NewLogMsgAvailEvent("Extension Library", msg);
-        }
-
-        public void NotifyObservers()
-        {
-            if (CollectionUpdateEvent != null)
-                CollectionUpdateEvent(this.AvailExtensions);
-        }
-
-        public void AttachObserver(GlowExtCollectionObserver observer)
-        {
-            CollectionUpdateEvent += observer.LibraryUpdate;
-        }
-
-        public Settings.ActiveExtensions GetDefaults()
-        {
-            Settings.ActiveExtensions result = new Settings.ActiveExtensions();
-            result.ActiveDriver = this.GetDefaultDriver();
-            result.ActiveGrabber = this.GetDefaultGrabber();
-            result.ActiveProcessors = this.GetDefaultProcessor();
-            result.ActiveFilters = this.GetDefaultFilters();
-            result.ActiveNotifiers = this.GetDefaultNotifiers();
-            return result;
-        }
-
-        private GlowDriver GetDefaultDriver()
-        {
-            foreach (GlowDriver dvr in this.AvailDrivers)
-                if (dvr.IsDefault)
-                    return (GlowDriver)dvr.Create();
-            return null;
-        }
-
-        private GlowScreenGrabber GetDefaultGrabber()
-        {
-            foreach (GlowScreenGrabber gbr in this.AvailGrabbers)
-                if (gbr.IsDefault)
-                    return (GlowScreenGrabber)gbr.Create();
-            return null;
-        }
-
-        private List<GlowScreenProcessor> GetDefaultProcessor()
-        {
-            List<GlowScreenProcessor> result = new List<GlowScreenProcessor>();
-            foreach (GlowScreenProcessor pcr in this.AvailProcessors)
-                if (pcr.IsDefault)
-                    result.Add((GlowScreenProcessor)pcr.Create());
-            return result;
-        }
-
-        private List<GlowFilter> GetDefaultFilters()
-        {
-            List<GlowFilter> result = new List<GlowFilter>();
-            foreach (GlowFilter filt in this.AvailFilters)
-                if (filt.IsDefault)
-                    result.Add((GlowFilter)filt.Create());
-            return result;
-        }
-
-        private List<GlowNotifier> GetDefaultNotifiers()
-        {
-            List<GlowNotifier> result = new List<GlowNotifier>();
-            foreach (GlowNotifier notf in this.AvailNotifiers)
-                if (notf.IsDefault)
-                    result.Add((GlowNotifier)notf.Create());
-            return result;
-        }
-
-        public GlowExtension findExt(Guid id)
-        {
-            foreach (var e in AvailExtensions)
-                if (e.id.Equals(id))
-                    return e.Create();
-            return null;
+            if (NewLogMsgAvailEvent != null)
+                NewLogMsgAvailEvent("Extension Library", msg);
         }
     }
 }
