@@ -7,71 +7,70 @@ using System.ComponentModel.Composition.Hosting;
 using System.Collections;
 using System.Drawing;
 using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.ExtensionFramework.Management
 {
-    public class MEFHelper : IDisposable
+    public class MEFHelper : Loggable
     {
-        public bool failed { get; private set; }
+        public delegate void NewLogMsg(string source, string msg);
+        public event NewLogMsg NewLogMsgAvail;
+        private readonly Type[] Types = {
+                                            typeof(GlowDriver),
+                                            typeof(GlowScreenGrabber),
+                                            typeof(GlowScreenProcessor),
+                                            typeof(GlowFilter),
+                                            typeof(GlowNotifier)
+                                        };
         private CompositionContainer container;
-        private String path;
-
         [ImportMany]
-        private IEnumerable<GlowExtension> extensions;
+        private List<GlowExtension> FullList;
 
-        //The Extension Bank
-        public List<GlowDriver> AvailDrivers { get; private set; }
-        public List<GlowScreenGrabber> AvailScreenGrabbers { get; private set; }
-        public List<GlowScreenProcessor> AvailScreenProcessors { get; private set; }
-        public List<GlowFilter> AvailFilters { get; private set; }
-        public List<GlowNotifier> AvailNotifiers { get; private set; }
-
-        public MEFHelper(String pathToExtensions)
+        public MEFHelper()
         {
-            failed = false;
-            path = pathToExtensions;
-            AvailDrivers = new List<GlowDriver>();
-            AvailDrivers.Add(new GlowScreenDriverCoupler(null, null));//add coupler placeholder
-            AvailScreenGrabbers = new List<GlowScreenGrabber>();
-            AvailScreenProcessors = new List<GlowScreenProcessor>();
-            AvailFilters = new List<GlowFilter>();
-            AvailNotifiers = new List<GlowNotifier>();
-
-            Compose();
-            if (null == extensions) {
-                failed = true;
-                return;//no plugins loaded
-            }
-            foreach (GlowExtension extension in extensions) {//TODO: Investigate using Dictionary<Type, List<GlowExtension>> to hold extensions
-                if (extension is GlowDriver) {
-                    AvailDrivers.Add((GlowDriver)extension);
-                }
-                else if (extension is GlowScreenGrabber) {
-                    AvailScreenGrabbers.Add((GlowScreenGrabber)extension);
-                }
-                else if (extension is GlowScreenProcessor) {
-                    AvailScreenProcessors.Add((GlowScreenProcessor)extension);
-                }
-                else if (extension is GlowFilter) {
-                    AvailFilters.Add((GlowFilter)extension);
-                }
-                else if (extension is GlowNotifier) {
-                    AvailNotifiers.Add((GlowNotifier)extension);
-                }
-            }
+            AttachObserver(LoggerHelper.GetInstance());
         }
 
-        private void Compose()
+        public Dictionary<Type, List<GlowExtension>> LoadExtensions(String path)
         {
-            DirectoryCatalog catalog = new DirectoryCatalog(this.path, "*.glow.dll");
+            Log("Extension Refresh triggered.");
+            Dictionary<Type, List<GlowExtension>> ExtensionBank = new Dictionary<Type, List<GlowExtension>>();
+            foreach (Type extType in Types) {
+                ExtensionBank[extType] = new List<GlowExtension>();
+            }
+            //add coupler placeholder TODO investigate if needed
+            ExtensionBank[typeof(GlowDriver)].Add(new GlowScreenDriverCoupler(null, null));
+
+            DirectoryCatalog catalog = new DirectoryCatalog(path, "*.glow.dll");
             container = new CompositionContainer(catalog);
             container.ComposeParts(this);
+            container.Dispose();
+
+            if (null == FullList) {
+                throw new Exception("Loading extensions failed.  extensions == null");//no plugins loaded
+            }
+
+            Log("Extension Refresh complete.\nThe Following GlowExtensions were found:\n");
+
+            foreach (GlowExtension extension in FullList) {
+                Type type = extension.GetType();
+                Log(type + extension.ToString());
+                ExtensionBank[type].Add(extension);
+            }
+
+            ExtensionBank[typeof(GlowExtension)] = FullList;
+            return ExtensionBank;
         }
 
-        public void Dispose()
+        public void AttachObserver(LogMsgObserver observer)
         {
-            if (this.container != null) {
-                this.container.Dispose();
+            NewLogMsgAvail += observer.NewLogMsgAvail;
+        }
+
+        private void Log(string msg)
+        {
+            if (NewLogMsgAvail != null) {
+                NewLogMsgAvail("MEFHelper", msg);
             }
         }
     }
