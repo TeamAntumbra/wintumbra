@@ -26,9 +26,9 @@ namespace Antumbra.Glow.Settings
         CAPTURETHROTTLE = 15
     }
 
-    public struct SettingsDelta
+    public class SettingsDelta
     {
         public int id;
-        public Dictionary<SettingValue, Object> changes;
+        public Dictionary<SettingValue, Object> changes = new Dictionary<SettingValue,object>();
     }
 }

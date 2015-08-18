@@ -57,11 +57,13 @@ namespace Antumbra.Glow.Settings
             boundY = minTop;
             boundWidth = maxRight - minLeft;
             boundHeight = maxBot - minTop;
+            SettingsDelta Delta = new SettingsDelta();
+            Delta.changes[SettingValue.BOUNDX] = boundX;
+            Delta.changes[SettingValue.BOUNDY] = boundY;
+            Delta.changes[SettingValue.BOUNDWIDTH] = boundWidth;
+            Delta.changes[SettingValue.BOUNDHEIGHT] = boundHeight;
             foreach (DeviceSettings settings in Settings.Values) {
-                settings.boundX = boundX;
-                settings.boundY = boundY;
-                settings.boundWidth = boundWidth;
-                settings.boundHeight = boundHeight;
+                settings.ApplyChanges(Delta);
             }
         }
 

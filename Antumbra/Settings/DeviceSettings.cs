@@ -20,220 +20,23 @@ namespace Antumbra.Glow.Settings
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         public int id { get; private set; }
-        public int x
-        {
-            get { return _x; }
-            set
-            {
-                if (value != _x) {
-                    _x = value;
-                    Notify();
-                }
-            }
-        }
-        private int _x;
-        public int y
-        {
-            get { return _y; }
-            set
-            {
-                if (value != _y) {
-                    _y = value;
-                    Notify();
-                }
-            }
-        }
-        private int _y;
-        public int width
-        {
-            get { return _width; }
-            set
-            {
-                if (value != _width) {
-                    _width = value;
-                    Notify();
-                }
-            }
-        }
-        private int _width;
-        public int height
-        {
-            get { return _height; }
-            set
-            {
-                if (value != _height) {
-                    _height = value;
-                    Notify();
-                }
-            }
-        }
-        private int _height;
-        public int boundX
-        {
-            get { return _boundX; }
-            set
-            {
-                if (value != _boundX) {
-                    _boundX = value;
-                    Notify();
-                }
-            }
-        }
-        private int _boundX;
-        public int boundY
-        {
-            get { return _boundY; }
-            set
-            {
-                if (value != _boundY) {
-                    _boundY = value;
-                    Notify();
-                }
-            }
-        }
-        private int _boundY;
-        public int boundWidth
-        {
-            get { return _boundWidth; }
-            set
-            {
-                if (value != _boundWidth) {
-                    _boundWidth = value;
-                    Notify();
-                }
-            }
-        }
-        private int _boundWidth;
-        public int boundHeight
-        {
-            get { return _boundHeight; }
-            set
-            {
-                if (value != _boundHeight) {
-                    _boundHeight = value;
-                    Notify();
-                }
-            }
-        }
-        private int _boundHeight;
-        public int stepSleep
-        {
-            get { return _stepSleep; }
-            set
-            {
-                if (value != _stepSleep) {
-                    _stepSleep = value;
-                    Notify();
-                }
-            }
-        }
-        private int _stepSleep;
-        public bool weightingEnabled
-        {
-            get
-            {
-                return _weightingEnabled;
-            }
-            set
-            {
-                if (value != _weightingEnabled) {
-                    _weightingEnabled = value;
-                    Notify();
-                }
-            }
-        }
-        private bool _weightingEnabled;
-        public double newColorWeight
-        {
-            get
-            {
-                return _newColorWeight;
-            }
-            set
-            {
-                if (value != _newColorWeight) {
-                    _newColorWeight = value;
-                    Notify();
-                }
-            }
-        }
-        private double _newColorWeight;
-        public double maxBrightness
-        {
-            get
-            {
-                return _maxBrightness;
-            }
-            set
-            {
-                if (value != _maxBrightness) {
-                    _maxBrightness = value;
-                    Notify();
-                }
-            }
-        }
-        private double _maxBrightness;
-        public Int16 redBias
-        {
-            get
-            {
-                return _redBias;
-            }
-            set
-            {
-                if (value != _redBias) {
-                    _redBias = value;
-                    Notify();
-                }
-            }
-        }
-        private Int16 _redBias;
-        public Int16 greenBias
-        {
-            get
-            {
-                return _greenBias;
-            }
-            set
-            {
-                if (value != _greenBias) {
-                    _greenBias = value;
-                    Notify();
-                }
-            }
-        }
-        private Int16 _greenBias;
-        public Int16 blueBias
-        {
-            get
-            {
-                return _blueBias;
-            }
-            set
-            {
-                if (value != _blueBias) {
-                    _blueBias = value;
-                    Notify();
-                }
-            }
-        }
-        private Int16 _blueBias;
+        public int x { get; private set; }
+        public int y { get; private set; }
+        public int width { get; private set; }
+        public int height { get; private set; }
+        public int boundX { get; private set; }
+        public int boundY { get; private set; }
+        public int boundWidth { get; private set; }
+        public int boundHeight { get; private set; }
+        public int stepSleep { get; private set; }
+        public bool weightingEnabled { get; private set; }
+        public double newColorWeight { get; private set; }
+        public double maxBrightness { get; private set; }
+        public Int16 redBias { get; private set; }
+        public Int16 greenBias { get; private set; }
+        public Int16 blueBias { get; private set; }
+        public int captureThrottle { get; private set; }
 
-        public int captureThrottle
-        {
-            get
-            {
-                return _captureThrottle;
-            }
-            set
-            {
-                if (value != _captureThrottle) {
-                    _captureThrottle = value;
-                    Notify();
-                }
-            }
-        }
-        private int _captureThrottle;
         private String fileName;
 
         /// <summary>
@@ -266,6 +69,7 @@ namespace Antumbra.Glow.Settings
             maxBrightness = 1.0;
             weightingEnabled = true;
             newColorWeight = 0.05;
+            Notify();
         }
 
         /// <summary>
@@ -352,6 +156,7 @@ namespace Antumbra.Glow.Settings
                         throw new ArgumentException("Unknown SettingValue " + variable);
                 }
             }
+            Notify();
         }
 
         /// <summary>

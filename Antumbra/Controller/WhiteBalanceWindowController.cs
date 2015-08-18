@@ -52,10 +52,11 @@ namespace Antumbra.Glow.Controller
 
         private void ColorWheelChangedHandler(Color newColor, int id)
         {
-            DeviceSettings deviceSettings = settingsManager.getSettings(id);
-            deviceSettings.redBias = Convert.ToInt16(control.R - newColor.R);
-            deviceSettings.greenBias = Convert.ToInt16(control.G - newColor.G);
-            deviceSettings.blueBias = Convert.ToInt16(control.B - newColor.B);
+            SettingsDelta Delta = new SettingsDelta();
+            Delta.changes[SettingValue.REDBIAS] = Convert.ToInt16(control.R - newColor.R);
+            Delta.changes[SettingValue.GREENBIAS] = Convert.ToInt16(control.G - newColor.G);
+            Delta.changes[SettingValue.BLUEBIAS] = Convert.ToInt16(control.B - newColor.B);
+            settingsManager.getSettings(id).ApplyChanges(Delta);
         }
 
         private void closeBtnHandler(object sender, EventArgs args)
