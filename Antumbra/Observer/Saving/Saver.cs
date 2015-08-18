@@ -20,8 +20,10 @@ namespace Antumbra.Glow.Observer.Saving
 
         public static Saver GetInstance()
         {
-            if (instance == null)
+            if (instance == null) {
                 instance = new Saver();
+            }
+
             return instance;
         }
         private Saver()
@@ -29,20 +31,22 @@ namespace Antumbra.Glow.Observer.Saving
             AttachObserver(LoggerHelper.GetInstance());
             this.path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                 "\\Antumbra\\";
-            if (!System.IO.Directory.Exists(this.path))
-                System.IO.Directory.CreateDirectory(this.path);
+            if (!System.IO.Directory.Exists(path)) {
+                System.IO.Directory.CreateDirectory(path);
+            }
         }
 
         public void Save(String fileName, ISerializable serializable)
         {
             lock (sync) {
                 try {
-                    using (Stream stream = File.Open(this.path + fileName, FileMode.Create)) {
+                    using (Stream stream = File.Open(path + fileName, FileMode.Create)) {
                         BinaryFormatter formatter = new BinaryFormatter();
                         formatter.Serialize(stream, serializable);
                     }
                 }
                 catch (Exception ex) {
+                    Log("Saving failed!");
                     Log(ex.Message + '\n' + ex.StackTrace);
                 }
             }
@@ -52,12 +56,13 @@ namespace Antumbra.Glow.Observer.Saving
         {
             lock (sync) {
                 try {
-                    using (Stream stream = File.Open(this.path + fileName, FileMode.Open)) {
+                    using (Stream stream = File.Open(path + fileName, FileMode.Open)) {
                         BinaryFormatter formatter = new BinaryFormatter();
                         return formatter.Deserialize(stream);
                     }
                 }
                 catch (Exception ex) {
+                    Log("Loading failed!");
                     Log(ex.Message + '\n' + ex.StackTrace);
                     return null;
                 }
@@ -71,8 +76,9 @@ namespace Antumbra.Glow.Observer.Saving
 
         private void Log(String msg)
         {
-            if (NewLogMsgAvailEvent != null)
+            if (NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent("Saver Singleton", msg);
+            }
         }
     }
 }
