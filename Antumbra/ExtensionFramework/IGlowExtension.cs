@@ -71,11 +71,5 @@ namespace Antumbra.Glow.ExtensionFramework
         /// </summary>
         /// <returns>return true if window opened, else false</returns>
         bool Settings();
-
-        /// <summary>
-        /// Create instance for use
-        /// </summary>
-        /// <returns>GlowExtension Instance</returns>
-        GlowExtension Create();
     }
 }

@@ -91,12 +91,6 @@ namespace Antumbra.Glow.ExtensionFramework
         /// <returns>true if window opened, else false</returns>
         public abstract bool Settings();
 
-        /// <summary>
-        /// Create instance for use
-        /// </summary>
-        /// <returns></returns>
-        public abstract GlowExtension Create();//TODO move this into inner factory object for MEF/Library use rather than holding an entire copy
-
         public abstract void Dispose();
     }
 }
