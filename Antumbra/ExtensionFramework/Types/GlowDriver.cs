@@ -15,5 +15,9 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public bool weighted { get; set; }
         public double newColorWeight { get; set; }
         public abstract GlowDriver Create();
+        public new Type GetType()
+        {
+            return typeof(GlowDriver);
+        }
     }
 }

@@ -15,5 +15,9 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public abstract void AttachObserver(AntumbraColorObserver observer);
         public abstract void SetArea(int x, int y, int width, int height);
         public abstract GlowScreenProcessor Create();
+        public new Type GetType()
+        {
+            return typeof(GlowScreenProcessor);
+        }
     }
 }
