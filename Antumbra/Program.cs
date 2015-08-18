@@ -39,7 +39,6 @@ namespace Antumbra.Glow
                 if (controller != null) {
                     controller.Dispose();
                 }
-                logger.NewLogMsgAvail("Program Class", "SETUP FAILED! FATAL");
             }
         }
 
