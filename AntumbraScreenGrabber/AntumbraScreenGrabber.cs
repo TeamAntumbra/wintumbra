@@ -72,7 +72,7 @@ namespace AntumbraScreenDriver
             NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
-        public override GlowExtension Create()
+        public override GlowScreenGrabber Create()
         {
             return new AntumbraScreenGrabber();
         }

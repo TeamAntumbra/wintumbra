@@ -164,7 +164,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
             return false;
         }
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return this;
         }

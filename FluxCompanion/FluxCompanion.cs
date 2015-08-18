@@ -59,7 +59,7 @@ namespace FluxCompanion
             get { return false; }
         }
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return new FluxCompanion();
         }

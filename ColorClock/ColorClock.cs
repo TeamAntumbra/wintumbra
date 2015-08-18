@@ -76,7 +76,7 @@ namespace ColorClock
             get { return "https://antumbra.io/docs/extensions/drivers/colorClock"; }
         }
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return new ColorClock();
         }

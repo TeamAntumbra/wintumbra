@@ -52,7 +52,7 @@ namespace Brightener
             set { deviceId = value; }
         }
 
-        public override GlowExtension Create()
+        public override GlowFilter Create()
         {
             return new Brightener();
         }

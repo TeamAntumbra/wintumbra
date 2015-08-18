@@ -14,5 +14,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public int stepSleep { get; set; }
         public bool weighted { get; set; }
         public double newColorWeight { get; set; }
+        public abstract GlowDriver Create();
     }
 }

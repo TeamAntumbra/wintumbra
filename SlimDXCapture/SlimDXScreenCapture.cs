@@ -50,7 +50,7 @@ namespace SlimDXCapture
             }
         }
 
-        public override GlowExtension Create()
+        public override GlowScreenGrabber Create()
         {
             return new SlimDXScreenCapture();
         }

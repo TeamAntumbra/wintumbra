@@ -70,7 +70,7 @@ namespace HSVFade
             return false;
         }
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return new HSVFade();
         }

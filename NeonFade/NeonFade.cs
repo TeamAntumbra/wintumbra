@@ -90,7 +90,7 @@ namespace NeonFade
             NewColorAvailEvent += observer.NewColorAvail;
         }
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return new NeonFade();
         }

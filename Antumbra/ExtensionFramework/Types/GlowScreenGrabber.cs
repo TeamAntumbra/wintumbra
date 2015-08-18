@@ -18,5 +18,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public int width { get; set; }
         public int height { get; set; }
         public int captureThrottle { get; set; }
+        public abstract GlowScreenGrabber Create();
     }
 }

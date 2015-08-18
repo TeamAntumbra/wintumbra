@@ -84,7 +84,7 @@ namespace AntumbraScreenshotProcessor
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
-        public override GlowExtension Create()
+        public override GlowScreenProcessor Create()
         {
             return new AntumbraScreenshotProcessor();
         }

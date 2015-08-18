@@ -68,7 +68,7 @@ namespace Saturator
             get { return "https://antumbra.io"; }
         }
 
-        public override GlowExtension Create()
+        public override GlowFilter Create()
         {
             return new Saturator();
         }

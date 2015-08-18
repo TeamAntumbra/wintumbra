@@ -10,5 +10,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
     public abstract class GlowFilter : GlowExtension
     {
         abstract public Color16Bit Filter(Color16Bit origColor);//Returns filtered color
+        public abstract GlowFilter Create();
     }
 }

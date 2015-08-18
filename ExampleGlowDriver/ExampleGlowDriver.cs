@@ -63,7 +63,7 @@ namespace ExampleGlowDriver
             NewLogMsgEvent += new NewLogMsg(observer.NewLogMsgAvail);
         }
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return new ExampleGlowDriver();
         }

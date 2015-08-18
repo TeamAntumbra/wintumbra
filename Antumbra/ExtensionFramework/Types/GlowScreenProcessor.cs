@@ -14,5 +14,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public abstract void NewBitmapAvail(Bitmap image, EventArgs args);
         public abstract void AttachObserver(AntumbraColorObserver observer);
         public abstract void SetArea(int x, int y, int width, int height);
+        public abstract GlowScreenProcessor Create();
     }
 }

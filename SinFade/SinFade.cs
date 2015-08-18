@@ -24,7 +24,7 @@ namespace SinFade
         private long index;
         private int deviceId;
 
-        public override GlowExtension Create()
+        public override GlowDriver Create()
         {
             return new SinFade();
         }

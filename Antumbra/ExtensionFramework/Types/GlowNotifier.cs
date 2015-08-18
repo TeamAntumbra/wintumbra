@@ -10,5 +10,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types
     public abstract class GlowNotifier : GlowExtension//observed by core
     {
         public abstract void AttachEvent(AntumbraNotificationObserver observer);
+        public abstract GlowNotifier Create();
     }
 }
