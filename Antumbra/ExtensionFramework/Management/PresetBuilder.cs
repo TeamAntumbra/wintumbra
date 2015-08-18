@@ -11,6 +11,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     public class PresetBuilder
     {
         private ExtensionLibrary lib;
+        private readonly Guid[] Empty = new Guid[0];
         private Guid HSVDriver = Guid.Parse("8360550b-d599-4f0f-8806-bc323f9ce547");
         private Guid SinDriver = Guid.Parse("31cae25b-72c0-4ffc-860b-234fb931bc15");
         private Guid NeonDriver = Guid.Parse("9a310fae-2084-4dc5-ae6a-4f664faa1fe8");
@@ -27,91 +28,47 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 
         public ActiveExtensions GetHSVFadePreset()
         {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(HSVDriver);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
+            ActiveExtensions result = new ActiveExtensions(HSVDriver, Guid.Empty, Empty, Empty, Empty);
+            result.Init(lib);
             return result;
         }
 
         public ActiveExtensions GetSinFadePreset()
         {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(SinDriver);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
+            ActiveExtensions result = new ActiveExtensions(SinDriver, Guid.Empty, Empty, Empty, Empty);
+            result.Init(lib);
             return result;
         }
 
         public ActiveExtensions GetNeonFadePreset()
         {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(NeonDriver);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
+            ActiveExtensions result = new ActiveExtensions(NeonDriver, Guid.Empty, Empty, Empty, Empty);
+            result.Init(lib);
             return result;
         }
 
         public ActiveExtensions GetMirrorPreset()
         {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(ScreenDriverCoupler);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
-            ext = this.lib.LookupExt(ScreenGrabber);
-            if (ext != null)
-                result.ActiveGrabber = (GlowScreenGrabber)ext;
-            ext = this.lib.LookupExt(ScreenshotProcesor);
-            if (ext != null)
-                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
-            return result;
-        }
-
-        public ActiveExtensions GetSmoothMirrorPreset()
-        {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(ScreenDriverCoupler);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
-            ext = this.lib.LookupExt(ScreenGrabber);
-            if (ext != null)
-                result.ActiveGrabber = (GlowScreenGrabber)ext;
-            ext = this.lib.LookupExt(ScreenshotProcesor);
-            if (ext != null)
-                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
+            Guid[] processors = {ScreenshotProcesor};
+            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, ScreenGrabber, processors, Empty, Empty);
+            result.Init(lib);
             return result;
         }
 
         public ActiveExtensions GetAugmentMirrorPreset()
         {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(ScreenDriverCoupler);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
-            ext = this.lib.LookupExt(ScreenGrabber);
-            if (ext != null)
-                result.ActiveGrabber = (GlowScreenGrabber)ext;
-            ext = this.lib.LookupExt(ScreenshotProcesor);
-            if (ext != null)
-                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
-            ext = this.lib.LookupExt(Saturator);
-            if (ext != null)
-                result.ActiveFilters.Add((GlowFilter)ext);
+            Guid[] processors = {ScreenshotProcesor};
+            Guid[] filters = {Saturator};
+            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, ScreenGrabber, processors, filters, Empty);
+            result.Init(lib);
             return result;
         }
 
         public ActiveExtensions GetGameMirrorPreset()
         {
-            ActiveExtensions result = new ActiveExtensions();
-            GlowExtension ext = this.lib.LookupExt(ScreenDriverCoupler);
-            if (ext != null)
-                result.ActiveDriver = (GlowDriver)ext;
-            ext = this.lib.LookupExt(ScreenshotProcesor);
-            if (ext != null)
-                result.ActiveProcessors.Add((GlowScreenProcessor)ext);
-            ext = this.lib.LookupExt(DXGrabber);
-            if (ext != null)
-                result.ActiveGrabber = (GlowScreenGrabber)ext;
+            Guid[] processors = {ScreenshotProcesor};
+            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, DXGrabber, processors, Empty, Empty);
+            result.Init(lib);
             return result;
         }
     }

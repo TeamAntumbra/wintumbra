@@ -129,11 +129,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 case MODE.NEON:
                     actives = PresetBuilder.GetNeonFadePreset();
                     break;
-                case MODE.MIRROR:
-                    actives = PresetBuilder.GetMirrorPreset();
-                    break;
+                case MODE.MIRROR://Both use same extensions, just different settings
                 case MODE.SMOOTH:
-                    actives = PresetBuilder.GetSmoothMirrorPreset();
+                    actives = PresetBuilder.GetMirrorPreset();
                     break;
                 case MODE.AUGMENT:
                     actives = PresetBuilder.GetAugmentMirrorPreset();
