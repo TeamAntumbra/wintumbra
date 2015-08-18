@@ -26,7 +26,6 @@ namespace Antumbra.Glow.Controller
     {
         public const Int32 VID = 0x16D0;
         public const Int32 PID = 0x0A85;
-        private const string EXTENSION_DIR_REL_PATH = "./Extensions/";
 
         public delegate void NewLogMsgAvail(String source, String msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
@@ -53,7 +52,7 @@ namespace Antumbra.Glow.Controller
             // Create Manager instances
             connectionManager = new ConnectionManager(VID, PID);
             settingsManager = new SettingsManager();
-            extensionManager = new ExtensionManager(new ExtensionLibrary(EXTENSION_DIR_REL_PATH));
+            extensionManager = new ExtensionManager(new ExtensionLibrary());
             preOutputProcessor = new PreOutputProcessor();
             whiteBalController = new WhiteBalanceWindowController(settingsManager);
             // Attach event observers

@@ -15,6 +15,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
     {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgAvail;
+
+        private const string EXTENSION_DIR_REL_PATH = "./Extensions/";
         private readonly Type[] Types = {
                                             typeof(GlowDriver),
                                             typeof(GlowScreenGrabber),
@@ -22,6 +24,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                                             typeof(GlowFilter),
                                             typeof(GlowNotifier)
                                         };
+
+
         private CompositionContainer container;
         [ImportMany]
         private List<GlowExtension> FullList;
@@ -31,7 +35,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             AttachObserver(LoggerHelper.GetInstance());
         }
 
-        public Dictionary<Type, List<GlowExtension>> LoadExtensions(String path)
+        public Dictionary<Type, List<GlowExtension>> LoadExtensions()
         {
             Log("Extension Refresh triggered.");
             Dictionary<Type, List<GlowExtension>> ExtensionBank = new Dictionary<Type, List<GlowExtension>>();
@@ -41,7 +45,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             //add coupler placeholder TODO investigate if needed
             ExtensionBank[typeof(GlowDriver)].Add(new GlowScreenDriverCoupler(null, null));
 
-            DirectoryCatalog catalog = new DirectoryCatalog(path, "*.glow.dll");
+            DirectoryCatalog catalog = new DirectoryCatalog(EXTENSION_DIR_REL_PATH, "*.glow.dll");
             container = new CompositionContainer(catalog);
             container.ComposeParts(this);
             container.Dispose();

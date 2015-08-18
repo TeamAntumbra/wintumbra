@@ -10,8 +10,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
 {
     public class ExtensionLibrary : Loggable
     {
-        private const string EXTENSION_DIR_REL_PATH = "./Extensions/";
-
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
 
@@ -43,7 +41,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Filters.Clear();
             Notifiers.Clear();
 
-            Dictionary<Type, List<GlowExtension>> ExtensionBank = MefHelper.LoadExtensions(EXTENSION_DIR_REL_PATH);
+            Dictionary<Type, List<GlowExtension>> ExtensionBank = MefHelper.LoadExtensions();
             Type current = typeof(GlowExtension);
             Extensions = ExtensionBank[current];
             current = typeof(GlowDriver);
