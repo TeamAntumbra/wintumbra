@@ -43,6 +43,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public ExtensionManager()
         {
             Lib = new ExtensionLibrary();
+            Lib.Update();
             PresetBuilder = new Management.PresetBuilder(Lib);
             Instances = new Dictionary<int, ExtensionInstance>();
         }
