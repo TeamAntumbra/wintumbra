@@ -48,7 +48,9 @@ namespace Antumbra.Glow.Connector
         {
             OutputSettings settings;
             if (!AllDeviceSettings.TryGetValue(id, out settings)) {
-                throw new Exception("OutputSettings for device not found! id: " + id);
+                Log("OutputSettings for device not found! Color sent plain. ID: " + id);
+                NewColorAvailEvent(newCol, id, index);
+                return;
             }
 
             long prevIndex;
@@ -56,9 +58,15 @@ namespace Antumbra.Glow.Connector
                 OutputIndexes[id] = index;
             }
             else if (prevIndex >= index) {
-                // Invalid index
-                throw new Exception("Color recieved out of order! Target id: " + id +
-                                    " with index " + index + " and last index " + prevIndex);
+                if (index == long.MinValue) {
+                    prevIndex = long.MinValue;
+                }
+                else {
+                    // Invalid index
+                    Log("Color recieved out of order! Color BLOCKED! Target ID: " + id +
+                        " with index " + index + " and last index " + prevIndex);
+                    return;
+                }
             }
             // Either first run or valid index
             int red = newCol.red;
@@ -72,7 +80,12 @@ namespace Antumbra.Glow.Connector
             }
             newCol = Color16Bit.FunnelIntoColor(red, green, blue);
             // Scale brightness
-            newCol.ScaleColor(settings.MaxBrightness);
+            try {
+                newCol.ScaleColor(settings.MaxBrightness);
+            }
+            catch (ArgumentException ex) {
+                Log(ex.Message + '\n' + ex.StackTrace);
+            }
             NewColorAvailEvent(newCol, id, index);
         }
 
