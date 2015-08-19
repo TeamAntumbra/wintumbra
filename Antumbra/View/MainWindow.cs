@@ -34,7 +34,6 @@ namespace Antumbra.Glow.View
         public MainWindow()
         {
             InitializeComponent();
-            this.brightnessTrackBar.Maximum = UInt16.MaxValue;
             this.brightnessTrackBar.Value = this.brightnessTrackBar.Maximum;
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
         }
@@ -48,12 +47,16 @@ namespace Antumbra.Glow.View
         }
         public void SetBrightnessValue(int value)
         {
-            this.brightnessTrackBar.Value = value;
+            if (brightnessTrackBar.Value != value) {
+                brightnessTrackBar.Value = value;
+            }
         }
 
         public void SetCaptureThrottleValue(int value)
         {
-            this.throttleBar.Value = value;
+            if (throttleBar.Value != value) {
+                throttleBar.Value = value;
+            }
         }
 
         public void SetPollingBtnText(String newText)
@@ -77,9 +80,8 @@ namespace Antumbra.Glow.View
         {
             if (brightnessTrackBar_ScrollEvent != null) {
                 int max = this.brightnessTrackBar.Maximum;
-                int current = this.brightnessTrackBar.Value;
-                int[] values = { current, max };
-                brightnessTrackBar_ScrollEvent(values, e);
+                double current = this.brightnessTrackBar.Value;
+                brightnessTrackBar_ScrollEvent(current / max, e);
             }
         }
 
