@@ -20,12 +20,24 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         public event NewLogMsg NewLogMsgAvailEvent;
         public delegate void NewGlowCommand(GlowCommand command);
         public event NewGlowCommand NewGlowCommandAvailEvent;
+        public long prevIndex
+        {
+            get
+            {
+                return _prevIndex++;
+            }
+            private set
+            {
+                _prevIndex = value;
+            }
+        }
+
 
         private const String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
 
-        private long prevIndex;
         private ActiveExtensions Extensions;
         private int id;
+        private long _prevIndex;
 
         /// <summary>
         /// Constructor
@@ -91,6 +103,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         {
             try {
                 bool result = true;
+                prevIndex = long.MinValue;
                 if (Extensions != null) {
                     if (!Extensions.ActiveDriver.Stop())
                         result = false;
@@ -184,17 +197,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         }
 
         /// <summary>
-        /// Fake a color announcement with the passed values
-        /// </summary>
-        /// <param name="newColor">Color to send</param>
-        public void FalsifyNewColorAvail(Color16Bit newColor)
-        {
-            if (NewColorAvailEvent != null) {
-                NewColorAvailEvent(newColor, id, prevIndex++);
-            }
-        }
-
-        /// <summary>
         /// Filter and announce a new NewColorAvailEvent
         /// </summary>
         /// <param name="newColor"></param>
@@ -213,8 +215,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                     }
                     newColor = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
                 }
-                prevIndex = index;
-                NewColorAvailEvent(newColor, id, index);
+                NewColorAvailEvent(newColor, id, prevIndex);
             }
         }
 
