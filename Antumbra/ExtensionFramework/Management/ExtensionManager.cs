@@ -255,28 +255,30 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 return;
             }
 
-            ExtensionInstance instance = Instances[id];
-            instance.Stop();
-            instance.FalsifyNewColorAvail(new Color16Bit());
+            StopAndSendColor(new Color16Bit(), id);
         }
 
-        public void SendColor(int id, Color16Bit newColor)
+        public void StopAndSendColor(Color16Bit newColor, int id)
         {
             if (id == -1) {
                 for (int i = 0; i < Instances.Count; i += 1) {
-                    SendColor(i, newColor);
+                    StopAndSendColor(newColor, i);
                 }
                 return;
             }
 
-            Instances[id].FalsifyNewColorAvail(newColor);
+            ExtensionInstance Instance = Instances[id];
+            Instance.Stop();
+            if(NewColorAvailEvent != null) {
+                NewColorAvailEvent(newColor, id, Instance.prevIndex);
+            }
         }
 
         public void Start(int id)
         {
             if (id == -1) {
                 for (var i = 0; i < Instances.Count; i += 1) {
-                    Start(id);
+                    Start(i);
                 }
                 return;
             }
