@@ -102,6 +102,7 @@ namespace Antumbra.Glow.Settings
 
         public void ApplyChanges(SettingsDelta delta)
         {
+            Log(delta.changes.Count + " settings updated.\t" + delta.ToString());
             foreach (SettingValue variable in delta.changes.Keys) {
                 switch (variable) {
                     case SettingValue.BLUEBIAS:
@@ -153,7 +154,8 @@ namespace Antumbra.Glow.Settings
                         y = (int)delta.changes[SettingValue.Y];
                         break;
                     default:
-                        throw new ArgumentException("Unknown SettingValue " + variable);
+                        Log("Unknown SettingValue " + variable);
+                        break;
                 }
             }
             Notify();
