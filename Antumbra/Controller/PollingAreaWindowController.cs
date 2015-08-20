@@ -46,16 +46,6 @@ namespace Antumbra.Glow.Controller
             MoveWindow(pollingWindow.Handle, x, y, width, height, true);
         }
 
-        private void pollingArea_Click(object sender, EventArgs e)
-        {
-            if (pollingWindow == null || pollingWindow.IsDisposed) {
-                var back = UniqueColorGenerator.GetInstance().GetUniqueColor();
-                pollingWindow = new View.pollingAreaSetter(back);
-                pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
-            }
-            pollingWindow.Show();
-        }
-
         public void AttachObserver(GlowCommandObserver observer)
         {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
@@ -82,7 +72,6 @@ namespace Antumbra.Glow.Controller
                     PollingAreaUpdatedEvent(id, form.Location.X, form.Location.Y, form.Width, form.Height);
                 }
                 UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
-                form.Hide();
             }
         }
 
