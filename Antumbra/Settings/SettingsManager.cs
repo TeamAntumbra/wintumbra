@@ -49,7 +49,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         public void UpdateBoundingBox()
         {
-            int minTop = int.MaxValue, maxBot = 0, minLeft = int.MaxValue, maxRight = 0;
+            int minTop = int.MaxValue, maxBot = int.MinValue, minLeft = int.MaxValue, maxRight = int.MinValue;
             foreach (int id in Settings.Keys) {
                 DeviceSettings settings = Settings[id];
                 int left = settings.x;
@@ -61,7 +61,7 @@ namespace Antumbra.Glow.Settings
                 minLeft = minLeft < left ? minLeft : left;
                 maxRight = maxRight > right ? maxRight : right;
             }
-            boundX = minLeft;
+            boundX = minLeft + xValueOffset;
             boundY = minTop;
             boundWidth = maxRight - minLeft;
             boundHeight = maxBot - minTop;
