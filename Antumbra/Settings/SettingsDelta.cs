@@ -29,6 +29,21 @@ namespace Antumbra.Glow.Settings
     public class SettingsDelta
     {
         public int id;
-        public Dictionary<SettingValue, Object> changes = new Dictionary<SettingValue,object>();
+        public Dictionary<SettingValue, object> changes = new Dictionary<SettingValue, object>();
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder("SettingsDelta Changes:\t");
+            var i = 0;
+            var last = changes.Count - 1;
+            foreach (KeyValuePair<SettingValue, object> change in changes) {
+                sb.Append(change.Key).Append(" : ").Append(change.Value);
+                if (i != last) {
+                    sb.Append(", ");
+                    i += 1;
+                }
+            }
+            return sb.ToString();
+        }
     }
 }
