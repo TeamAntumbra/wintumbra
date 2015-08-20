@@ -23,8 +23,9 @@ namespace Antumbra.Glow.View
 
         private void pollingAreaSetter_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (formClosingEvent != null)
-                formClosingEvent(sender, EventArgs.Empty);//replace with event args as to not have to use FormClosingEventHandler
+            if (formClosingEvent != null) {
+                formClosingEvent(sender, e);
+            }
         }
     }
 }

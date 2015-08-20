@@ -16,8 +16,10 @@ namespace Antumbra.Glow.Settings
         public event NewLogMsg NewLogMsgAvail;
         public delegate void NewConfigUpdate(Configurable config);
         public event NewConfigUpdate NewConfigUpdateAvail;
+        public int xValueOffset { get; private set; }
+
         private Dictionary<int, DeviceSettings> Settings;
-        private int boundX, boundY, boundWidth, boundHeight, xValueOffset;
+        private int boundX, boundY, boundWidth, boundHeight;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -71,8 +73,8 @@ namespace Antumbra.Glow.Settings
             Delta.changes[SettingValue.BOUNDWIDTH] = boundWidth;
             Delta.changes[SettingValue.BOUNDHEIGHT] = boundHeight;
             Log("New bounding box calculated.\n" + Delta.ToString());
-            foreach (DeviceSettings settings in Settings.Values) {
-                settings.ApplyChanges(Delta);
+            foreach (int id in Settings.Keys) {
+                Settings[id].ApplyChanges(Delta);
             }
         }
 
