@@ -57,6 +57,7 @@ namespace Antumbra.Glow.Controller
             connectionManager.AttachObserver((ConnectionEventObserver)settingsManager);
             connectionManager.AttachObserver((ConnectionEventObserver)extensionManager);
             connectionManager.AttachObserver((ConnectionEventObserver)whiteBalController);
+            connectionManager.AttachObserver((ConnectionEventObserver)this);
             preOutputProcessor.AttachObserver((AntumbraColorObserver)connectionManager);
             extensionManager.AttachObserver((AntumbraColorObserver)preOutputProcessor);
             settingsManager.AttachObserver((ConfigurationObserver)extensionManager);
@@ -173,6 +174,7 @@ namespace Antumbra.Glow.Controller
             Delta.changes[SettingValue.WIDTH] = width;
             Delta.changes[SettingValue.HEIGHT] = height;
             settingsManager.getSettings(id).ApplyChanges(Delta);
+            settingsManager.UpdateBoundingBox();
             this.pollingIndex -= 1;
             if (this.pollingIndex == 0) {//time to reset btn text & restart
                 NewGlowCommandAvail(new StartCommand(-1));
@@ -196,11 +198,6 @@ namespace Antumbra.Glow.Controller
                     NewGlowCmdAvailEvent(new PowerOffCommand(-1));
                 }
             }
-        }
-
-        public void RegisterDevice(int id)
-        {
-            this.id = id;
         }
 
         public void AttachObserver(GlowCommandObserver observer)
