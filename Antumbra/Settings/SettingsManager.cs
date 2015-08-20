@@ -63,7 +63,7 @@ namespace Antumbra.Glow.Settings
                 minLeft = minLeft < left ? minLeft : left;
                 maxRight = maxRight > right ? maxRight : right;
             }
-            boundX = minLeft + xValueOffset;
+            boundX = minLeft;
             boundY = minTop;
             boundWidth = maxRight - minLeft;
             boundHeight = maxBot - minTop;
