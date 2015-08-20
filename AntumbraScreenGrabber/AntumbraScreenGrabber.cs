@@ -113,27 +113,38 @@ namespace AntumbraScreenDriver
             }
         }
 
+        private void Log(string msg)
+        {
+            if (NewLogMsgEvent != null) {
+                NewLogMsgEvent("AntumbraScreenGrabber", msg);
+            }
+        }
+
         private void captureTarget()
         {
             int runX = x;
             int runY = y;
             Size runSize = new Size(width, height);
             while (this.running) {
-                using (Bitmap screen = new Bitmap(runSize.Width, runSize.Height, PixelFormat.Format32bppPArgb)) {
-                    using (Graphics grphx = Graphics.FromImage(screen)) {
-                        try {
-                            grphx.CopyFromScreen(runX, runY, 0, 0, runSize, CopyPixelOperation.SourceCopy);
-                            grphx.Save();
-                            //screen = getPixelBitBlt(runX, runY, runW, runH);
-                            if (null != screen && NewScreenAvailEvent != null) {
-                                NewScreenAvailEvent(screen, EventArgs.Empty);
+                try {
+                    using (Bitmap screen = new Bitmap(runSize.Width, runSize.Height, PixelFormat.Format32bppArgb)) {
+                        using (Graphics grphx = Graphics.FromImage(screen)) {
+                            try {
+                                grphx.CopyFromScreen(runX, runY, 0, 0, runSize, CopyPixelOperation.SourceCopy);
+                                grphx.Save();
+                                if (null != screen && NewScreenAvailEvent != null) {
+                                    NewScreenAvailEvent(screen, EventArgs.Empty);
+                                }
                             }
+                            catch (Exception e) {
+                                Log(e.Message + '\t' + e.StackTrace);
+                            }
+                            Thread.Sleep(captureThrottle);
                         }
-                        catch (Exception e) {
-                            NewLogMsgEvent(this.Name, e.ToString());
-                        }
-                        Thread.Sleep(captureThrottle);
                     }
+                }
+                catch (Exception ex) {
+                    Log(ex.Message + '\t' + ex.StackTrace);
                 }
             }
         }
