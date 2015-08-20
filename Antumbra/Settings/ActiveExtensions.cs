@@ -176,6 +176,11 @@ namespace Antumbra.Glow.Settings
             foreach (Guid guid in ProcessorGuids) {
                 ActiveProcessors.Add(library.LookupProcessor(guid));
             }
+
+            if (ActiveDriver is GlowScreenDriverCoupler) {
+                ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessors.First<GlowScreenProcessor>());
+            }
+
             foreach (Guid guid in FilterGuids) {
                 ActiveFilters.Add(library.LookupFilter(guid));
             }
