@@ -475,6 +475,34 @@ namespace Antumbra.Glow.Observer.Bitmaps
         }
 
         /// <summary>
+        /// Gets a region of this FastBitmap
+        /// </summary>
+        /// <param name="region">Region of this FastBitmap to grab</param>
+        /// <returns>Region as a FastBitmap</returns>
+        /// <exception cref="NullReferenceException">Occurs if this object is locked but the internal BitmapData is null</exception>
+        /// <exception cref="AccessViolationException">Occurs if the region exceeds this FastBitmaps bounds</exception>
+        public FastBitmap GetRegion(Rectangle region)
+        {
+            Bitmap cropped = new Bitmap(region.Width, region.Height, _bitmap.PixelFormat);
+            var croppedData = cropped.LockBits(new Rectangle(0, 0, region.Width, region.Height),
+                                               ImageLockMode.WriteOnly, _bitmap.PixelFormat);
+            bool unlock = false;
+            if (!_locked) {
+                Lock();
+                unlock = true;
+            }
+
+            croppedData.Stride = _bitmapData.Stride;
+            int* croppedPointer = (int*)croppedData.Scan0.ToPointer();
+            memcpy(croppedPointer, _scan0, (ulong)(Math.Abs(croppedData.Stride) * region.Height));
+
+            if (unlock) {
+                Unlock();
+            }
+            return new FastBitmap(cropped);
+        }
+
+        /// <summary>
         /// Copies a region of the source bitmap into this fast bitmap
         /// </summary>
         /// <param name="source">The source image to copy</param>
