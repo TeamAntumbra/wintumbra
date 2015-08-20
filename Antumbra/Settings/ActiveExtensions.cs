@@ -178,7 +178,7 @@ namespace Antumbra.Glow.Settings
             }
 
             if (ActiveDriver is GlowScreenDriverCoupler) {
-                ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessors.First<GlowScreenProcessor>());
+                ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessors);
             }
 
             foreach (Guid guid in FilterGuids) {

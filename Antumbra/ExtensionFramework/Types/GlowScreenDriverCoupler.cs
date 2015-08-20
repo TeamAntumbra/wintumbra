@@ -25,13 +25,14 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         public override int devId { get; set; }
-        private GlowScreenGrabber grabber;
-        private GlowScreenProcessor processor;
 
-        public GlowScreenDriverCoupler(GlowScreenGrabber grab, GlowScreenProcessor proc)
+        private GlowScreenGrabber grabber;
+        private List<GlowScreenProcessor> processors;
+
+        public GlowScreenDriverCoupler(GlowScreenGrabber grabber, List<GlowScreenProcessor> processors)
         {
-            this.grabber = grab;
-            this.processor = proc;
+            this.grabber = grabber;
+            this.processors = processors;
         }
 
         public void AttachObserver(LogMsgObserver observer)
@@ -66,8 +67,18 @@ namespace Antumbra.Glow.ExtensionFramework.Types
 
         public override bool IsRunning
         {
-            get { if (null != this.grabber && null != this.processor)
-                    return this.grabber.IsRunning && this.processor.IsRunning;
+            get
+            {
+                if (null != this.grabber && null != this.processors) {
+                    bool processorsRunning = false;
+                    foreach (GlowScreenProcessor processor in processors) {
+                        if (processor.IsRunning) {
+                            processorsRunning = true;
+                            break;
+                        }
+                    }
+                    return this.grabber.IsRunning && processorsRunning;
+                }
                 return false;
             }
         }
@@ -114,27 +125,36 @@ namespace Antumbra.Glow.ExtensionFramework.Types
 
         public override bool Start()
         {
-            if (this.grabber != null && this.processor != null) {
-                AttemptToAttachSelfToExt(this.processor);
-                if (this.processor.Start()) {
-                    if (this.processor is AntumbraBitmapObserver)
-                        this.grabber.AttachObserver((AntumbraBitmapObserver)this.processor);
-                    this.processor.AttachObserver(this);
-                    AttemptToAttachSelfToExt(this.grabber);
-                    if (this.grabber.Start()) {
-                        return true;
+            if (this.grabber != null && this.processors != null) {
+                AttemptToAttachSelfToExt(this.processors);
+                foreach (GlowScreenProcessor processor in processors) {
+                    if (processor.Start()) {
+                        grabber.AttachObserver(processor);
                     }
+                    else {
+                        // Stop those started before failing, then report failure to start
+                        for (int i = 0; i < processors.IndexOf(processor); i += 1) {
+                            processors[i].Stop();
+                        }
+                        return false;
+                    }
+                    processor.AttachObserver(this);
                 }
+                AttemptToAttachSelfToExt(grabber);
+                return grabber.Start();
             }
             return false;
         }
 
+        private void AttemptToAttachSelfToExt(List<GlowScreenProcessor> exts)//TODO make a utility / static function / move elsewhere?
+        {
+            foreach (GlowExtension ext in exts) {
+                AttemptToAttachSelfToExt(ext);
+            }
+        }
+
         private void AttemptToAttachSelfToExt(GlowExtension ext)//TODO make a utility / static function / move elsewhere?
         {
-            if (ext is Loggable) {
-                Loggable log = (Loggable)ext;
-                log.AttachObserver(this);
-            }
             if (ext is ToolbarNotificationSource) {
                 ToolbarNotificationSource src = (ToolbarNotificationSource)ext;
                 src.AttachObserver(this);
@@ -143,12 +163,16 @@ namespace Antumbra.Glow.ExtensionFramework.Types
                 GlowCommandSender sender = (GlowCommandSender)ext;
                 sender.AttachObserver(this);
             }
+
         }
 
         public override bool Stop()
         {
-            if (this.processor != null)
-                this.processor.Stop();
+            if (processors != null) {
+                foreach (GlowScreenProcessor processor in processors) {
+                    processor.Stop();
+                }
+            }
             if (this.grabber != null)
                 this.grabber.Stop();
             return true;
@@ -175,8 +199,10 @@ namespace Antumbra.Glow.ExtensionFramework.Types
                 grabber.Dispose();
             }
 
-            if (processor != null) {
-                processor.Dispose();
+            if (processors != null) {
+                foreach (GlowScreenProcessor processor in processors) {
+                    processor.Dispose();
+                }
             }
         }
     }
