@@ -177,7 +177,7 @@ namespace Antumbra.Glow.Controller
             settingsManager.UpdateBoundingBox();
             this.pollingIndex -= 1;
             if (this.pollingIndex == 0) {//time to reset btn text & restart
-                NewGlowCommandAvail(new StartCommand(-1));
+                SendStartCommand(-1);
                 this.window.SetPollingBtnText("Set Capture Area");
             }
         }
@@ -188,7 +188,7 @@ namespace Antumbra.Glow.Controller
                 bool on = (bool)sender;
                 if (on) {
                     try {
-                        NewGlowCmdAvailEvent(new StartCommand(-1));
+                        SendStartCommand(-1);
                     }
                     catch (Exception) {
                         ResendManualColor(-1);
@@ -238,7 +238,7 @@ namespace Antumbra.Glow.Controller
         public void restartEventHandler(object sender, EventArgs args)
         {
             this.NewGlowCmdAvailEvent(new StopCommand(-1));
-            this.NewGlowCmdAvailEvent(new StartCommand(-1));
+            SendStartCommand(-1);
         }
 
         public void closeBtnClicked(object sender, EventArgs args)
@@ -270,36 +270,43 @@ namespace Antumbra.Glow.Controller
         public void hsvBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.HSV);
+            SendStartCommand(id);
         }
 
         public void sinBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.SIN);
+            SendStartCommand(id);
         }
 
         public void neonBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.NEON);
+            SendStartCommand(id);
         }
 
         public void mirrorBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.MIRROR);
+            SendStartCommand(id);
         }
 
         public void augmentBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.AUGMENT);
+            SendStartCommand(id);
         }
 
         public void smoothBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.SMOOTH);
+            SendStartCommand(id);
         }
 
         public void gameBtnClicked(object sender, EventArgs args)
         {
             extensionManager.SetInstance(id, ExtensionManager.MODE.GAME);
+            SendStartCommand(id);
         }
 
         public void quitBtnClicked(object sender, EventArgs args)
@@ -326,7 +333,7 @@ namespace Antumbra.Glow.Controller
                 case SessionSwitchReason.SessionLogon:
                 case SessionSwitchReason.SessionUnlock:
                     Thread.Sleep(2500);//wait for system to be ready
-                    NewGlowCmdAvailEvent(new StartCommand(-1));//start all
+                    SendStartCommand(-1);//start all
                     break;
             }
         }
@@ -343,7 +350,23 @@ namespace Antumbra.Glow.Controller
             }
             else if (e.Mode == PowerModes.Resume) {
                 Thread.Sleep(2500);//wait some for system to be ready
-                NewGlowCmdAvailEvent(new StartCommand(-1));//start all
+                SendStartCommand(-1);//start all
+            }
+        }
+
+        private void SendStartCommand(int id)
+        {
+            // Start
+            NewGlowCmdAvailEvent(new StartCommand(id));
+
+            //Force settings to announce themselves
+            if (id == -1) {
+                for (int i = 0; i < glowCount; i += 1) {
+                    settingsManager.getSettings(i).Notify();
+                }
+            }
+            else {
+                settingsManager.getSettings(id).Notify();
             }
         }
 
