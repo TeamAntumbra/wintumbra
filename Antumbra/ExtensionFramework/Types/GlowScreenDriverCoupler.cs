@@ -104,12 +104,12 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         }
         public sealed override Version Version
         {
-            get { return new Version(0, 1, 0, 0); }
+            get { return new Version(0, 1, 1, 0); }
         }
 
         public sealed override string Website
         {
-            get { return "https://antumbra.io/docs/extensions/framework/GlowScreenDriverCoupler"; }//TODO make docs and change this accordingly
+            get { return "https://wintumbra.rtfd.org"; }
         }
 
         public override void AttachColorObserver(AntumbraColorObserver observer)

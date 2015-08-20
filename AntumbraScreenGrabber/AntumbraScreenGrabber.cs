@@ -64,7 +64,7 @@ namespace AntumbraScreenDriver
         public override Version Version { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
         public override string Website
         {
-            get { return "https://antumbra.io/"; }
+            get { return "https://wintumbra.rtfd.org"; }
         }
 
         public void AttachObserver(LogMsgObserver observer)

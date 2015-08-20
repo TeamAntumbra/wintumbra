@@ -76,7 +76,7 @@ namespace AntumbraScreenshotProcessor
 
         public override string Website
         {
-            get { return "https://antumbra.io/docs/extensions/screenProcessors/GlowScreenProcessor"; }
+            get { return "https://wintumbra.rtfd.org"; }
         }
 
         public override Version Version
