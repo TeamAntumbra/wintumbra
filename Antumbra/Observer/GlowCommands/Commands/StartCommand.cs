@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Antumbra.Glow.ExtensionFramework.Management;
 
 namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
     public class StartCommand : GlowCommand
     {
-        public StartCommand(int devId)
-            : base(devId)
+        public StartCommand(int id)
+            : base(id)
         {
 
         }
 
-        public override void ExecuteCommand(ExtensionManager mgr)
+        public override void ExecuteCommand(ExtensionFramework.Management.ExtensionManager mgr)
         {
-            mgr.Start(this.id);
+            mgr.Start(id);
         }
 
     }

@@ -9,8 +9,8 @@ namespace Antumbra.Glow.Observer.GlowCommands.Commands
 {
     public class PowerOffCommand : GlowCommand
     {
-        public PowerOffCommand(int devId)
-            : base(devId)
+        public PowerOffCommand(int id)
+            : base(id)
         {
 
         }
