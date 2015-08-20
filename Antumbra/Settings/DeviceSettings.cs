@@ -1,5 +1,6 @@
 ﻿using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.Saving;
 using System;
 using System.Runtime.Serialization;
 
@@ -11,7 +12,7 @@ namespace Antumbra.Glow.Settings
     ///       The caveat here is that it cannot save itself
     /// </summary>
     [Serializable()]
-    public class DeviceSettings : Configurable, Loggable, ISerializable
+    public class DeviceSettings : Configurable, Loggable, ISerializable, Savable
     {
         public const String FILE_NAME_PREFIX = "Dev_Settings_";
 
@@ -55,8 +56,8 @@ namespace Antumbra.Glow.Settings
         {
             x = 0;
             y = 0;
-            width = 0;
-            height = 0;
+            width = 800;
+            height = 800;
             boundX = 0;
             boundY = 0;
             boundWidth = 0;
@@ -70,6 +71,35 @@ namespace Antumbra.Glow.Settings
             weightingEnabled = true;
             newColorWeight = 0.05;
             Notify();
+        }
+
+        public void Save()
+        {
+            Saver.GetInstance().Save(FILE_NAME_PREFIX + id, this);
+        }
+
+        public void Load()
+        {
+            DeviceSettings loaded = (DeviceSettings)Saver.GetInstance().Load(DeviceSettings.FILE_NAME_PREFIX + id);
+            if (loaded != null) {
+                id = loaded.id;
+                x = loaded.x;
+                y = loaded.y;
+                width = loaded.width;
+                height = loaded.height;
+                boundX = loaded.boundX;
+                boundY = loaded.boundY;
+                boundWidth = loaded.boundWidth;
+                boundHeight = loaded.boundHeight;
+                redBias = loaded.redBias;
+                greenBias = loaded.greenBias;
+                blueBias = loaded.blueBias;
+                captureThrottle = loaded.captureThrottle;
+                maxBrightness = loaded.maxBrightness;
+                weightingEnabled = loaded.weightingEnabled;
+                newColorWeight = loaded.newColorWeight;
+                stepSleep = loaded.stepSleep;
+            }
         }
 
         /// <summary>
@@ -158,6 +188,7 @@ namespace Antumbra.Glow.Settings
                         break;
                 }
             }
+            Save();
             Notify();
         }
 
