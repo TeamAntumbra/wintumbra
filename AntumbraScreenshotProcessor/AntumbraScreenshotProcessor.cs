@@ -23,6 +23,7 @@ namespace AntumbraScreenshotProcessor
         private int deviceId, x, y, width, height;
         private long index;
         private bool running;
+        private Rectangle captureRegion;
 
         public override bool IsDefault
         {
@@ -119,16 +120,16 @@ namespace AntumbraScreenshotProcessor
         public override void NewBitmapAvail(Bitmap bm, EventArgs args)
         {
             try {
-                FastBitmap fb = new FastBitmap(bm);
-                fb.Lock();
-                NewColorAvailEvent(Process(fb), deviceId, index++);
-                fb.Dispose();
+                using (FastBitmap fb = bm.FastLock()) {
+                    using (FastBitmap cropped = fb.GetRegion(captureRegion)) {
+                        cropped.Lock();
+                        NewColorAvailEvent(Process(fb), deviceId, index++);
+                    }
+                }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                //TODO log ex
                 Stop();
-            }
-            finally {
-                bm.Dispose();
             }
         }
 
@@ -156,6 +157,7 @@ namespace AntumbraScreenshotProcessor
             this.y = y;
             this.width = width;
             this.height = height;
+            captureRegion = new Rectangle(x, y, width, height);
         }
     }
 }
