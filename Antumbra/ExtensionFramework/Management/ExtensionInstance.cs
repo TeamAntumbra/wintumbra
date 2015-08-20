@@ -31,7 +31,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 _prevIndex = value;
             }
         }
-
+        public bool running { get; private set; }
 
         private const String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
 
@@ -92,6 +92,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 Stop();
                 return false;
             }
+            running = true;
             return true;
         }
 
@@ -114,6 +115,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                         if (!notifier.Stop())
                             result = false;
                 }
+                running = false;
                 return result;
             }
             catch (Exception ex) {

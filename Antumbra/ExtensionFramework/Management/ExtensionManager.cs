@@ -274,6 +274,23 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
+        public void SoftSendColor(Color16Bit newColor, int id)
+        {
+            if (id == -1) {
+                for (int i = 0; i < Instances.Count; i += 1) {
+                    SoftSendColor(newColor, id);
+                }
+                return;
+            }
+
+            ExtensionInstance Instance = Instances[id];
+            if (!Instance.running) {
+                if (NewColorAvailEvent != null) {
+                    NewColorAvailEvent(newColor, id, Instance.prevIndex);
+                }
+            }
+        }
+
         public void Start(int id)
         {
             if (id == -1) {
