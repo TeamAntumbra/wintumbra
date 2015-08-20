@@ -23,12 +23,21 @@ namespace Antumbra.Glow.Controller
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private View.pollingAreaSetter pollingWindow;
         private Color color;
+        private Rectangle boundRange;
         public int id { get; private set; }
 
         public PollingAreaWindowController(int id)
         {
             AttachObserver(LoggerHelper.GetInstance());
             this.id = id;
+            int x = int.MaxValue, y = int.MaxValue, width = 0, height = int.MaxValue;
+            foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
+                x = x > screen.Bounds.X ? screen.Bounds.X : x;
+                y = y > screen.Bounds.Y ? screen.Bounds.Y : y;
+                width += screen.Bounds.Width;
+                height = height > screen.Bounds.Height ? screen.Bounds.Height : height;
+            }
+            boundRange = new Rectangle(x, y, width, height);
             color = UniqueColorGenerator.GetInstance().GetUniqueColor();
             pollingWindow = new View.pollingAreaSetter(this.color);
             pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
@@ -43,7 +52,14 @@ namespace Antumbra.Glow.Controller
 
         public void SetBounds(int x, int y, int width, int height)
         {
-            MoveWindow(pollingWindow.Handle, x, y, width, height, true);
+            if (boundRange.Contains(new Rectangle(x, y, width, height))) {
+                MoveWindow(pollingWindow.Handle, x, y, width, height, true);
+            }
+            else {
+                Log("Invalid SetBounds parameters passed.\tx: " + x + ", y: " + y +
+                    ", width: " + width + ", height: " + height);
+                MoveWindow(pollingWindow.Handle, 200, 200, 500, 500, true);
+            }
         }
 
         public void AttachObserver(GlowCommandObserver observer)
