@@ -171,8 +171,13 @@ namespace Antumbra.Glow.ExtensionFramework.Types
 
         public override void Dispose()
         {
-            grabber.Dispose();
-            processor.Dispose();
+            if (grabber != null) {
+                grabber.Dispose();
+            }
+
+            if (processor != null) {
+                processor.Dispose();
+            }
         }
     }
 }
