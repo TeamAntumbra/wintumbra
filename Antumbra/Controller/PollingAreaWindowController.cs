@@ -9,11 +9,14 @@ using Antumbra.Glow.Utility;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.Controller
 {
-    public class PollingAreaWindowController : GlowCommandSender
+    public class PollingAreaWindowController : GlowCommandSender, Loggable
     {
+        public delegate void NewLogMsg(string source, string msg);
+        public event NewLogMsg NewLogMsgEvent;
         public delegate void PollingAreaUpdated(int id, int x, int y, int width, int height);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
@@ -24,6 +27,7 @@ namespace Antumbra.Glow.Controller
 
         public PollingAreaWindowController(int id)
         {
+            AttachObserver(LoggerHelper.GetInstance());
             this.id = id;
             color = UniqueColorGenerator.GetInstance().GetUniqueColor();
             pollingWindow = new View.pollingAreaSetter(this.color);
@@ -57,6 +61,11 @@ namespace Antumbra.Glow.Controller
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
         }
 
+        public void AttachObserver(LogMsgObserver observer)
+        {
+            NewLogMsgEvent += observer.NewLogMsgAvail;
+        }
+
         private void SendCommand(GlowCommand cmd)
         {
             if (NewGlowCommandAvailEvent != null) {
@@ -68,10 +77,19 @@ namespace Antumbra.Glow.Controller
         {
             if (sender is System.Windows.Forms.Form) {
                 System.Windows.Forms.Form form = (System.Windows.Forms.Form)sender;
-                if (PollingAreaUpdatedEvent != null)
+                if (PollingAreaUpdatedEvent != null) {
+                    Log("Polling window " + id + " closed with bounds: " + form.Bounds);
                     PollingAreaUpdatedEvent(id, form.Location.X, form.Location.Y, form.Width, form.Height);
+                }
                 UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
                 form.Hide();
+            }
+        }
+
+        private void Log(string msg)
+        {
+            if (NewLogMsgEvent != null) {
+                NewLogMsgEvent("PollingAreaWindowController " + id, msg);
             }
         }
 
