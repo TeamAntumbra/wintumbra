@@ -104,13 +104,13 @@ namespace Antumbra.Glow.Controller
                 DeviceSettings settings = (DeviceSettings)config;
                 window.SetCaptureThrottleValue(settings.captureThrottle);
                 window.SetBrightnessValue(Convert.ToInt32(settings.maxBrightness * 100));
-                ResendManualColor(-1);//re-send to all devices
+                ResendManualColor(settings.id);
             }
         }
 
         public void ResendManualColor(int id)
         {
-            colorWheelColorChanged(window.colorWheel.HslColor, EventArgs.Empty);
+            NewGlowCmdAvailEvent(new SoftSendColorCommand(id, new Color16Bit(window.colorWheel.HslColor.ToRgbColor())));
         }
 
         private void throttleBarValueChanged(object sender, EventArgs args)
@@ -260,9 +260,8 @@ namespace Antumbra.Glow.Controller
 
         public void brightnessValueChanged(object sender, EventArgs args)
         {
-            if (sender is int[]) {
-                int[] values = (int[])sender;
-                double value = (double)values[0] / values[1];
+            if (sender is double) {
+                double value = (double)sender;
                 SettingsDelta Delta = new SettingsDelta();
                 Delta.changes[SettingValue.MAXBRIGHTNESS] = value;
                 for (int i = 0; i < connectionManager.GlowsFound; i += 1) {
