@@ -70,7 +70,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Instances[id].Stop();
             Instances[id].Dispose();
             Instances[id] = CreateInstance(id, mode);
-            Instances[id].Start();
         }
 
         /// <summary>
