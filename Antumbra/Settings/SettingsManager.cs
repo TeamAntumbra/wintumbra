@@ -17,9 +17,12 @@ namespace Antumbra.Glow.Settings
         public delegate void NewConfigUpdate(Configurable config);
         public event NewConfigUpdate NewConfigUpdateAvail;
         public int xValueOffset { get; private set; }
+        public int boundX { get; private set; }
+        public int boundY { get; private set; }
 
+        private int boundWidth;
+        private int boundHeight;
         private Dictionary<int, DeviceSettings> Settings;
-        private int boundX, boundY, boundWidth, boundHeight;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -84,27 +87,34 @@ namespace Antumbra.Glow.Settings
         /// <param name="deviceCount"></param>
         public void ConnectionUpdate(int deviceCount)
         {
-            SaveAll();
+            Save(-1);
             Settings.Clear();
             for (var i = 0; i < deviceCount; i += 1) {
-                Settings[i] = new DeviceSettings(i);
-                Load(i);
-                Settings[i].AttachObserver((ConfigurationObserver)this);
+                DeviceSettings DeviceSettings = new DeviceSettings(i);
+                DeviceSettings.Load();
+                DeviceSettings.AttachObserver((ConfigurationObserver)this);
                 if (NewConfigUpdateAvail != null) {
-                    NewConfigUpdateAvail(Settings[i]);
+                    NewConfigUpdateAvail(DeviceSettings);
                 }
+                Settings[i] = DeviceSettings;
             }
         }
 
 
         /// <summary>
-        /// Save all DeviceSettings objects
+        /// Save DeviceSettings objects
         /// </summary>
-        public void SaveAll()
+        /// <param name="id">id of device or -1 for all</param>
+        public void Save(int id)
         {
             Saver saver = Saver.GetInstance();
-            foreach (DeviceSettings settings in Settings.Values) {
-                saver.Save(DeviceSettings.FILE_NAME_PREFIX + settings.id, settings);
+            if (id == -1) {
+                foreach (DeviceSettings devSettings in Settings.Values) {
+                    devSettings.Save();
+                }
+            }
+            else {
+                Settings[id].Save();
             }
         }
 
@@ -135,19 +145,6 @@ namespace Antumbra.Glow.Settings
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgAvail += observer.NewLogMsgAvail;
-        }
-
-        /// <summary>
-        /// Load a DeviceSettings object
-        /// </summary>
-        /// <param name="id">The desired device ID</param>
-        private void Load(int id)
-        {
-            Saver saver = Saver.GetInstance();
-            DeviceSettings loaded = (DeviceSettings)saver.Load(DeviceSettings.FILE_NAME_PREFIX + id);
-            if (loaded != null) {
-                Settings[id] = loaded;
-            }
         }
 
         private void Log(string msg)
