@@ -65,6 +65,7 @@ namespace Antumbra.Glow.Controller
             settingsManager.AttachObserver((ConfigurationObserver)this);
             // Find devices
             connectionManager.UpdateDeviceConnections();
+            settingsManager.UpdateBoundingBox();
 
             AttachObserver((GlowCommandObserver)extensionManager);
 
@@ -162,14 +163,14 @@ namespace Antumbra.Glow.Controller
             cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
             cont.AttachObserver(this);
             DeviceSettings settings = settingsManager.getSettings(id);
-            cont.SetBounds(settings.x - settingsManager.xValueOffset, settings.y, settings.width, settings.height);
+            cont.SetBounds(settings.x, settings.y, settings.width, settings.height);
             cont.Show();
         }
 
         private void UpdatePollingSelection(int id, int x, int y, int width, int height)
         {
             SettingsDelta Delta = new SettingsDelta();
-            Delta.changes[SettingValue.X] = x + settingsManager.xValueOffset;
+            Delta.changes[SettingValue.X] = x;
             Delta.changes[SettingValue.Y] = y;
             Delta.changes[SettingValue.WIDTH] = width;
             Delta.changes[SettingValue.HEIGHT] = height;
@@ -177,8 +178,8 @@ namespace Antumbra.Glow.Controller
             settingsManager.UpdateBoundingBox();
             this.pollingIndex -= 1;
             if (this.pollingIndex == 0) {//time to reset btn text & restart
-                SendStartCommand(-1);
                 this.window.SetPollingBtnText("Set Capture Area");
+                SendStartCommand(-1);
             }
         }
 
