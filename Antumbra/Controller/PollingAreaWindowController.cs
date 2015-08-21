@@ -13,7 +13,7 @@ using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.Controller
 {
-    public class PollingAreaWindowController : GlowCommandSender, Loggable
+    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable
     {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -70,6 +70,13 @@ namespace Antumbra.Glow.Controller
         public void AttachObserver(LogMsgObserver observer)
         {
             NewLogMsgEvent += observer.NewLogMsgAvail;
+        }
+
+        public void Dispose()
+        {
+            if (pollingWindow != null && !pollingWindow.IsDisposed) {
+                pollingWindow.Dispose();
+            }
         }
 
         private void SendCommand(GlowCommand cmd)
