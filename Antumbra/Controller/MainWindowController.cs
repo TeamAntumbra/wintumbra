@@ -42,8 +42,10 @@ namespace Antumbra.Glow.Controller
         private ExtensionManager extensionManager;
         private PreOutputProcessor preOutputProcessor;
         private Color16Bit controlColor;
+        private List<IDisposable> disposables;
         public MainWindowController(string productVersion, EventHandler quitHandler)
         {
+            disposables = new List<IDisposable>();
             controlColor = new Color16Bit(new Utility.HslColor(0, 0, 0.5).ToRgbColor());
 
             AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
@@ -160,6 +162,7 @@ namespace Antumbra.Glow.Controller
             }
             int id = pollingIndex - 1;
             PollingAreaWindowController cont = new PollingAreaWindowController(id);
+            disposables.Add(cont);
             cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
             cont.AttachObserver(this);
             DeviceSettings settings = settingsManager.getSettings(id);
@@ -312,6 +315,9 @@ namespace Antumbra.Glow.Controller
 
         public void quitBtnClicked(object sender, EventArgs args)
         {
+            foreach (IDisposable disposable in disposables) {
+                disposable.Dispose();
+            }
             this.window.Close();
             NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all devices off
             connectionManager.Dispose();
