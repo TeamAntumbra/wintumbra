@@ -16,7 +16,6 @@ namespace Antumbra.Glow.Settings
         public event NewLogMsg NewLogMsgAvail;
         public delegate void NewConfigUpdate(Configurable config);
         public event NewConfigUpdate NewConfigUpdateAvail;
-        public int xValueOffset { get; private set; }
         public int boundX { get; private set; }
         public int boundY { get; private set; }
 
@@ -30,14 +29,6 @@ namespace Antumbra.Glow.Settings
         {
             AttachObserver(LoggerHelper.GetInstance());
             Settings = new Dictionary<int, DeviceSettings>();
-            Log("Found the following screen bounds:");
-            foreach (var Screen in System.Windows.Forms.Screen.AllScreens) {//TODO add support for offset displays
-                xValueOffset = Screen.Bounds.X < xValueOffset ? Screen.Bounds.X : xValueOffset;// i.e. multi-display setups where the
-                Log(Screen.Bounds.ToString());              // displays are not aligned perfectly (also when different resolutions)
-            }
-            // Make positive so it can be added to screen co-ords to make all positive
-            xValueOffset *= -1;
-            Log("X offset calculated to be: " + xValueOffset);
         }
 
         /// <summary>
