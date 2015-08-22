@@ -27,13 +27,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Antumbra.Glow.Observer.Bitmaps
-{
+namespace Antumbra.Glow.Observer.Bitmaps {
     /// <summary>
     /// Encapsulates a Bitmap for fast bitmap pixel operations using 32bpp images
     /// </summary>
-    public unsafe class FastBitmap : IDisposable
-    {
+    public unsafe class FastBitmap : IDisposable {
         /// <summary>
         /// Specifies the number of bytes available per pixel of the bitmap object being manipulated
         /// </summary>
@@ -57,7 +55,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <summary>
         /// The first pixel of the bitmap
         /// </summary>
-        private int *_scan0;
+        private int* _scan0;
 
         /// <summary>
         /// Whether the current bitmap is locked
@@ -104,13 +102,10 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// </summary>
         /// <exception cref="Exception">The locking operation required to extract the values off from the underlying bitmap failed</exception>
         /// <exception cref="InvalidOperationException">The bitmap is already locked outside this fast bitmap</exception>
-        public int[] DataArray
-        {
-            get
-            {
+        public int[] DataArray {
+            get {
                 bool unlockAfter = false;
-                if (!_locked)
-                {
+                if(!_locked) {
                     Lock();
                     unlockAfter = true;
                 }
@@ -122,8 +117,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
                 // Copy the RGB values into the array
                 Marshal.Copy(_bitmapData.Scan0, argbValues, 0, bytes / BytesPerPixel);
 
-                if (unlockAfter)
-                {
+                if(unlockAfter) {
                     Unlock();
                 }
 
@@ -137,10 +131,8 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// </summary>
         /// <param name="bitmap">The Bitmap object to encapsulate on this FastBitmap object</param>
         /// <exception cref="ArgumentException">The bitmap provided does not have a 32bpp pixel format</exception>
-        public FastBitmap(Bitmap bitmap)
-        {
-            if (Image.GetPixelFormatSize(bitmap.PixelFormat) != 32)
-            {
+        public FastBitmap(Bitmap bitmap) {
+            if(Image.GetPixelFormatSize(bitmap.PixelFormat) != 32) {
                 throw new ArgumentException("The provided bitmap must have a 32bpp depth", "bitmap");
             }
 
@@ -154,10 +146,8 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// Disposes of this fast bitmap object and releases any pending resources.
         /// The underlying bitmap is not disposes, and is unlocked, if currently locked
         /// </summary>
-        public void Dispose()
-        {
-            if (_locked)
-            {
+        public void Dispose() {
+            if(_locked) {
                 Unlock();
             }
             this._bitmap.Dispose();
@@ -171,10 +161,8 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <exception cref="InvalidOperationException">The bitmap is already locked</exception>
         /// <exception cref="System.Exception">The locking operation in the underlying bitmap failed</exception>
         /// <exception cref="InvalidOperationException">The bitmap is already locked outside this fast bitmap</exception>
-        public FastBitmapLocker Lock()
-        {
-            if (_locked)
-            {
+        public FastBitmapLocker Lock() {
+            if(_locked) {
                 throw new InvalidOperationException("Unlock must be called before a Lock operation");
             }
 
@@ -188,8 +176,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <returns>A fast bitmap locked struct that will unlock the underlying bitmap after disposal</returns>
         /// <exception cref="System.Exception">The locking operation in the underlying bitmap failed</exception>
         /// <exception cref="InvalidOperationException">The bitmap is already locked outside this fast bitmap</exception>
-        private FastBitmapLocker Lock(ImageLockMode lockMode)
-        {
+        private FastBitmapLocker Lock(ImageLockMode lockMode) {
             Rectangle rect = new Rectangle(0, 0, _bitmap.Width, _bitmap.Height);
 
             return Lock(lockMode, rect);
@@ -204,8 +191,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <exception cref="System.ArgumentException">The provided region is invalid</exception>
         /// <exception cref="System.Exception">The locking operation in the underlying bitmap failed</exception>
         /// <exception cref="InvalidOperationException">The bitmap region is already locked</exception>
-        private FastBitmapLocker Lock(ImageLockMode lockMode, Rectangle rect)
-        {
+        private FastBitmapLocker Lock(ImageLockMode lockMode, Rectangle rect) {
             // Lock the bitmap's bits
             _bitmapData = _bitmap.LockBits(rect, lockMode, _bitmap.PixelFormat);
 
@@ -223,10 +209,8 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// </summary>
         /// <exception cref="InvalidOperationException">The bitmap is already unlocked</exception>
         /// <exception cref="System.Exception">The unlocking operation in the underlying bitmap failed</exception>
-        public void Unlock()
-        {
-            if (!_locked)
-            {
+        public void Unlock() {
+            if(!_locked) {
                 throw new InvalidOperationException("Lock must be called before an Unlock operation");
             }
 
@@ -244,8 +228,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="color">The new color of the pixel to set</param>
         /// <exception cref="InvalidOperationException">The fast bitmap is not locked</exception>
         /// <exception cref="ArgumentOutOfRangeException">The provided coordinates are out of bounds of the bitmap</exception>
-        public void SetPixel(int x, int y, Color color)
-        {
+        public void SetPixel(int x, int y, Color color) {
             SetPixel(x, y, color.ToArgb());
         }
 
@@ -258,8 +241,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="color">The new color of the pixel to set</param>
         /// <exception cref="InvalidOperationException">The fast bitmap is not locked</exception>
         /// <exception cref="ArgumentOutOfRangeException">The provided coordinates are out of bounds of the bitmap</exception>
-        public void SetPixel(int x, int y, int color)
-        {
+        public void SetPixel(int x, int y, int color) {
             SetPixel(x, y, (uint)color);
         }
 
@@ -272,19 +254,15 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="color">The new color of the pixel to set</param>
         /// <exception cref="InvalidOperationException">The fast bitmap is not locked</exception>
         /// <exception cref="ArgumentOutOfRangeException">The provided coordinates are out of bounds of the bitmap</exception>
-        public void SetPixel(int x, int y, uint color)
-        {
-            if (!_locked)
-            {
+        public void SetPixel(int x, int y, uint color) {
+            if(!_locked) {
                 throw new InvalidOperationException("The FastBitmap must be locked before any pixel operations are made");
             }
 
-            if (x < 0 || x >= _width)
-            {
+            if(x < 0 || x >= _width) {
                 throw new ArgumentOutOfRangeException("The X component must be >= 0 and < width");
             }
-            if (y < 0 || y >= _height)
-            {
+            if(y < 0 || y >= _height) {
                 throw new ArgumentOutOfRangeException("The Y component must be >= 0 and < height");
             }
 
@@ -299,8 +277,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="y">The Y coordinate of the pixel to get</param>
         /// <exception cref="InvalidOperationException">The fast bitmap is not locked</exception>
         /// <exception cref="ArgumentOutOfRangeException">The provided coordinates are out of bounds of the bitmap</exception>
-        public Color GetPixel(int x, int y)
-        {
+        public Color GetPixel(int x, int y) {
             return Color.FromArgb(GetPixelInt(x, y));
         }
 
@@ -312,19 +289,15 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="y">The Y coordinate of the pixel to get</param>
         /// <exception cref="InvalidOperationException">The fast bitmap is not locked</exception>
         /// <exception cref="ArgumentOutOfRangeException">The provided coordinates are out of bounds of the bitmap</exception>
-        public int GetPixelInt(int x, int y)
-        {
-            if (!_locked)
-            {
+        public int GetPixelInt(int x, int y) {
+            if(!_locked) {
                 throw new InvalidOperationException("The FastBitmap must be locked before any pixel operations are made");
             }
 
-            if (x < 0 || x >= _width)
-            {
+            if(x < 0 || x >= _width) {
                 throw new ArgumentOutOfRangeException("The X component must be >= 0 and < width");
             }
-            if (y < 0 || y >= _height)
-            {
+            if(y < 0 || y >= _height) {
                 throw new ArgumentOutOfRangeException("The Y component must be >= 0 and < height");
             }
 
@@ -339,19 +312,15 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="y">The Y coordinate of the pixel to get</param>
         /// <exception cref="InvalidOperationException">The fast bitmap is not locked</exception>
         /// <exception cref="ArgumentOutOfRangeException">The provided coordinates are out of bounds of the bitmap</exception>
-        public uint GetPixelUInt(int x, int y)
-        {
-            if (!_locked)
-            {
+        public uint GetPixelUInt(int x, int y) {
+            if(!_locked) {
                 throw new InvalidOperationException("The FastBitmap must be locked before any pixel operations are made");
             }
 
-            if (x < 0 || x >= _width)
-            {
+            if(x < 0 || x >= _width) {
                 throw new ArgumentOutOfRangeException("The X component must be >= 0 and < width");
             }
-            if (y < 0 || y >= _height)
-            {
+            if(y < 0 || y >= _height) {
                 throw new ArgumentOutOfRangeException("The Y component must be >= 0 and < height");
             }
 
@@ -364,33 +333,28 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// </summary>
         /// <param name="colors">The array of colors to copy</param>
         /// <param name="ignoreZeroes">Whether to ignore zeroes when copying the data</param>
-        public void CopyFromArray(int[] colors, bool ignoreZeroes = false)
-        {
-            if (colors.Length != _width * _height)
-            {
+        public void CopyFromArray(int[] colors, bool ignoreZeroes = false) {
+            if(colors.Length != _width * _height) {
                 throw new ArgumentException("The number of colors of the given array mismatch the pixel count of the bitmap", "colors");
             }
 
             // Simply copy the argb values array
             int* s0t = _scan0;
 
-            fixed (int* source = colors)
-            {
+            fixed(int* source = colors) {
                 int* s0s = source;
                 int bpp = 1; // Bytes per pixel
 
                 int count = _width * _height * bpp;
 
-                if (!ignoreZeroes)
-                {
+                if(!ignoreZeroes) {
                     // Unfold the loop
                     const int sizeBlock = 8;
                     int rem = count % sizeBlock;
 
                     count /= sizeBlock;
 
-                    while (count-- > 0)
-                    {
+                    while(count-- > 0) {
                         *(s0t++) = *(s0s++);
                         *(s0t++) = *(s0s++);
                         *(s0t++) = *(s0s++);
@@ -402,16 +366,12 @@ namespace Antumbra.Glow.Observer.Bitmaps
                         *(s0t++) = *(s0s++);
                     }
 
-                    while (rem-- > 0)
-                    {
+                    while(rem-- > 0) {
                         *(s0t++) = *(s0s++);
                     }
-                }
-                else
-                {
-                    while (count-- > 0)
-                    {
-                        if (*(s0s) == 0) { s0t++; s0s++; continue; }
+                } else {
+                    while(count-- > 0) {
+                        if(*(s0s) == 0) { s0t++; s0s++; continue; }
                         *(s0t++) = *(s0s++);
                     }
                 }
@@ -422,8 +382,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// Clears the bitmap with the given color
         /// </summary>
         /// <param name="color">The color to clear the bitmap with</param>
-        public void Clear(Color color)
-        {
+        public void Clear(Color color) {
             Clear(color.ToArgb());
         }
 
@@ -431,11 +390,9 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// Clears the bitmap with the given color
         /// </summary>
         /// <param name="color">The color to clear the bitmap with</param>
-        public void Clear(int color)
-        {
+        public void Clear(int color) {
             bool unlockAfter = false;
-            if(!_locked)
-            {
+            if(!_locked) {
                 Lock();
                 unlockAfter = true;
             }
@@ -451,8 +408,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
             int rem = count % assignsPerLoop;
             count /= assignsPerLoop;
 
-            while (count-- > 0)
-            {
+            while(count-- > 0) {
                 *(curScan++) = color;
                 *(curScan++) = color;
                 *(curScan++) = color;
@@ -463,13 +419,11 @@ namespace Antumbra.Glow.Observer.Bitmaps
                 *(curScan++) = color;
                 *(curScan++) = color;
             }
-            while (rem-- > 0)
-            {
+            while(rem-- > 0) {
                 *(curScan++) = color;
             }
 
-            if (unlockAfter)
-            {
+            if(unlockAfter) {
                 Unlock();
             }
         }
@@ -481,13 +435,12 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <returns>Region as a FastBitmap</returns>
         /// <exception cref="NullReferenceException">Occurs if this object is locked but the internal BitmapData is null</exception>
         /// <exception cref="AccessViolationException">Occurs if the region exceeds this FastBitmaps bounds</exception>
-        public FastBitmap GetRegion(Rectangle region)
-        {
+        public FastBitmap GetRegion(Rectangle region) {
             Bitmap cropped = new Bitmap(region.Width, region.Height, _bitmap.PixelFormat);
             var croppedData = cropped.LockBits(new Rectangle(0, 0, region.Width, region.Height),
                                                ImageLockMode.WriteOnly, _bitmap.PixelFormat);
             bool unlock = false;
-            if (!_locked) {
+            if(!_locked) {
                 Lock();
                 unlock = true;
             }
@@ -496,7 +449,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
             int* croppedPointer = (int*)croppedData.Scan0.ToPointer();
             memcpy(croppedPointer, _scan0, (ulong)(Math.Abs(croppedData.Stride) * region.Height));
 
-            if (unlock) {
+            if(unlock) {
                 Unlock();
             }
             return new FastBitmap(cropped);
@@ -509,11 +462,9 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="srcRect">The region on the source bitmap that will be copied over</param>
         /// <param name="destRect">The region on this fast bitmap that will be changed</param>
         /// <exception cref="ArgumentException">The provided source bitmap is the same bitmap locked in this FastBitmap</exception>
-        public void CopyRegion(Bitmap source, Rectangle srcRect, Rectangle destRect)
-        {
+        public void CopyRegion(Bitmap source, Rectangle srcRect, Rectangle destRect) {
             // Throw exception when trying to copy same bitmap over
-            if (source == _bitmap)
-            {
+            if(source == _bitmap) {
                 throw new ArgumentException("Copying regions across the same bitmap is not supported", "source");
             }
 
@@ -521,7 +472,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
             Rectangle destBitmapRect = new Rectangle(0, 0, _width, _height);
 
             // Check if the rectangle configuration doesn't generate invalid states or does not affect the target image
-            if (srcRect.Width <= 0 || srcRect.Height <= 0 || destRect.Width <= 0 || destRect.Height <= 0 ||
+            if(srcRect.Width <= 0 || srcRect.Height <= 0 || destRect.Width <= 0 || destRect.Height <= 0 ||
                 !srcBitmapRect.IntersectsWith(srcRect) || !destRect.IntersectsWith(destBitmapRect))
                 return;
 
@@ -541,7 +492,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
             int copyWidth = Math.Min(srcBitmapRect.Width, destBitmapRect.Width);
             int copyHeight = Math.Min(srcBitmapRect.Height, destBitmapRect.Height);
 
-            if (copyWidth == 0 || copyHeight == 0)
+            if(copyWidth == 0 || copyHeight == 0)
                 return;
 
             int srcStartX = srcBitmapRect.Left;
@@ -550,12 +501,10 @@ namespace Antumbra.Glow.Observer.Bitmaps
             int destStartX = destBitmapRect.Left;
             int destStartY = destBitmapRect.Top;
 
-            using (FastBitmap fastSource = source.FastLock())
-            {
+            using(FastBitmap fastSource = source.FastLock()) {
                 ulong strideWidth = (ulong)copyWidth * BytesPerPixel;
 
-                for (int y = 0; y < copyHeight; y++)
-                {
+                for(int y = 0; y < copyHeight; y++) {
                     int destX = destStartX;
                     int destY = destStartY + y;
 
@@ -577,14 +526,12 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="source">The bitmap to copy the pixels from</param>
         /// <param name="target">The bitmap to copy the pixels to</param>
         /// <returns>Whether the copy proceedure was successful</returns>
-        public static bool CopyPixels(Bitmap source, Bitmap target)
-        {
-            if (source.Width != target.Width || source.Height != target.Height || source.PixelFormat != target.PixelFormat)
+        public static bool CopyPixels(Bitmap source, Bitmap target) {
+            if(source.Width != target.Width || source.Height != target.Height || source.PixelFormat != target.PixelFormat)
                 return false;
 
-            using (FastBitmap fastSource = source.FastLock(),
-                              fastTarget = target.FastLock())
-            {
+            using(FastBitmap fastSource = source.FastLock(),
+                              fastTarget = target.FastLock()) {
                 memcpy(fastTarget.Scan0, fastSource.Scan0, (ulong)(fastSource.Height * fastSource._strideWidth * BytesPerPixel));
             }
 
@@ -596,8 +543,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// </summary>
         /// <param name="bitmap">The bitmap to clear</param>
         /// <param name="color">The color to clear the bitmap with</param>
-        public static void ClearBitmap(Bitmap bitmap, Color color)
-        {
+        public static void ClearBitmap(Bitmap bitmap, Color color) {
             ClearBitmap(bitmap, color.ToArgb());
         }
 
@@ -606,10 +552,8 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// </summary>
         /// <param name="bitmap">The bitmap to clear</param>
         /// <param name="color">The color to clear the bitmap with</param>
-        public static void ClearBitmap(Bitmap bitmap, int color)
-        {
-            using (var fb = bitmap.FastLock())
-            {
+        public static void ClearBitmap(Bitmap bitmap, int color) {
+            using(var fb = bitmap.FastLock()) {
                 fb.Clear(color);
             }
         }
@@ -622,12 +566,10 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <param name="srcRect">The region on the source bitmap that will be copied over</param>
         /// <param name="destRect">The region on the target bitmap that will be changed</param>
         /// <exception cref="ArgumentException">The provided source and target bitmaps are the same bitmap</exception>
-        public static void CopyRegion(Bitmap source, Bitmap target, Rectangle srcRect, Rectangle destRect)
-        {
+        public static void CopyRegion(Bitmap source, Bitmap target, Rectangle srcRect, Rectangle destRect) {
             FastBitmap fastTarget = new FastBitmap(target);
 
-            using (fastTarget.Lock())
-            {
+            using(fastTarget.Lock()) {
                 fastTarget.CopyRegion(source, srcRect, destRect);
             }
         }
@@ -643,8 +585,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
         /// <summary>
         /// Represents a disposable structure that is returned during Lock() calls, and unlocks the bitmap on Dispose calls
         /// </summary>
-        public struct FastBitmapLocker : IDisposable
-        {
+        public struct FastBitmapLocker : IDisposable {
             /// <summary>
             /// The fast bitmap instance attached to this locker
             /// </summary>
@@ -653,8 +594,7 @@ namespace Antumbra.Glow.Observer.Bitmaps
             /// <summary>
             /// Gets the fast bitmap instance attached to this locker
             /// </summary>
-            public FastBitmap FastBitmap
-            {
+            public FastBitmap FastBitmap {
                 get { return _fastBitmap; }
             }
 
@@ -663,16 +603,14 @@ namespace Antumbra.Glow.Observer.Bitmaps
             /// The fast bitmap object passed will be unlocked after calling Dispose() on this struct
             /// </summary>
             /// <param name="fastBitmap">A fast bitmap to attach to this locker which will be released after a call to Dispose</param>
-            public FastBitmapLocker(FastBitmap fastBitmap)
-            {
+            public FastBitmapLocker(FastBitmap fastBitmap) {
                 _fastBitmap = fastBitmap;
             }
 
             /// <summary>
             /// Disposes of this FastBitmapLocker, essentially unlocking the underlying fast bitmap
             /// </summary>
-            public void Dispose()
-            {
+            public void Dispose() {
                 if(_fastBitmap._locked)
                     _fastBitmap.Unlock();
             }
@@ -682,15 +620,13 @@ namespace Antumbra.Glow.Observer.Bitmaps
     /// <summary>
     /// Static class that contains fast bitmap extension methods for the Bitmap class
     /// </summary>
-    public static class FastBitmapExtensions
-    {
+    public static class FastBitmapExtensions {
         /// <summary>
         /// Locks this bitmap into memory and returns a FastBitmap that can be used to manipulate its pixels
         /// </summary>
         /// <param name="bitmap">The bitmap to lock</param>
         /// <returns>A locked FastBitmap</returns>
-        public static FastBitmap FastLock(this Bitmap bitmap)
-        {
+        public static FastBitmap FastLock(this Bitmap bitmap) {
             FastBitmap fast = new FastBitmap(bitmap);
             fast.Lock();
 

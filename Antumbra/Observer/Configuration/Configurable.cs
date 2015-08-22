@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Configuration
-{
-    public interface Configurable
-    {
+namespace Antumbra.Glow.Observer.Configuration {
+    public interface Configurable {
         void AttachObserver(ConfigurationObserver observer);
     }
 }

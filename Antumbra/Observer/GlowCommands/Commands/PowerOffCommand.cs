@@ -5,18 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework.Management;
 
-namespace Antumbra.Glow.Observer.GlowCommands.Commands
-{
-    public class PowerOffCommand : GlowCommand
-    {
+namespace Antumbra.Glow.Observer.GlowCommands.Commands {
+    public class PowerOffCommand : GlowCommand {
         public PowerOffCommand(int id)
-            : base(id)
-        {
+            : base(id) {
 
         }
 
-        public override void ExecuteCommand(ExtensionManager mgr)
-        {
+        public override void ExecuteCommand(ExtensionManager mgr) {
             mgr.Off(id);
         }
     }

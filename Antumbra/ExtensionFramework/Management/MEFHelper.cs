@@ -9,10 +9,8 @@ using System.Drawing;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Logging;
 
-namespace Antumbra.Glow.ExtensionFramework.Management
-{
-    public class MEFHelper : Loggable
-    {
+namespace Antumbra.Glow.ExtensionFramework.Management {
+    public class MEFHelper : Loggable {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgAvail;
 
@@ -30,16 +28,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         [ImportMany]
         private List<GlowExtension> FullList;
 
-        public MEFHelper()
-        {
+        public MEFHelper() {
             AttachObserver(LoggerHelper.GetInstance());
         }
 
-        public Dictionary<Type, List<GlowExtension>> LoadExtensions()
-        {
+        public Dictionary<Type, List<GlowExtension>> LoadExtensions() {
             Log("Extension Refresh triggered.");
             Dictionary<Type, List<GlowExtension>> ExtensionBank = new Dictionary<Type, List<GlowExtension>>();
-            foreach (Type extType in Types) {
+            foreach(Type extType in Types) {
                 ExtensionBank[extType] = new List<GlowExtension>();
             }
             //add coupler placeholder TODO investigate if needed
@@ -50,13 +46,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             container.ComposeParts(this);
             container.Dispose();
 
-            if (null == FullList) {
+            if(null == FullList) {
                 throw new Exception("Loading extensions failed.  extensions == null");//no plugins loaded
             }
 
             Log("Extension Refresh complete.\nThe Following GlowExtensions were found:\n");
 
-            foreach (GlowExtension extension in FullList) {
+            foreach(GlowExtension extension in FullList) {
                 Type type = extension.GetExtensionType();
                 Log(type + extension.ToString());
                 ExtensionBank[type].Add(extension);
@@ -66,14 +62,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             return ExtensionBank;
         }
 
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvail += observer.NewLogMsgAvail;
         }
 
-        private void Log(string msg)
-        {
-            if (NewLogMsgAvail != null) {
+        private void Log(string msg) {
+            if(NewLogMsgAvail != null) {
                 NewLogMsgAvail("MEFHelper", msg);
             }
         }

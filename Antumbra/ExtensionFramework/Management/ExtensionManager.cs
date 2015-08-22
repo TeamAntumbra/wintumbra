@@ -7,16 +7,14 @@ using Antumbra.Glow.Settings;
 using System;
 using System.Collections.Generic;
 
-namespace Antumbra.Glow.ExtensionFramework.Management
-{
+namespace Antumbra.Glow.ExtensionFramework.Management {
     /// <summary>
     /// Manages the Extensions for use with a Glow device
     /// </summary>
     public class ExtensionManager : AntumbraColorObserver, AntumbraColorSource, LogMsgObserver, Loggable,
                                     GlowCommandObserver, ConnectionEventObserver, ConfigurationObserver//TODO add observer for notifiers
     {
-        public enum MODE
-        {
+        public enum MODE {
             EMPTY = -1,
             HSV = 0,
             SIN = 1,
@@ -40,8 +38,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>
-        public ExtensionManager()
-        {
+        public ExtensionManager() {
             Lib = new ExtensionLibrary();
             Lib.Update();
             PresetBuilder = new Management.PresetBuilder(Lib);
@@ -52,21 +49,18 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Route the ConfigurationUpdate to the correct ExtensionInstance
         /// </summary>
         /// <param name="config"></param>
-        public void ConfigurationUpdate(Configurable config)
-        {
-            if (config is DeviceSettings) {
+        public void ConfigurationUpdate(Configurable config) {
+            if(config is DeviceSettings) {
                 DeviceSettings settings = (DeviceSettings)config;
                 try {
                     Instances[settings.id].ConfigurationUpdate(config);
-                }
-                catch (KeyNotFoundException) {
+                } catch(KeyNotFoundException) {
                     //
                 }
             }
         }
 
-        public void SetInstance(int id, MODE mode)
-        {
+        public void SetInstance(int id, MODE mode) {
             Instances[id].Stop();
             Instances[id].Dispose();
             Instances[id] = CreateInstance(id, mode);
@@ -75,9 +69,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <summary>
         /// Save all ExtensionInstances
         /// </summary>
-        public void SaveAllInstances()
-        {
-            for (int i = 0; i < Instances.Count; i += 1) {
+        public void SaveAllInstances() {
+            for(int i = 0; i < Instances.Count; i += 1) {
                 Instances[i].Save();
             }
         }
@@ -85,9 +78,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <summary>
         /// Load all ExtensionInstances
         /// </summary>
-        public void LoadAllInstances()
-        {
-            for (int i = 0; i < Instances.Count; i += 1) {
+        public void LoadAllInstances() {
+            for(int i = 0; i < Instances.Count; i += 1) {
                 Instances[i].Load();
             }
         }
@@ -96,12 +88,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Save a certain ExtensionInstance
         /// </summary>
         /// <param name="id"></param>
-        public void SaveInstance(int id)
-        {
+        public void SaveInstance(int id) {
             try {
                 Instances[id].Save();
-            }
-            catch(IndexOutOfRangeException) {
+            } catch(IndexOutOfRangeException) {
                 Log("Saving instance (id: " + id + ") failed. Index out of range.");
             }
         }
@@ -112,8 +102,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="id"></param>
         /// <param name="preset"></param>
         /// <returns></returns>
-        public ExtensionInstance CreateInstance(int id, MODE preset)
-        {
+        public ExtensionInstance CreateInstance(int id, MODE preset) {
             ActiveExtensions actives;
             switch(preset) {
                 case MODE.HSV:
@@ -149,10 +138,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Handle a ConnectionUpdate event
         /// </summary>
         /// <param name="devCount"></param>
-        public void ConnectionUpdate(int devCount)
-        {
+        public void ConnectionUpdate(int devCount) {
             // Different than the current number of instances
-            if (devCount != Instances.Count) {
+            if(devCount != Instances.Count) {
                 // Save and dispose each of the current instances
                 foreach(ExtensionInstance instance in Instances.Values) {
                     instance.Save();
@@ -160,16 +148,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management
                 }
                 Instances.Clear();
                 //Create, Load & Init new ExtensionInstances
-                for (int id = 0; id < devCount; id += 1) {
+                for(int id = 0; id < devCount; id += 1) {
                     ExtensionInstance instance = CreateInstance(id, MODE.EMPTY);
                     try {
                         instance.Load();
                         instance.InitActives(Lib);
-                    }
-                    catch (System.IO.FileNotFoundException) {
+                    } catch(System.IO.FileNotFoundException) {
                         Log("ExtensionInstance (id: " + id + ") loading failed (FileNotFound). Using EMPTY preset.");
-                    }
-                    finally {
+                    } finally {
                         Instances[id] = instance;
                     }
                 }
@@ -182,13 +168,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <param name="newColor"></param>
         /// <param name="id"></param>
         /// <param name="index"></param>
-        public void NewColorAvail(Color16Bit newColor, int id, long index)
-        {
-            if (NewColorAvailEvent != null) {
+        public void NewColorAvail(Color16Bit newColor, int id, long index) {
+            if(NewColorAvailEvent != null) {
                 try {
                     NewColorAvailEvent(newColor, id, index);
-                }
-                catch (ArgumentException ex) {
+                } catch(ArgumentException ex) {
                     Log(ex.Message + '\n' + ex.StackTrace);
                 }
             }
@@ -197,8 +181,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// <summary>
         /// Reset the ExtensionInstance objects
         /// </summary>
-        public void Reset()
-        {
+        public void Reset() {
             // dispose and create stock ones
         }
 
@@ -206,8 +189,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Attach a color observer
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(AntumbraColorObserver observer)
-        {
+        public void AttachObserver(AntumbraColorObserver observer) {
             NewColorAvailEvent += observer.NewColorAvail;
         }
 
@@ -215,8 +197,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Attach a LogMsgObserver
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
@@ -225,9 +206,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// </summary>
         /// <param name="source"></param>
         /// <param name="msg"></param>
-        public void NewLogMsgAvail(String source, String msg)
-        {
-            if (NewLogMsgAvailEvent != null)
+        public void NewLogMsgAvail(String source, String msg) {
+            if(NewLogMsgAvailEvent != null)
                 NewLogMsgAvailEvent(source, msg);
         }
 
@@ -235,8 +215,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Handle a NewGlowCommandAvail event
         /// </summary>
         /// <param name="command"></param>
-        public void NewGlowCommandAvail(GlowCommand command)
-        {
+        public void NewGlowCommandAvail(GlowCommand command) {
             command.ExecuteCommand(this);
         }
 
@@ -244,11 +223,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Turn off the specified device, -1 for all
         /// </summary>
         /// <param name="id"></param>
-        public void Off(int id)
-        {
-            if (id == -1) {
+        public void Off(int id) {
+            if(id == -1) {
                 // Stop & send black NewColorAvail call for each instance
-                for (var i = 0; i < Instances.Count; i += 1) {
+                for(var i = 0; i < Instances.Count; i += 1) {
                     Off(i);
                 }
                 return;
@@ -257,10 +235,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             StopAndSendColor(new Color16Bit(), id);
         }
 
-        public void StopAndSendColor(Color16Bit newColor, int id)
-        {
-            if (id == -1) {
-                for (int i = 0; i < Instances.Count; i += 1) {
+        public void StopAndSendColor(Color16Bit newColor, int id) {
+            if(id == -1) {
+                for(int i = 0; i < Instances.Count; i += 1) {
                     StopAndSendColor(newColor, i);
                 }
                 return;
@@ -273,27 +250,25 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             }
         }
 
-        public void SoftSendColor(Color16Bit newColor, int id)
-        {
-            if (id == -1) {
-                for (int i = 0; i < Instances.Count; i += 1) {
+        public void SoftSendColor(Color16Bit newColor, int id) {
+            if(id == -1) {
+                for(int i = 0; i < Instances.Count; i += 1) {
                     SoftSendColor(newColor, id);
                 }
                 return;
             }
 
             ExtensionInstance Instance = Instances[id];
-            if (!Instance.running) {
-                if (NewColorAvailEvent != null) {
+            if(!Instance.running) {
+                if(NewColorAvailEvent != null) {
                     NewColorAvailEvent(newColor, id, Instance.prevIndex);
                 }
             }
         }
 
-        public void Start(int id)
-        {
-            if (id == -1) {
-                for (var i = 0; i < Instances.Count; i += 1) {
+        public void Start(int id) {
+            if(id == -1) {
+                for(var i = 0; i < Instances.Count; i += 1) {
                     Start(i);
                 }
                 return;
@@ -302,10 +277,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Instances[id].Start();
         }
 
-        public void Stop(int id)
-        {
-            if (id == -1) {
-                for (var i = 0; i < Instances.Count; i += 1) {
+        public void Stop(int id) {
+            if(id == -1) {
+                for(var i = 0; i < Instances.Count; i += 1) {
                     Stop(i);
                 }
                 return;
@@ -318,9 +292,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         /// Log an ExtensionManager related message
         /// </summary>
         /// <param name="msg"></param>
-        private void Log(String msg)
-        {
-            if (NewLogMsgAvailEvent != null) {
+        private void Log(String msg) {
+            if(NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent("ExtensionManager", msg);
             }
         }

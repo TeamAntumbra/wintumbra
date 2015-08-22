@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Extensions
-{
-    public interface GlowExtCollection
-    {
+namespace Antumbra.Glow.Observer.Extensions {
+    public interface GlowExtCollection {
         void AttachObserver(GlowExtCollectionObserver observer);
     }
 }

@@ -4,16 +4,14 @@ using Antumbra.Glow.Observer.Saving;
 using System;
 using System.Runtime.Serialization;
 
-namespace Antumbra.Glow.Settings
-{
+namespace Antumbra.Glow.Settings {
     /// <summary>
     /// Holds a Glow device's settings
     /// Note: This class is Savable despite it not implementing the Savable interface
     ///       The caveat here is that it cannot save itself
     /// </summary>
     [Serializable()]
-    public class DeviceSettings : Configurable, Loggable, ISerializable, Savable
-    {
+    public class DeviceSettings : Configurable, Loggable, ISerializable, Savable {
         public const String FILE_NAME_PREFIX = "Dev_Settings_";
 
         public delegate void ConfigurationChange(Configurable settings);
@@ -44,16 +42,14 @@ namespace Antumbra.Glow.Settings
         /// Constructor
         /// </summary>
         /// <param name="id">Device id</param>
-        public DeviceSettings(int id)
-        {
+        public DeviceSettings(int id) {
             this.id = id;
             AttachObserver(LoggerHelper.GetInstance());
             fileName = FILE_NAME_PREFIX + id;
             Reset();
         }
 
-        public void Reset()
-        {
+        public void Reset() {
             x = 0;
             y = 0;
             width = 800;
@@ -73,15 +69,13 @@ namespace Antumbra.Glow.Settings
             Notify();
         }
 
-        public void Save()
-        {
+        public void Save() {
             Saver.GetInstance().Save(FILE_NAME_PREFIX + id, this);
         }
 
-        public void Load()
-        {
+        public void Load() {
             DeviceSettings loaded = (DeviceSettings)Saver.GetInstance().Load(DeviceSettings.FILE_NAME_PREFIX + id);
-            if (loaded != null) {
+            if(loaded != null) {
                 id = loaded.id;
                 x = loaded.x;
                 y = loaded.y;
@@ -106,8 +100,7 @@ namespace Antumbra.Glow.Settings
         /// Attach a LogMsgObserver to this object
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
@@ -115,26 +108,23 @@ namespace Antumbra.Glow.Settings
         /// Attach a ConfigurationObserver to this objectS
         /// </summary>
         /// <param name="o"></param>
-        public void AttachObserver(ConfigurationObserver o)
-        {
+        public void AttachObserver(ConfigurationObserver o) {
             ConfigChangeEvent += o.ConfigurationUpdate;
         }
 
         /// <summary>
         /// Notify any ConfigurationObservers of the current config
         /// </summary>
-        public void Notify()
-        {
-            if (ConfigChangeEvent != null) {
+        public void Notify() {
+            if(ConfigChangeEvent != null) {
                 ConfigChangeEvent(this);
             }
         }
 
-        public void ApplyChanges(SettingsDelta delta)
-        {
+        public void ApplyChanges(SettingsDelta delta) {
             Log(delta.changes.Count + " settings updated.\t" + delta.ToString());
-            foreach (SettingValue variable in delta.changes.Keys) {
-                switch (variable) {
+            foreach(SettingValue variable in delta.changes.Keys) {
+                switch(variable) {
                     case SettingValue.BLUEBIAS:
                         blueBias = (Int16)delta.changes[SettingValue.BLUEBIAS];
                         break;
@@ -197,8 +187,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         /// <param name="info"></param>
         /// <param name="cnxt"></param>
-        public DeviceSettings(SerializationInfo info, StreamingContext cnxt)
-        {
+        public DeviceSettings(SerializationInfo info, StreamingContext cnxt) {
             redBias = info.GetInt16("redBias");
             greenBias = info.GetInt16("greenBias");
             blueBias = info.GetInt16("blueBias");
@@ -222,8 +211,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         /// <param name="info"></param>
         /// <param name="cnxt"></param>
-        public void GetObjectData(SerializationInfo info, StreamingContext cnxt)
-        {
+        public void GetObjectData(SerializationInfo info, StreamingContext cnxt) {
             info.AddValue("redBias", redBias);
             info.AddValue("greenBias", greenBias);
             info.AddValue("blueBias", blueBias);
@@ -246,9 +234,8 @@ namespace Antumbra.Glow.Settings
         /// Log a message
         /// </summary>
         /// <param name="msg"></param>
-        private void Log(String msg)
-        {
-            if (this.NewLogMsgAvailEvent != null) {
+        private void Log(String msg) {
+            if(this.NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent("DeviceSettings id#" + this.id, msg);
             }
         }

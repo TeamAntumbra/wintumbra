@@ -7,19 +7,16 @@ using System.Threading;
 using Antumbra.Glow.Controller;
 using Antumbra.Glow.Observer.Logging;
 
-namespace Antumbra.Glow
-{
-    static class Program
-    {
+namespace Antumbra.Glow {
+    static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             LoggerHelper.Logger logger = LoggerHelper.GetInstance();
             logger.NewLogMsgAvail("Program Class", "Starting...");
-            if (Environment.OSVersion.Version.Major >= 6)
+            if(Environment.OSVersion.Version.Major >= 6)
                 SetProcessDPIAware();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -28,9 +25,8 @@ namespace Antumbra.Glow
             try {
                 logger.NewLogMsgAvail("Program Class", "Starting run...");
                 Application.Run();//start independent of form
-            }
-            finally {
-                if (controller != null) {
+            } finally {
+                if(controller != null) {
                     controller.Dispose();
                 }
             }

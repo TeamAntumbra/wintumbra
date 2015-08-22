@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.GlowCommands
-{
-    public interface GlowCommandSender
-    {
+namespace Antumbra.Glow.Observer.GlowCommands {
+    public interface GlowCommandSender {
         void AttachObserver(GlowCommandObserver observer);
     }
 }

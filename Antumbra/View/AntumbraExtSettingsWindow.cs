@@ -11,10 +11,8 @@ using System.Runtime.InteropServices;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Management;
 
-namespace Antumbra.Glow.View
-{
-    public partial class AntumbraExtSettingsWindow : Form
-    {
+namespace Antumbra.Glow.View {
+    public partial class AntumbraExtSettingsWindow : Form {
         private GlowExtension ext;
         /// <summary>
         /// Move form dependencies
@@ -25,8 +23,7 @@ namespace Antumbra.Glow.View
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        public AntumbraExtSettingsWindow(GlowExtension ext)
-        {
+        public AntumbraExtSettingsWindow(GlowExtension ext) {
             this.ext = ext;
             InitializeComponent();
             ExtName.Text = ext.Name;
@@ -36,15 +33,13 @@ namespace Antumbra.Glow.View
             Show();
         }
 
-        private void closeBtn_Click(object sender, EventArgs e)
-        {
+        private void closeBtn_Click(object sender, EventArgs e) {
             Close();
         }
 
-        private void AntumbraExtSettingsWindow_MouseDown(object sender, MouseEventArgs e)
-        {
+        private void AntumbraExtSettingsWindow_MouseDown(object sender, MouseEventArgs e) {
             // Drag form to move
-            if (e.Button == MouseButtons.Left) {
+            if(e.Button == MouseButtons.Left) {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }

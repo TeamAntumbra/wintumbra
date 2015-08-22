@@ -8,10 +8,8 @@ using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Observer.Logging;
 
-namespace Antumbra.Glow.Connector
-{
-    public class PreOutputProcessor : ConfigurationObserver, AntumbraColorObserver, AntumbraColorSource, Loggable
-    {
+namespace Antumbra.Glow.Connector {
+    public class PreOutputProcessor : ConfigurationObserver, AntumbraColorObserver, AntumbraColorSource, Loggable {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvail;
         public delegate void NewColor(Color16Bit color, int id, long index);
@@ -21,13 +19,12 @@ namespace Antumbra.Glow.Connector
         private Dictionary<int, long> OutputIndexes;
         public PreOutputProcessor() {
             AttachObserver(LoggerHelper.GetInstance());
-            AllDeviceSettings = new Dictionary<int,OutputSettings>();
+            AllDeviceSettings = new Dictionary<int, OutputSettings>();
             OutputIndexes = new Dictionary<int, long>();
         }
 
-        public void ConfigurationUpdate(Configurable config)
-        {
-            if (config is DeviceSettings) {
+        public void ConfigurationUpdate(Configurable config) {
+            if(config is DeviceSettings) {
                 DeviceSettings settings = (DeviceSettings)config;
 
                 OutputSettings devSettings;
@@ -39,29 +36,27 @@ namespace Antumbra.Glow.Connector
                                                               + Math.Abs(settings.greenBias)
                                                               + Math.Abs(settings.blueBias)
                                                               / 3));
-                
+
                 AllDeviceSettings[settings.id] = devSettings;
             }
         }
 
-        public void NewColorAvail(Color16Bit newCol, int id, long index)
-        {
+        public void NewColorAvail(Color16Bit newCol, int id, long index) {
             OutputSettings settings;
-            if (!AllDeviceSettings.TryGetValue(id, out settings)) {
+            if(!AllDeviceSettings.TryGetValue(id, out settings)) {
                 Log("OutputSettings for device not found! Color sent plain. ID: " + id);
                 NewColorAvailEvent(newCol, id, index);
                 return;
             }
 
-            if (index == long.MinValue) {
+            if(index == long.MinValue) {
                 OutputIndexes.Remove(id);
             }
 
             long prevIndex;
-            if (!OutputIndexes.TryGetValue(id, out prevIndex)) {
+            if(!OutputIndexes.TryGetValue(id, out prevIndex)) {
                 OutputIndexes[id] = index;
-            }
-            else if (prevIndex >= index) {
+            } else if(prevIndex >= index) {
                 // Invalid index
                 Log("Color recieved out of order! Color BLOCKED! Target ID: " + id +
                     " with index " + index + " and last index " + prevIndex);
@@ -73,7 +68,7 @@ namespace Antumbra.Glow.Connector
             int green = newCol.green;
             int blue = newCol.blue;
             // White balance
-            if (newCol.GetAvgBrightness() > settings.whiteBalanceMin) {
+            if(newCol.GetAvgBrightness() > settings.whiteBalanceMin) {
                 red += settings.redBias;
                 green += settings.greenBias;
                 blue += settings.blueBias;
@@ -82,26 +77,22 @@ namespace Antumbra.Glow.Connector
             // Scale brightness
             try {
                 newCol.ScaleColor(settings.MaxBrightness);
-            }
-            catch (ArgumentException ex) {
+            } catch(ArgumentException ex) {
                 Log(ex.Message + '\n' + ex.StackTrace);
             }
             NewColorAvailEvent(newCol, id, index);
         }
 
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvail += observer.NewLogMsgAvail;
         }
 
-        public void AttachObserver(AntumbraColorObserver observer)
-        {
+        public void AttachObserver(AntumbraColorObserver observer) {
             NewColorAvailEvent += observer.NewColorAvail;
         }
 
-        private void Log(String msg)
-        {
-            if (NewLogMsgAvail != null) {
+        private void Log(String msg) {
+            if(NewLogMsgAvail != null) {
                 NewLogMsgAvail("PreOutputProcessor", msg);
             }
         }

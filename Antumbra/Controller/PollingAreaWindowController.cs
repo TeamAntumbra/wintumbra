@@ -11,10 +11,8 @@ using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Logging;
 
-namespace Antumbra.Glow.Controller
-{
-    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable
-    {
+namespace Antumbra.Glow.Controller {
+    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgEvent;
         public delegate void PollingAreaUpdated(int id, int x, int y, int width, int height);
@@ -26,8 +24,7 @@ namespace Antumbra.Glow.Controller
         private Rectangle boundRange;
         public int id { get; private set; }
 
-        public PollingAreaWindowController(int id)
-        {
+        public PollingAreaWindowController(int id) {
             AttachObserver(LoggerHelper.GetInstance());
             this.id = id;
             int x = int.MaxValue, y = int.MaxValue, width = 0, height = int.MaxValue;
@@ -43,54 +40,46 @@ namespace Antumbra.Glow.Controller
             pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
         }
 
-        public void Show()
-        {
+        public void Show() {
             pollingWindow.Show();
             SendCommand(new StopCommand(id));//stop all
             SendCommand(new StopAndSendColorCommand(id, new Color16Bit(color)));//set to unique color to match its window
         }
 
-        public void SetBounds(int x, int y, int width, int height)
-        {
-            if (boundRange.Contains(new Rectangle(x, y, width, height))) {
+        public void SetBounds(int x, int y, int width, int height) {
+            if(boundRange.Contains(new Rectangle(x, y, width, height))) {
                 MoveWindow(pollingWindow.Handle, x, y, width, height, true);
-            }
-            else {
+            } else {
                 Log("Invalid SetBounds parameters passed.\tx: " + x + ", y: " + y +
                     ", width: " + width + ", height: " + height);
                 MoveWindow(pollingWindow.Handle, 200, 200, 500, 500, true);
             }
         }
 
-        public void AttachObserver(GlowCommandObserver observer)
-        {
+        public void AttachObserver(GlowCommandObserver observer) {
             NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
         }
 
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgEvent += observer.NewLogMsgAvail;
         }
 
-        public void Dispose()
-        {
-            if (pollingWindow != null && !pollingWindow.IsDisposed) {
+        public void Dispose() {
+            if(pollingWindow != null && !pollingWindow.IsDisposed) {
                 pollingWindow.Dispose();
             }
         }
 
-        private void SendCommand(GlowCommand cmd)
-        {
-            if (NewGlowCommandAvailEvent != null) {
+        private void SendCommand(GlowCommand cmd) {
+            if(NewGlowCommandAvailEvent != null) {
                 NewGlowCommandAvailEvent(cmd);
             }
         }
 
-        private void UpdatePollingSelectionsEvent(object sender, EventArgs args)
-        {
-            if (sender is System.Windows.Forms.Form) {
+        private void UpdatePollingSelectionsEvent(object sender, EventArgs args) {
+            if(sender is System.Windows.Forms.Form) {
                 System.Windows.Forms.Form form = (System.Windows.Forms.Form)sender;
-                if (PollingAreaUpdatedEvent != null) {
+                if(PollingAreaUpdatedEvent != null) {
                     Log("Polling window " + id + " closed with bounds: " + form.Bounds);
                     PollingAreaUpdatedEvent(id, form.Location.X, form.Location.Y, form.Width, form.Height);
                 }
@@ -98,9 +87,8 @@ namespace Antumbra.Glow.Controller
             }
         }
 
-        private void Log(string msg)
-        {
-            if (NewLogMsgEvent != null) {
+        private void Log(string msg) {
+            if(NewLogMsgEvent != null) {
                 NewLogMsgEvent("PollingAreaWindowController " + id, msg);
             }
         }

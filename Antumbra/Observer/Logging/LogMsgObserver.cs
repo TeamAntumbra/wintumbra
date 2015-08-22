@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Logging
-{
-    public interface LogMsgObserver
-    {
+namespace Antumbra.Glow.Observer.Logging {
+    public interface LogMsgObserver {
         void NewLogMsgAvail(String sourceName, String msg);
     }
 }

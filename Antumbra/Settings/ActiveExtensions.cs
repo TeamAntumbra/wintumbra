@@ -8,68 +8,53 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Configuration;
 
-namespace Antumbra.Glow.Settings
-{
+namespace Antumbra.Glow.Settings {
     [Serializable()]
-    public class ActiveExtensions : Configurable, ISerializable
-    {
+    public class ActiveExtensions : Configurable, ISerializable {
         public delegate void ConfigurationUpdate(Configurable obj);
         public event ConfigurationUpdate ConfigurationChangedEvent;
         private GlowDriver _ActiveDriver;
-        public GlowDriver ActiveDriver
-        {
-            get
-            {
+        public GlowDriver ActiveDriver {
+            get {
                 return this._ActiveDriver;
             }
-            set
-            {
+            set {
                 this._ActiveDriver = value;
                 Notify();
             }
         }
         private GlowScreenGrabber _ActiveGrabber;
-        public GlowScreenGrabber ActiveGrabber
-        {
-            get
-            {
+        public GlowScreenGrabber ActiveGrabber {
+            get {
                 return this._ActiveGrabber;
             }
-            set
-            {
+            set {
                 this._ActiveGrabber = value;
                 Notify();
             }
         }
         private List<GlowScreenProcessor> _ActiveProcessors;
-        public List<GlowScreenProcessor> ActiveProcessors
-        {
-            get
-            {
+        public List<GlowScreenProcessor> ActiveProcessors {
+            get {
                 return _ActiveProcessors;
             }
-            set
-            {
+            set {
                 _ActiveProcessors = value;
                 Notify();
             }
         }
         private List<GlowFilter> _ActiveFilters;
-        public List<GlowFilter> ActiveFilters
-        {
+        public List<GlowFilter> ActiveFilters {
             get { return this._ActiveFilters; }
-            set
-            {
+            set {
                 this._ActiveFilters = value;
                 Notify();
             }
         }
         private List<GlowNotifier> _ActiveNotifiers;
-        public List<GlowNotifier> ActiveNotifiers
-        {
+        public List<GlowNotifier> ActiveNotifiers {
             get { return this._ActiveNotifiers; }
-            set
-            {
+            set {
                 this._ActiveNotifiers = value;
                 Notify();
             }
@@ -80,16 +65,14 @@ namespace Antumbra.Glow.Settings
         /// <summary>
         /// Constructor - Create an Empty ActiveExtensions objectS
         /// </summary>
-        public ActiveExtensions()
-        {
+        public ActiveExtensions() {
             this._ActiveProcessors = new List<GlowScreenProcessor>();
             this._ActiveFilters = new List<GlowFilter>();
             this._ActiveNotifiers = new List<GlowNotifier>();
         }
 
         public ActiveExtensions(Guid DriverGuid, Guid GrabberGuid, Guid[] ProcessorGuids,
-            Guid[] FilterGuids, Guid[] NotifierGuids)
-        {
+            Guid[] FilterGuids, Guid[] NotifierGuids) {
             this._ActiveProcessors = new List<GlowScreenProcessor>();
             this._ActiveFilters = new List<GlowFilter>();
             this._ActiveNotifiers = new List<GlowNotifier>();
@@ -103,9 +86,8 @@ namespace Antumbra.Glow.Settings
         /// <summary>
         /// Notify observers that this object's Configuration has changed
         /// </summary>
-        public void Notify()
-        {
-            if (ConfigurationChangedEvent != null)
+        public void Notify() {
+            if(ConfigurationChangedEvent != null)
                 ConfigurationChangedEvent(this);
         }
 
@@ -113,8 +95,7 @@ namespace Antumbra.Glow.Settings
         /// Attach an observer for Configuration updates
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(ConfigurationObserver observer)
-        {
+        public void AttachObserver(ConfigurationObserver observer) {
             this.ConfigurationChangedEvent += observer.ConfigurationUpdate;
         }
 
@@ -122,41 +103,40 @@ namespace Antumbra.Glow.Settings
         /// Get a String representation of the object
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
+        public override string ToString() {
             String result = "";
-            if (this.ActiveDriver != null) {
+            if(this.ActiveDriver != null) {
                 result += this.ActiveDriver.id.ToString() + ',';
             }
-            if (this.ActiveGrabber != null) {
+            if(this.ActiveGrabber != null) {
                 result += this.ActiveGrabber.id.ToString() + ',';
             }
-            if (ActiveProcessors != null) {
+            if(ActiveProcessors != null) {
                 int count = this.ActiveProcessors.Count;
-                for (int i = 0; i < count; i += 1) {
+                for(int i = 0; i < count; i += 1) {
                     GlowScreenProcessor processor = this.ActiveProcessors[i];
                     result += processor.id.ToString();
-                    if (i != count - 1)//not the last one
+                    if(i != count - 1)//not the last one
                         result += ' ';
                 }
                 result += ',';
             }
-            if (this.ActiveFilters != null) {
+            if(this.ActiveFilters != null) {
                 int count = this.ActiveFilters.Count;
-                for (int i = 0; i < count; i += 1) {
+                for(int i = 0; i < count; i += 1) {
                     GlowFilter filt = this.ActiveFilters[i];
                     result += filt.id.ToString();
-                    if (i != count - 1)//not the last one
+                    if(i != count - 1)//not the last one
                         result += ' ';
                 }
                 result += ',';
             }
-            if (this.ActiveNotifiers != null) {
+            if(this.ActiveNotifiers != null) {
                 int count = this.ActiveNotifiers.Count;
-                for (int i = 0; i < count; i += 1) {
+                for(int i = 0; i < count; i += 1) {
                     GlowNotifier notf = this.ActiveNotifiers[i];
                     result += notf.id.ToString();
-                    if (i != count - 1)//not the last one
+                    if(i != count - 1)//not the last one
                         result += ' ';
                 }
                 result += ',';
@@ -169,22 +149,21 @@ namespace Antumbra.Glow.Settings
         /// using the ExtensionLibrary
         /// </summary>
         /// <param name="library">The ExtensionLibrary</param>
-        public void Init(ExtensionFramework.Management.ExtensionLibrary library)
-        {
+        public void Init(ExtensionFramework.Management.ExtensionLibrary library) {
             ActiveDriver = library.LookupDriver(DriverGuid);
             ActiveGrabber = library.LookupGrabber(GrabberGuid);
-            foreach (Guid guid in ProcessorGuids) {
+            foreach(Guid guid in ProcessorGuids) {
                 ActiveProcessors.Add(library.LookupProcessor(guid));
             }
 
-            if (ActiveDriver is GlowScreenDriverCoupler) {
+            if(ActiveDriver is GlowScreenDriverCoupler) {
                 ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessors);
             }
 
-            foreach (Guid guid in FilterGuids) {
+            foreach(Guid guid in FilterGuids) {
                 ActiveFilters.Add(library.LookupFilter(guid));
             }
-            foreach (Guid guid in NotifierGuids) {
+            foreach(Guid guid in NotifierGuids) {
                 ActiveNotifiers.Add(library.LookupNotifier(guid));
             }
         }
@@ -194,8 +173,7 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         /// <param name="info"></param>
         /// <param name="cntx"></param>
-        public ActiveExtensions(SerializationInfo info, StreamingContext cntx)
-        {
+        public ActiveExtensions(SerializationInfo info, StreamingContext cntx) {
             DriverGuid = (Guid)info.GetValue("driverGuid", typeof(Guid));
             GrabberGuid = (Guid)info.GetValue("grabberGuid", typeof(Guid));
             ProcessorGuids = (List<Guid>)info.GetValue("processorGuids", typeof(List<Guid>));
@@ -208,22 +186,21 @@ namespace Antumbra.Glow.Settings
         /// </summary>
         /// <param name="info"></param>
         /// <param name="cntx"></param>
-        public void GetObjectData(SerializationInfo info, StreamingContext cntx)
-        {
+        public void GetObjectData(SerializationInfo info, StreamingContext cntx) {
             info.AddValue("driverGuid", ActiveDriver.id);
             info.AddValue("grabberGuid", ActiveGrabber.id);
             List<Guid> guids = new List<Guid>();
-            foreach (GlowScreenProcessor prcr in ActiveProcessors) {
+            foreach(GlowScreenProcessor prcr in ActiveProcessors) {
                 guids.Add(prcr.id);
             }
             info.AddValue("processorGuids", guids);
             guids.Clear();
-            foreach (GlowFilter filt in ActiveFilters) {
+            foreach(GlowFilter filt in ActiveFilters) {
                 guids.Add(filt.id);
             }
             info.AddValue("filterGuids", guids);
             guids.Clear();
-            foreach (GlowNotifier notf in ActiveNotifiers) {
+            foreach(GlowNotifier notf in ActiveNotifiers) {
                 guids.Add(notf.id);
             }
             info.AddValue("notifierGuids", guids);

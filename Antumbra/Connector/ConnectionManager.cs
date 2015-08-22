@@ -6,13 +6,11 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using System;
 using System.Collections.Generic;
 
-namespace Antumbra.Glow.Connector
-{
+namespace Antumbra.Glow.Connector {
     /// <summary>
     /// Manages dealing with connected Glow units via the SerialConnector class.
     /// </summary>
-    public class ConnectionManager : ToolbarNotificationSource, Loggable, ConnectionEventSource, IDisposable, AntumbraColorObserver
-    {
+    public class ConnectionManager : ToolbarNotificationSource, Loggable, ConnectionEventSource, IDisposable, AntumbraColorObserver {
         public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewLogMsgAvail(string title, string msg);
@@ -29,8 +27,7 @@ namespace Antumbra.Glow.Connector
         /// </summary>
         /// <param name="vid"></param>
         /// <param name="pid"></param>
-        public ConnectionManager(int vid, int pid)
-        {
+        public ConnectionManager(int vid, int pid) {
             AttachObserver(LoggerHelper.GetInstance());
             Connector = new SerialConnector(vid, pid);
             Glows = new List<GlowDevice>();
@@ -39,10 +36,9 @@ namespace Antumbra.Glow.Connector
         /// <summary>
         /// Update Glow device connections
         /// </summary>
-        public void UpdateDeviceConnections()
-        {
+        public void UpdateDeviceConnections() {
             int len = this.Connector.UpdateDeviceList();
-            for (int i = 0; i < len; i += 1) {
+            for(int i = 0; i < len; i += 1) {
                 GlowDevice device;
                 device.info = Connector.GetDeviceInfo(i);
                 device.id = i;
@@ -53,13 +49,12 @@ namespace Antumbra.Glow.Connector
                 Glows.Add(device);
             }
             GlowsFound = Glows.Count;
-            if (NewConnectionEventAvailEvent != null) {
+            if(NewConnectionEventAvailEvent != null) {
                 NewConnectionEventAvailEvent(GlowsFound);
             }
         }
 
-        public void NewColorAvail(Color16Bit newColor, int id, long index)
-        {
+        public void NewColorAvail(Color16Bit newColor, int id, long index) {
             sendColor(newColor, id);
         }
 
@@ -67,8 +62,7 @@ namespace Antumbra.Glow.Connector
         /// Attach a ToolbarNotificationObserver to this object
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(ToolbarNotificationObserver observer)
-        {
+        public void AttachObserver(ToolbarNotificationObserver observer) {
             this.NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
@@ -76,8 +70,7 @@ namespace Antumbra.Glow.Connector
         /// Attach a LogMsgObserver to this object
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
@@ -85,8 +78,7 @@ namespace Antumbra.Glow.Connector
         /// Attach a ConnectionEventObserver to this object
         /// </summary>
         /// <param name="observer"></param>
-        public void AttachObserver(ConnectionEventObserver observer)
-        {
+        public void AttachObserver(ConnectionEventObserver observer) {
             this.NewConnectionEventAvailEvent += observer.ConnectionUpdate;
         }
 
@@ -96,15 +88,14 @@ namespace Antumbra.Glow.Connector
         /// <param name="newColor"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public int sendColor(Antumbra.Glow.Observer.Colors.Color16Bit newColor, int id)
-        {
-            if (id == -1) {
+        public int sendColor(Antumbra.Glow.Observer.Colors.Color16Bit newColor, int id) {
+            if(id == -1) {
                 int status = -1;
-                for (var i = 0; i < GlowsFound; i += 1) {
+                for(var i = 0; i < GlowsFound; i += 1) {
                     GlowDevice device = Glows[i];
                     status = sendColor(newColor.red, newColor.green, newColor.blue, device.id);
                     device.status = status;
-                    if (status != 0) {
+                    if(status != 0) {
                         break;
                     }
                 }
@@ -117,14 +108,12 @@ namespace Antumbra.Glow.Connector
         /// Log a message
         /// </summary>
         /// <param name="msg"></param>
-        public void Log(string msg)
-        {
-            if (this.NewLogMsgAvailEvent != null)
+        public void Log(string msg) {
+            if(this.NewLogMsgAvailEvent != null)
                 NewLogMsgAvailEvent("Device Manager", msg);
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             CloseAll();
             FreeList();
         }
@@ -137,13 +126,12 @@ namespace Antumbra.Glow.Connector
         /// <param name="b"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        private int sendColor(UInt16 r, UInt16 g, UInt16 b, int id)
-        {
+        private int sendColor(UInt16 r, UInt16 g, UInt16 b, int id) {
             GlowDevice activeDev = Glows[id];
             int err;
-            if (activeDev.dev == IntPtr.Zero) {//needs opening
+            if(activeDev.dev == IntPtr.Zero) {//needs opening
                 activeDev.dev = this.Connector.OpenDevice(activeDev.info, out err);
-                if (err != 0) {//error occured
+                if(err != 0) {//error occured
                     activeDev.status = err;
                     return err;
                 }
@@ -156,11 +144,10 @@ namespace Antumbra.Glow.Connector
         /// <summary>
         /// Close all connections
         /// </summary>
-        private void CloseAll()
-        {
-            foreach (var active in this.Glows) {
+        private void CloseAll() {
+            foreach(var active in this.Glows) {
                 IntPtr ptr = active.dev;
-                if (!ptr.Equals(IntPtr.Zero))//actually open?
+                if(!ptr.Equals(IntPtr.Zero))//actually open?
                     this.Connector.CloseDevice(active.dev);
             }
         }
@@ -168,8 +155,7 @@ namespace Antumbra.Glow.Connector
         /// <summary>
         /// Free the connections list
         /// </summary>
-        private void FreeList()
-        {
+        private void FreeList() {
             this.Connector.FreeList();
         }
 
@@ -177,8 +163,7 @@ namespace Antumbra.Glow.Connector
         /// Represents a physical Antumbra|Glow unit.
         /// Holds the values needed to identify and send colors to it.
         /// </summary>
-        private struct GlowDevice
-        {
+        private struct GlowDevice {
             /// <summary>
             /// Device pointer
             /// </summary>
@@ -194,7 +179,7 @@ namespace Antumbra.Glow.Connector
             /// <summary>
             /// Last know status of this device
             /// </summary>
-            public int status; 
+            public int status;
         }
     }
 }

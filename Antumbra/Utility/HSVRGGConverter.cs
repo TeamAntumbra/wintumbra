@@ -5,12 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace Antumbra.Glow.Utility
-{
-    public static class HSVRGGConverter
-    {
-        public static double[] RGBToHSV(int r, int g, int b)
-        {
+namespace Antumbra.Glow.Utility {
+    public static class HSVRGGConverter {
+        public static double[] RGBToHSV(int r, int g, int b) {
             int max = Math.Max(r, Math.Max(g, b));
             int min = Math.Min(r, Math.Min(g, b));
 
@@ -20,26 +17,24 @@ namespace Antumbra.Glow.Utility
             result[2] = max / 255d;
             return result;
         }
-        
+
         public static int[] HSVToRGB(double h, double S, double V)//from here to... \/ \/ \/
         {
             int[] result = new int[3];
             double H = h;
-            while (H < 0) { H += 360; };
-            while (H >= 360) { H -= 360; };
+            while(H < 0) { H += 360; };
+            while(H >= 360) { H -= 360; };
             double R, G, B;
-            if (V <= 0) { R = G = B = 0; }
-            else if (S <= 0) {
+            if(V <= 0) { R = G = B = 0; } else if(S <= 0) {
                 R = G = B = V;
-            }
-            else {
+            } else {
                 double hf = H / 60.0;
                 int i = (int)Math.Floor(hf);
                 double f = hf - i;
                 double pv = V * (1 - S);
                 double qv = V * (1 - S * f);
                 double tv = V * (1 - S * (1 - f));
-                switch (i) {
+                switch(i) {
 
                     // Red is the dominant color
 
@@ -110,10 +105,9 @@ namespace Antumbra.Glow.Utility
             return result;
         }
 
-        private static   int Clamp(int i)
-        {
-            if (i < 0) return 0;
-            if (i > 255) return 255;
+        private static int Clamp(int i) {
+            if(i < 0) return 0;
+            if(i > 255) return 255;
             return i;
         }//here is taken from StackOverflow @ https://stackoverflow.com/questions/1335426/is-there-a-built-in-c-net-system-api-for-hsv-to-rgb
     }

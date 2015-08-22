@@ -5,13 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.Observer.Colors;
 
-namespace Antumbra.Glow.Utility
-{
-    public static class Mixer
-    {
-        public static Color16Bit MixColorPercIn(Color16Bit newColor, Color16Bit prevColor, double newWeight)
-        {
-            if (prevColor == null)
+namespace Antumbra.Glow.Utility {
+    public static class Mixer {
+        public static Color16Bit MixColorPercIn(Color16Bit newColor, Color16Bit prevColor, double newWeight) {
+            if(prevColor == null)
                 return newColor;
             double prevWeight = 1.00 - newWeight;
             UInt16 newR = Convert.ToUInt16((int)(prevColor.red * prevWeight) + (int)(newColor.red * newWeight));

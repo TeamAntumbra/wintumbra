@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Logging
-{
-    public interface Loggable
-    {
+namespace Antumbra.Glow.Observer.Logging {
+    public interface Loggable {
         void AttachObserver(LogMsgObserver observer);
     }
 }

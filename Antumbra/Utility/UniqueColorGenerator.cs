@@ -5,42 +5,36 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace Antumbra.Glow.Utility
-{
-    public class UniqueColorGenerator
-    {
+namespace Antumbra.Glow.Utility {
+    public class UniqueColorGenerator {
         private static UniqueColorGenerator instance;
-        public static UniqueColorGenerator GetInstance()
-        {
-            if (instance == null)
+        public static UniqueColorGenerator GetInstance() {
+            if(instance == null)
                 instance = new UniqueColorGenerator();
             return instance;
         }
         private List<HslColor> assigned;
-        private UniqueColorGenerator()
-        {
+        private UniqueColorGenerator() {
             this.assigned = new List<HslColor>();
         }
 
-        public Color GetUniqueColor()
-        {
+        public Color GetUniqueColor() {
             Color result = Color.Empty;
             List<double> hues = new List<double>();
-            foreach (HslColor col in this.assigned)
+            foreach(HslColor col in this.assigned)
                 hues.Add(col.H);
             int count = hues.Count;
-            if (count == 0) {
+            if(count == 0) {
                 result = new HslColor(0, 1.0, .5);
-            }
-            else {
+            } else {
                 double prev = hues[0];
                 double gapStart = prev;
                 double largestGap = 0.0;
                 double current = 0, gap = 0;
-                for (int i = 1; i < count; i += 1) {
+                for(int i = 1; i < count; i += 1) {
                     current = hues[i];
-                    gap = Math.Abs(prev-current);
-                    if (gap > largestGap) {
+                    gap = Math.Abs(prev - current);
+                    if(gap > largestGap) {
                         largestGap = gap;
                         gapStart = prev;
                     }
@@ -48,7 +42,7 @@ namespace Antumbra.Glow.Utility
                 }
                 current = 360.0;
                 gap = Math.Abs(prev - current);
-                if (gap > largestGap) {
+                if(gap > largestGap) {
                     largestGap = gap;
                     gapStart = prev;
                 }
@@ -59,8 +53,7 @@ namespace Antumbra.Glow.Utility
             return result;
         }
 
-        public void RetireUniqueColor(Color color)
-        {
+        public void RetireUniqueColor(Color color) {
             this.assigned.Remove(color);
         }
     }

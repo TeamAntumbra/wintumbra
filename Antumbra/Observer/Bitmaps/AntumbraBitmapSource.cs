@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Observer.Bitmaps
-{
-    public interface AntumbraBitmapSource
-    {
+namespace Antumbra.Glow.Observer.Bitmaps {
+    public interface AntumbraBitmapSource {
         void AttachObserver(AntumbraBitmapObserver observer);
     }
 }

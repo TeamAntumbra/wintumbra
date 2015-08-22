@@ -11,15 +11,12 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Antumbra.Glow.ExtensionFramework
-{
+namespace Antumbra.Glow.ExtensionFramework {
     /// <summary>
     /// Abstract definition of a Glow Extension
     /// </summary>
-    public abstract class GlowExtension : IGlowExtension, IDisposable
-    {
-        public override string ToString()
-        {
+    public abstract class GlowExtension : IGlowExtension, IDisposable {
+        public override string ToString() {
             return this.Name + " - " + this.Version.ToString();
         }
 

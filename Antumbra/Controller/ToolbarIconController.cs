@@ -12,18 +12,15 @@ using Antumbra.Glow.Connector;
 using Antumbra.Glow.Settings;
 using System.Drawing;
 
-namespace Antumbra.Glow.Controller
-{
-    public class ToolbarIconController : Loggable, ToolbarNotificationObserver, ToolbarNotificationSource, IDisposable
-    {
+namespace Antumbra.Glow.Controller {
+    public class ToolbarIconController : Loggable, ToolbarNotificationObserver, ToolbarNotificationSource, IDisposable {
         public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
         private const string extPath = "./Extensions/";
         private Antumbra.Glow.View.ToolbarIcon toolbarIcon;
-        public ToolbarIconController()
-        {
+        public ToolbarIconController() {
             AttachObserver(LoggerHelper.GetInstance());
             toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             toolbarIcon.Hide();
@@ -38,39 +35,33 @@ namespace Antumbra.Glow.Controller
                 "application window.", 0);
         }
 
-        private void Quit(object sender, EventArgs args)
-        {
+        private void Quit(object sender, EventArgs args) {
             Dispose();
             System.Windows.Forms.Application.Exit();
         }
 
-        private void LogMsg(string source, string msg)
-        {
-            if (NewLogMsgAvailEvent != null) {
+        private void LogMsg(string source, string msg) {
+            if(NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent(source, msg);
             }
         }
 
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
-        public void AttachObserver(ToolbarNotificationObserver observer)
-        {
+        public void AttachObserver(ToolbarNotificationObserver observer) {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
-        public void NewToolbarNotifAvail(int time, string title, string msg, int icon)
-        {
-            if (NewToolbarNotifAvailEvent != null) {
+        public void NewToolbarNotifAvail(int time, string title, string msg, int icon) {
+            if(NewToolbarNotifAvailEvent != null) {
                 NewToolbarNotifAvailEvent(time, title, msg, icon);
                 LogMsg(title, msg);
             }
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             toolbarIcon.Dispose();
         }
     }

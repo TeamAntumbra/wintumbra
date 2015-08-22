@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 
-namespace Antumbra.Glow.Observer.Extensions
-{
-    public interface GlowExtCollectionObserver
-    {
+namespace Antumbra.Glow.Observer.Extensions {
+    public interface GlowExtCollectionObserver {
         void LibraryUpdate(List<GlowExtension> extensions);
     }
 }

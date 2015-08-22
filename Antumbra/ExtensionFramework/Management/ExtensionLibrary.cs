@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Logging;
 
-namespace Antumbra.Glow.ExtensionFramework.Management
-{
-    public class ExtensionLibrary : Loggable
-    {
+namespace Antumbra.Glow.ExtensionFramework.Management {
+    public class ExtensionLibrary : Loggable {
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
 
@@ -21,8 +19,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
         private List<GlowNotifier> Notifiers;
         private List<GlowExtension> Extensions;
 
-        public ExtensionLibrary()
-        {
+        public ExtensionLibrary() {
             AttachObserver(LoggerHelper.GetInstance());
             MefHelper = new MEFHelper();
             Drivers = new List<GlowDriver>();
@@ -33,8 +30,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Extensions = new List<GlowExtension>();
         }
 
-        public void Update()
-        {
+        public void Update() {
             Drivers.Clear();
             Grabbers.Clear();
             Processors.Clear();
@@ -56,64 +52,57 @@ namespace Antumbra.Glow.ExtensionFramework.Management
             Notifiers = ExtensionBank[current].Cast<GlowNotifier>().ToList();
         }
 
-        public GlowDriver LookupDriver(Guid id)
-        {
-            foreach (GlowDriver driver in Drivers) {
-                if (driver.id.Equals(id)) {//it's a match
+        public GlowDriver LookupDriver(Guid id) {
+            foreach(GlowDriver driver in Drivers) {
+                if(driver.id.Equals(id)) {//it's a match
                     return driver.Create();
                 }
             }
             return null;//not found
         }
 
-        public GlowScreenGrabber LookupGrabber(Guid id)
-        {
-            foreach (GlowScreenGrabber grabber in Grabbers) {
-                if (grabber.id.Equals(id)) {//it's a match
+        public GlowScreenGrabber LookupGrabber(Guid id) {
+            foreach(GlowScreenGrabber grabber in Grabbers) {
+                if(grabber.id.Equals(id)) {//it's a match
                     return grabber.Create();
                 }
             }
             return null;//not found
         }
 
-        public GlowScreenProcessor LookupProcessor(Guid id)
-        {
-            foreach (GlowScreenProcessor proc in Processors) {
-                if (proc.id.Equals(id)) {//it's a match
+        public GlowScreenProcessor LookupProcessor(Guid id) {
+            foreach(GlowScreenProcessor proc in Processors) {
+                if(proc.id.Equals(id)) {//it's a match
                     return proc.Create();
                 }
             }
             return null;//not found
         }
 
-        public GlowFilter LookupFilter(Guid id)
-        {
-            foreach (GlowFilter filt in Filters) {
-                if (filt.id.Equals(id)) {//it's a match
+        public GlowFilter LookupFilter(Guid id) {
+            foreach(GlowFilter filt in Filters) {
+                if(filt.id.Equals(id)) {//it's a match
                     return filt.Create();
                 }
             }
             return null;//not found
         }
 
-        public GlowNotifier LookupNotifier(Guid id)
-        {
-            foreach (GlowNotifier notf in Notifiers) {
-                if (notf.id.Equals(id)) {//it's a match
+        public GlowNotifier LookupNotifier(Guid id) {
+            foreach(GlowNotifier notf in Notifiers) {
+                if(notf.id.Equals(id)) {//it's a match
                     return notf.Create();
                 }
             }
             return null;//not found
         }
 
-        public void AttachObserver(LogMsgObserver observer)
-        {
+        public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
         }
 
-        private void Log(string msg)
-        {
-            if (NewLogMsgAvailEvent != null) {
+        private void Log(string msg) {
+            if(NewLogMsgAvailEvent != null) {
                 NewLogMsgAvailEvent("Extension Library", msg);
             }
         }

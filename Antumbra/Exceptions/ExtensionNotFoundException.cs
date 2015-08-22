@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.Exceptions
-{
-    class ExtensionNotFoundException : Exception
-    {
+namespace Antumbra.Glow.Exceptions {
+    class ExtensionNotFoundException : Exception {
         public ExtensionNotFoundException(Guid id) :
-            base("The extension with GUID: " + id.ToString() + " was not found.")
-        {
+            base("The extension with GUID: " + id.ToString() + " was not found.") {
             //do nothing, use parent constructor
         }
     }

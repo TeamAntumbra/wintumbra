@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.Observer.Bitmaps;
 
-namespace Antumbra.Glow.ExtensionFramework.Types
-{
+namespace Antumbra.Glow.ExtensionFramework.Types {
     public abstract class GlowScreenGrabber : GlowExtension//observed by screen processor
-    //special type of driver that deals with bitmaps captured from the screen
-    //uses a GlowScreenProcessor to determine color to return
+        //special type of driver that deals with bitmaps captured from the screen
+        //uses a GlowScreenProcessor to determine color to return
     {
         public abstract void AttachObserver(AntumbraBitmapObserver observer);
         public int x { get; set; }
@@ -19,8 +18,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types
         public int height { get; set; }
         public int captureThrottle { get; set; }
         public abstract GlowScreenGrabber Create();
-        public sealed override Type GetExtensionType()
-        {
+        public sealed override Type GetExtensionType() {
             return typeof(GlowScreenGrabber);
         }
     }

@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antumbra.Glow.ExtensionFramework
-{
+namespace Antumbra.Glow.ExtensionFramework {
     /// <summary>
     /// Interface for any GlowExtension
     /// </summary>
-    public interface IGlowExtension
-    {
+    public interface IGlowExtension {
         /// <summary>
         /// The id for the extension. Assigned at runtime.
         /// </summary>

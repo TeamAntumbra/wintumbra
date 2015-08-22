@@ -21,23 +21,19 @@ using Antumbra.Glow.Observer.ToolbarNotifications;
 using System.Reflection;
 using Microsoft.Win32;
 
-namespace Antumbra.Glow.View
-{
-    public partial class ToolbarIcon : Form, ToolbarNotificationObserver
-    {
+namespace Antumbra.Glow.View {
+    public partial class ToolbarIcon : Form, ToolbarNotificationObserver {
         public event EventHandler notifyIcon_MouseClickEvent;
         public event EventHandler notifyIcon_DoubleClickEvent;
         /// <summary>
         /// ToolbarIcon Constructor
         /// </summary>
-        public ToolbarIcon()
-        {
+        public ToolbarIcon() {
             InitializeComponent();
         }
-        public void NewToolbarNotifAvail(int time, String title, String msg, int icon)
-        {
+        public void NewToolbarNotifAvail(int time, String title, String msg, int icon) {
             ToolTipIcon notifIcon = ToolTipIcon.None;//default
-            switch (icon) {
+            switch(icon) {
                 case 0:
                     notifIcon = ToolTipIcon.Info;
                     break;
@@ -55,9 +51,8 @@ namespace Antumbra.Glow.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (notifyIcon_MouseClickEvent != null)
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e) {
+            if(notifyIcon_MouseClickEvent != null)
                 notifyIcon_MouseClickEvent(sender, e);
         }
 
@@ -68,14 +63,12 @@ namespace Antumbra.Glow.View
         /// <param name="title"></param>
         /// <param name="msg"></param>
         /// <param name="icon"></param>
-        private void ShowMessage(int time, string title, string msg, ToolTipIcon icon)
-        {
+        private void ShowMessage(int time, string title, string msg, ToolTipIcon icon) {
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
 
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (notifyIcon_DoubleClickEvent != null)
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
+            if(notifyIcon_DoubleClickEvent != null)
                 notifyIcon_DoubleClickEvent(sender, e);
         }
     }
