@@ -33,15 +33,17 @@ namespace Antumbra.Glow.Controller {
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
         private event EventHandler quitEventHandler;
         private MainWindow window;
-        private int glowCount, pollingIndex, id;
+        private int glowCount, id;
         private WhiteBalanceWindowController whiteBalController;
         private SettingsManager settingsManager;
         private ConnectionManager connectionManager;
         private ExtensionManager extensionManager;
         private PreOutputProcessor preOutputProcessor;
+        private PollingAreaWindowController pollingWindowController;
         private Color16Bit controlColor;
         private List<IDisposable> disposables;
         public MainWindowController(string productVersion, EventHandler quitHandler) {
+            id = -1;//Add drop down for selecting a single or all devices for settings control
             disposables = new List<IDisposable>();
             controlColor = new Color16Bit(new Utility.HslColor(0, 0, 0.5).ToRgbColor());
 
@@ -52,21 +54,26 @@ namespace Antumbra.Glow.Controller {
             extensionManager = new ExtensionManager();
             preOutputProcessor = new PreOutputProcessor();
             whiteBalController = new WhiteBalanceWindowController(settingsManager);
+            pollingWindowController = new PollingAreaWindowController();
+            disposables.Add(pollingWindowController);
             // Attach event observers
             connectionManager.AttachObserver((ConnectionEventObserver)settingsManager);
             connectionManager.AttachObserver((ConnectionEventObserver)extensionManager);
             connectionManager.AttachObserver((ConnectionEventObserver)whiteBalController);
+            connectionManager.AttachObserver((ConnectionEventObserver)pollingWindowController);
             connectionManager.AttachObserver((ConnectionEventObserver)this);
             preOutputProcessor.AttachObserver((AntumbraColorObserver)connectionManager);
             extensionManager.AttachObserver((AntumbraColorObserver)preOutputProcessor);
             settingsManager.AttachObserver((ConfigurationObserver)extensionManager);
             settingsManager.AttachObserver((ConfigurationObserver)preOutputProcessor);
             settingsManager.AttachObserver((ConfigurationObserver)this);
+            pollingWindowController.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
             // Find devices
             connectionManager.UpdateDeviceConnections();
             settingsManager.UpdateBoundingBox();
 
             AttachObserver((GlowCommandObserver)extensionManager);
+            pollingWindowController.AttachObserver((GlowCommandObserver)this);
 
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
@@ -142,20 +149,11 @@ namespace Antumbra.Glow.Controller {
         }
 
         private void setPollingBtnClickHandler(object sender, EventArgs args) {
-            if(this.pollingIndex == glowCount)//all open
-                return;
-            this.pollingIndex += 1;
-            if(this.pollingIndex == 1 && glowCount > 1) {//first device just triggered & more to go
-                this.window.SetPollingBtnText("Next Device");
+            for(int i = 0; i < glowCount; i += 1) {
+                DeviceSettings settings = settingsManager.getSettings(i);
+                pollingWindowController.SetBounds(settings.id, settings.x, settings.y, settings.width, settings.height);
             }
-            int id = pollingIndex - 1;
-            PollingAreaWindowController cont = new PollingAreaWindowController(id);
-            disposables.Add(cont);
-            cont.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
-            cont.AttachObserver(this);
-            DeviceSettings settings = settingsManager.getSettings(id);
-            cont.SetBounds(settings.x, settings.y, settings.width, settings.height);
-            cont.Show();
+            pollingWindowController.ShowAll();
         }
 
         private void UpdatePollingSelection(int id, int x, int y, int width, int height) {
@@ -166,11 +164,6 @@ namespace Antumbra.Glow.Controller {
             Delta.changes[SettingValue.HEIGHT] = height;
             settingsManager.getSettings(id).ApplyChanges(Delta);
             settingsManager.UpdateBoundingBox();
-            this.pollingIndex -= 1;
-            if(this.pollingIndex == 0) {//time to reset btn text & restart
-                this.window.SetPollingBtnText("Set Capture Area");
-                SendStartCommand(-1);
-            }
         }
 
         private void OnOffValueChangedHandler(object sender, EventArgs args) {
@@ -329,12 +322,8 @@ namespace Antumbra.Glow.Controller {
             NewGlowCmdAvailEvent(new StartCommand(id));
 
             //Force settings to announce themselves
-            if(id == -1) {
-                for(int i = 0; i < glowCount; i += 1) {
-                    settingsManager.getSettings(i).Notify();
-                }
-            } else {
-                settingsManager.getSettings(id).Notify();
+            for(int i = 0; i < glowCount; i += 1) {
+                settingsManager.getSettings(i).Notify();
             }
         }
 
