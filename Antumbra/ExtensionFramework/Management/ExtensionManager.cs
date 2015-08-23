@@ -32,17 +32,21 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
         private ExtensionLibrary Lib;
         private Dictionary<int, ExtensionInstance> Instances;
+        private ExtensionInstance CaptureInstance;
         private PresetBuilder PresetBuilder;
+        private int deviceCount;
         /// <summary>
         /// Constructor - Creates a new ExtensionManager
         /// </summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>
         public ExtensionManager() {
+            deviceCount = 0;
             Lib = new ExtensionLibrary();
             Lib.Update();
             PresetBuilder = new Management.PresetBuilder(Lib);
             Instances = new Dictionary<int, ExtensionInstance>();
+            CaptureInstance = null;
         }
 
         /// <summary>
@@ -50,20 +54,27 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// </summary>
         /// <param name="config"></param>
         public void ConfigurationUpdate(Configurable config) {
-            if(config is DeviceSettings) {
-                DeviceSettings settings = (DeviceSettings)config;
-                try {
-                    Instances[settings.id].ConfigurationUpdate(config);
-                } catch(KeyNotFoundException) {
-                    //
-                }
+            foreach(ExtensionInstance Instance in Instances.Values) {
+                Instance.ConfigurationUpdate(config);
             }
         }
 
         public void SetInstance(int id, MODE mode) {
-            Instances[id].Stop();
-            Instances[id].Dispose();
-            Instances[id] = CreateInstance(id, mode);
+            if(id == -1) {
+                for(int i = 0; i < deviceCount; i += 1) {
+                    SetInstance(i, mode);
+                }
+                return;
+            }
+
+            try {
+                Instances[id].Stop();
+                Instances[id].Dispose();
+            } catch(KeyNotFoundException) {
+                Log("Key " + id + " not found...Creating Instance...");
+            } finally {
+                Instances[id] = CreateInstance(id, mode);
+            }
         }
 
         /// <summary>
@@ -139,6 +150,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// </summary>
         /// <param name="devCount"></param>
         public void ConnectionUpdate(int devCount) {
+            deviceCount = devCount;
             // Different than the current number of instances
             if(devCount != Instances.Count) {
                 // Save and dispose each of the current instances
@@ -274,7 +286,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 return;
             }
 
-            Instances[id].Start();
+            Guid grabber = Instances[id].GetGrabber();
+            if(!grabber.Equals(Guid.Empty)) {
+                if(CaptureInstance == null) {
+                    CaptureInstance = Instances[id];
+                    CaptureInstance.Start();
+                } else {
+                    CaptureInstance.AddScreenProcessorsFromInstance(Instances[id]);
+                }
+            } else {
+                Instances[id].Start();
+            }
         }
 
         public void Stop(int id) {

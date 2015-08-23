@@ -43,20 +43,28 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             this.id = id;
             AttachObserver(LoggerHelper.GetInstance());
             Extensions = extensions;
-            if(Extensions.ActiveDriver != null) {
-                Extensions.ActiveDriver.devId = id;
+            UpdateExtensionsDevId();
+        }
+
+        public Guid GetGrabber() {
+            if(Extensions != null && Extensions.ActiveGrabber != null) {
+                return Extensions.ActiveGrabber.id;
             }
-            if(Extensions.ActiveGrabber != null) {
-                Extensions.ActiveGrabber.devId = id;
+
+            return Guid.Empty;
+        }
+
+        public void AddScreenProcessorsFromInstance(ExtensionInstance InstanceToMerge) {
+            bool restart = false;
+            if(running) {
+                restart = true;
+                Stop();
             }
-            foreach(var extension in Extensions.ActiveProcessors) {
-                extension.devId = id;
-            }
-            foreach(var extension in Extensions.ActiveFilters) {
-                extension.devId = id;
-            }
-            foreach(var extension in Extensions.ActiveNotifiers) {
-                extension.devId = id;
+
+            Extensions.ActiveProcessors.AddRange(InstanceToMerge.Extensions.ActiveProcessors);
+
+            if(restart) {
+                Start();
             }
         }
 
@@ -66,13 +74,11 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <returns>Did it start as expected?</returns>
         public bool Start() {
             try {
+                Extensions.Ready();
                 Extensions.ActiveDriver.AttachColorObserver(this);
                 ObserveCmdsAndLog(Extensions.ActiveDriver);
                 if(!Extensions.ActiveDriver.Start())
                     return false;
-                foreach(var processor in Extensions.ActiveProcessors)
-                    if(!processor.Start())
-                        throw new Exception(FAILED_START_EXCEPTION_PREFIX + processor.ToString());
                 foreach(var filter in Extensions.ActiveFilters)
                     if(!filter.Start())
                         throw new Exception(FAILED_START_EXCEPTION_PREFIX + filter.ToString());
@@ -142,6 +148,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         public void InitActives(ExtensionLibrary lib) {
             if(Extensions != null) {
                 Extensions.Init(lib);
+                UpdateExtensionsDevId();
             }
         }
 
@@ -199,6 +206,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <param name="id"></param>
         /// <param name="index"></param>
         public void NewColorAvail(Color16Bit newColor, int id, long index) {
+            _prevIndex = index;
             if(NewColorAvailEvent != null) {
                 if(Extensions.ActiveFilters.Count > 0) {
                     long r = 0, g = 0, b = 0;
@@ -210,7 +218,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     }
                     newColor = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
                 }
-                NewColorAvailEvent(newColor, id, prevIndex);
+                NewColorAvailEvent(newColor, id, index);
             }
         }
 
@@ -281,6 +289,26 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             if(extension is GlowCommandSender) {
                 GlowCommandSender sender = (GlowCommandSender)extension;
                 sender.AttachObserver(this);
+            }
+        }
+
+        private void UpdateExtensionsDevId() {
+            if(Extensions != null) {
+                if(Extensions.ActiveDriver != null) {
+                    Extensions.ActiveDriver.devId = id;
+                }
+                if(Extensions.ActiveGrabber != null) {
+                    Extensions.ActiveGrabber.devId = id;
+                }
+                foreach(var extension in Extensions.ActiveProcessors) {
+                    extension.devId = id;
+                }
+                foreach(var extension in Extensions.ActiveFilters) {
+                    extension.devId = id;
+                }
+                foreach(var extension in Extensions.ActiveNotifiers) {
+                    extension.devId = id;
+                }
             }
         }
 
