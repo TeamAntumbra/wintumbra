@@ -111,6 +111,7 @@ namespace Antumbra.Glow.ExtensionFramework.Types {
                 foreach(GlowScreenProcessor processor in processors) {
                     if(processor.Start()) {
                         grabber.AttachObserver(processor);
+                        processor.AttachObserver(this);
                     } else {
                         // Stop those started before failing, then report failure to start
                         for(int i = 0; i < processors.IndexOf(processor); i += 1) {
@@ -118,7 +119,6 @@ namespace Antumbra.Glow.ExtensionFramework.Types {
                         }
                         return false;
                     }
-                    processor.AttachObserver(this);
                 }
                 AttemptToAttachSelfToExt(grabber);
                 return grabber.Start();
