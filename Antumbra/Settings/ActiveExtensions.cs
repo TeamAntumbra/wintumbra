@@ -72,7 +72,7 @@ namespace Antumbra.Glow.Settings {
         }
 
         public ActiveExtensions(Guid DriverGuid, Guid GrabberGuid, Guid[] ProcessorGuids,
-            Guid[] FilterGuids, Guid[] NotifierGuids) {
+                                Guid[] FilterGuids, Guid[] NotifierGuids) {
             this._ActiveProcessors = new List<GlowScreenProcessor>();
             this._ActiveFilters = new List<GlowFilter>();
             this._ActiveNotifiers = new List<GlowNotifier>();
@@ -156,15 +156,17 @@ namespace Antumbra.Glow.Settings {
                 ActiveProcessors.Add(library.LookupProcessor(guid));
             }
 
-            if(ActiveDriver is GlowScreenDriverCoupler) {
-                ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessors);
-            }
-
             foreach(Guid guid in FilterGuids) {
                 ActiveFilters.Add(library.LookupFilter(guid));
             }
             foreach(Guid guid in NotifierGuids) {
                 ActiveNotifiers.Add(library.LookupNotifier(guid));
+            }
+        }
+
+        public void Ready() {
+            if(ActiveDriver is GlowScreenDriverCoupler) {
+                ActiveDriver = new GlowScreenDriverCoupler(ActiveGrabber, ActiveProcessors);
             }
         }
 
