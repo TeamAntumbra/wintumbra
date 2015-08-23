@@ -9,24 +9,22 @@ using Antumbra.Glow.Utility;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.Controller {
-    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable {
+    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable, ConnectionEventObserver {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgEvent;
         public delegate void PollingAreaUpdated(int id, int x, int y, int width, int height);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
-        private View.pollingAreaSetter pollingWindow;
-        private Color color;
+        private List<View.pollingAreaSetter> pollingWindows;
         private Rectangle boundRange;
-        public int id { get; private set; }
 
-        public PollingAreaWindowController(int id) {
+        public PollingAreaWindowController() {
             AttachObserver(LoggerHelper.GetInstance());
-            this.id = id;
             int x = int.MaxValue, y = int.MaxValue, width = 0, height = int.MaxValue;
             foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
                 x = x > screen.Bounds.X ? screen.Bounds.X : x;
@@ -35,24 +33,46 @@ namespace Antumbra.Glow.Controller {
                 height = height > screen.Bounds.Height ? screen.Bounds.Height : height;
             }
             boundRange = new Rectangle(x, y, width, height);
-            color = UniqueColorGenerator.GetInstance().GetUniqueColor();
-            pollingWindow = new View.pollingAreaSetter(this.color);
-            pollingWindow.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
+            pollingWindows = new List<View.pollingAreaSetter>();
         }
 
-        public void Show() {
-            pollingWindow.Show();
-            SendCommand(new StopCommand(id));//stop all
-            SendCommand(new StopAndSendColorCommand(id, new Color16Bit(color)));//set to unique color to match its window
+        public void ShowAll() {
+            for(int i = 0; i < pollingWindows.Count; i += 1) {
+                View.pollingAreaSetter window = pollingWindows[i];
+                if(window.IsDisposed) {
+                    window = new View.pollingAreaSetter(window.BackColor, window.id);
+                    pollingWindows[window.id] = window;
+                }
+                window.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
+                window.Show();
+                //Set to unique color to match its window
+                SendCommand(new StopAndSendColorCommand(window.id, new Color16Bit(window.BackColor)));
+            }
         }
 
-        public void SetBounds(int x, int y, int width, int height) {
+        public void SetBounds(int id, int x, int y, int width, int height) {
+            View.pollingAreaSetter pollingWindow = pollingWindows[id];
+            if(pollingWindow.IsDisposed) {
+                pollingWindow = new View.pollingAreaSetter(pollingWindow.BackColor, id);
+                pollingWindows[id] = pollingWindow;
+            }
+
             if(boundRange.Contains(new Rectangle(x, y, width, height))) {
                 MoveWindow(pollingWindow.Handle, x, y, width, height, true);
             } else {
                 Log("Invalid SetBounds parameters passed.\tx: " + x + ", y: " + y +
                     ", width: " + width + ", height: " + height);
                 MoveWindow(pollingWindow.Handle, 200, 200, 500, 500, true);
+            }
+        }
+
+        public void ConnectionUpdate(int devCount) {
+            foreach(View.pollingAreaSetter window in pollingWindows) {
+                window.Dispose();
+            }
+            pollingWindows.Clear();
+            for(int i = 0; i < devCount; i += 1) {
+                pollingWindows.Add(new View.pollingAreaSetter(UniqueColorGenerator.GetInstance().GetUniqueColor(), i));
             }
         }
 
@@ -65,8 +85,10 @@ namespace Antumbra.Glow.Controller {
         }
 
         public void Dispose() {
-            if(pollingWindow != null && !pollingWindow.IsDisposed) {
-                pollingWindow.Dispose();
+            foreach(View.pollingAreaSetter pollingWindow in pollingWindows) {
+                if(!pollingWindow.IsDisposed) {
+                    pollingWindow.Dispose();
+                }
             }
         }
 
@@ -77,19 +99,19 @@ namespace Antumbra.Glow.Controller {
         }
 
         private void UpdatePollingSelectionsEvent(object sender, EventArgs args) {
-            if(sender is System.Windows.Forms.Form) {
-                System.Windows.Forms.Form form = (System.Windows.Forms.Form)sender;
+            if(sender is View.pollingAreaSetter) {
+                View.pollingAreaSetter window = (View.pollingAreaSetter)sender;
                 if(PollingAreaUpdatedEvent != null) {
-                    Log("Polling window " + id + " closed with bounds: " + form.Bounds);
-                    PollingAreaUpdatedEvent(id, form.Location.X, form.Location.Y, form.Width, form.Height);
+                    Log("Polling window " + window.id + " closed with bounds: " + window.Bounds);
+                    PollingAreaUpdatedEvent(window.id, window.Location.X, window.Location.Y, window.Width, window.Height);
                 }
-                UniqueColorGenerator.GetInstance().RetireUniqueColor(form.BackColor);
+                UniqueColorGenerator.GetInstance().RetireUniqueColor(window.BackColor);
             }
         }
 
         private void Log(string msg) {
             if(NewLogMsgEvent != null) {
-                NewLogMsgEvent("PollingAreaWindowController " + id, msg);
+                NewLogMsgEvent("PollingAreaWindowController", msg);
             }
         }
 
