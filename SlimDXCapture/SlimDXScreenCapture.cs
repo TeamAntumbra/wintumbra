@@ -22,7 +22,7 @@ namespace SlimDXCapture
     [Export(typeof(GlowExtension))]
     public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
     {
-        public delegate void NewScreenAvail(Bitmap screen, EventArgs args);
+        public delegate void NewScreenAvail(int[,] pixels, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -178,7 +178,9 @@ namespace SlimDXCapture
             while (this.IsRunning) {
                 Bitmap result = CaptureScreen(FindForegroundPrcs());
                 if (NewScreenAvailEvent != null && result != null) {
-                    NewScreenAvailEvent(result, EventArgs.Empty);
+                    using(FastBitmap fb = result.FastLock()) {
+                        NewScreenAvailEvent(fb.DataArray, EventArgs.Empty);
+                    }
                     result.Dispose();
                 }
                 Thread.Sleep(captureThrottle);

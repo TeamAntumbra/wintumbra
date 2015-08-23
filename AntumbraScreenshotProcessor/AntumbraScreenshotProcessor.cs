@@ -112,20 +112,39 @@ namespace AntumbraScreenshotProcessor
             return new Color16Bit(col);
         }
 
+        private Color16Bit Process(int[,] pixels) {
+            int r = 0;
+            int g = 0;
+            int b = 0;
+
+            for(int row = captureRegion.Left; row < captureRegion.Right; row += 1) {
+                for(int col = captureRegion.Top; col < captureRegion.Bottom; col += 1) {
+                    Color pixel = Color.FromArgb(pixels[row, col]);
+                    r += pixel.R;
+                    g += pixel.G;
+                    b += pixel.B;
+                }
+            }
+
+            int size = captureRegion.Width * captureRegion.Height;
+
+            byte red, green, blue;
+            red = (byte)((double)r / size);
+            green = (byte)((double)g / size);
+            blue = (byte)((double)b / size);
+            Color color = Color.FromArgb(red, green, blue);
+            return new Color16Bit(color);
+        }
+
         public override void AttachObserver(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override void NewBitmapAvail(Bitmap bm, EventArgs args)
+        public override void NewBitmapAvail(int[,] pixels, EventArgs args)
         {
             try {
-                using (FastBitmap fb = bm.FastLock()) {
-                    using (FastBitmap cropped = fb.GetRegion(captureRegion)) {
-                        cropped.Lock();
-                        NewColorAvailEvent(Process(fb), deviceId, index++);
-                    }
-                }
+                NewColorAvailEvent(Process(pixels), devId, index++);
             }
             catch (Exception ex) {
                 //TODO log ex
