@@ -12,9 +12,12 @@ using Antumbra.Glow.Settings;
 namespace Antumbra.Glow.View {
     public partial class pollingAreaSetter : Form {
         public event EventHandler formClosingEvent;
-        public pollingAreaSetter(Color back) {
+        public int id { get; private set; }
+
+        public pollingAreaSetter(Color BackColor, int id) {
             InitializeComponent();
-            this.BackColor = back;
+            this.BackColor = BackColor;
+            this.id = id;
             this.Refresh();
         }
 
