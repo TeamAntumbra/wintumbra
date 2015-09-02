@@ -113,11 +113,23 @@ namespace Antumbra.Glow.Observer.Bitmaps {
                     unlockAfter = true;
                 }
 
-                int[,] grid = new int[_bitmapData.Width, _bitmapData.Height];
-                for(var y = 0; y < _bitmapData.Height; y += 1) {
+                int outWidth = _bitmapData.Width / 4;
+                int outHeight = _bitmapData.Height / 4;
+                int[,] grid = new int[outWidth, outHeight];
+                int destX = 0, destY = 0;
 
-                    for(var x = 0; x < _bitmapData.Width; x += 1) {
-                        grid[x, y] = GetPixelInt(x, y);
+                for(int y = 0; y < _bitmapData.Height; y += 4) {
+                    for(int x = 0; x < _bitmapData.Width; x += 4) { //NOTE: this code currently skips 4 pixels in each direction and returns an array
+                        grid[destX, destY] = GetPixelInt(x, y);     //      of the non-skipped pixels
+                        destX += 1;
+                        if(destX == outWidth) {
+                            break;
+                        }
+                    }
+                    destX = 0;
+                    destY += 1;
+                    if(destY == outHeight) {
+                        break;
                     }
                 }
 

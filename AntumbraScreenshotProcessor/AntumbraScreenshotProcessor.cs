@@ -96,10 +96,10 @@ namespace AntumbraScreenshotProcessor
             int b = 0;
             int size = 0;
 
-            for(int row = captureRegion.Left; row < captureRegion.Right; row += 1) {
-                for(int col = captureRegion.Top; col < captureRegion.Bottom; col += 1) {
-                    Color pixel = Color.FromArgb(pixels[row, col]);
-                    r += pixel.R;
+            for(int row = captureRegion.Left / 4; row < captureRegion.Right / 4; row += 1) {
+                for(int col = captureRegion.Top / 4; col < captureRegion.Bottom / 4; col += 1) {//This accounts for a screen shot data array which
+                    Color pixel = Color.FromArgb(pixels[row, col]);                             //contains the original screens pixel info with 4
+                    r += pixel.R;                                                               //pixels skipped in each direction (x, y)
                     g += pixel.G;
                     b += pixel.B;
                     size += 1;
