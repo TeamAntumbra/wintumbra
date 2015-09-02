@@ -33,6 +33,16 @@ namespace Antumbra.Glow.Observer.Colors {
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="color"></param>
+        public Color16Bit(Color16Bit color) {
+            this.red = color.red;
+            this.green = color.green;
+            this.blue = color.blue;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="r">Red value</param>
         /// <param name="g">Green value</param>
         /// <param name="b">Blue value</param>
