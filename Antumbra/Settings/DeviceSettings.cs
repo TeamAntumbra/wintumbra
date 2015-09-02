@@ -59,13 +59,13 @@ namespace Antumbra.Glow.Settings {
             boundWidth = 0;
             boundHeight = 0;
             stepSleep = 0;
-            captureThrottle = 00;
+            captureThrottle = 20;
             redBias = 0;
             greenBias = 0;
             blueBias = 0;
             maxBrightness = 1.0;
             weightingEnabled = true;
-            newColorWeight = 0.05;
+            newColorWeight = 0.15;
             Notify();
         }
 
@@ -87,11 +87,11 @@ namespace Antumbra.Glow.Settings {
                 redBias = loaded.redBias;
                 greenBias = loaded.greenBias;
                 blueBias = loaded.blueBias;
-                captureThrottle = 10;//loaded.captureThrottle;
+                captureThrottle = loaded.captureThrottle;
                 maxBrightness = loaded.maxBrightness;
-                weightingEnabled = false;// loaded.weightingEnabled;
-                newColorWeight = 0.35;//loaded.newColorWeight;
-                stepSleep = 0;//loaded.stepSleep;
+                weightingEnabled = loaded.weightingEnabled;
+                newColorWeight = loaded.newColorWeight;
+                stepSleep = loaded.stepSleep;
             }
         }
 
