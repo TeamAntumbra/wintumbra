@@ -15,12 +15,16 @@ namespace Antumbra.Glow.Connector {
         public delegate void NewColor(Color16Bit color, int id, long index);
         public event NewColor NewColorAvailEvent;
 
+        private Color16Bit Black;
         private Dictionary<int, OutputSettings> AllDeviceSettings;
         private Dictionary<int, long> OutputIndexes;
         public PreOutputProcessor() {
             AttachObserver(LoggerHelper.GetInstance());
             AllDeviceSettings = new Dictionary<int, OutputSettings>();
             OutputIndexes = new Dictionary<int, long>();
+            Black.red = 0;
+            Black.green = 0;
+            Black.blue = 0;
         }
 
         public void ConfigurationUpdate(Configurable config) {
@@ -61,8 +65,12 @@ namespace Antumbra.Glow.Connector {
                 Log("Color recieved out of order! Color BLOCKED! Target ID: " + id +
                     " with index " + index + " and last index " + prevIndex);
                 return;
-
             }
+
+            if(Color16BitUtil.GetAvgBrightness(newCol) < 50) {
+                NewColorAvailEvent(Black, id, index);
+            }
+
             // Either first run or valid index
             int red = newCol.red;
             int green = newCol.green;
