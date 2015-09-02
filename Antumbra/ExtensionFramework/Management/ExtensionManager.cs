@@ -68,7 +68,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             }
 
             try {
-                Instances[id].Stop();
+                Stop(id);
                 Instances[id].Dispose();
             } catch(KeyNotFoundException) {
                 Log("Key " + id + " not found...Creating Instance...");
@@ -305,6 +305,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     Stop(i);
                 }
                 return;
+            }
+
+            if(Instances[id].Equals(CaptureInstance)) {
+                CaptureInstance = null;
             }
 
             Instances[id].Stop();
