@@ -90,32 +90,11 @@ namespace AntumbraScreenshotProcessor
             return new AntumbraScreenshotProcessor();
         }
 
-        private Color16Bit Process(FastBitmap bm)
-        {
-            int total = 0;
-            long[] colors = new long[] { 0, 0, 0 };
-            int skip = bm.Width * bm.Height / 50000;
-            for (int x = 0; x < bm.Width; x += skip) {
-                for (int y = 0; y < bm.Height; y += skip) {
-                    Color pixel = bm.GetPixel(x, y);
-                    colors[0] += pixel.R;
-                    colors[1] += pixel.G;
-                    colors[2] += pixel.B;
-                    total += 1;
-                }
-            }
-            byte red, green, blue;
-            red = (byte)((double)colors[0] / total);
-            green = (byte)((double)colors[1] / total);
-            blue = (byte)((double)colors[2] / total);
-            Color col = Color.FromArgb(red, green, blue);
-            return new Color16Bit(col);
-        }
-
         private Color16Bit Process(int[,] pixels) {
             int r = 0;
             int g = 0;
             int b = 0;
+            int size = 0;
 
             for(int row = captureRegion.Left; row < captureRegion.Right; row += 1) {
                 for(int col = captureRegion.Top; col < captureRegion.Bottom; col += 1) {
@@ -123,10 +102,9 @@ namespace AntumbraScreenshotProcessor
                     r += pixel.R;
                     g += pixel.G;
                     b += pixel.B;
+                    size += 1;
                 }
             }
-
-            int size = captureRegion.Width * captureRegion.Height;
 
             byte red, green, blue;
             red = (byte)((double)r / size);
