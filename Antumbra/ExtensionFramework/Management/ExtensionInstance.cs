@@ -4,6 +4,7 @@ using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.Saving;
 using Antumbra.Glow.Settings;
+using Antumbra.Glow.Utility;
 using System;
 
 namespace Antumbra.Glow.ExtensionFramework.Management {
@@ -33,6 +34,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         private ActiveExtensions Extensions;
         private int id;
         private long _prevIndex;
+        private FPSCalc FPSCalculator;
 
         /// <summary>
         /// Constructor
@@ -40,6 +42,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <param name="id"></param>
         /// <param name="extensions"></param>
         public ExtensionInstance(int id, ActiveExtensions extensions) {
+            FPSCalculator = new FPSCalc();
             this.id = id;
             AttachObserver(LoggerHelper.GetInstance());
             Extensions = extensions;
@@ -74,6 +77,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <returns>Did it start as expected?</returns>
         public bool Start() {
             try {
+                Log("Starting...");
                 Extensions.Ready();
                 Extensions.ActiveDriver.AttachColorObserver(this);
                 ObserveCmdsAndLog(Extensions.ActiveDriver);
@@ -100,6 +104,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <returns>Did it stop as expected?</returns>
         public bool Stop() {
             try {
+                Log("Stopping...");
                 bool result = true;
                 prevIndex = long.MinValue;
                 if(Extensions != null) {
@@ -174,6 +179,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 }
 
                 DeviceSettings settings = (DeviceSettings)config;
+
                 if(Extensions.ActiveDriver != null) {
                     Extensions.ActiveDriver.stepSleep = settings.stepSleep;
                     Extensions.ActiveDriver.weighted = settings.weightingEnabled;
@@ -196,6 +202,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 if(wasRunning) {
                     Start();
                 }
+
             }
         }
 
@@ -212,13 +219,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     long r = 0, g = 0, b = 0;
                     int i;
                     for(i = 0; i < Extensions.ActiveFilters.Count; i += 1) {
+                        newColor = Extensions.ActiveFilters[i].Filter(newColor);
                         r += newColor.red;
                         g += newColor.green;
                         b += newColor.blue;
                     }
                     newColor = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
                 }
+
                 NewColorAvailEvent(newColor, id, index);
+                FPSCalculator.Tick();
+                Console.WriteLine(FPSCalculator.FPS);
             }
         }
 
