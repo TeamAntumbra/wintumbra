@@ -1,4 +1,6 @@
 ﻿/*
+    Based off work under the following license...
+
     The MIT License (MIT)
     
     Copyright (c) 2014 Luiz Fernando Silva
@@ -168,7 +170,7 @@ namespace Antumbra.Glow.Observer.Bitmaps {
                 throw new InvalidOperationException("Unlock must be called before a Lock operation");
             }
 
-            return Lock(ImageLockMode.ReadWrite);
+            return Lock(ImageLockMode.ReadOnly);
         }
 
         /// <summary>
