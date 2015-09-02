@@ -11,16 +11,18 @@ using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Settings;
 
 namespace Antumbra.Glow.Controller {
     public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable, ConnectionEventObserver {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgEvent;
-        public delegate void PollingAreaUpdated(int id, int x, int y, int width, int height);
+        public delegate void PollingAreaUpdated(Dictionary<int, Settings.SettingsDelta> PollingAreaChanges);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
         private List<View.pollingAreaSetter> pollingWindows;
+        private Dictionary<int, SettingsDelta> PollingAreaChanges;
         private Rectangle boundRange;
 
         public PollingAreaWindowController() {
@@ -34,6 +36,7 @@ namespace Antumbra.Glow.Controller {
             }
             boundRange = new Rectangle(x, y, width, height);
             pollingWindows = new List<View.pollingAreaSetter>();
+            PollingAreaChanges = new Dictionary<int, Settings.SettingsDelta>();
         }
 
         public void ShowAll() {
@@ -92,9 +95,25 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
+        private bool AllClosed(int excludeId) {
+            foreach(var window in pollingWindows) {
+                if(window.Visible && window.id != excludeId) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void SendCommand(GlowCommand cmd) {
             if(NewGlowCommandAvailEvent != null) {
                 NewGlowCommandAvailEvent(cmd);
+            }
+        }
+
+        private void SendPollingUpdatesEvent(int excludeId) {
+            if(AllClosed(excludeId) && PollingAreaUpdatedEvent != null) {
+                PollingAreaUpdatedEvent(PollingAreaChanges);
+                PollingAreaChanges.Clear();
             }
         }
 
@@ -103,7 +122,13 @@ namespace Antumbra.Glow.Controller {
                 View.pollingAreaSetter window = (View.pollingAreaSetter)sender;
                 if(PollingAreaUpdatedEvent != null) {
                     Log("Polling window " + window.id + " closed with bounds: " + window.Bounds);
-                    PollingAreaUpdatedEvent(window.id, window.Location.X, window.Location.Y, window.Width, window.Height);
+                    SettingsDelta Delta = new SettingsDelta();
+                    Delta.changes[SettingValue.X] = window.Bounds.X;
+                    Delta.changes[SettingValue.Y] = window.Bounds.Y;
+                    Delta.changes[SettingValue.WIDTH] = window.Bounds.Width;
+                    Delta.changes[SettingValue.HEIGHT] = window.Bounds.Height;
+                    PollingAreaChanges.Add(window.id, Delta);
+                    SendPollingUpdatesEvent(window.id);
                 }
                 UniqueColorGenerator.GetInstance().RetireUniqueColor(window.BackColor);
             }

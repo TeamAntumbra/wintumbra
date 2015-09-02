@@ -156,13 +156,10 @@ namespace Antumbra.Glow.Controller {
             pollingWindowController.ShowAll();
         }
 
-        private void UpdatePollingSelection(int id, int x, int y, int width, int height) {
-            SettingsDelta Delta = new SettingsDelta();
-            Delta.changes[SettingValue.X] = x;
-            Delta.changes[SettingValue.Y] = y;
-            Delta.changes[SettingValue.WIDTH] = width;
-            Delta.changes[SettingValue.HEIGHT] = height;
-            settingsManager.getSettings(id).ApplyChanges(Delta);
+        private void UpdatePollingSelection(Dictionary<int, SettingsDelta> PollingAreaChanges) {
+            foreach(KeyValuePair<int, SettingsDelta> KeyValue in PollingAreaChanges) {
+                settingsManager.getSettings(KeyValue.Key).ApplyChanges(KeyValue.Value);
+            }
             settingsManager.UpdateBoundingBox();
         }
 
