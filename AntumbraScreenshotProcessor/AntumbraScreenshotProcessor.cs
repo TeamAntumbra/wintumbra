@@ -111,7 +111,7 @@ namespace AntumbraScreenshotProcessor
             green = (byte)((double)g / size);
             blue = (byte)((double)b / size);
             Color color = Color.FromArgb(red, green, blue);
-            return new Color16Bit(color);
+            return Color16BitUtil.FromRGBColor(color);
         }
 
         public override void AttachObserver(AntumbraColorObserver observer)

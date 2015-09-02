@@ -224,7 +224,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                         g += newColor.green;
                         b += newColor.blue;
                     }
-                    newColor = new Color16Bit(Convert.ToUInt16(r / i), Convert.ToUInt16(g / i), Convert.ToUInt16(b / i));
+                    newColor.red = Convert.ToUInt16(r / i);
+                    newColor.green = Convert.ToUInt16(g / i);
+                    newColor.blue = Convert.ToUInt16(b / i);
                 }
 
                 NewColorAvailEvent(newColor, id, index);

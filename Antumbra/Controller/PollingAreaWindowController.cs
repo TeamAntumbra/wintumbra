@@ -49,7 +49,7 @@ namespace Antumbra.Glow.Controller {
                 window.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
                 window.Show();
                 //Set to unique color to match its window
-                SendCommand(new StopAndSendColorCommand(window.id, new Color16Bit(window.BackColor)));
+                SendCommand(new StopAndSendColorCommand(window.id, Color16BitUtil.FromRGBColor(window.BackColor)));
             }
         }
 

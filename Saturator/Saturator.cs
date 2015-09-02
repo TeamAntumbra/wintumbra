@@ -78,7 +78,7 @@ namespace Saturator
             // Too dark to saturate with good results
             if (origColor.red < 5000 && origColor.green < 5000 && origColor.blue < 5000)
                 return origColor;
-            HslColor boringHSL = new HslColor(origColor.ToRGBColor());
+            HslColor boringHSL = new HslColor(Color16BitUtil.ToRGBColor(origColor));
             double satAmnt = (double)Properties.Settings.Default.saturationAmount;
             double diff = Math.Abs(.5 - boringHSL.L);
             int dir = boringHSL.L > .5 ? -1 : 1;
@@ -86,7 +86,7 @@ namespace Saturator
                 boringHSL.L = .5;
             else
                 boringHSL.L += dir * satAmnt;
-            return new Color16Bit(boringHSL.ToRgbColor());
+            return Color16BitUtil.FromRGBColor(boringHSL.ToRgbColor());
         }
 
         public override bool IsRunning

@@ -45,7 +45,10 @@ namespace Antumbra.Glow.Controller {
         public MainWindowController(string productVersion, EventHandler quitHandler) {
             id = -1;//Add drop down for selecting a single or all devices for settings control
             disposables = new List<IDisposable>();
-            controlColor = new Color16Bit(new Utility.HslColor(0, 0, 0.5).ToRgbColor());
+
+            controlColor.red = 0;
+            controlColor.green = 0;
+            controlColor.blue = 0;
 
             AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
             // Create Manager instances
@@ -115,7 +118,7 @@ namespace Antumbra.Glow.Controller {
         }
 
         public void ResendManualColor(int id) {
-            NewGlowCmdAvailEvent(new SoftSendColorCommand(id, new Color16Bit(window.colorWheel.HslColor.ToRgbColor())));
+            NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(window.colorWheel.HslColor.ToRgbColor())));
         }
 
         private void throttleBarValueChanged(object sender, EventArgs args) {
@@ -219,7 +222,7 @@ namespace Antumbra.Glow.Controller {
         public void colorWheelColorChanged(object sender, EventArgs args) {
             if(sender is Utility.HslColor) {
                 Utility.HslColor col = (Utility.HslColor)sender;
-                Color16Bit manualColor = new Color16Bit(col.ToRgbColor());
+                Color16Bit manualColor = Color16BitUtil.FromRGBColor(col.ToRgbColor());
                 NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, manualColor));
             }
         }

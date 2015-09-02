@@ -68,15 +68,15 @@ namespace Antumbra.Glow.Connector {
             int green = newCol.green;
             int blue = newCol.blue;
             // White balance
-            if(newCol.GetAvgBrightness() > settings.whiteBalanceMin) {
+            if(Color16BitUtil.GetAvgBrightness(newCol) > settings.whiteBalanceMin) {
                 red += settings.redBias;
                 green += settings.greenBias;
                 blue += settings.blueBias;
             }
-            newCol = Color16Bit.FunnelIntoColor(red, green, blue);
+            newCol = Color16BitUtil.FunnelIntoColor(red, green, blue);
             // Scale brightness
             try {
-                newCol.ScaleColor(settings.MaxBrightness);
+                Color16BitUtil.ScaleColor(newCol, settings.MaxBrightness);
             } catch(ArgumentException ex) {
                 Log(ex.Message + '\n' + ex.StackTrace);
             }

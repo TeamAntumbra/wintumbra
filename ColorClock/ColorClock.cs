@@ -151,7 +151,7 @@ namespace ColorClock
             else//middle 8ths
                 hsv[2] = 1;
             int[] values = HSVRGGConverter.HSVToRGB(hsv[0], hsv[1], hsv[2]);
-            return new Color16Bit(System.Drawing.Color.FromArgb(values[0], values[1], values[2]));
+            return Color16BitUtil.FromRGBColor(System.Drawing.Color.FromArgb(values[0], values[1], values[2]));
         }
     }
 }

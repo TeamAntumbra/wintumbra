@@ -172,7 +172,11 @@ namespace FluxCompanion
             UInt16 r = Convert.ToUInt16(red);
             UInt16 g = Convert.ToUInt16(green);
             UInt16 b = Convert.ToUInt16(blue);
-            return new Color16Bit(r, g, b);
+            Color16Bit result;
+            result.red = r;
+            result.green = g;
+            result.blue = b;
+            return result;
         }
 
         public override bool Stop()

@@ -58,8 +58,8 @@ namespace Antumbra.Glow.Settings {
             boundY = 0;
             boundWidth = 0;
             boundHeight = 0;
-            stepSleep = 1;
-            captureThrottle = 100;
+            stepSleep = 0;
+            captureThrottle = 00;
             redBias = 0;
             greenBias = 0;
             blueBias = 0;
@@ -76,7 +76,6 @@ namespace Antumbra.Glow.Settings {
         public void Load() {
             DeviceSettings loaded = (DeviceSettings)Saver.GetInstance().Load(DeviceSettings.FILE_NAME_PREFIX + id);
             if(loaded != null) {
-                id = loaded.id;
                 x = loaded.x;
                 y = loaded.y;
                 width = loaded.width;
@@ -88,11 +87,11 @@ namespace Antumbra.Glow.Settings {
                 redBias = loaded.redBias;
                 greenBias = loaded.greenBias;
                 blueBias = loaded.blueBias;
-                captureThrottle = loaded.captureThrottle;
+                captureThrottle = 10;//loaded.captureThrottle;
                 maxBrightness = loaded.maxBrightness;
-                weightingEnabled = loaded.weightingEnabled;
-                newColorWeight = loaded.newColorWeight;
-                stepSleep = loaded.stepSleep;
+                weightingEnabled = false;// loaded.weightingEnabled;
+                newColorWeight = 0.35;//loaded.newColorWeight;
+                stepSleep = 0;//loaded.stepSleep;
             }
         }
 

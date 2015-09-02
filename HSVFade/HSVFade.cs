@@ -92,7 +92,7 @@ namespace HSVFade
                 h %= 360;
                 HslColor col = new HslColor(h, 1, .5);
                 if (NewColorAvailEvent != null) {
-                    NewColorAvailEvent(new Color16Bit(col.ToRgbColor()), deviceId, index++);
+                    NewColorAvailEvent(Color16BitUtil.FromRGBColor(col.ToRgbColor()), deviceId, index++);
                 }
                 if (stepSleep != 0)
                     Thread.Sleep(stepSleep);

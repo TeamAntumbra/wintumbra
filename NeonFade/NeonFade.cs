@@ -131,12 +131,12 @@ namespace NeonFade
         private void Target()
         {
             List<Color16Bit> colors = new List<Color16Bit>();
-            colors.Add(new Color16Bit(Color.Red));
-            colors.Add(new Color16Bit(Color.Teal));
-            colors.Add(new Color16Bit(Color.Blue));
-            colors.Add(new Color16Bit(Color.Yellow));
-            colors.Add(new Color16Bit(Color.Green));
-            colors.Add(new Color16Bit(Color.Purple));
+            colors.Add(Color16BitUtil.FromRGBColor(Color.Red));
+            colors.Add(Color16BitUtil.FromRGBColor(Color.Teal));
+            colors.Add(Color16BitUtil.FromRGBColor(Color.Blue));
+            colors.Add(Color16BitUtil.FromRGBColor(Color.Yellow));
+            colors.Add(Color16BitUtil.FromRGBColor(Color.Green));
+            colors.Add(Color16BitUtil.FromRGBColor(Color.Purple));
             int index = 0;
             Color16Bit prev = new Color16Bit();
             while (running) {

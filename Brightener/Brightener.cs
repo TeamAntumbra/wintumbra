@@ -59,12 +59,12 @@ namespace Brightener
 
         public override Color16Bit Filter(Color16Bit origColor)
         {
-            HslColor hsl = new HslColor(origColor.ToRGBColor());
+            HslColor hsl = new HslColor(Color16BitUtil.ToRGBColor(origColor));
             if (hsl.L > (1.0 - (double)Properties.Settings.Default.amountToLighten))
                 hsl.L = 1.0;
             else
                 hsl.L += (double)Properties.Settings.Default.amountToLighten;
-            return new Color16Bit(hsl.ToRgbColor());
+            return Color16BitUtil.FromRGBColor(hsl.ToRgbColor());
         }
 
         public override bool IsRunning

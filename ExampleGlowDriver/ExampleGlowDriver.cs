@@ -95,7 +95,10 @@ namespace ExampleGlowDriver
             while (this.running) {
                 //do stuff (logic of driver)
                 UInt16 val = Convert.ToUInt16(rnd.Next(UInt16.MaxValue));
-                Color16Bit result = new Color16Bit(val, val, val);
+                Color16Bit result;
+                result.red = val;
+                result.green = val;
+                result.blue = val;
                 //report new color event
                 try {
                     NewColorAvailEvent(result, deviceId, index++);

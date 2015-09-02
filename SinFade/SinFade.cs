@@ -91,7 +91,10 @@ namespace SinFade
             while (running) {
                 double value = Math.Abs(Math.Sin(i) * UInt16.MaxValue);
                 ushort v = Convert.ToUInt16(value);
-                Color16Bit result = new Color16Bit(v, v, v);
+                Color16Bit result;
+                result.red = v;
+                result.green = v;
+                result.blue = v;
                 if(NewColorAvailEvent != null)
                     NewColorAvailEvent(result, deviceId, index++);
                 if (v == 0)
