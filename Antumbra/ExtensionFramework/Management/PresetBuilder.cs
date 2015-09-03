@@ -58,7 +58,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
         public ActiveExtensions GetGameMirrorPreset() {
             Guid[] processors = { ScreenshotProcesor };
-            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, DXGrabber, processors, Empty, Empty);
+            Guid[] filters = { Saturator };
+            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, DXGrabber, processors, filters, Empty);
             result.Init(lib);
             return result;
         }
