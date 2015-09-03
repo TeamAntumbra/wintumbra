@@ -90,28 +90,30 @@ namespace AntumbraScreenshotProcessor
             return new AntumbraScreenshotProcessor();
         }
 
-        private Color16Bit Process(int[,] pixels) {
+        private Color16Bit Process(int[,,] pixels) {
             int r = 0;
             int g = 0;
             int b = 0;
             int size = 0;
 
-            for(int row = captureRegion.Left / 4; row < captureRegion.Right / 4; row += 1) {
-                for(int col = captureRegion.Top / 4; col < captureRegion.Bottom / 4; col += 1) {//This accounts for a screen shot data array which
-                    Color pixel = Color.FromArgb(pixels[row, col]);                             //contains the original screens pixel info with 4
-                    r += pixel.R;                                                               //pixels skipped in each direction (x, y)
-                    g += pixel.G;
-                    b += pixel.B;
-                    size += 1;
+            try {
+                for(int x = captureRegion.Left / 25; x < captureRegion.Right / 25; x += 1) {
+                    for(int y = captureRegion.Top / 25; y < captureRegion.Bottom / 25; y += 1) {
+                        r += pixels[x, y, 0];
+                        g += pixels[x, y, 1];
+                        b += pixels[x, y, 2];
+                        size += 1;
+                    }
                 }
+            } catch(IndexOutOfRangeException e) {
+                Console.WriteLine(e.Message + " " + e.Source);
             }
 
             byte red, green, blue;
             red = (byte)((double)r / size);
             green = (byte)((double)g / size);
             blue = (byte)((double)b / size);
-            Color color = Color.FromArgb(red, green, blue);
-            return Color16BitUtil.FromRGBColor(color);
+            return Color16BitUtil.FunnelIntoColor(red << 8, green << 8, blue << 8);
         }
 
         public override void AttachObserver(AntumbraColorObserver observer)
@@ -119,7 +121,7 @@ namespace AntumbraScreenshotProcessor
             NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override void NewBitmapAvail(int[,] pixels, EventArgs args)
+        public override void NewBitmapAvail(int[,,] pixels, EventArgs args)
         {
             try {
                 NewColorAvailEvent(Process(pixels), devId, index++);

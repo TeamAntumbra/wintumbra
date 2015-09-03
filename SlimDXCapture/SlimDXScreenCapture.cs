@@ -1,41 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SlimDX.Direct3D9;
-using System.Drawing;
-using System.Windows.Forms;
-using Antumbra.Glow.ExtensionFramework;
+﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
-using System.Runtime.InteropServices;
-using System.ComponentModel.Composition;
-using System.Threading;
 using Antumbra.Glow.Observer.Bitmaps;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
-using System.Reflection;
+using SlimDX;
+using SlimDX.Direct3D9;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Drawing;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace SlimDXCapture
 {
     [Export(typeof(GlowExtension))]
-    public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable, ToolbarNotificationSource
+    public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable
     {
-        public delegate void NewScreenAvail(int[,] pixels, EventArgs args);
+        public delegate void NewScreenAvail(int[,,] pixels, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
-        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
-        public event NewToolbarNotif NewToolbarNotifEvent;
 
         private int deviceId;
         private Thread driver;
         private bool running = false;
+        private Device dxDev;
+        private int screensWidth, screensHeight;
 
         public SlimDXScreenCapture()
         {
+            foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
+                screensWidth += screen.Bounds.Width;
+                screensHeight = height > screen.Bounds.Height ? height : screen.Bounds.Height;
+            }
             AttachObserver(LoggerHelper.GetInstance());
+            PresentParameters present_params = new PresentParameters();
+            present_params.Windowed = true;
+            present_params.SwapEffect = SwapEffect.Discard;
+            dxDev = new Device(new Direct3D(), 0, DeviceType.Hardware, IntPtr.Zero, CreateFlags.SoftwareVertexProcessing, present_params);
         }
 
         public override int devId
@@ -55,75 +60,20 @@ namespace SlimDXCapture
             return new SlimDXScreenCapture();
         }
 
-        public Bitmap CaptureScreen(IntPtr hwnd)
-        {
-            Bitmap result = null;
-            List<Bitmap> screens = new List<Bitmap>();
+        private Surface CaptureScreen() {
+            Surface s = Surface.CreateOffscreenPlain(dxDev, screensWidth, screensHeight, Format.A8R8G8B8, Pool.Scratch);
             try {
-                using (Direct3D d3 = new Direct3D()) {
-                    foreach (AdapterInformation adapterInfo in d3.Adapters) {
-                        PresentParameters parameters = new PresentParameters();
-                        parameters.BackBufferFormat = adapterInfo.CurrentDisplayMode.Format;
-                        parameters.BackBufferHeight = adapterInfo.CurrentDisplayMode.Height;
-                        parameters.BackBufferWidth = adapterInfo.CurrentDisplayMode.Width;
-                        parameters.Multisample = SlimDX.Direct3D9.MultisampleType.None;
-                        parameters.SwapEffect = SlimDX.Direct3D9.SwapEffect.Discard;
-                        parameters.DeviceWindowHandle = hwnd;
-                        parameters.PresentationInterval = SlimDX.Direct3D9.PresentInterval.Default;
-                        parameters.FullScreenRefreshRateInHertz = 0;
-                        using (Device d = new Device(d3, adapterInfo.Adapter, DeviceType.Hardware, hwnd, CreateFlags.HardwareVertexProcessing, parameters)) {
-                            using (SlimDX.Direct3D9.Surface surface = SlimDX.Direct3D9.Surface.CreateOffscreenPlain(d, adapterInfo.CurrentDisplayMode.Width, adapterInfo.CurrentDisplayMode.Height, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.SystemMemory)) {
-                                d.GetFrontBufferData(0, surface);
-                                screens.Add(new Bitmap(SlimDX.Direct3D9.Surface.ToStream(surface, SlimDX.Direct3D9.ImageFileFormat.Bmp)));
-                            }
-                        }
-                    }
-                }
+                dxDev.GetFrontBufferData(0, s);
+            } catch(SlimDXException ex) {
+                Log(ex.Message + '\n' + ex.StackTrace);
             }
-            catch (Exception e) {
-                result = null;
-                this.Log(e.StackTrace + '\n' + e.Message);
-            }
-            int newWidth = 0;
-            int newHeight = 0;
-            float xDpi = 0;
-            float yDpi = 0;
-            foreach (Bitmap screen in screens) {
-                newWidth += screen.Width;
-                newHeight = newHeight > screen.Height ? newHeight : screen.Height;
-                xDpi = screen.HorizontalResolution;
-                yDpi = screen.VerticalResolution;
-            }
-            newHeight += 1;
-            result = new Bitmap(newWidth, newHeight);
-            result.SetResolution(xDpi, yDpi);
-            using (Graphics g = Graphics.FromImage(result)) {
-                int drawX = 0;
-                foreach(Bitmap screen in screens) {
-                    g.DrawImage(screen, new Point(drawX, 0));
-                    drawX += screen.Width;
-                }
-            }
-            foreach (Bitmap screen in screens) {
-                screen.Dispose();
-            }
-            return result;
+            return s;
         }
 
         private void Log(String msg)
         {
             if (NewLogMsgEvent != null)
                 NewLogMsgEvent("SlimDXCapture", msg);
-        }
-
-        private IntPtr FindForegroundPrcs()
-        {
-            foreach (Process prc in Process.GetProcesses()) {
-                IntPtr handle = prc.MainWindowHandle;
-                if (NativeMethods.IsWindowInForeground(handle))
-                    return handle;
-            }
-            return IntPtr.Zero;
         }
 
         public override void Dispose()
@@ -176,20 +126,41 @@ namespace SlimDXCapture
         private void target()
         {
             while (this.IsRunning) {
-                Bitmap result = CaptureScreen(FindForegroundPrcs());
-                if (NewScreenAvailEvent != null && result != null) {
-                    using(FastBitmap fb = result.FastLock()) {
-                        NewScreenAvailEvent(fb.DataArray, EventArgs.Empty);
-                    }
-                    result.Dispose();
+                Surface surface = CaptureScreen();
+                if (NewScreenAvailEvent != null && surface != null) {
+                    NewScreenAvailEvent(SurfaceToDataArray(surface), EventArgs.Empty);
+                    surface.Dispose();
                 }
-                Thread.Sleep(captureThrottle);
             }
+        }
+
+        private int[,,] SurfaceToDataArray(Surface surface) {
+            DataRectangle rect = surface.LockRectangle(LockFlags.None);
+            DataStream data = rect.Data;
+            int width = surface.Description.Width;
+            int height = surface.Description.Height;
+            int[,,] result = new int[width / 25, width / 25, 3];
+            int resX = 0, resY = 0;
+
+            for(int x = 25; x < width - 25; x += 25) {
+                for(int y = 25; y < height - 25; y += 25) {
+                    data.Position = (y * width + x) * 4;
+                    byte[] pixel = new byte[4];
+                    data.Read(pixel, 0, 4);
+                    result[resX, resY, 0] = pixel[2];
+                    result[resX, resY, 1] = pixel[1];
+                    result[resX, resY, 2] = pixel[0];
+                    resY += 1;
+                }
+                resY = 0;
+                resX += 1;
+            }
+            surface.UnlockRectangle();
+            return result;
         }
 
         public override bool Start()
         {
-            AnnounceMessage(3000, "The capture plugin is now grabbing content.", 1);
             this.running = true;
             this.driver = new Thread(new ThreadStart(target));
             this.driver.Start();
@@ -229,17 +200,6 @@ namespace SlimDXCapture
 
             [DllImport("user32.dll")]
             internal static extern IntPtr GetForegroundWindow();
-        }
-
-        public void AttachObserver(ToolbarNotificationObserver observer)
-        {
-            this.NewToolbarNotifEvent += observer.NewToolbarNotifAvail;
-        }
-
-        private void AnnounceMessage(int time, string msg, int icon)
-        {
-            if (this.NewToolbarNotifEvent != null)
-                this.NewToolbarNotifEvent(time, "DxScreenCapture", msg, icon);
         }
     }
 }
