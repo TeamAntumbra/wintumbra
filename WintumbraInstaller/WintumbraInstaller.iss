@@ -1,6 +1,6 @@
 [Setup]
 AppName = "Antumbra"
-AppVersion = 0.2.9.1
+AppVersion = 1.0.0.0-RC_0
 AppId = "Wintumbra"
 SetupIconFile = Antumbra.ico
 AppPublisher = "Antumbra Technologies Inc."
