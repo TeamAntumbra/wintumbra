@@ -41,7 +41,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             //add coupler placeholder TODO investigate if needed
             ExtensionBank[typeof(GlowDriver)].Add(new GlowScreenDriverCoupler(null, null));
 
-            DirectoryCatalog catalog = new DirectoryCatalog(EXTENSION_DIR_REL_PATH, "*.glow.dll");
+            DirectoryCatalog catalog;
+            try {
+                catalog = new DirectoryCatalog(EXTENSION_DIR_REL_PATH, "*.glow.dll");
+            } catch(System.IO.DirectoryNotFoundException) {
+                System.IO.Directory.CreateDirectory(EXTENSION_DIR_REL_PATH);
+                catalog = new DirectoryCatalog(EXTENSION_DIR_REL_PATH, "*.glow.dll");
+            }
             container = new CompositionContainer(catalog);
             container.ComposeParts(this);
             container.Dispose();
