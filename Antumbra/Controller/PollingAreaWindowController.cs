@@ -65,7 +65,12 @@ namespace Antumbra.Glow.Controller {
             } else {
                 Log("Invalid SetBounds parameters passed.\tx: " + x + ", y: " + y +
                     ", width: " + width + ", height: " + height);
-                MoveWindow(pollingWindow.Handle, 200, 200, 500, 500, true);
+                x = x < 0 ? 0 : x;
+                y = y < 0 ? 0 : y;
+                width = width > 0 ? width : 500;
+                height = height > 0 ? height : 375;
+                Log("Params funneled to x: " + x + " y: " + y + " width: " + width + " height: " + height);
+                MoveWindow(pollingWindow.Handle, x, y, width, height, true);
             }
         }
 
