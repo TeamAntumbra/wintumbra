@@ -9,7 +9,7 @@ using Antumbra.Glow.Observer.Colors;
 
 namespace Antumbra.Glow.ExtensionFramework.Types {
     public abstract class GlowScreenProcessor : GlowExtension, AntumbraBitmapObserver, AntumbraColorSource {
-        public abstract void NewBitmapAvail(int[,] pixels, EventArgs args);
+        public abstract void NewBitmapAvail(int[,,] pixels, EventArgs args);
         public abstract void AttachObserver(AntumbraColorObserver observer);
         public abstract void SetArea(int x, int y, int width, int height);
         public abstract GlowScreenProcessor Create();

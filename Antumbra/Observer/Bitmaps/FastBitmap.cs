@@ -105,7 +105,7 @@ namespace Antumbra.Glow.Observer.Bitmaps {
         /// </summary>
         /// <exception cref="Exception">The locking operation required to extract the values off from the underlying bitmap failed</exception>
         /// <exception cref="InvalidOperationException">The bitmap is already locked outside this fast bitmap</exception>
-        public int[,] DataArray {
+        public int[,,] DataArray {
             get {
                 bool unlockAfter = false;
                 if(!_locked) {
@@ -115,12 +115,15 @@ namespace Antumbra.Glow.Observer.Bitmaps {
 
                 int outWidth = _bitmapData.Width / 4;
                 int outHeight = _bitmapData.Height / 4;
-                int[,] grid = new int[outWidth, outHeight];
+                int[,,] grid = new int[outWidth, outHeight, 3];
                 int destX = 0, destY = 0;
 
                 for(int y = 0; y < _bitmapData.Height; y += 4) {
-                    for(int x = 0; x < _bitmapData.Width; x += 4) { //NOTE: this code currently skips 4 pixels in each direction and returns an array
-                        grid[destX, destY] = GetPixelInt(x, y);     //      of the non-skipped pixels
+                    for(int x = 0; x < _bitmapData.Width; x += 4) {
+                        Color pixel = GetPixel(x, y);
+                        grid[destX, destY, 0] = pixel.R;
+                        grid[destX, destY, 1] = pixel.G;
+                        grid[destX, destY, 2] = pixel.B;
                         destX += 1;
                         if(destX == outWidth) {
                             break;

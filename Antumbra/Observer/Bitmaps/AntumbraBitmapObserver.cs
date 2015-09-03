@@ -8,6 +8,6 @@ using Antumbra.Glow.Utility;
 
 namespace Antumbra.Glow.Observer.Bitmaps {
     public interface AntumbraBitmapObserver {
-        void NewBitmapAvail(int[,] pixels, EventArgs args);
+        void NewBitmapAvail(int[,,] pixels, EventArgs args);
     }
 }
