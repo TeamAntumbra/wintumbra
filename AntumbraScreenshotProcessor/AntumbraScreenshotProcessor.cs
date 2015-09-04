@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Antumbra.Glow.Observer.Bitmaps;
+using Antumbra.Glow.Observer.ScreenInfo;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
@@ -20,10 +20,31 @@ namespace AntumbraScreenshotProcessor
         public delegate void NewColorAvail(Color16Bit color, int id, long index);
         public event NewColorAvail NewColorAvailEvent;
 
-        private int deviceId, x, y, width, height;
+        private int deviceId, x, y, width, height, min;
         private long index;
         private bool running;
         private Rectangle captureRegion;
+        private List<Rectangle> screenBounds;
+        private readonly object sync = new object();
+
+        public AntumbraScreenshotProcessor() {
+            screenBounds = new List<Rectangle>();
+            min = 0;
+            foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
+                min = min < screen.Bounds.X ? min : screen.Bounds.X;
+                screenBounds.Add(screen.Bounds);
+            }
+
+            min *= -1;
+
+           /* for(int i = 0; i < screenBounds.Count; i += 1) {
+                Rectangle rect = screenBounds[i];
+                rect.X -= min;
+                screenBounds[i] = rect;
+            } Note: related to the TODO below regarding cross display capture zones*/
+
+            //screenBounds.Sort((x,y) => x.X.CompareTo(y.X));
+        }
 
         public override bool IsDefault
         {
@@ -90,23 +111,31 @@ namespace AntumbraScreenshotProcessor
             return new AntumbraScreenshotProcessor();
         }
 
-        private Color16Bit Process(int[,,] pixels) {
+        private Color16Bit Process(List<int[,,]> pixels) {
             int r = 0;
             int g = 0;
             int b = 0;
             int size = 0;
 
-            try {
-                for(int x = captureRegion.Left / 25; x < captureRegion.Right / 25; x += 1) {
-                    for(int y = captureRegion.Top / 25; y < captureRegion.Bottom / 25; y += 1) {
-                        r += pixels[x, y, 0];
-                        g += pixels[x, y, 1];
-                        b += pixels[x, y, 2];
-                        size += 1;
+            foreach(KeyValuePair<int, Rectangle> screenMappedRegion in SplitRegionByScreenBounds(captureRegion)) {
+                Rectangle region = screenMappedRegion.Value;
+                region.X += min;
+                int xPos = 0, yPos = 0;
+                for(int x = region.Left + 25; x < region.Right; x += 25) {
+                    for(int y = region.Top; y < region.Bottom; y += 25) {
+                        try {
+                            r += pixels[screenMappedRegion.Key][xPos, yPos, 0];
+                            g += pixels[screenMappedRegion.Key][xPos, yPos, 1];
+                            b += pixels[screenMappedRegion.Key][xPos, yPos, 2];
+                            yPos += 1;
+                            size += 1;
+                        } catch(IndexOutOfRangeException e) {
+                            Console.WriteLine(e.Message + " " + e.Source);
+                        }
                     }
+                    xPos += 1;
+                    yPos = 0;
                 }
-            } catch(IndexOutOfRangeException e) {
-                Console.WriteLine(e.Message + " " + e.Source);
             }
 
             byte red, green, blue;
@@ -116,19 +145,54 @@ namespace AntumbraScreenshotProcessor
             return Color16BitUtil.FunnelIntoColor(red << 8, green << 8, blue << 8);
         }
 
+        private Dictionary<int, Rectangle> SplitRegionByScreenBounds(Rectangle region) {
+            Dictionary<int, Rectangle> result = new Dictionary<int, Rectangle>();
+            for(int i = 0; i < screenBounds.Count; i += 1) {
+                Rectangle screen = screenBounds[i];
+                if(screen.Contains(region.Location)) {
+                    //Point farX = new Point(region.Location.X + region.Width, 0);
+                    /*if(screen.Contains(farX)) {
+                        result.Add(i, region);
+                    } else {//partially on next screen TODO: finish this to allow capture zone to cross between two displays
+                        try {
+                            if(screenBounds[i + 1].Contains(farX)) {
+                                Rectangle back = new Rectangle(new Point(0, region.Location.Y),
+                                                               new Size(region.Location.X + region.Width - screenBounds[i].Width, region.Height));
+                                result.Add(i + 1, back);
+                            }
+                        } catch(IndexOutOfRangeException) {
+                            // No next screen, window is partially off screen
+                        } finally {*/
+                    int newWidth = screenBounds[i].Width - region.X;
+                    if(newWidth < region.Width / 2) {
+                        region.X = screenBounds[i].Width;
+                        Rectangle back = new Rectangle(region.Location, new Size(region.Width, region.Height));
+                        result.Add(i + 1, back);
+                    } else {
+                        Rectangle front = new Rectangle(region.Location, new Size(newWidth, region.Height));
+                        result.Add(i, front);
+                    }
+                     //   }
+                    //}
+                }
+            }
+            return result;
+        }
+
         public override void AttachObserver(AntumbraColorObserver observer)
         {
             NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override void NewBitmapAvail(int[,,] pixels, EventArgs args)
+        public override void NewScreenInfoAvail(List<int[,,]> pixelArray, EventArgs args)
         {
             try {
-                NewColorAvailEvent(Process(pixels), devId, index++);
+                lock(sync) {
+                    NewColorAvailEvent(Process(pixelArray), devId, index++);
+                }
             }
             catch (Exception ex) {
                 //TODO log ex
-                Stop();
             }
         }
 
