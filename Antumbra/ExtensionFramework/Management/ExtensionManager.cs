@@ -82,7 +82,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// </summary>
         public void SaveAllInstances() {
             for(int i = 0; i < Instances.Count; i += 1) {
-                Instances[i].Save();
+                SaveInstance(i);
             }
         }
 
@@ -244,6 +244,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 return;
             }
 
+            SaveInstance(id);
             StopAndSendColor(new Color16Bit(), id);
         }
 

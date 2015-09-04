@@ -37,9 +37,16 @@ namespace Antumbra.Glow.Observer.Saving {
         public void Save(String fileName, ISerializable serializable) {
             lock(sync) {
                 try {
-                    using(Stream stream = File.Open(path + fileName, FileMode.Create)) {
+                    var file = path + fileName;
+                    if(File.Exists(file)) {
+                        File.Delete(file);
+                    }
+
+                    using(Stream stream = File.Open(file, FileMode.OpenOrCreate, FileAccess.Write)) {
                         BinaryFormatter formatter = new BinaryFormatter();
                         formatter.Serialize(stream, serializable);
+                        stream.Flush();
+                        stream.Close();
                     }
                 } catch(Exception ex) {
                     Log("Saving failed!");
@@ -51,9 +58,12 @@ namespace Antumbra.Glow.Observer.Saving {
         public Object Load(String fileName) {
             lock(sync) {
                 try {
-                    using(Stream stream = File.Open(path + fileName, FileMode.Open)) {
+                    using(Stream stream = File.Open(path + fileName, FileMode.Open, FileAccess.Read)) {
                         BinaryFormatter formatter = new BinaryFormatter();
-                        return formatter.Deserialize(stream);
+                        var result = formatter.Deserialize(stream);
+                        stream.Flush();
+                        stream.Close();
+                        return result;
                     }
                 } catch(Exception ex) {
                     Log("Loading failed!");

@@ -152,12 +152,22 @@ namespace Antumbra.Glow.Settings {
         public void Init(ExtensionFramework.Management.ExtensionLibrary library) {
             ActiveDriver = library.LookupDriver(DriverGuid);
             ActiveGrabber = library.LookupGrabber(GrabberGuid);
+            if(ActiveProcessors == null) {
+                ActiveProcessors = new List<GlowScreenProcessor>();
+            }
             foreach(Guid guid in ProcessorGuids) {
                 ActiveProcessors.Add(library.LookupProcessor(guid));
             }
 
+            if(ActiveFilters == null) {
+                ActiveFilters = new List<GlowFilter>();
+            }
             foreach(Guid guid in FilterGuids) {
                 ActiveFilters.Add(library.LookupFilter(guid));
+            }
+
+            if(ActiveNotifiers == null) {
+                ActiveNotifiers = new List<GlowNotifier>();
             }
             foreach(Guid guid in NotifierGuids) {
                 ActiveNotifiers.Add(library.LookupNotifier(guid));
@@ -178,9 +188,9 @@ namespace Antumbra.Glow.Settings {
         public ActiveExtensions(SerializationInfo info, StreamingContext cntx) {
             DriverGuid = (Guid)info.GetValue("driverGuid", typeof(Guid));
             GrabberGuid = (Guid)info.GetValue("grabberGuid", typeof(Guid));
-            ProcessorGuids = (List<Guid>)info.GetValue("processorGuids", typeof(List<Guid>));
-            FilterGuids = (List<Guid>)info.GetValue("filterGuids", typeof(List<Guid>));
-            NotifierGuids = (List<Guid>)info.GetValue("notifierGuids", typeof(List<Guid>));
+            ProcessorGuids = new List<Guid>((Guid[])info.GetValue("processorGuids", typeof(Guid[])));
+            FilterGuids = new List<Guid>((Guid[])info.GetValue("filterGuids", typeof(Guid[])));
+            NotifierGuids = new List<Guid>((Guid[])info.GetValue("notifierGuids", typeof(Guid[])));
         }
 
         /// <summary>
@@ -195,17 +205,17 @@ namespace Antumbra.Glow.Settings {
             foreach(GlowScreenProcessor prcr in ActiveProcessors) {
                 guids.Add(prcr.id);
             }
-            info.AddValue("processorGuids", guids);
+            info.AddValue("processorGuids", guids.ToArray());
             guids.Clear();
             foreach(GlowFilter filt in ActiveFilters) {
                 guids.Add(filt.id);
             }
-            info.AddValue("filterGuids", guids);
+            info.AddValue("filterGuids", guids.ToArray());
             guids.Clear();
             foreach(GlowNotifier notf in ActiveNotifiers) {
                 guids.Add(notf.id);
             }
-            info.AddValue("notifierGuids", guids);
+            info.AddValue("notifierGuids", guids.ToArray());
         }
     }
 }
