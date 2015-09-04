@@ -18,10 +18,13 @@ namespace Antumbra.Glow.Connector {
         private Color16Bit Black;
         private Dictionary<int, OutputSettings> AllDeviceSettings;
         private Dictionary<int, long> OutputIndexes;
+        private Dictionary<int, Color16Bit> Colors;
+
         public PreOutputProcessor() {
             AttachObserver(LoggerHelper.GetInstance());
             AllDeviceSettings = new Dictionary<int, OutputSettings>();
             OutputIndexes = new Dictionary<int, long>();
+            Colors = new Dictionary<int, Color16Bit>();
             Black.red = 0;
             Black.green = 0;
             Black.blue = 0;
@@ -40,6 +43,8 @@ namespace Antumbra.Glow.Connector {
                                                               + Math.Abs(settings.greenBias)
                                                               + Math.Abs(settings.blueBias)
                                                               / 3));
+                devSettings.weightingEnabled = settings.weightingEnabled;
+                devSettings.newColorWeight = settings.newColorWeight;
 
                 AllDeviceSettings[settings.id] = devSettings;
             }
@@ -49,7 +54,7 @@ namespace Antumbra.Glow.Connector {
             OutputSettings settings;
             if(!AllDeviceSettings.TryGetValue(id, out settings)) {
                 Log("OutputSettings for device not found! Color sent plain. ID: " + id);
-                NewColorAvailEvent(newCol, id, index);
+                AnnounceColor(newCol, id, index);
                 return;
             }
 
@@ -68,7 +73,7 @@ namespace Antumbra.Glow.Connector {
             }
 
             if(Color16BitUtil.GetAvgBrightness(newCol) < 50) {
-                NewColorAvailEvent(Black, id, index);
+                AnnounceColor(Black, id, index);
             }
 
             // Either first run or valid index
@@ -82,13 +87,30 @@ namespace Antumbra.Glow.Connector {
                 blue += settings.blueBias;
             }
             newCol = Color16BitUtil.FunnelIntoColor(red, green, blue);
+
             // Scale brightness
             try {
                 Color16BitUtil.ScaleColor(newCol, settings.MaxBrightness);
             } catch(ArgumentException ex) {
                 Log(ex.Message + '\n' + ex.StackTrace);
             }
-            NewColorAvailEvent(newCol, id, index);
+
+            // Add to weighted average
+            if(settings.weightingEnabled) {
+                Color16Bit prev;
+                if(Colors.TryGetValue(id, out prev)) {
+                    newCol = Utility.Mixer.MixColorPercIn(newCol, prev, settings.newColorWeight);
+                }
+            }
+
+            AnnounceColor(newCol, id, index);
+        }
+
+        private void AnnounceColor(Color16Bit color, int id, long index) {
+            if(NewColorAvailEvent != null) {
+                Colors[id] = color;
+                NewColorAvailEvent(color, id, index);
+            }
         }
 
         public void AttachObserver(LogMsgObserver observer) {
@@ -109,6 +131,8 @@ namespace Antumbra.Glow.Connector {
             public double MaxBrightness;
             public Int16 redBias, greenBias, blueBias;
             public UInt16 whiteBalanceMin;
+            public bool weightingEnabled;
+            public double newColorWeight;
         }
     }
 }
