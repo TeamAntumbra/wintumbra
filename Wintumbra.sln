@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxCompanion", "FluxCompan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleGlowDriver", "ExampleGlowDriver\ExampleGlowDriver.csproj", "{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntumbraScreenGrabber", "AntumbraScreenGrabber\AntumbraScreenGrabber.csproj", "{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatTabControl", "FlatTabControl\FlatTabControl.csproj", "{96002CA1-D295-4ED5-9B08-92346C1BFA18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeonFade", "NeonFade\NeonFade.csproj", "{F6165C6E-E483-49E7-8E70-B7431335A1A7}"
@@ -67,10 +65,6 @@ Global
 		{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}.Debug|x86.Build.0 = Debug|x86
 		{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}.Release|x86.ActiveCfg = Release|x86
 		{1E4D6131-C0B6-4DB2-952C-679EAFF6C43C}.Release|x86.Build.0 = Release|x86
-		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Debug|x86.ActiveCfg = Debug|x86
-		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Debug|x86.Build.0 = Debug|x86
-		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Release|x86.ActiveCfg = Release|x86
-		{C1BAFD07-42D7-494B-BEEA-A3E8390D6864}.Release|x86.Build.0 = Release|x86
 		{96002CA1-D295-4ED5-9B08-92346C1BFA18}.Debug|x86.ActiveCfg = Debug|x86
 		{96002CA1-D295-4ED5-9B08-92346C1BFA18}.Debug|x86.Build.0 = Debug|x86
 		{96002CA1-D295-4ED5-9B08-92346C1BFA18}.Release|x86.ActiveCfg = Release|Any CPU
