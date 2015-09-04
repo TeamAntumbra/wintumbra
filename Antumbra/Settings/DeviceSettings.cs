@@ -65,7 +65,7 @@ namespace Antumbra.Glow.Settings {
             blueBias = 0;
             maxBrightness = 1.0;
             weightingEnabled = true;
-            newColorWeight = 0.15;
+            newColorWeight = 0.20;
             Notify();
         }
 
