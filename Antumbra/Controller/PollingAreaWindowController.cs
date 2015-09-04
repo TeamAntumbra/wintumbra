@@ -65,7 +65,7 @@ namespace Antumbra.Glow.Controller {
             } else {
                 Log("Invalid SetBounds parameters passed.\tx: " + x + ", y: " + y +
                     ", width: " + width + ", height: " + height);
-                x = x < 0 ? 0 : x;
+                x = x < boundRange.X ? boundRange.X : x;
                 y = y < 0 ? 0 : y;
                 width = width > 0 ? width : 500;
                 height = height > 0 ? height : 375;
