@@ -1,6 +1,6 @@
 ﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
-using Antumbra.Glow.Observer.Bitmaps;
+using Antumbra.Glow.Observer.ScreenInfo;
 using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using SlimDX;
@@ -19,7 +19,7 @@ namespace SlimDXCapture
     [Export(typeof(GlowExtension))]
     public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable
     {
-        public delegate void NewScreenAvail(int[,,] pixels, EventArgs args);
+        public delegate void NewScreenAvail(List<int[,,]> pixels, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgEvent;
@@ -27,20 +27,23 @@ namespace SlimDXCapture
         private int deviceId;
         private Thread driver;
         private bool running = false;
-        private Device dxDev;
-        private int screensWidth, screensHeight;
+        private Dictionary<Device, Rectangle> dxDevs;
+        private int screenCount;
+        private readonly object sync = new object();
 
         public SlimDXScreenCapture()
         {
-            foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
-                screensWidth += screen.Bounds.Width;
-                screensHeight = height > screen.Bounds.Height ? height : screen.Bounds.Height;
+            dxDevs = new Dictionary<Device, Rectangle>();
+            screenCount = System.Windows.Forms.Screen.AllScreens.Length;
+            for(int i = 0; i < screenCount; i += 1) {//Note: this order is used throughout this class
+                AttachObserver(LoggerHelper.GetInstance());
+                PresentParameters present_params = new PresentParameters();
+                present_params.Windowed = true;
+                present_params.SwapEffect = SwapEffect.Discard;
+                Rectangle rect = System.Windows.Forms.Screen.AllScreens[i].Bounds;
+                Device dev = new Device(new Direct3D(), i, DeviceType.Hardware, IntPtr.Zero, CreateFlags.SoftwareVertexProcessing, present_params);
+                dxDevs.Add(dev, rect);
             }
-            AttachObserver(LoggerHelper.GetInstance());
-            PresentParameters present_params = new PresentParameters();
-            present_params.Windowed = true;
-            present_params.SwapEffect = SwapEffect.Discard;
-            dxDev = new Device(new Direct3D(), 0, DeviceType.Hardware, IntPtr.Zero, CreateFlags.SoftwareVertexProcessing, present_params);
         }
 
         public override int devId
@@ -60,14 +63,21 @@ namespace SlimDXCapture
             return new SlimDXScreenCapture();
         }
 
-        private Surface CaptureScreen() {
-            Surface s = Surface.CreateOffscreenPlain(dxDev, screensWidth, screensHeight, Format.A8R8G8B8, Pool.Scratch);
-            try {
-                dxDev.GetFrontBufferData(0, s);
-            } catch(SlimDXException ex) {
-                Log(ex.Message + '\n' + ex.StackTrace);
+        private List<Surface> CaptureScreen() {
+            List<Surface> result = new List<Surface>();
+            foreach(KeyValuePair<Device, Rectangle> keyValuePair in dxDevs) {
+                Device dxDev = keyValuePair.Key;
+                Rectangle rect = keyValuePair.Value;
+                Surface s = Surface.CreateOffscreenPlain(dxDev, rect.Width, rect.Height, Format.A8R8G8B8, Pool.Scratch);
+                try {
+                    dxDev.GetFrontBufferData(0, s);
+                } catch(SlimDXException ex) {
+                    Log(ex.Message + '\n' + ex.StackTrace);
+                }
+                result.Add(s);
+                //Bitmap bm = new Bitmap(Surface.ToStream(s, ImageFileFormat.Bmp));
             }
-            return s;
+            return result;
         }
 
         private void Log(String msg)
@@ -100,7 +110,7 @@ namespace SlimDXCapture
 
         public override string Description
         {
-            get { return "A plugin that will capture DirectX content as well as normal content, however at a lower rate due to its process."; }
+            get { return "An all-purpose screen capture plugin."; }//TODO test this statement!
         }
 
         public override string Website
@@ -123,13 +133,28 @@ namespace SlimDXCapture
             get { return false; }
         }
 
-        private void target()
-        {
-            while (this.IsRunning) {
-                Surface surface = CaptureScreen();
-                if (NewScreenAvailEvent != null && surface != null) {
-                    NewScreenAvailEvent(SurfaceToDataArray(surface), EventArgs.Empty);
-                    surface.Dispose();
+        private void target() {
+            while(this.IsRunning) {
+                lock(sync) {
+                    List<Surface> surfaces = CaptureScreen();
+                    List<int[, ,]> dataArrays = new List<int[, ,]>();
+
+                    foreach(Surface surface in surfaces) {
+                        if(surface != null) {
+                            int[, ,] data = SurfaceToDataArray(surface);
+                            dataArrays.Add(data);
+                        }
+                    }
+
+                    if(NewScreenAvailEvent != null) {
+                        NewScreenAvailEvent(dataArrays, EventArgs.Empty);
+                    }
+
+                    foreach(Surface surface in surfaces) {
+                        surface.Dispose();
+                    }
+
+                    surfaces.Clear();
                 }
             }
         }
@@ -139,11 +164,13 @@ namespace SlimDXCapture
             DataStream data = rect.Data;
             int width = surface.Description.Width;
             int height = surface.Description.Height;
-            int[,,] result = new int[width / 25, width / 25, 3];
+            int skipWidth = width / 25;
+            int skipHeight = height / 25;
+            int[,,] result = new int[skipWidth, skipHeight, 3];
             int resX = 0, resY = 0;
 
-            for(int x = 25; x < width - 25; x += 25) {
-                for(int y = 25; y < height - 25; y += 25) {
+            for(int x = 25; x < width; x += 25) {
+                for(int y = 25; y < height; y += 25) {
                     data.Position = (y * width + x) * 4;
                     byte[] pixel = new byte[4];
                     data.Read(pixel, 0, 4);
@@ -180,9 +207,9 @@ namespace SlimDXCapture
             return false;
         }
 
-        public override void AttachObserver(AntumbraBitmapObserver observer)
+        public override void AttachObserver(AntumbraScreenInfoObserver observer)
         {
-            this.NewScreenAvailEvent += observer.NewBitmapAvail;
+            this.NewScreenAvailEvent += observer.NewScreenInfoAvail;
         }
 
         public void AttachObserver(LogMsgObserver observer)
