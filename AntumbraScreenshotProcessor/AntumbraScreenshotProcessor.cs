@@ -121,7 +121,7 @@ namespace AntumbraScreenshotProcessor
                 Rectangle region = screenMappedRegion.Value;
                 region.X += min;
                 int xPos = 0, yPos = 0;
-                for(int x = region.Left + 25; x < region.Right; x += 25) {
+                for(int x = region.Left; x < region.Right; x += 25) {
                     for(int y = region.Top; y < region.Bottom; y += 25) {
                         try {
                             r += pixels[screenMappedRegion.Key][xPos, yPos, 0];
@@ -130,7 +130,7 @@ namespace AntumbraScreenshotProcessor
                             yPos += 1;
                             size += 1;
                         } catch(IndexOutOfRangeException e) {
-                            Console.WriteLine(e.Message + " " + e.Source);
+                            break;
                         }
                     }
                     xPos += 1;
