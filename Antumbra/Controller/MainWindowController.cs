@@ -98,6 +98,8 @@ namespace Antumbra.Glow.Controller {
             this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
             this.window.throttleBar_ValueChange += new EventHandler(throttleBarValueChanged);
+
+            extensionManager.Start(-1);
         }
 
         public void ConnectionUpdate(int devCount) {
