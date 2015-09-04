@@ -195,7 +195,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
                 foreach(var process in Extensions.ActiveProcessors) {
                     if(settings.id == process.devId) {
-                        process.SetArea(settings.x - settings.boundX, settings.y - settings.boundY, settings.width, settings.height);
+                        process.SetArea(settings.x, settings.y, settings.width, settings.height);
                     }
                 }
 
