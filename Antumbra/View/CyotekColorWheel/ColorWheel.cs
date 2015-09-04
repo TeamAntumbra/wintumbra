@@ -885,11 +885,6 @@ namespace Antumbra.Glow.View.CyotekColorWheel
       distance = Math.Pow((Math.Pow(dx, 2) + (Math.Pow(dy, 2))), 0.5);
       saturation = distance / _radius;
 
-      if (distance < 6)
-      {
-        saturation = 0; // snap to center
-      }
-
       if (point.X < _centerPoint.X)
       {
         angle = 180 - angle;

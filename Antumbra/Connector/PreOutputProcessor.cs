@@ -14,6 +14,7 @@ namespace Antumbra.Glow.Connector {
         public event NewLogMsg NewLogMsgAvail;
         public delegate void NewColor(Color16Bit color, int id, long index);
         public event NewColor NewColorAvailEvent;
+        public bool manualMode;
 
         private Color16Bit Black;
         private Dictionary<int, OutputSettings> AllDeviceSettings;
@@ -21,6 +22,7 @@ namespace Antumbra.Glow.Connector {
         private Dictionary<int, Color16Bit> Colors;
 
         public PreOutputProcessor() {
+            manualMode = false;
             AttachObserver(LoggerHelper.GetInstance());
             AllDeviceSettings = new Dictionary<int, OutputSettings>();
             OutputIndexes = new Dictionary<int, long>();
@@ -36,13 +38,11 @@ namespace Antumbra.Glow.Connector {
 
                 OutputSettings devSettings;
                 devSettings.MaxBrightness = settings.maxBrightness;
-                devSettings.redBias = settings.redBias;
-                devSettings.greenBias = settings.greenBias;
-                devSettings.blueBias = settings.blueBias;
-                devSettings.whiteBalanceMin = Convert.ToUInt16((Math.Abs(settings.redBias)
-                                                              + Math.Abs(settings.greenBias)
-                                                              + Math.Abs(settings.blueBias)
-                                                              / 3));
+                devSettings.redBias = Convert.ToInt16(settings.redBias << 8);
+                devSettings.greenBias = Convert.ToInt16(settings.greenBias << 8);
+                devSettings.blueBias = Convert.ToInt16(settings.blueBias << 8);
+                var avgBias = (Math.Abs(settings.redBias) + Math.Abs(settings.greenBias) + Math.Abs(settings.blueBias) / 3);
+                devSettings.whiteBalanceMin = Convert.ToUInt16(avgBias);
                 devSettings.weightingEnabled = settings.weightingEnabled;
                 devSettings.newColorWeight = settings.newColorWeight;
 
@@ -96,7 +96,7 @@ namespace Antumbra.Glow.Connector {
             }
 
             // Add to weighted average
-            if(settings.weightingEnabled) {
+            if(settings.weightingEnabled && !manualMode) {
                 Color16Bit prev;
                 if(Colors.TryGetValue(id, out prev)) {
                     newCol = Utility.Mixer.MixColorPercIn(newCol, prev, settings.newColorWeight);

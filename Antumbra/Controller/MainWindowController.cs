@@ -120,7 +120,12 @@ namespace Antumbra.Glow.Controller {
         }
 
         public void ResendManualColor(int id) {
-            NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(window.colorWheel.HslColor.ToRgbColor())));
+            preOutputProcessor.manualMode = true;
+            if(whiteBalController.IsOpen()) {
+                NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(new Utility.HslColor(0, 0, .5))));
+            } else {
+                NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(window.colorWheel.HslColor.ToRgbColor())));
+            }
         }
 
         private void throttleBarValueChanged(object sender, EventArgs args) {
@@ -133,6 +138,7 @@ namespace Antumbra.Glow.Controller {
                     "White balance cannot be opened because no Glow devices were found.", 2);
                 return;//can't open
             }
+            preOutputProcessor.manualMode = true;
             NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, this.controlColor));
             window.colorWheel.HslColor = new Utility.HslColor(0, 0, .5);//reset selector to center
             window.colorWheel.Enabled = false;//disable main color wheel until color balance window closed
@@ -223,6 +229,7 @@ namespace Antumbra.Glow.Controller {
 
         public void colorWheelColorChanged(object sender, EventArgs args) {
             if(sender is Utility.HslColor) {
+                preOutputProcessor.manualMode = true;
                 Utility.HslColor col = (Utility.HslColor)sender;
                 Color16Bit manualColor = Color16BitUtil.FromRGBColor(col.ToRgbColor());
                 NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, manualColor));
@@ -322,6 +329,7 @@ namespace Antumbra.Glow.Controller {
         private void SendStartCommand(int id) {
             // Start
             NewGlowCmdAvailEvent(new StartCommand(id));
+            preOutputProcessor.manualMode = false;
 
             //Force settings to announce themselves
             for(int i = 0; i < glowCount; i += 1) {

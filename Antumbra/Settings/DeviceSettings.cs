@@ -31,9 +31,9 @@ namespace Antumbra.Glow.Settings {
         public bool weightingEnabled { get; private set; }
         public double newColorWeight { get; private set; }
         public double maxBrightness { get; private set; }
-        public Int16 redBias { get; private set; }
-        public Int16 greenBias { get; private set; }
-        public Int16 blueBias { get; private set; }
+        public byte redBias { get; private set; }
+        public byte greenBias { get; private set; }
+        public byte blueBias { get; private set; }
         public int captureThrottle { get; private set; }
 
         private String fileName;
@@ -125,7 +125,7 @@ namespace Antumbra.Glow.Settings {
             foreach(SettingValue variable in delta.changes.Keys) {
                 switch(variable) {
                     case SettingValue.BLUEBIAS:
-                        blueBias = (Int16)delta.changes[SettingValue.BLUEBIAS];
+                        blueBias = Convert.ToByte(delta.changes[SettingValue.BLUEBIAS]);
                         break;
                     case SettingValue.BOUNDHEIGHT:
                         boundHeight = (int)delta.changes[SettingValue.BOUNDHEIGHT];
@@ -143,7 +143,7 @@ namespace Antumbra.Glow.Settings {
                         captureThrottle = (int)delta.changes[SettingValue.CAPTURETHROTTLE];
                         break;
                     case SettingValue.GREENBIAS:
-                        greenBias = (Int16)delta.changes[SettingValue.GREENBIAS];
+                        greenBias = Convert.ToByte(delta.changes[SettingValue.GREENBIAS]);
                         break;
                     case SettingValue.HEIGHT:
                         height = (int)delta.changes[SettingValue.HEIGHT];
@@ -155,7 +155,7 @@ namespace Antumbra.Glow.Settings {
                         newColorWeight = (double)delta.changes[SettingValue.NEWCOLORWEIGHT];
                         break;
                     case SettingValue.REDBIAS:
-                        redBias = (Int16)delta.changes[SettingValue.REDBIAS];
+                        redBias = Convert.ToByte(delta.changes[SettingValue.REDBIAS]);
                         break;
                     case SettingValue.STEPSLEEP:
                         stepSleep = (int)delta.changes[SettingValue.STEPSLEEP];
@@ -187,9 +187,9 @@ namespace Antumbra.Glow.Settings {
         /// <param name="info"></param>
         /// <param name="cnxt"></param>
         public DeviceSettings(SerializationInfo info, StreamingContext cnxt) {
-            redBias = info.GetInt16("redBias");
-            greenBias = info.GetInt16("greenBias");
-            blueBias = info.GetInt16("blueBias");
+            redBias = info.GetByte("redBias");
+            greenBias = info.GetByte("greenBias");
+            blueBias = info.GetByte("blueBias");
             maxBrightness = info.GetDouble("maxBrightness");
             x = (int)info.GetValue("x", typeof(int));
             y = (int)info.GetValue("y", typeof(int));

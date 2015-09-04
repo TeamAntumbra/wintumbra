@@ -19,6 +19,15 @@ namespace Antumbra.Glow.Controller {
             control = new Utility.HslColor(0, 0, .5).ToRgbColor();
         }
 
+        public bool IsOpen() {
+            foreach(WhiteBalanceWindow window in views.Values) {
+                if(window.Visible) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void ConnectionUpdate(int devCount) {
             DisposeAll();
             for(int i = 0; i < devCount; i += 1) {
@@ -39,16 +48,34 @@ namespace Antumbra.Glow.Controller {
             view.ColorWheelChangedEvent += new WhiteBalanceWindow.ColorWheelChanged(ColorWheelChangedHandler);
             view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
             DeviceSettings settings = settingsManager.getSettings(id);
-            Color newColor = Color.FromArgb(control.R - settings.redBias, control.G - settings.greenBias, control.B - settings.blueBias);
+            int r = control.R - settings.redBias;
+            r = r < 0 ? 0 : r;
+            int g = control.G - settings.greenBias;
+            g = g < 0 ? 0 : g;
+            int b = control.B - settings.blueBias;
+            b = b < 0 ? 0 : b;
+            Color newColor = Color.FromArgb(r, g, b);
             view.SetColor(newColor);
             views[id] = view;
         }
 
         private void ColorWheelChangedHandler(Color newColor, int id) {
             SettingsDelta Delta = new SettingsDelta();
-            Delta.changes[SettingValue.REDBIAS] = Convert.ToInt16(control.R - newColor.R);
-            Delta.changes[SettingValue.GREENBIAS] = Convert.ToInt16(control.G - newColor.G);
-            Delta.changes[SettingValue.BLUEBIAS] = Convert.ToInt16(control.B - newColor.B);
+            int red = newColor.R - control.R;
+            int green = newColor.G - control.G;
+            int blue = newColor.B - control.B;
+            if(red > 0) {
+                red = red >= 128 ? 127 : red;
+                Delta.changes[SettingValue.REDBIAS] = red;
+            }
+            if(green > 0) {
+                green = green >= 128 ? 127 : green;
+                Delta.changes[SettingValue.GREENBIAS] = green;
+            }
+            if(blue > 0) {
+                blue = blue >= 128 ? 127 : blue;
+                Delta.changes[SettingValue.BLUEBIAS] = blue;
+            }
             settingsManager.getSettings(id).ApplyChanges(Delta);
         }
 
