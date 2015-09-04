@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Antumbra.Glow.Utility;
 
-namespace Antumbra.Glow.Observer.Bitmaps {
-    public interface AntumbraBitmapObserver {
-        void NewBitmapAvail(int[,,] pixels, EventArgs args);
+namespace Antumbra.Glow.Observer.ScreenInfo {
+    public interface AntumbraScreenInfoObserver {
+        void NewScreenInfoAvail(List<int[,,]> pixelArrays, EventArgs args);
     }
 }

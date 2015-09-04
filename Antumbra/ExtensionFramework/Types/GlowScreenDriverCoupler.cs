@@ -6,7 +6,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.Observer.Bitmaps;
+using Antumbra.Glow.Observer.ScreenInfo;
 
 namespace Antumbra.Glow.ExtensionFramework.Types {
     public class GlowScreenDriverCoupler : GlowDriver, AntumbraColorObserver, Loggable, LogMsgObserver,

@@ -30,7 +30,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Antumbra.Glow.Observer.Bitmaps {
+namespace Antumbra.Glow.Observer.ScreenInfo {
     /// <summary>
     /// Encapsulates a Bitmap for fast bitmap pixel operations using 32bpp images
     /// </summary>
