@@ -230,8 +230,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 }
 
                 NewColorAvailEvent(newColor, id, index);
-                FPSCalculator.Tick();
-                Console.WriteLine(FPSCalculator.FPS);
+                //FPSCalculator.Tick();
+                //Console.WriteLine(FPSCalculator.FPS);
             }
         }
 
