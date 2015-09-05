@@ -95,7 +95,7 @@ namespace Antumbra.Glow.Controller {
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.quitEventHandler += quitHandler;
             this.window.setPollingBtn_ClickEvent += new EventHandler(setPollingBtnClickHandler);
-            this.window.onOffValueChanged += new EventHandler(OnOffValueChangedHandler);
+            this.window.pwrBtn_ClickEvent += new EventHandler(OnOffValueChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
             this.window.throttleBar_ValueChange += new EventHandler(throttleBarValueChanged);
 

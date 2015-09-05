@@ -24,7 +24,7 @@ namespace Antumbra.Glow.View {
         public event EventHandler customConfigBtn_ClickEvent;
         public event EventHandler quitBtn_ClickEvent;
         public event EventHandler setPollingBtn_ClickEvent;
-        public event EventHandler onOffValueChanged;
+        public event EventHandler pwrBtn_ClickEvent;
         public event EventHandler whiteBalanceBtn_ClickEvent;
         public event EventHandler throttleBar_ValueChange;
         public event EventHandler captureRateBtn_ClickEvent;
@@ -35,12 +35,6 @@ namespace Antumbra.Glow.View {
             this.versionLabel.Text = "v" + this.ProductVersion.ToString();
         }
 
-        public void SetOnSelection(bool value) {
-            if(value)
-                this.onBtn.Checked = true;
-            else
-                this.offBtn.Checked = false;
-        }
         public void SetBrightnessValue(int value) {
             if(brightnessTrackBar.Value != value) {
                 brightnessTrackBar.Value = value;
@@ -130,18 +124,13 @@ namespace Antumbra.Glow.View {
                 setPollingBtn_ClickEvent(sender, e);
         }
 
-        private void onBtn_CheckedChanged(object sender, EventArgs e) {
-            if(onOffValueChanged != null)
-                onOffValueChanged(onBtn.Checked, e);
-        }
-
         private void whiteBalanceBtn_Click(object sender, EventArgs e) {
             if(whiteBalanceBtn_ClickEvent != null)
                 whiteBalanceBtn_ClickEvent(sender, e);
         }
 
         private void throttleBar_ValueChanged(object sender, EventArgs e) {
-            if(throttleBar_ValueChange != null) {
+            if(throttleBar_ValueChange != null && sender is TrackBar) {
                 TrackBar bar = (TrackBar)sender;
                 throttleBar_ValueChange(bar.Value, e);
             }
@@ -150,6 +139,16 @@ namespace Antumbra.Glow.View {
         private void captureRateBtn_Click(object sender, EventArgs e) {
             if(captureRateBtn_ClickEvent != null)
                 captureRateBtn_ClickEvent(sender, e);
+        }
+
+        private void onBtn_Click(object sender, EventArgs e) {
+            if(pwrBtn_ClickEvent != null)
+                pwrBtn_ClickEvent(true, EventArgs.Empty);
+        }
+
+        private void offBtn_Click(object sender, EventArgs e) {
+            if(pwrBtn_ClickEvent != null)
+                pwrBtn_ClickEvent(false, EventArgs.Empty);
         }
     }
 }
