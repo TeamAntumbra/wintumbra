@@ -326,6 +326,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <returns></returns>
         private ExtensionInstance CreateInstance(int id, MODE preset) {
             ActiveExtensions actives;
+            try {
+                Stop(id);
+            } catch(ArgumentOutOfRangeException) { }
             switch(preset) {
                 case MODE.HSV:
                     actives = PresetBuilder.GetHSVFadePreset();

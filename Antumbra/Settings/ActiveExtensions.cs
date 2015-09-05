@@ -183,14 +183,21 @@ namespace Antumbra.Glow.Settings {
         /// </summary>
         /// <param name="library">The ExtensionLibrary</param>
         public void Init(ExtensionFramework.Management.ExtensionLibrary library) {
-            ActiveDriver = library.LookupDriver(DriverGuid);
-            ActiveGrabber = library.LookupGrabber(GrabberGuid);
+            if(!DriverGuid.Equals(Guid.Empty)) {
+                ActiveDriver = library.LookupDriver(DriverGuid);
+                DriverGuid = Guid.Empty;
+            }
+            if(!GrabberGuid.Equals(Guid.Empty)) {
+                ActiveGrabber = library.LookupGrabber(GrabberGuid);
+                GrabberGuid = Guid.Empty;
+            }
             if(ActiveProcessors == null) {
                 ActiveProcessors = new List<GlowScreenProcessor>();
             }
             foreach(Guid guid in ProcessorGuids) {
                 ActiveProcessors.Add(library.LookupProcessor(guid));
             }
+            ProcessorGuids.Clear();
 
             if(ActiveFilters == null) {
                 ActiveFilters = new List<GlowFilter>();
@@ -198,6 +205,7 @@ namespace Antumbra.Glow.Settings {
             foreach(Guid guid in FilterGuids) {
                 ActiveFilters.Add(library.LookupFilter(guid));
             }
+            FilterGuids.Clear();
 
             if(ActiveNotifiers == null) {
                 ActiveNotifiers = new List<GlowNotifier>();
@@ -205,6 +213,7 @@ namespace Antumbra.Glow.Settings {
             foreach(Guid guid in NotifierGuids) {
                 ActiveNotifiers.Add(library.LookupNotifier(guid));
             }
+            NotifierGuids.Clear();
         }
 
         /// <summary>
