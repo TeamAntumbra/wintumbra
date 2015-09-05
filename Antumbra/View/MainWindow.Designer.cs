@@ -132,7 +132,7 @@
             this.fadeTab.Location = new System.Drawing.Point(4, 29);
             this.fadeTab.Name = "fadeTab";
             this.fadeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fadeTab.Size = new System.Drawing.Size(847, 489);
+            this.fadeTab.Size = new System.Drawing.Size(841, 348);
             this.fadeTab.TabIndex = 2;
             this.fadeTab.Text = "Fade";
             // 
@@ -140,7 +140,7 @@
             // 
             this.label1.Location = new System.Drawing.Point(6, 95);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(793, 344);
+            this.label1.Size = new System.Drawing.Size(793, 159);
             this.label1.TabIndex = 9;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -194,7 +194,7 @@
             this.mirrorTab.Location = new System.Drawing.Point(4, 29);
             this.mirrorTab.Name = "mirrorTab";
             this.mirrorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mirrorTab.Size = new System.Drawing.Size(847, 489);
+            this.mirrorTab.Size = new System.Drawing.Size(841, 348);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
@@ -202,7 +202,7 @@
             // 
             this.captureRateBtn.AutoSize = true;
             this.captureRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.captureRateBtn.Location = new System.Drawing.Point(305, 425);
+            this.captureRateBtn.Location = new System.Drawing.Point(303, 301);
             this.captureRateBtn.Name = "captureRateBtn";
             this.captureRateBtn.Size = new System.Drawing.Size(230, 36);
             this.captureRateBtn.TabIndex = 10;
@@ -214,7 +214,7 @@
             // 
             this.setPollingSizeBtn.AutoSize = true;
             this.setPollingSizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setPollingSizeBtn.Location = new System.Drawing.Point(567, 425);
+            this.setPollingSizeBtn.Location = new System.Drawing.Point(550, 301);
             this.setPollingSizeBtn.Name = "setPollingSizeBtn";
             this.setPollingSizeBtn.Size = new System.Drawing.Size(230, 36);
             this.setPollingSizeBtn.TabIndex = 5;
@@ -274,7 +274,7 @@
             // 
             this.modeDescs.Location = new System.Drawing.Point(44, 97);
             this.modeDescs.Name = "modeDescs";
-            this.modeDescs.Size = new System.Drawing.Size(736, 293);
+            this.modeDescs.Size = new System.Drawing.Size(736, 184);
             this.modeDescs.TabIndex = 4;
             this.modeDescs.Text = resources.GetString("modeDescs.Text");
             // 
@@ -282,7 +282,7 @@
             // 
             this.rateDescLabel.AutoSize = true;
             this.rateDescLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.rateDescLabel.Location = new System.Drawing.Point(275, 708);
+            this.rateDescLabel.Location = new System.Drawing.Point(259, 563);
             this.rateDescLabel.Name = "rateDescLabel";
             this.rateDescLabel.Size = new System.Drawing.Size(293, 18);
             this.rateDescLabel.TabIndex = 9;
@@ -292,7 +292,7 @@
             // 
             this.minusLabel.AutoSize = true;
             this.minusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.minusLabel.Location = new System.Drawing.Point(290, 633);
+            this.minusLabel.Location = new System.Drawing.Point(290, 488);
             this.minusLabel.Name = "minusLabel";
             this.minusLabel.Size = new System.Drawing.Size(17, 18);
             this.minusLabel.TabIndex = 8;
@@ -302,7 +302,7 @@
             // 
             this.plusLabel.AutoSize = true;
             this.plusLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.plusLabel.Location = new System.Drawing.Point(493, 633);
+            this.plusLabel.Location = new System.Drawing.Point(493, 488);
             this.plusLabel.Name = "plusLabel";
             this.plusLabel.Size = new System.Drawing.Size(20, 18);
             this.plusLabel.TabIndex = 7;
@@ -310,7 +310,7 @@
             // 
             // throttleBar
             // 
-            this.throttleBar.Location = new System.Drawing.Point(278, 595);
+            this.throttleBar.Location = new System.Drawing.Point(278, 448);
             this.throttleBar.Maximum = 200;
             this.throttleBar.Name = "throttleBar";
             this.throttleBar.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -327,16 +327,16 @@
             this.manualTab.Location = new System.Drawing.Point(4, 29);
             this.manualTab.Name = "manualTab";
             this.manualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manualTab.Size = new System.Drawing.Size(847, 489);
+            this.manualTab.Size = new System.Drawing.Size(841, 348);
             this.manualTab.TabIndex = 0;
             this.manualTab.Text = "Manual";
             // 
             // colorWheel
             // 
             this.colorWheel.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.colorWheel.Location = new System.Drawing.Point(154, 6);
+            this.colorWheel.Location = new System.Drawing.Point(254, 0);
             this.colorWheel.Name = "colorWheel";
-            this.colorWheel.Size = new System.Drawing.Size(544, 477);
+            this.colorWheel.Size = new System.Drawing.Size(332, 364);
             this.colorWheel.TabIndex = 0;
             this.colorWheel.ColorChanged += new System.EventHandler(this.colorWheel_ColorChanged);
             // 
@@ -349,7 +349,7 @@
             this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
             this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.whiteBalanceBtn.Location = new System.Drawing.Point(709, 661);
+            this.whiteBalanceBtn.Location = new System.Drawing.Point(709, 516);
             this.whiteBalanceBtn.Name = "whiteBalanceBtn";
             this.whiteBalanceBtn.Size = new System.Drawing.Size(114, 29);
             this.whiteBalanceBtn.TabIndex = 78;
@@ -362,7 +362,7 @@
             this.brightnessLabel.AutoSize = true;
             this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.brightnessLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.brightnessLabel.Location = new System.Drawing.Point(78, 671);
+            this.brightnessLabel.Location = new System.Drawing.Point(78, 526);
             this.brightnessLabel.Name = "brightnessLabel";
             this.brightnessLabel.Size = new System.Drawing.Size(98, 24);
             this.brightnessLabel.TabIndex = 4;
@@ -370,7 +370,7 @@
             // 
             // brightnessTrackBar
             // 
-            this.brightnessTrackBar.Location = new System.Drawing.Point(30, 593);
+            this.brightnessTrackBar.Location = new System.Drawing.Point(30, 448);
             this.brightnessTrackBar.Maximum = 100;
             this.brightnessTrackBar.Name = "brightnessTrackBar";
             this.brightnessTrackBar.Size = new System.Drawing.Size(244, 56);
@@ -388,7 +388,7 @@
             this.flatTabControl.myBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.flatTabControl.Name = "flatTabControl";
             this.flatTabControl.SelectedIndex = 0;
-            this.flatTabControl.Size = new System.Drawing.Size(855, 522);
+            this.flatTabControl.Size = new System.Drawing.Size(849, 381);
             this.flatTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.flatTabControl.TabIndex = 74;
             // 
@@ -396,7 +396,7 @@
             // 
             this.onBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.onBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.onBtn.Location = new System.Drawing.Point(709, 696);
+            this.onBtn.Location = new System.Drawing.Point(709, 551);
             this.onBtn.Margin = new System.Windows.Forms.Padding(1);
             this.onBtn.Name = "onBtn";
             this.onBtn.Size = new System.Drawing.Size(56, 30);
@@ -409,7 +409,7 @@
             // 
             this.offBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.offBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.offBtn.Location = new System.Drawing.Point(767, 696);
+            this.offBtn.Location = new System.Drawing.Point(767, 551);
             this.offBtn.Margin = new System.Windows.Forms.Padding(1);
             this.offBtn.Name = "offBtn";
             this.offBtn.Size = new System.Drawing.Size(56, 30);
@@ -422,7 +422,7 @@
             // 
             this.plusLabel2.AutoSize = true;
             this.plusLabel2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.plusLabel2.Location = new System.Drawing.Point(241, 633);
+            this.plusLabel2.Location = new System.Drawing.Point(241, 488);
             this.plusLabel2.Name = "plusLabel2";
             this.plusLabel2.Size = new System.Drawing.Size(20, 18);
             this.plusLabel2.TabIndex = 81;
@@ -432,7 +432,7 @@
             // 
             this.minusLabel2.AutoSize = true;
             this.minusLabel2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.minusLabel2.Location = new System.Drawing.Point(39, 633);
+            this.minusLabel2.Location = new System.Drawing.Point(39, 488);
             this.minusLabel2.Name = "minusLabel2";
             this.minusLabel2.Size = new System.Drawing.Size(17, 18);
             this.minusLabel2.TabIndex = 82;
@@ -443,7 +443,7 @@
             this.rateLabel.AutoSize = true;
             this.rateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.rateLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.rateLabel.Location = new System.Drawing.Point(345, 671);
+            this.rateLabel.Location = new System.Drawing.Point(345, 526);
             this.rateLabel.Name = "rateLabel";
             this.rateLabel.Size = new System.Drawing.Size(119, 24);
             this.rateLabel.TabIndex = 83;
@@ -454,7 +454,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.ClientSize = new System.Drawing.Size(852, 749);
+            this.ClientSize = new System.Drawing.Size(852, 594);
             this.Controls.Add(this.rateLabel);
             this.Controls.Add(this.minusLabel2);
             this.Controls.Add(this.plusLabel2);

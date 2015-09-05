@@ -141,12 +141,12 @@ namespace Antumbra.Glow.View {
                 captureRateBtn_ClickEvent(sender, e);
         }
 
-        private void onBtn_Click(object sender, EventArgs e) {
+        protected void onBtn_Click(object sender, EventArgs e) {
             if(pwrBtn_ClickEvent != null)
                 pwrBtn_ClickEvent(true, EventArgs.Empty);
         }
 
-        private void offBtn_Click(object sender, EventArgs e) {
+        protected void offBtn_Click(object sender, EventArgs e) {
             if(pwrBtn_ClickEvent != null)
                 pwrBtn_ClickEvent(false, EventArgs.Empty);
         }
