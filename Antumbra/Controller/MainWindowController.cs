@@ -21,7 +21,8 @@ using Microsoft.Win32;
 
 namespace Antumbra.Glow.Controller {
     public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver,
-                                        ToolbarNotificationObserver, ConfigurationObserver, ConnectionEventObserver {
+                                        ToolbarNotificationObserver, ConfigurationObserver, ConnectionEventObserver,
+                                        IDisposable {
         public const Int32 VID = 0x16D0;
         public const Int32 PID = 0x0A85;
 
@@ -129,7 +130,15 @@ namespace Antumbra.Glow.Controller {
         }
 
         private void throttleBarValueChanged(object sender, EventArgs args) {
-            //TODO
+            if(sender is int) {
+                NewGlowCmdAvailEvent(new StopCommand(-1));
+                int value = (int)sender;
+                SettingsDelta Delta = new SettingsDelta();
+                Delta.changes[SettingValue.CAPTURETHROTTLE] = value;
+                for(var i = 0; i < glowCount; i += 1) {
+                    settingsManager.getSettings(i).ApplyChanges(Delta);
+                }
+            }
         }
 
         private void whiteBalanceBtnClicked(object sender, EventArgs args) {
@@ -291,6 +300,12 @@ namespace Antumbra.Glow.Controller {
             connectionManager.Dispose();
             if(quitEventHandler != null)
                 quitEventHandler(sender, args);
+        }
+
+        public void Dispose() {
+            foreach(IDisposable disposable in disposables) {
+                disposable.Dispose();
+            }
         }
 
         /// <summary>
