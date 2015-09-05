@@ -90,7 +90,7 @@ namespace Antumbra.Glow.Connector {
 
             // Scale brightness
             try {
-                Color16BitUtil.ScaleColor(newCol, settings.MaxBrightness);
+                newCol = Color16BitUtil.ScaleColor(newCol, settings.MaxBrightness);
             } catch(ArgumentException ex) {
                 Log(ex.Message + '\n' + ex.StackTrace);
             }

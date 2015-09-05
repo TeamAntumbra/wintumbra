@@ -46,13 +46,14 @@ namespace Antumbra.Glow.Observer.Colors {
         /// Scales the attributes of a color based on a scaleFactor
         /// </summary>
         /// <param name="scaleFactor">Factor to scale the color with.  Must be between 0 and 1.0 inclusive</param>
-        public static void ScaleColor(Color16Bit color, double scaleFactor) {
+        public static Color16Bit ScaleColor(Color16Bit color, double scaleFactor) {
             if(scaleFactor < 0 || scaleFactor > 1.0) {
                 throw new ArgumentException("Scale Factor out of range! Passed value: " + scaleFactor);
             }
             color.red = Convert.ToUInt16(color.red * scaleFactor);
             color.green = Convert.ToUInt16(color.green * scaleFactor);
             color.blue = Convert.ToUInt16(color.blue * scaleFactor);
+            return color;
         }
 
         /// <summary>
