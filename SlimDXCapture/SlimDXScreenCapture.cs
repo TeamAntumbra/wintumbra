@@ -34,15 +34,20 @@ namespace SlimDXCapture
         public SlimDXScreenCapture()
         {
             dxDevs = new Dictionary<Device, Rectangle>();
-            screenCount = System.Windows.Forms.Screen.AllScreens.Length;
-            for(int i = 0; i < screenCount; i += 1) {//Note: this order is used throughout this class
+            var screens = new List<Rectangle>();
+            foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
+                screens.Add(screen.Bounds);
+            }
+            screens.Sort((x, y) => x.X.CompareTo(y.X));
+
+            for(int i = 0; i < screens.Count; i += 1) {
                 AttachObserver(LoggerHelper.GetInstance());
                 PresentParameters present_params = new PresentParameters();
                 present_params.Windowed = true;
                 present_params.SwapEffect = SwapEffect.Discard;
-                Rectangle rect = System.Windows.Forms.Screen.AllScreens[i].Bounds;
-                Device dev = new Device(new Direct3D(), i, DeviceType.Hardware, IntPtr.Zero, CreateFlags.SoftwareVertexProcessing, present_params);
-                dxDevs.Add(dev, rect);
+                int index = screens.IndexOf(System.Windows.Forms.Screen.AllScreens[i].Bounds);
+                Device dev = new Device(new Direct3D(), index, DeviceType.Hardware, IntPtr.Zero, CreateFlags.SoftwareVertexProcessing, present_params);
+                dxDevs.Add(dev, screens[index]);
             }
         }
 
@@ -75,7 +80,7 @@ namespace SlimDXCapture
                     Log(ex.Message + '\n' + ex.StackTrace);
                 }
                 result.Add(s);
-                //Bitmap bm = new Bitmap(Surface.ToStream(s, ImageFileFormat.Bmp));
+              //  Bitmap bm = new Bitmap(Surface.ToStream(s, ImageFileFormat.Bmp));
             }
             return result;
         }
@@ -90,6 +95,10 @@ namespace SlimDXCapture
         {
             if (driver != null && driver.IsAlive) {
                 driver.Abort();
+            }
+
+            foreach(Device dev in dxDevs.Keys) {
+                dev.Dispose();
             }
         }
 
@@ -150,10 +159,6 @@ namespace SlimDXCapture
                         NewScreenAvailEvent(dataArrays, EventArgs.Empty);
                     }
 
-                    foreach(Surface surface in surfaces) {
-                        surface.Dispose();
-                    }
-
                     surfaces.Clear();
                 }
             }
@@ -183,6 +188,8 @@ namespace SlimDXCapture
                 resX += 1;
             }
             surface.UnlockRectangle();
+            data.Dispose();
+            surface.Dispose();
             return result;
         }
 

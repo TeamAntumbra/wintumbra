@@ -103,7 +103,6 @@ namespace Antumbra.Glow.Controller {
             this.window.mirrorBtn_ClickEvent += new EventHandler(mirrorBtnClicked);
             this.window.augmentBtn_ClickEvent += new EventHandler(augmentBtnClicked);
             this.window.smoothBtn_ClickEvent += new EventHandler(smoothBtnClicked);
-            this.window.gameBtn_ClickEvent += new EventHandler(gameBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.quitEventHandler += quitHandler;
@@ -307,11 +306,6 @@ namespace Antumbra.Glow.Controller {
 
         public void smoothBtnClicked(object sender, EventArgs args) {
             extensionManager.SetInstance(id, ExtensionManager.MODE.SMOOTH);
-            SendStartCommand(id);
-        }
-
-        public void gameBtnClicked(object sender, EventArgs args) {
-            extensionManager.SetInstance(id, ExtensionManager.MODE.GAME);
             SendStartCommand(id);
         }
 

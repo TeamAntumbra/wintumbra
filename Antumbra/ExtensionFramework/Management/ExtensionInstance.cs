@@ -181,12 +181,15 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// <param name="config"></param>
         public void ConfigurationUpdate(Configurable config) {
             if(config is DeviceSettings && Extensions != null) {
+                DeviceSettings settings = (DeviceSettings)config;
+                if(id != settings.id) {
+                    return;
+                }
+
                 bool wasRunning = running;
                 if(wasRunning) {
                     Stop();
                 }
-
-                DeviceSettings settings = (DeviceSettings)config;
 
                 if(Extensions.ActiveDriver != null) {
                     Extensions.ActiveDriver.stepSleep = settings.stepSleep;

@@ -22,8 +22,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             NEON = 2,
             MIRROR = 3,
             SMOOTH = 4,
-            AUGMENT = 5,
-            GAME = 6
+            AUGMENT = 5
         }
 
         public delegate void NewColor(Color16Bit newColor, int id, long index);
@@ -32,7 +31,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         public event NewLogMsg NewLogMsgAvailEvent;
 
         private ExtensionLibrary Lib;
-        private Dictionary<int, ExtensionInstance> Instances;
+        private List<ExtensionInstance> Instances;
         private ExtensionInstance CaptureInstance;
         private PresetBuilder PresetBuilder;
         private int deviceCount;
@@ -45,7 +44,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         public ExtensionManager() {
             deviceCount = 0;
             Lib = new ExtensionLibrary();
-            Instances = new Dictionary<int, ExtensionInstance>();
+            Instances = new List<ExtensionInstance>();
             CaptureInstance = null;
             try {
                 Lib.Update();
@@ -60,17 +59,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// </summary>
         /// <param name="config"></param>
         public void ConfigurationUpdate(Configurable config) {
-            foreach(ExtensionInstance Instance in Instances.Values) {
+            foreach(ExtensionInstance Instance in Instances) {
                 Instance.ConfigurationUpdate(config);
             }
         }
 
         public string getOutRatesMessage() {
             StringBuilder sb = new StringBuilder();
-            foreach(KeyValuePair<int, ExtensionInstance> instancePair in Instances) {
-                sb.Append(instancePair.Key)
+            foreach(ExtensionInstance instance in Instances) {
+                sb.Append(instance.id)
                   .Append(" @ ")
-                  .Append(instancePair.Value.GetOutputRate())
+                  .Append(instance.GetOutputRate())
                   .Append(" FPS.\n");
             }
             return sb.ToString();
@@ -149,9 +148,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 case MODE.AUGMENT:
                     actives = PresetBuilder.GetAugmentMirrorPreset();
                     break;
-                case MODE.GAME:
-                    actives = PresetBuilder.GetGameMirrorPreset();
-                    break;
                 case MODE.EMPTY:
                 default:
                     actives = new ActiveExtensions();
@@ -171,7 +167,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             // Different than the current number of instances
             if(devCount != Instances.Count) {
                 // Save and dispose each of the current instances
-                foreach(ExtensionInstance instance in Instances.Values) {
+                foreach(ExtensionInstance instance in Instances) {
                     instance.Save();
                     instance.Dispose();
                 }
@@ -185,7 +181,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     } catch(System.IO.FileNotFoundException) {
                         Log("ExtensionInstance (id: " + id + ") loading failed (FileNotFound). Using EMPTY preset.");
                     } finally {
-                        Instances[id] = instance;
+                        Instances.Add(instance);
                     }
                 }
             }

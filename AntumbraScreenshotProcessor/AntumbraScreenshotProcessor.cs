@@ -23,11 +23,12 @@ namespace AntumbraScreenshotProcessor
         private int deviceId, x, y, width, height, min;
         private long index;
         private bool running;
-        private Rectangle captureRegion;
+        private Dictionary<int, Rectangle> regions;
         private List<Rectangle> screenBounds;
         private readonly object sync = new object();
 
         public AntumbraScreenshotProcessor() {
+            regions = new Dictionary<int, Rectangle>();
             screenBounds = new List<Rectangle>();
             min = 0;
             foreach(var screen in System.Windows.Forms.Screen.AllScreens) {
@@ -36,14 +37,14 @@ namespace AntumbraScreenshotProcessor
             }
 
             min *= -1;
-
-           /* for(int i = 0; i < screenBounds.Count; i += 1) {
+/*
+            for(int i = 0; i < screenBounds.Count; i += 1) {
                 Rectangle rect = screenBounds[i];
-                rect.X -= min;
+                rect.X += min;
                 screenBounds[i] = rect;
-            } Note: related to the TODO below regarding cross display capture zones*/
+            }*/
 
-            //screenBounds.Sort((x,y) => x.X.CompareTo(y.X));
+            screenBounds.Sort((x,y) => x.X.CompareTo(y.X));
         }
 
         public override bool IsDefault
@@ -111,30 +112,34 @@ namespace AntumbraScreenshotProcessor
             return new AntumbraScreenshotProcessor();
         }
 
-        private Color16Bit Process(List<int[,,]> pixels) {
+        private Color16Bit Process(List<int[,,]> pixels, Dictionary<int, Rectangle> regions) {
             int r = 0;
             int g = 0;
             int b = 0;
             int size = 0;
 
-            foreach(KeyValuePair<int, Rectangle> screenMappedRegion in SplitRegionByScreenBounds(captureRegion)) {
+            foreach(KeyValuePair<int, Rectangle> screenMappedRegion in regions) {
                 Rectangle region = screenMappedRegion.Value;
-                region.X += min;
-                int xPos = 0, yPos = 0;
-                for(int x = region.Left; x < region.Right; x += 25) {
-                    for(int y = region.Top; y < region.Bottom; y += 25) {
+                int posX = Math.Abs(region.X);
+                if(posX > min) {
+                    region.X = posX % min;
+                }
+
+                if(region.X < 0) {
+                    region.X += min;
+                }
+
+                for(int x = region.Left / 25; x < region.Right / 25; x += 1) {
+                    for(int y = region.Top / 25; y < region.Bottom / 25; y += 1) {
                         try {
-                            r += pixels[screenMappedRegion.Key][xPos, yPos, 0];
-                            g += pixels[screenMappedRegion.Key][xPos, yPos, 1];
-                            b += pixels[screenMappedRegion.Key][xPos, yPos, 2];
-                            yPos += 1;
+                            r += pixels[screenMappedRegion.Key][x, y, 0];
+                            g += pixels[screenMappedRegion.Key][x, y, 1];
+                            b += pixels[screenMappedRegion.Key][x, y, 2];
                             size += 1;
                         } catch(IndexOutOfRangeException e) {
                             break;
                         }
                     }
-                    xPos += 1;
-                    yPos = 0;
                 }
             }
 
@@ -149,31 +154,10 @@ namespace AntumbraScreenshotProcessor
             Dictionary<int, Rectangle> result = new Dictionary<int, Rectangle>();
             for(int i = 0; i < screenBounds.Count; i += 1) {
                 Rectangle screen = screenBounds[i];
-                if(screen.Contains(region.Location)) {
-                    //Point farX = new Point(region.Location.X + region.Width, 0);
-                    /*if(screen.Contains(farX)) {
-                        result.Add(i, region);
-                    } else {//partially on next screen TODO: finish this to allow capture zone to cross between two displays
-                        try {
-                            if(screenBounds[i + 1].Contains(farX)) {
-                                Rectangle back = new Rectangle(new Point(0, region.Location.Y),
-                                                               new Size(region.Location.X + region.Width - screenBounds[i].Width, region.Height));
-                                result.Add(i + 1, back);
-                            }
-                        } catch(IndexOutOfRangeException) {
-                            // No next screen, window is partially off screen
-                        } finally {*/
-                    int newWidth = screenBounds[i].Width - region.X;
-                    if(newWidth < region.Width / 2) {
-                        region.X = screenBounds[i].Width;
-                        Rectangle back = new Rectangle(region.Location, new Size(region.Width, region.Height));
-                        result.Add(i + 1, back);
-                    } else {
-                        Rectangle front = new Rectangle(region.Location, new Size(newWidth, region.Height));
-                        result.Add(i, front);
-                    }
-                     //   }
-                    //}
+                if(screen.Contains(region)) { //All on this screen
+                    result.Add(i, region);
+                } else {
+                    result.Add(i, Rectangle.Intersect(screen, region));
                 }
             }
             return result;
@@ -188,7 +172,7 @@ namespace AntumbraScreenshotProcessor
         {
             try {
                 lock(sync) {
-                    NewColorAvailEvent(Process(pixelArray), devId, index++);
+                    NewColorAvailEvent(Process(pixelArray, regions), devId, index++);
                 }
             }
             catch (Exception ex) {
@@ -220,7 +204,8 @@ namespace AntumbraScreenshotProcessor
             this.y = y;
             this.width = width;
             this.height = height;
-            captureRegion = new Rectangle(x, y, width, height);
+            var captureRegion = new Rectangle(x, y, width, height);
+            regions = SplitRegionByScreenBounds(captureRegion);
         }
     }
 }

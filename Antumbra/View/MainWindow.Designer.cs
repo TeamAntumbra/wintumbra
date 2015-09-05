@@ -36,13 +36,12 @@
             this.sinBtn = new System.Windows.Forms.Button();
             this.hsvBtn = new System.Windows.Forms.Button();
             this.mirrorTab = new System.Windows.Forms.TabPage();
-            this.outputRateBtn = new System.Windows.Forms.Button();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
-            this.gameBtn = new System.Windows.Forms.Button();
             this.smoothBtn = new System.Windows.Forms.Button();
             this.augmentBtn = new System.Windows.Forms.Button();
             this.mirrorBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
+            this.outputRateBtn = new System.Windows.Forms.Button();
             this.rateDescLabel = new System.Windows.Forms.Label();
             this.minusLabel = new System.Windows.Forms.Label();
             this.plusLabel = new System.Windows.Forms.Label();
@@ -184,7 +183,6 @@
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.mirrorTab.Controls.Add(this.setPollingSizeBtn);
-            this.mirrorTab.Controls.Add(this.gameBtn);
             this.mirrorTab.Controls.Add(this.smoothBtn);
             this.mirrorTab.Controls.Add(this.augmentBtn);
             this.mirrorTab.Controls.Add(this.mirrorBtn);
@@ -196,19 +194,6 @@
             this.mirrorTab.Size = new System.Drawing.Size(841, 348);
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
-            // 
-            // outputRateBtn
-            // 
-            this.outputRateBtn.AutoSize = true;
-            this.outputRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.outputRateBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.outputRateBtn.Location = new System.Drawing.Point(553, 448);
-            this.outputRateBtn.Name = "outputRateBtn";
-            this.outputRateBtn.Size = new System.Drawing.Size(230, 36);
-            this.outputRateBtn.TabIndex = 10;
-            this.outputRateBtn.Text = "Announce Output Rate";
-            this.outputRateBtn.UseVisualStyleBackColor = true;
-            this.outputRateBtn.Click += new System.EventHandler(this.outputRateBtn_Click);
             // 
             // setPollingSizeBtn
             // 
@@ -222,23 +207,11 @@
             this.setPollingSizeBtn.UseVisualStyleBackColor = true;
             this.setPollingSizeBtn.Click += new System.EventHandler(this.setPollingSizeBtn_Click);
             // 
-            // gameBtn
-            // 
-            this.gameBtn.AutoSize = true;
-            this.gameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gameBtn.Location = new System.Drawing.Point(652, 44);
-            this.gameBtn.Name = "gameBtn";
-            this.gameBtn.Size = new System.Drawing.Size(75, 36);
-            this.gameBtn.TabIndex = 3;
-            this.gameBtn.Text = "Game";
-            this.gameBtn.UseVisualStyleBackColor = true;
-            this.gameBtn.Click += new System.EventHandler(this.gameBtn_Click);
-            // 
             // smoothBtn
             // 
             this.smoothBtn.AutoSize = true;
             this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(466, 44);
+            this.smoothBtn.Location = new System.Drawing.Point(693, 44);
             this.smoothBtn.Name = "smoothBtn";
             this.smoothBtn.Size = new System.Drawing.Size(87, 36);
             this.smoothBtn.TabIndex = 2;
@@ -250,7 +223,7 @@
             // 
             this.augmentBtn.AutoSize = true;
             this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(258, 44);
+            this.augmentBtn.Location = new System.Drawing.Point(362, 44);
             this.augmentBtn.Name = "augmentBtn";
             this.augmentBtn.Size = new System.Drawing.Size(99, 36);
             this.augmentBtn.TabIndex = 1;
@@ -277,6 +250,19 @@
             this.modeDescs.Size = new System.Drawing.Size(736, 184);
             this.modeDescs.TabIndex = 4;
             this.modeDescs.Text = resources.GetString("modeDescs.Text");
+            //
+            // outputRateBtn
+            //
+            this.outputRateBtn.AutoSize = true;
+            this.outputRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.outputRateBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.outputRateBtn.Location = new System.Drawing.Point(553, 448);
+            this.outputRateBtn.Name = "outputRateBtn";
+            this.outputRateBtn.Size = new System.Drawing.Size(230, 36);
+            this.outputRateBtn.TabIndex = 10;
+            this.outputRateBtn.Text = "Announce Output Rate";
+            this.outputRateBtn.UseVisualStyleBackColor = true;
+            this.outputRateBtn.Click += new System.EventHandler(this.outputRateBtn_Click);
             // 
             // rateDescLabel
             // 
@@ -513,7 +499,6 @@
         private System.Windows.Forms.Label plusLabel;
         private System.Windows.Forms.Button setPollingSizeBtn;
         private System.Windows.Forms.Label modeDescs;
-        private System.Windows.Forms.Button gameBtn;
         private System.Windows.Forms.Button smoothBtn;
         private System.Windows.Forms.Button augmentBtn;
         private System.Windows.Forms.Button mirrorBtn;

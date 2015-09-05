@@ -14,9 +14,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         private Guid SinDriver = Guid.Parse("31cae25b-72c0-4ffc-860b-234fb931bc15");
         private Guid NeonDriver = Guid.Parse("9a310fae-2084-4dc5-ae6a-4f664faa1fe8");
         private Guid ScreenDriverCoupler = Guid.Parse("70987576-1a00-4a34-b787-4c08516cd1b8");
-        private Guid ScreenGrabber = Guid.Parse("15115e91-ed5c-49e6-b7a8-4ebbd4dabb2e");
         private Guid ScreenshotProcesor = Guid.Parse("3eea8b48-82e3-4db4-a04a-2b9865929993");
-        private Guid DXGrabber = Guid.Parse("ad1e6255-d9b4-4e6d-995f-a094e6ea5f7b");
+        private Guid SlimDXGrabber = Guid.Parse("ad1e6255-d9b4-4e6d-995f-a094e6ea5f7b");
         private Guid Saturator = Guid.Parse("2acba4a6-af21-47a9-9551-964a750fea06");
         private Guid Brightener = Guid.Parse("1a271e63-5f7e-43c0-bbb1-7d80d23d8db7");
         public PresetBuilder(ExtensionLibrary lib) {
@@ -43,23 +42,15 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
         public ActiveExtensions GetMirrorPreset() {
             Guid[] processors = { ScreenshotProcesor };
-            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, ScreenGrabber, processors, Empty, Empty);
+            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, SlimDXGrabber, processors, Empty, Empty);
             result.Init(lib);
             return result;
         }
 
         public ActiveExtensions GetAugmentMirrorPreset() {
             Guid[] processors = { ScreenshotProcesor };
-            Guid[] filters = { Saturator };
-            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, ScreenGrabber, processors, filters, Empty);
-            result.Init(lib);
-            return result;
-        }
-
-        public ActiveExtensions GetGameMirrorPreset() {
-            Guid[] processors = { ScreenshotProcesor };
-            Guid[] filters = { Saturator };
-            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, DXGrabber, processors, filters, Empty);
+            Guid[] filters = { Saturator, Brightener };
+            ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, SlimDXGrabber, processors, filters, Empty);
             result.Init(lib);
             return result;
         }
