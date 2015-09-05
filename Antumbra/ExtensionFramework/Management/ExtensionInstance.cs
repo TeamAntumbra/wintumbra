@@ -32,7 +32,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         private const String FAILED_START_EXCEPTION_PREFIX = "Processor failed to start: ";
 
         private ActiveExtensions Extensions;
-        private int id;
+        public int id;
         private long _prevIndex;
         private FPSCalc FPSCalculator;
 
@@ -47,6 +47,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             AttachObserver(LoggerHelper.GetInstance());
             Extensions = extensions;
             UpdateExtensionsDevId();
+        }
+
+        public int GetOutputRate() {
+            return Convert.ToInt32(FPSCalculator.FPS);
         }
 
         public Guid GetGrabber() {
@@ -234,8 +238,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 }
 
                 NewColorAvailEvent(newColor, id, index);
-                //FPSCalculator.Tick();
-                //Console.WriteLine(FPSCalculator.FPS);
+                FPSCalculator.Tick();
             }
         }
 

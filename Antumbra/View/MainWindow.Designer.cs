@@ -36,7 +36,7 @@
             this.sinBtn = new System.Windows.Forms.Button();
             this.hsvBtn = new System.Windows.Forms.Button();
             this.mirrorTab = new System.Windows.Forms.TabPage();
-            this.captureRateBtn = new System.Windows.Forms.Button();
+            this.outputRateBtn = new System.Windows.Forms.Button();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
             this.gameBtn = new System.Windows.Forms.Button();
             this.smoothBtn = new System.Windows.Forms.Button();
@@ -183,7 +183,6 @@
             // mirrorTab
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.mirrorTab.Controls.Add(this.captureRateBtn);
             this.mirrorTab.Controls.Add(this.setPollingSizeBtn);
             this.mirrorTab.Controls.Add(this.gameBtn);
             this.mirrorTab.Controls.Add(this.smoothBtn);
@@ -198,17 +197,18 @@
             this.mirrorTab.TabIndex = 1;
             this.mirrorTab.Text = "Mirror";
             // 
-            // captureRateBtn
+            // outputRateBtn
             // 
-            this.captureRateBtn.AutoSize = true;
-            this.captureRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.captureRateBtn.Location = new System.Drawing.Point(303, 301);
-            this.captureRateBtn.Name = "captureRateBtn";
-            this.captureRateBtn.Size = new System.Drawing.Size(230, 36);
-            this.captureRateBtn.TabIndex = 10;
-            this.captureRateBtn.Text = "Announce Capture Rate";
-            this.captureRateBtn.UseVisualStyleBackColor = true;
-            this.captureRateBtn.Click += new System.EventHandler(this.captureRateBtn_Click);
+            this.outputRateBtn.AutoSize = true;
+            this.outputRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.outputRateBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.outputRateBtn.Location = new System.Drawing.Point(553, 448);
+            this.outputRateBtn.Name = "outputRateBtn";
+            this.outputRateBtn.Size = new System.Drawing.Size(230, 36);
+            this.outputRateBtn.TabIndex = 10;
+            this.outputRateBtn.Text = "Announce Output Rate";
+            this.outputRateBtn.UseVisualStyleBackColor = true;
+            this.outputRateBtn.Click += new System.EventHandler(this.outputRateBtn_Click);
             // 
             // setPollingSizeBtn
             // 
@@ -455,6 +455,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.ClientSize = new System.Drawing.Size(852, 594);
+            this.Controls.Add(this.outputRateBtn);
             this.Controls.Add(this.rateLabel);
             this.Controls.Add(this.minusLabel2);
             this.Controls.Add(this.plusLabel2);
@@ -523,7 +524,7 @@
         private FlatTabControl.FlatTabControl flatTabControl;
         private System.Windows.Forms.TrackBar throttleBar;
         private System.Windows.Forms.TrackBar brightnessTrackBar;
-        private System.Windows.Forms.Button captureRateBtn;
+        private System.Windows.Forms.Button outputRateBtn;
         private System.Windows.Forms.Button onBtn;
         private System.Windows.Forms.Button offBtn;
         private System.Windows.Forms.Label plusLabel2;

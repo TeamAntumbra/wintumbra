@@ -27,7 +27,7 @@ namespace Antumbra.Glow.View {
         public event EventHandler pwrBtn_ClickEvent;
         public event EventHandler whiteBalanceBtn_ClickEvent;
         public event EventHandler throttleBar_ValueChange;
-        public event EventHandler captureRateBtn_ClickEvent;
+        public event EventHandler outputRateBtn_ClickEvent;
 
         public MainWindow() {
             InitializeComponent();
@@ -136,9 +136,9 @@ namespace Antumbra.Glow.View {
             }
         }
 
-        private void captureRateBtn_Click(object sender, EventArgs e) {
-            if(captureRateBtn_ClickEvent != null)
-                captureRateBtn_ClickEvent(sender, e);
+        private void outputRateBtn_Click(object sender, EventArgs e) {
+            if(outputRateBtn_ClickEvent != null)
+                outputRateBtn_ClickEvent(sender, e);
         }
 
         protected void onBtn_Click(object sender, EventArgs e) {

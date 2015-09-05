@@ -6,6 +6,7 @@ using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Settings;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Antumbra.Glow.ExtensionFramework.Management {
     /// <summary>
@@ -62,6 +63,17 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             foreach(ExtensionInstance Instance in Instances.Values) {
                 Instance.ConfigurationUpdate(config);
             }
+        }
+
+        public string getOutRatesMessage() {
+            StringBuilder sb = new StringBuilder();
+            foreach(KeyValuePair<int, ExtensionInstance> instancePair in Instances) {
+                sb.Append(instancePair.Key)
+                  .Append(" @ ")
+                  .Append(instancePair.Value.GetOutputRate())
+                  .Append(" FPS.\n");
+            }
+            return sb.ToString();
         }
 
         public void SetInstance(int id, MODE mode) {

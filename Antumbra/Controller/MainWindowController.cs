@@ -93,6 +93,7 @@ namespace Antumbra.Glow.Controller {
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
             this.window = new MainWindow();
+            this.window.outputRateBtn_ClickEvent += new EventHandler(showOutputRate);
             this.window.closeBtn_ClickEvent += new EventHandler(closeBtnClicked);
             this.window.colorWheel_ColorChangedEvent += new EventHandler(colorWheelColorChanged);
             this.window.brightnessTrackBar_ScrollEvent += new EventHandler(brightnessValueChanged);
@@ -116,6 +117,10 @@ namespace Antumbra.Glow.Controller {
 
         public void ConnectionUpdate(int devCount) {
             glowCount = devCount;
+        }
+
+        public void showOutputRate(object sender, EventArgs args) {
+            ShowMessage(2500, "Output Rate(s)", extensionManager.getOutRatesMessage(), 0);
         }
 
         /// <summary>
