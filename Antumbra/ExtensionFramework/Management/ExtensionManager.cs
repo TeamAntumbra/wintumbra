@@ -201,6 +201,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
             SaveInstance(id);
             StopAndSendColor(new Color16Bit(), id);
+            Instances[id].Dispose();
         }
 
         /// <summary>
@@ -273,7 +274,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 return;
             }
 
-            Instances[id].InitActives(Lib);
+            try {
+                Instances[id].InitActives(Lib);
+            } catch(ObjectDisposedException) {
+                var instance = CreateInstance(id, MODE.LOAD);
+                Instances[id] = instance;
+            }
 
             Guid grabber = Instances[id].GetGrabber();
             if(!grabber.Equals(Guid.Empty)) {
@@ -342,7 +348,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     actives = PresetBuilder.GetNeonFadePreset();
                     break;
 
-                case MODE.MIRROR://Both use same extensions, just different settings
+                case MODE.MIRROR:
                     actives = PresetBuilder.GetMirrorPreset();
                     break;
 

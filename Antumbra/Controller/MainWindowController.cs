@@ -12,6 +12,7 @@ using Antumbra.Glow.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -37,6 +38,12 @@ namespace Antumbra.Glow.Controller {
         /// </summary>
         private const int WM_NCLBUTTONDOWN = 0xA1;
 
+        private readonly Dictionary<int, bool> powerValues = new Dictionary<int, bool> {
+            {4, false },
+            {7, true},
+            {18, false}
+        };
+
         private ConnectionManager connectionManager;
 
         private Color16Bit controlColor;
@@ -51,6 +58,7 @@ namespace Antumbra.Glow.Controller {
 
         private PreOutputProcessor preOutputProcessor;
 
+        private ManagementEventWatcher pwrWatcher;
         private SettingsManager settingsManager;
 
         private WhiteBalanceWindowController whiteBalController;
@@ -62,6 +70,13 @@ namespace Antumbra.Glow.Controller {
         #region Public Constructors
 
         public MainWindowController(string productVersion, EventHandler quitHandler) {
+            var q = new WqlEventQuery();
+            var scope = new ManagementScope("root\\CIMV2");
+            q.EventClassName = "Win32_PowerManagementEvent";
+            pwrWatcher = new ManagementEventWatcher(scope, q);
+            pwrWatcher.EventArrived += PowerEvent;
+            pwrWatcher.Start();
+
             id = -1;//Add drop down for selecting a single or all devices for settings control
             disposables = new List<IDisposable>();
 
@@ -106,7 +121,6 @@ namespace Antumbra.Glow.Controller {
             pollingWindowController.AttachObserver((GlowCommandObserver)this);
 
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-            SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
             this.window = new MainWindow();
             this.window.speedBar_ValueChange += new EventHandler(changeSpeed);
             this.window.outputRateBtn_ClickEvent += new EventHandler(showOutputRate);
@@ -236,6 +250,8 @@ namespace Antumbra.Glow.Controller {
             foreach(IDisposable disposable in disposables) {
                 disposable.Dispose();
             }
+            pwrWatcher.Stop();
+            pwrWatcher.Dispose();
         }
 
         public void hsvBtnClicked(object sender, EventArgs args) {
@@ -347,18 +363,21 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        /// <summary>
-        /// Event handler for PowerModeChanged events
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PowerModeChanged(object sender, PowerModeChangedEventArgs e) {
-            // User is putting the system into standby
-            if(e.Mode == PowerModes.Suspend) {
-                NewGlowCmdAvailEvent(new PowerOffCommand(-1));
-            } else if(e.Mode == PowerModes.Resume) {
-                Thread.Sleep(2500);//wait some for system to be ready
-                SendStartCommand(-1);//start all
+        private void PowerEvent(object sender, EventArrivedEventArgs args) {
+            foreach(PropertyData data in args.NewEvent.Properties) {
+                if(data != null && data.Value != null) {
+                    int key = (int)data.Value;
+                    bool val;
+                    if(powerValues.TryGetValue(key, out val)) {
+                        if(val) {
+                            Thread.Sleep(2500);//wait for system to be ready
+                            SendStartCommand(-1);
+                        } else {
+                            NewGlowCmdAvailEvent(new PowerOffCommand(-1));
+                            Thread.Sleep(1000);
+                        }
+                    }
+                }
             }
         }
 
@@ -374,7 +393,6 @@ namespace Antumbra.Glow.Controller {
                 preOutputProcessor.manualMode = false;
             } catch(Exception) {
                 ResendManualColor(id);
-                preOutputProcessor.manualMode = true;
             }
         }
 

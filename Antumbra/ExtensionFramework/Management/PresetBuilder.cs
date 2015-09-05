@@ -32,7 +32,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
         public ActiveExtensions GetAugmentMirrorPreset() {
             Guid[] processors = { ScreenshotProcesor };
-            Guid[] filters = { Saturator, Brightener };
+            Guid[] filters = { Saturator };
             ActiveExtensions result = new ActiveExtensions(ScreenDriverCoupler, SlimDXGrabber, processors, filters, Empty);
             result.Init(lib);
             return result;
