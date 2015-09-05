@@ -1,25 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Antumbra.Glow.Observer.Colors;
+﻿using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Configuration;
-using Antumbra.Glow.Settings;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Settings;
+using System;
+using System.Collections.Generic;
 
 namespace Antumbra.Glow.Connector {
+
     public class PreOutputProcessor : ConfigurationObserver, AntumbraColorObserver, AntumbraColorSource, Loggable {
-        public delegate void NewLogMsg(String source, String msg);
-        public event NewLogMsg NewLogMsgAvail;
-        public delegate void NewColor(Color16Bit color, int id, long index);
-        public event NewColor NewColorAvailEvent;
+
+        #region Public Fields
+
         public bool manualMode;
 
-        private Color16Bit Black;
+        #endregion Public Fields
+
+        #region Private Fields
+
         private Dictionary<int, OutputSettings> AllDeviceSettings;
-        private Dictionary<int, long> OutputIndexes;
+
+        private Color16Bit Black;
+
         private Dictionary<int, Color16Bit> Colors;
+
+        private Dictionary<int, long> OutputIndexes;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public PreOutputProcessor() {
             manualMode = false;
@@ -30,6 +38,34 @@ namespace Antumbra.Glow.Connector {
             Black.red = 0;
             Black.green = 0;
             Black.blue = 0;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Delegates
+
+        public delegate void NewColor(Color16Bit color, int id, long index);
+
+        public delegate void NewLogMsg(String source, String msg);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public event NewColor NewColorAvailEvent;
+
+        public event NewLogMsg NewLogMsgAvail;
+
+        #endregion Public Events
+
+        #region Public Methods
+
+        public void AttachObserver(LogMsgObserver observer) {
+            NewLogMsgAvail += observer.NewLogMsgAvail;
+        }
+
+        public void AttachObserver(AntumbraColorObserver observer) {
+            NewColorAvailEvent += observer.NewColorAvail;
         }
 
         public void ConfigurationUpdate(Configurable config) {
@@ -106,19 +142,15 @@ namespace Antumbra.Glow.Connector {
             AnnounceColor(newCol, id, index);
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void AnnounceColor(Color16Bit color, int id, long index) {
             if(NewColorAvailEvent != null) {
                 Colors[id] = color;
                 NewColorAvailEvent(color, id, index);
             }
-        }
-
-        public void AttachObserver(LogMsgObserver observer) {
-            NewLogMsgAvail += observer.NewLogMsgAvail;
-        }
-
-        public void AttachObserver(AntumbraColorObserver observer) {
-            NewColorAvailEvent += observer.NewColorAvail;
         }
 
         private void Log(String msg) {
@@ -127,12 +159,23 @@ namespace Antumbra.Glow.Connector {
             }
         }
 
+        #endregion Private Methods
+
+        #region Private Structs
+
         private struct OutputSettings {
+
+            #region Public Fields
+
             public double MaxBrightness;
-            public Int16 redBias, greenBias, blueBias;
-            public UInt16 whiteBalanceMin;
-            public bool weightingEnabled;
             public double newColorWeight;
+            public Int16 redBias, greenBias, blueBias;
+            public bool weightingEnabled;
+            public UInt16 whiteBalanceMin;
+
+            #endregion Public Fields
         }
+
+        #endregion Private Structs
     }
 }

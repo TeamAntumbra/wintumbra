@@ -1,51 +1,54 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using Antumbra.Glow.Observer.ToolbarNotifications;
+using System;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.IO.Ports;
-using System.IO;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using Antumbra.Glow.Connector;
-using Antumbra.Glow.Observer.ToolbarNotifications;
-using System.Reflection;
-using Microsoft.Win32;
 
 namespace Antumbra.Glow.View {
+
     public partial class ToolbarIcon : Form, ToolbarNotificationObserver {
-        public event EventHandler notifyIcon_MouseClickEvent;
-        public event EventHandler notifyIcon_DoubleClickEvent;
+
+        #region Public Constructors
+
         /// <summary>
         /// ToolbarIcon Constructor
         /// </summary>
         public ToolbarIcon() {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
+
+        #region Public Events
+
+        public event EventHandler notifyIcon_DoubleClickEvent;
+
+        public event EventHandler notifyIcon_MouseClickEvent;
+
+        #endregion Public Events
+
+        #region Public Methods
+
         public void NewToolbarNotifAvail(int time, String title, String msg, int icon) {
             ToolTipIcon notifIcon = ToolTipIcon.None;//default
             switch(icon) {
                 case 0:
                     notifIcon = ToolTipIcon.Info;
                     break;
+
                 case 1:
                     notifIcon = ToolTipIcon.Warning;
                     break;
+
                 case 2:
                     notifIcon = ToolTipIcon.Error;
                     break;
             }
             this.ShowMessage(time, title, msg, notifIcon);
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         /// <summary>
         /// Event handler for when the menubar icon is clicked
         /// </summary>
@@ -54,6 +57,11 @@ namespace Antumbra.Glow.View {
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e) {
             if(notifyIcon_MouseClickEvent != null)
                 notifyIcon_MouseClickEvent(sender, e);
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
+            if(notifyIcon_DoubleClickEvent != null)
+                notifyIcon_DoubleClickEvent(sender, e);
         }
 
         /// <summary>
@@ -67,9 +75,6 @@ namespace Antumbra.Glow.View {
             this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
         }
 
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
-            if(notifyIcon_DoubleClickEvent != null)
-                notifyIcon_DoubleClickEvent(sender, e);
-        }
+        #endregion Private Methods
     }
 }

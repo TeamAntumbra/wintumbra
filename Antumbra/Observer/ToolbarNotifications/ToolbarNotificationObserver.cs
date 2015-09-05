@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace Antumbra.Glow.Observer.ToolbarNotifications
-{
-    public interface ToolbarNotificationObserver
-    {
+namespace Antumbra.Glow.Observer.ToolbarNotifications {
+
+    public interface ToolbarNotificationObserver {
+
+        #region Public Methods
+
         void NewToolbarNotifAvail(int time, String title, String msg, int icon);
+
+        #endregion Public Methods
     }
 }

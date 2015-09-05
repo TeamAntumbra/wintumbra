@@ -1,22 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Antumbra.Glow.ExtensionFramework.Types.Notifiications {
+
     public struct Notification//TODO, move to util?
     {
-        private String NotiName;
+        #region Private Fields
+
         private String NotiDetails;
+        private String NotiName;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public Notification(String Name, String Details) {
             this.NotiName = Name;
             this.NotiDetails = Details;
         }
 
-        public String Name { get { return this.NotiName; } }
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public String Details { get { return this.NotiDetails; } }
+        public String Name { get { return this.NotiName; } }
+
+        #endregion Public Properties
     }
 }

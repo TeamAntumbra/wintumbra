@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Antumbra.Glow.Observer.Configuration {
 
-namespace Antumbra.Glow.Observer.Configuration {
     public interface ConfigurationChangeAnnouncer {
+
+        #region Public Methods
+
         void AttachObserver(ConfigurationChanger observer);
+
+        #endregion Public Methods
     }
 }

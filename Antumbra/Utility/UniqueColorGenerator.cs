@@ -1,21 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
 namespace Antumbra.Glow.Utility {
+
     public class UniqueColorGenerator {
+
+        #region Private Fields
+
         private static UniqueColorGenerator instance;
+        private List<HslColor> assigned;
+
+        #endregion Private Fields
+
+        #region Private Constructors
+
+        private UniqueColorGenerator() {
+            this.assigned = new List<HslColor>();
+        }
+
+        #endregion Private Constructors
+
+        #region Public Methods
+
         public static UniqueColorGenerator GetInstance() {
             if(instance == null)
                 instance = new UniqueColorGenerator();
             return instance;
-        }
-        private List<HslColor> assigned;
-        private UniqueColorGenerator() {
-            this.assigned = new List<HslColor>();
         }
 
         public Color GetUniqueColor() {
@@ -56,5 +67,7 @@ namespace Antumbra.Glow.Utility {
         public void RetireUniqueColor(Color color) {
             this.assigned.Remove(color);
         }
+
+        #endregion Public Methods
     }
 }

@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Threading;
-using Antumbra.Glow.Controller;
+﻿using Antumbra.Glow.Controller;
 using Antumbra.Glow.Observer.Logging;
+using System;
+using System.Windows.Forms;
 
 namespace Antumbra.Glow {
-    static class Program {
+
+    internal static class Program {
+
+        #region Private Methods
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {
+        private static void Main() {
             LoggerHelper.Logger logger = LoggerHelper.GetInstance();
             logger.NewLogMsgAvail("Program Class", "Starting...");
             if(Environment.OSVersion.Version.Major >= 6)
@@ -37,5 +37,7 @@ namespace Antumbra.Glow {
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
+
+        #endregion Private Methods
     }
 }

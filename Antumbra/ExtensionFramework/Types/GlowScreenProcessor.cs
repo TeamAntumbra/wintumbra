@@ -1,20 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.ScreenInfo;
-using Antumbra.Glow.Observer.Colors;
+using System;
+using System.Collections.Generic;
 
 namespace Antumbra.Glow.ExtensionFramework.Types {
+
     public abstract class GlowScreenProcessor : GlowExtension, AntumbraScreenInfoObserver, AntumbraColorSource {
-        public abstract void NewScreenInfoAvail(List<int[,,]> pixelArrays, EventArgs args);
+
+        #region Public Methods
+
         public abstract void AttachObserver(AntumbraColorObserver observer);
-        public abstract void SetArea(int x, int y, int width, int height);
+
         public abstract GlowScreenProcessor Create();
+
         public sealed override Type GetExtensionType() {
             return typeof(GlowScreenProcessor);
         }
+
+        public abstract void NewScreenInfoAvail(List<int[, ,]> pixelArrays, EventArgs args);
+
+        public abstract void SetArea(int x, int y, int width, int height);
+
+        #endregion Public Methods
     }
 }

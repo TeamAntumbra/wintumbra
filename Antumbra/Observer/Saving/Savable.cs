@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Antumbra.Glow.Observer.Saving {
 
-namespace Antumbra.Glow.Observer.Saving {
     public interface Savable {
-        void Save();
+
+        #region Public Methods
+
         void Load();
+
+        void Save();
+
+        #endregion Public Methods
     }
 }

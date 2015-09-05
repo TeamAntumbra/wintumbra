@@ -1,31 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Antumbra.Glow.Observer.ScreenInfo;
-using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.ExtensionFramework;
+﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
-using System.Runtime.InteropServices;
-using System.Reflection;
+using Antumbra.Glow.Observer.Colors;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.Reflection;
 
-namespace AntumbraScreenshotProcessor
-{
+namespace AntumbraScreenshotProcessor {
+
     [Export(typeof(GlowExtension))]
-    public class AntumbraScreenshotProcessor : GlowScreenProcessor
-    {
-        public delegate void NewColorAvail(Color16Bit color, int id, long index);
-        public event NewColorAvail NewColorAvailEvent;
+    public class AntumbraScreenshotProcessor : GlowScreenProcessor {
+
+        #region Private Fields
+
+        private readonly object sync = new object();
 
         private int deviceId, x, y, width, height, min;
+
         private long index;
-        private bool running;
+
         private Dictionary<int, Rectangle> regions;
+
+        private bool running;
+
         private List<Rectangle> screenBounds;
-        private readonly object sync = new object();
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public AntumbraScreenshotProcessor() {
             regions = new Dictionary<int, Rectangle>();
@@ -37,82 +40,129 @@ namespace AntumbraScreenshotProcessor
             }
 
             min *= -1;
-/*
-            for(int i = 0; i < screenBounds.Count; i += 1) {
-                Rectangle rect = screenBounds[i];
-                rect.X += min;
-                screenBounds[i] = rect;
-            }*/
+            /*
+                        for(int i = 0; i < screenBounds.Count; i += 1) {
+                            Rectangle rect = screenBounds[i];
+                            rect.X += min;
+                            screenBounds[i] = rect;
+                        }*/
 
-            screenBounds.Sort((x,y) => x.X.CompareTo(y.X));
+            screenBounds.Sort((x, y) => x.X.CompareTo(y.X));
         }
 
-        public override bool IsDefault
-        {
-            get { return false; }
-        }
+        #endregion Public Constructors
 
-        public override int devId
-        {
-            get
-            {
-                return deviceId;
-            }
-            set
-            {
-                deviceId = value;
-            }
-        }
+        #region Public Delegates
 
-        public override bool IsRunning
-        {
-            get { return running; }
-        }
+        public delegate void NewColorAvail(Color16Bit color, int id, long index);
 
-        public override string Name
-        {
-            get { return "Antumbra Screenshot Processor"; }
-        }
+        #endregion Public Delegates
 
-        public override bool Settings()
-        {
-            return false;
-        }
+        #region Public Events
 
-        public override string Author
-        {
+        public event NewColorAvail NewColorAvailEvent;
+
+        #endregion Public Events
+
+        #region Public Properties
+
+        public override string Author {
             get { return "Team Antumbra"; }
         }
 
-        public override Guid id
-        {
-            get { return Guid.Parse("3eea8b48-82e3-4db4-a04a-2b9865929993"); }
-        }
-
-        public override string Description
-        {
-            get
-            {
+        public override string Description {
+            get {
                 return "An image processor for extracting color information from screenshots.";
             }
         }
 
-        public override string Website
-        {
-            get { return "https://wintumbra.rtfd.org"; }
+        public override int devId {
+            get {
+                return deviceId;
+            }
+            set {
+                deviceId = value;
+            }
         }
 
-        public override Version Version
-        {
+        public override Guid id {
+            get { return Guid.Parse("3eea8b48-82e3-4db4-a04a-2b9865929993"); }
+        }
+
+        public override bool IsDefault {
+            get { return false; }
+        }
+
+        public override bool IsRunning {
+            get { return running; }
+        }
+
+        public override string Name {
+            get { return "Antumbra Screenshot Processor"; }
+        }
+
+        public override Version Version {
             get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
-        public override GlowScreenProcessor Create()
-        {
+        public override string Website {
+            get { return "https://wintumbra.rtfd.org"; }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public override void AttachObserver(AntumbraColorObserver observer) {
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        public override GlowScreenProcessor Create() {
             return new AntumbraScreenshotProcessor();
         }
 
-        private Color16Bit Process(List<int[,,]> pixels, Dictionary<int, Rectangle> regions) {
+        public override void Dispose() {
+        }
+
+        public override void NewScreenInfoAvail(List<int[, ,]> pixelArray, EventArgs args) {
+            try {
+                lock(sync) {
+                    NewColorAvailEvent(Process(pixelArray, regions), devId, index++);
+                }
+            } catch(Exception ex) {
+                //TODO log ex
+            }
+        }
+
+        public override void SetArea(int x, int y, int width, int height) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            var captureRegion = new Rectangle(x, y, width, height);
+            regions = SplitRegionByScreenBounds(captureRegion);
+        }
+
+        public override bool Settings() {
+            return false;
+        }
+
+        public override bool Start() {
+            index = long.MinValue;
+            running = true;
+            return true;
+        }
+
+        public override bool Stop() {
+            running = false;
+            return true;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private Color16Bit Process(List<int[, ,]> pixels, Dictionary<int, Rectangle> regions) {
             int r = 0;
             int g = 0;
             int b = 0;
@@ -163,49 +213,6 @@ namespace AntumbraScreenshotProcessor
             return result;
         }
 
-        public override void AttachObserver(AntumbraColorObserver observer)
-        {
-            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
-        }
-
-        public override void NewScreenInfoAvail(List<int[,,]> pixelArray, EventArgs args)
-        {
-            try {
-                lock(sync) {
-                    NewColorAvailEvent(Process(pixelArray, regions), devId, index++);
-                }
-            }
-            catch (Exception ex) {
-                //TODO log ex
-            }
-        }
-
-        public override bool Start()
-        {
-            index = long.MinValue;
-            running = true;
-            return true;
-        }
-
-        public override bool Stop()
-        {
-            running = false;
-            return true;
-        }
-
-        public override void Dispose()
-        {
-            
-        }
-
-        public override void SetArea(int x, int y, int width, int height)
-        {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            var captureRegion = new Rectangle(x, y, width, height);
-            regions = SplitRegionByScreenBounds(captureRegion);
-        }
+        #endregion Private Methods
     }
 }

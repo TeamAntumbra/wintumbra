@@ -3,9 +3,7 @@ using System.Drawing;
 using System.Text;
 
 namespace Antumbra.Glow.Utility {
-    // Cyotek Color Picker controls library
-    // Copyright © 2013-2014 Cyotek.
-    // http://cyotek.com/blog/tag/colorpicker
+    // Cyotek Color Picker controls library Copyright © 2013-2014 Cyotek. http://cyotek.com/blog/tag/colorpicker
 
     // Licensed under the MIT License. See colorpicker-license.txt for the full text.
 
@@ -15,11 +13,12 @@ namespace Antumbra.Glow.Utility {
 
     [Serializable]
     public struct HslColor {
+
         #region Constants
 
         public static readonly HslColor Empty;
 
-        #endregion
+        #endregion Constants
 
         #region Instance Fields
 
@@ -33,7 +32,7 @@ namespace Antumbra.Glow.Utility {
 
         private double _saturation;
 
-        #endregion
+        #endregion Instance Fields
 
         #region Static Constructors
 
@@ -43,7 +42,7 @@ namespace Antumbra.Glow.Utility {
             };
         }
 
-        #endregion
+        #endregion Static Constructors
 
         #region Public Constructors
 
@@ -66,9 +65,21 @@ namespace Antumbra.Glow.Utility {
             _isEmpty = false;
         }
 
-        #endregion
+        #endregion Public Constructors
 
         #region Operators
+
+        public static implicit operator Color(HslColor color) {
+            return color.ToRgbColor();
+        }
+
+        public static implicit operator HslColor(Color color) {
+            return new HslColor(color);
+        }
+
+        public static bool operator !=(HslColor a, HslColor b) {
+            return !(a == b);
+        }
 
         public static bool operator ==(HslColor a, HslColor b) {
             // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -76,19 +87,7 @@ namespace Antumbra.Glow.Utility {
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
-        public static implicit operator HslColor(Color color) {
-            return new HslColor(color);
-        }
-
-        public static implicit operator Color(HslColor color) {
-            return color.ToRgbColor();
-        }
-
-        public static bool operator !=(HslColor a, HslColor b) {
-            return !(a == b);
-        }
-
-        #endregion
+        #endregion Operators
 
         #region Overridden Methods
 
@@ -128,7 +127,7 @@ namespace Antumbra.Glow.Utility {
             return builder.ToString();
         }
 
-        #endregion
+        #endregion Overridden Methods
 
         #region Public Properties
 
@@ -166,7 +165,7 @@ namespace Antumbra.Glow.Utility {
             set { _saturation = Math.Min(1, Math.Max(0, value)); }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Members
 
@@ -218,6 +217,6 @@ namespace Antumbra.Glow.Utility {
             return Color.FromArgb(alpha, (int)colors[0], (int)colors[1], (int)colors[2]);
         }
 
-        #endregion
+        #endregion Public Members
     }
 }

@@ -1,172 +1,177 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.Composition;
-using Antumbra.Glow.ExtensionFramework;
+﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
-using System.Threading;
-using System.Windows.Forms;
+using System;
+using System.ComponentModel.Composition;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace FluxCompanion
-{
+namespace FluxCompanion {
+
     [Export(typeof(GlowExtension))]
-    public class FluxCompanion : GlowIndependentDriver
-    {
-        public delegate void NewColorAvail(Color16Bit newColor, int id, long index);
-        public event NewColorAvail NewColorAvailEvent;
-        private bool running;
+    public class FluxCompanion : GlowIndependentDriver {
+
+        #region Private Fields
+
         private int deviceId;
-        private long index;
+
         private Task driver;
 
-        public override Guid id
-        {
-            get { return Guid.Parse("9d8efbe1-e33d-4047-a687-001883d5a124"); }
+        private long index;
+
+        private bool running;
+
+        #endregion Private Fields
+
+        #region Public Delegates
+
+        public delegate void NewColorAvail(Color16Bit newColor, int id, long index);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public event NewColorAvail NewColorAvailEvent;
+
+        #endregion Public Events
+
+        #region Public Properties
+
+        public override string Author {
+            get { return "Team Antumbra"; }
         }
 
-        public override int devId
-        {
-            get
-            {
+        public override string Description {
+            get {
+                return "An indpendent Glow driver meant to output warm colors based off the time of day, "
+                    + "similar to the software F.lux.";
+            }
+        }
+
+        public override int devId {
+            get {
                 return deviceId;
             }
-            set
-            {
+            set {
                 deviceId = value;
             }
         }
 
-        public override bool IsRunning
-        {
-            get { return this.running; }
-        }
-        public override string Name
-        {
-            get { return "Flux Companion"; }
+        public override Guid id {
+            get { return Guid.Parse("9d8efbe1-e33d-4047-a687-001883d5a124"); }
         }
 
-        public override string Author
-        {
-            get { return "Team Antumbra"; }
-        }
-
-        public override bool IsDefault
-        {
+        public override bool IsDefault {
             get { return false; }
         }
 
-        public override GlowDriver Create()
-        {
+        public override bool IsRunning {
+            get { return this.running; }
+        }
+
+        public override string Name {
+            get { return "Flux Companion"; }
+        }
+
+        public override Version Version {
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+        }
+
+        public override string Website {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public override void AttachColorObserver(AntumbraColorObserver observer) {
+            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        public override GlowDriver Create() {
             return new FluxCompanion();
         }
 
-        public override bool Start()
-        {
+        public override void Dispose() {
+            if(driver != null) {
+                driver.Dispose();
+            }
+        }
+
+        public override void RecmmndCoreSettings() {
+            stepSleep = 1000;
+        }
+
+        public override bool Settings() {
+            return false;
+        }
+
+        public override bool Start() {
             running = true;
             driver = new Task(target);
             driver.Start();
             return true;
         }
 
-        public override bool Settings()
-        {
-            return false;
-        }
-
-        public override void RecmmndCoreSettings()
-        {
-            stepSleep = 1000;
-        }
-
-        public override void AttachColorObserver(AntumbraColorObserver observer)
-        {
-            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
-        }
-
-        public override void Dispose()
-        {
-            if (driver != null) {
-                driver.Dispose();
+        public override bool Stop() {
+            this.running = false;
+            if(driver != null) {
+                if(driver.IsCompleted)
+                    driver.Dispose();
+                else {
+                    driver.Wait(2000);
+                    if(driver.IsCompleted)
+                        driver.Dispose();
+                }
             }
+            return true;
         }
 
-        private void target()
-        {
-            while (IsRunning) {
-                DateTime now = DateTime.Now;
-                int sec = now.Second;
-                int min = now.Minute;
-                int hour = now.Hour;
-                NewColorAvailEvent(ConvertKelvinToColor(ConvertTimeToKelvin(hour, min, sec)), deviceId, index++);
-                Thread.Sleep(stepSleep);
-            }
-        }
+        #endregion Public Methods
 
-        private int ConvertTimeToKelvin(int hour, int min, int sec)
-        {
-            int totalSec = sec + (60 * min) + (3600 * hour);
-            int minKelvin = 1000;
-            int maxKelvin = 40000;//TODO make configurable in settings
-            double oneDay = 86400.0;
-            double percDone = totalSec / oneDay;
-            if (percDone > .75) {//getting darker
-                percDone = (percDone - .75) * 4;//percent into last quarter
-                return (int)((maxKelvin * (1.0 - percDone)) + (minKelvin * percDone));
-            }
-            else if (percDone >= .25) {//middle half of the day
-                return maxKelvin;//as bright as possible
-            }
-            else {//first quarter of day - getting brighter
-                percDone *= 4;//percent done with first quarter of day
-                return (int)((maxKelvin * percDone) + (minKelvin * (1.0 - percDone)));
-            }
-        }
+        #region Private Methods
 
-        private Color16Bit ConvertKelvinToColor(int kelvin)
-        {/*http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/ */
+        private Color16Bit ConvertKelvinToColor(int kelvin) {/*http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/ */
             int temp = kelvin / 100;
             int red = 0;
             int green = 0;
-            if (temp <= 66) {
+            if(temp <= 66) {
                 red = 255;
                 green = temp;
                 green = (int)(99.4708025861 * Math.Log(green) - 161.1195681661);
-                if (green < 0)
+                if(green < 0)
                     green = 0;
-                else 
-                    if (green > 255)
-                       green = 255;
-            }
-            else {
+                else
+                    if(green > 255)
+                        green = 255;
+            } else {
                 red = temp - 60;
                 red = (int)(329.698727446 * (Math.Pow(red, -0.1332047592)));
-                if (red < 0)
+                if(red < 0)
                     red = 0;
-                else 
-                    if (red > 255)
+                else
+                    if(red > 255)
                         red = 255;
                 green = temp - 60;
-                green = (int)(288.1221695283 * Math.Pow(green,-0.0755148492));
-                if (green < 0)
+                green = (int)(288.1221695283 * Math.Pow(green, -0.0755148492));
+                if(green < 0)
                     green = 0;
-                else 
-                    if (green > 255)
+                else
+                    if(green > 255)
                         green = 255;
             }
             int blue = 0;
-            if (temp >= 66)
+            if(temp >= 66)
                 blue = 255;
             else {
                 blue = temp - 10;
                 blue = (int)(138.5177312231 * Math.Log(blue) - 305.0447927307);
-                if (blue < 0)
+                if(blue < 0)
                     blue = 0;
-                else 
-                    if (blue > 255)
+                else
+                    if(blue > 255)
                         blue = 255;
             }
             UInt16 r = Convert.ToUInt16(red);
@@ -179,35 +184,34 @@ namespace FluxCompanion
             return result;
         }
 
-        public override bool Stop()
-        {
-            this.running = false;
-            if (driver != null) {
-                if (driver.IsCompleted)
-                    driver.Dispose();
-                else {
-                    driver.Wait(2000);
-                    if (driver.IsCompleted)
-                        driver.Dispose();
-                }
+        private int ConvertTimeToKelvin(int hour, int min, int sec) {
+            int totalSec = sec + (60 * min) + (3600 * hour);
+            int minKelvin = 1000;
+            int maxKelvin = 40000;//TODO make configurable in settings
+            double oneDay = 86400.0;
+            double percDone = totalSec / oneDay;
+            if(percDone > .75) {//getting darker
+                percDone = (percDone - .75) * 4;//percent into last quarter
+                return (int)((maxKelvin * (1.0 - percDone)) + (minKelvin * percDone));
+            } else if(percDone >= .25) {//middle half of the day
+                return maxKelvin;//as bright as possible
+            } else {//first quarter of day - getting brighter
+                percDone *= 4;//percent done with first quarter of day
+                return (int)((maxKelvin * percDone) + (minKelvin * (1.0 - percDone)));
             }
-            return true;
         }
 
-        public override string Description
-        {
-            get { return "An indpendent Glow driver meant to output warm colors based off the time of day, "
-                + "similar to the software F.lux."; }
+        private void target() {
+            while(IsRunning) {
+                DateTime now = DateTime.Now;
+                int sec = now.Second;
+                int min = now.Minute;
+                int hour = now.Hour;
+                NewColorAvailEvent(ConvertKelvinToColor(ConvertTimeToKelvin(hour, min, sec)), deviceId, index++);
+                Thread.Sleep(stepSleep);
+            }
         }
 
-        public override Version Version
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
-        }
-
-        public override string Website
-        {
-            get { throw new NotImplementedException(); }
-        }
+        #endregion Private Methods
     }
 }

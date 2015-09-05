@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Antumbra.Glow.Observer.Colors;
+﻿using Antumbra.Glow.Observer.Colors;
+using System;
 
 namespace Antumbra.Glow.ExtensionFramework.Types {
+
     public abstract class GlowFilter : GlowExtension {
-        abstract public Color16Bit Filter(Color16Bit origColor);//Returns filtered color
+
+        #region Public Methods
+
         public abstract GlowFilter Create();
+
+        abstract public Color16Bit Filter(Color16Bit origColor);//Returns filtered color
+
         public sealed override Type GetExtensionType() {
             return typeof(GlowFilter);
         }
+
+        #endregion Public Methods
     }
 }

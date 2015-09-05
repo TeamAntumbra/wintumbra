@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Antumbra.Glow.Observer.GlowCommands {
 
-namespace Antumbra.Glow.Observer.GlowCommands {
     public interface GlowCommandSender {
+
+        #region Public Methods
+
         void AttachObserver(GlowCommandObserver observer);
+
+        #endregion Public Methods
     }
 }

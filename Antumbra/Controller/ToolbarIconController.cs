@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Antumbra.Glow.Observer.Logging;
+﻿using Antumbra.Glow.Observer.Logging;
 using Antumbra.Glow.Observer.ToolbarNotifications;
-using Antumbra.Glow.Observer.GlowCommands;
-using Antumbra.Glow.ExtensionFramework.Management;
-using Antumbra.Glow.Connector;
-using Antumbra.Glow.Settings;
-using System.Drawing;
+using System;
+using System.Threading;
 
 namespace Antumbra.Glow.Controller {
+
     public class ToolbarIconController : Loggable, ToolbarNotificationObserver, ToolbarNotificationSource, IDisposable {
-        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
-        public event NewToolbarNotif NewToolbarNotifAvailEvent;
-        public delegate void NewLogMsgAvail(string source, string msg);
-        public event NewLogMsgAvail NewLogMsgAvailEvent;
+
+        #region Public Fields
 
         public bool failed;
 
+        #endregion Public Fields
+
+        #region Private Fields
+
         private const string extPath = "./Extensions/";
+
         private Antumbra.Glow.View.ToolbarIcon toolbarIcon;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public ToolbarIconController() {
             AttachObserver(LoggerHelper.GetInstance());
@@ -46,16 +45,25 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        private void Quit(object sender, EventArgs args) {
-            Dispose();
-            System.Windows.Forms.Application.Exit();
-        }
+        #endregion Public Constructors
 
-        private void LogMsg(string source, string msg) {
-            if(NewLogMsgAvailEvent != null) {
-                NewLogMsgAvailEvent(source, msg);
-            }
-        }
+        #region Public Delegates
+
+        public delegate void NewLogMsgAvail(string source, string msg);
+
+        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public event NewLogMsgAvail NewLogMsgAvailEvent;
+
+        public event NewToolbarNotif NewToolbarNotifAvailEvent;
+
+        #endregion Public Events
+
+        #region Public Methods
 
         public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvailEvent += observer.NewLogMsgAvail;
@@ -65,6 +73,10 @@ namespace Antumbra.Glow.Controller {
             NewToolbarNotifAvailEvent += observer.NewToolbarNotifAvail;
         }
 
+        public void Dispose() {
+            toolbarIcon.Dispose();
+        }
+
         public void NewToolbarNotifAvail(int time, string title, string msg, int icon) {
             if(NewToolbarNotifAvailEvent != null) {
                 NewToolbarNotifAvailEvent(time, title, msg, icon);
@@ -72,8 +84,21 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        public void Dispose() {
-            toolbarIcon.Dispose();
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void LogMsg(string source, string msg) {
+            if(NewLogMsgAvailEvent != null) {
+                NewLogMsgAvailEvent(source, msg);
+            }
         }
+
+        private void Quit(object sender, EventArgs args) {
+            Dispose();
+            System.Windows.Forms.Application.Exit();
+        }
+
+        #endregion Private Methods
     }
 }

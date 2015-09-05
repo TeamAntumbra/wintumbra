@@ -2,9 +2,7 @@
 using System.Drawing;
 
 namespace Antumbra.Glow.View.CyotekColorWheel {
-    // Cyotek Color Picker controls library
-    // Copyright © 2013-2015 Cyotek Ltd.
-    // http://cyotek.com/blog/tag/colorpicker
+    // Cyotek Color Picker controls library Copyright © 2013-2015 Cyotek Ltd. http://cyotek.com/blog/tag/colorpicker
 
     // Licensed under the MIT License. See license.txt for the full text.
 
@@ -14,6 +12,7 @@ namespace Antumbra.Glow.View.CyotekColorWheel {
     /// Provides functionality required by color editors that are bindable
     /// </summary>
     public interface IColorEditor {
+
         #region Events
 
         /// <summary>
@@ -21,7 +20,7 @@ namespace Antumbra.Glow.View.CyotekColorWheel {
         /// </summary>
         event EventHandler ColorChanged;
 
-        #endregion
+        #endregion Events
 
         #region Properties
 
@@ -31,6 +30,6 @@ namespace Antumbra.Glow.View.CyotekColorWheel {
         /// <value>The component color.</value>
         Color Color { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 }

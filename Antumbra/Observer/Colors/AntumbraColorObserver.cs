@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Antumbra.Glow.Observer.Colors {
 
-namespace Antumbra.Glow.Observer.Colors {
     public interface AntumbraColorObserver {
+
+        #region Public Methods
+
         void NewColorAvail(Color16Bit newCol, int id, long index);
+
+        #endregion Public Methods
     }
 }

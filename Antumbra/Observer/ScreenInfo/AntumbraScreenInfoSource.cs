@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Antumbra.Glow.Observer.ScreenInfo {
 
-namespace Antumbra.Glow.Observer.ScreenInfo {
     public interface AntumbraScreenInfoSource {
+
+        #region Public Methods
+
         void AttachObserver(AntumbraScreenInfoObserver observer);
+
+        #endregion Public Methods
     }
 }

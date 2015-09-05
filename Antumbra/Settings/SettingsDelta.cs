@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Antumbra.Glow.Settings {
+
     public enum SettingValue {
         X = 0,
         Y = 1,
@@ -25,12 +23,23 @@ namespace Antumbra.Glow.Settings {
     }
 
     public class SettingsDelta {
-        public int id;
+
+        #region Public Fields
+
         public Dictionary<SettingValue, object> changes = new Dictionary<SettingValue, object>();
+        public int id;
+
+        #endregion Public Fields
+
+        #region Public Constructors
 
         public SettingsDelta(int id) {
             this.id = id;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public override string ToString() {
             StringBuilder sb = new StringBuilder("SettingsDelta Changes:\t");
@@ -45,5 +54,7 @@ namespace Antumbra.Glow.Settings {
             }
             return sb.ToString();
         }
+
+        #endregion Public Methods
     }
 }

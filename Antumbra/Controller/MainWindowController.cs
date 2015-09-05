@@ -1,51 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Drawing;
-using Antumbra.Glow.View;
-using Antumbra.Glow.Observer.Logging;
-using Antumbra.Glow.Observer.ToolbarNotifications;
-using Antumbra.Glow.Observer.GlowCommands;
-using Antumbra.Glow.Observer.GlowCommands.Commands;
+﻿using Antumbra.Glow.Connector;
+using Antumbra.Glow.ExtensionFramework.Management;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Observer.Connection;
-using Antumbra.Glow.ExtensionFramework.Management;
-using Antumbra.Glow.Connector;
+using Antumbra.Glow.Observer.GlowCommands;
+using Antumbra.Glow.Observer.GlowCommands.Commands;
+using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.ToolbarNotifications;
 using Antumbra.Glow.Settings;
-using System.Runtime.InteropServices;
+using Antumbra.Glow.View;
 using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Antumbra.Glow.Controller {
+
     public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver,
                                         ToolbarNotificationObserver, ConfigurationObserver, ConnectionEventObserver,
                                         IDisposable, ConfigurationChangeAnnouncer {
-        public const Int32 VID = 0x16D0;
+
+        #region Public Fields
+
         public const Int32 PID = 0x0A85;
+        public const Int32 VID = 0x16D0;
 
-        public delegate void NewLogMsgAvail(String source, String msg);
-        public event NewLogMsgAvail NewLogMsgAvailEvent;
-        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
-        public event NewToolbarNotif NewToolbarNotifAvailEvent;
-        public delegate void NewGlowCmdAvail(GlowCommand cmd);
-        public event NewGlowCmdAvail NewGlowCmdAvailEvent;
-        public delegate void NewConfigurationChange(SettingsDelta Delta);
-        public event NewConfigurationChange NewConfigurationChangeEvent;
+        #endregion Public Fields
 
-        private event EventHandler quitEventHandler;
-        private MainWindow window;
-        private int glowCount, id;
-        private WhiteBalanceWindowController whiteBalController;
-        private SettingsManager settingsManager;
+        #region Private Fields
+
+        private const int HT_CAPTION = 0x2;
+
+        /// <summary>
+        /// Move form dependencies
+        /// </summary>
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+
         private ConnectionManager connectionManager;
-        private ExtensionManager extensionManager;
-        private PreOutputProcessor preOutputProcessor;
-        private PollingAreaWindowController pollingWindowController;
+
         private Color16Bit controlColor;
+
         private List<IDisposable> disposables;
+
+        private ExtensionManager extensionManager;
+
+        private int glowCount, id;
+
+        private PollingAreaWindowController pollingWindowController;
+
+        private PreOutputProcessor preOutputProcessor;
+
+        private SettingsManager settingsManager;
+
+        private WhiteBalanceWindowController whiteBalController;
+
+        private MainWindow window;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public MainWindowController(string productVersion, EventHandler quitHandler) {
             id = -1;//Add drop down for selecting a single or all devices for settings control
             disposables = new List<IDisposable>();
@@ -114,110 +129,45 @@ namespace Antumbra.Glow.Controller {
             SendStartCommand(-1);
         }
 
-        public void ConnectionUpdate(int devCount) {
-            glowCount = devCount;
-        }
+        #endregion Public Constructors
 
-        public void showOutputRate(object sender, EventArgs args) {
-            ShowMessage(2500, "Output Rate(s)", extensionManager.getOutRatesMessage(), 0);
-        }
+        #region Public Delegates
 
-        /// <summary>
-        /// Update UI to match with new config announced
-        /// </summary>
-        /// <param name="config"></param>
-        public void ConfigurationUpdate(Configurable config) {
-            if(config is DeviceSettings && window != null) {//settings changed
-                DeviceSettings settings = (DeviceSettings)config;
-                window.SetCaptureThrottleValue(settings.captureThrottle);
-                window.SetBrightnessValue(Convert.ToInt32(settings.maxBrightness * 100));
-                ResendManualColor(settings.id);
-            }
-        }
+        public delegate void NewConfigurationChange(SettingsDelta Delta);
 
-        public void ResendManualColor(int id) {
-            preOutputProcessor.manualMode = true;
-            if(whiteBalController.IsOpen()) {
-                NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(new Utility.HslColor(0, 0, .5))));
-            } else {
-                NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(window.colorWheel.HslColor.ToRgbColor())));
-            }
-        }
+        public delegate void NewGlowCmdAvail(GlowCommand cmd);
 
-        private void throttleBarValueChanged(object sender, EventArgs args) {
-            if(sender is int) {
-                NewGlowCmdAvailEvent(new StopCommand(-1));
-                int value = (int)sender;
-                for(var i = 0; i < glowCount; i += 1) {
-                    SettingsDelta Delta = new SettingsDelta(i);
-                    Delta.changes[SettingValue.CAPTURETHROTTLE] = value;
-                    AnnounceConfigChange(Delta);
-                }
-            }
-        }
+        public delegate void NewLogMsgAvail(String source, String msg);
 
-        private void AnnounceConfigChange(SettingsDelta delta) {
-            if(NewConfigurationChangeEvent != null) {
-                NewConfigurationChangeEvent(delta);
-            }
-        }
+        public delegate void NewToolbarNotif(int time, string title, string msg, int icon);
 
-        private void whiteBalanceBtnClicked(object sender, EventArgs args) {
-            if(glowCount == 0) {
-                this.ShowMessage(3000, "No Glows Found",
-                    "White balance cannot be opened because no Glow devices were found.", 2);
-                return;//can't open
-            }
-            preOutputProcessor.manualMode = true;
-            NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, this.controlColor));
-            window.colorWheel.HslColor = new Utility.HslColor(0, 0, .5);//reset selector to center
-            window.colorWheel.Enabled = false;//disable main color wheel until color balance window closed
-            whiteBalController.Show();
-        }
+        #endregion Public Delegates
 
-        private void WhiteBalanceWindowClosingHandler(object sender, System.Windows.Forms.FormClosingEventArgs args) {
-            this.window.colorWheel.Enabled = true;//re-enable main wheel
-        }
+        #region Public Events
 
-        public void NewToolbarNotifAvail(int time, string title, string msg, int icon) {
-            if(NewToolbarNotifAvailEvent != null)
-                NewToolbarNotifAvailEvent(time, title, msg, icon);//pass it up
-        }
+        public event NewConfigurationChange NewConfigurationChangeEvent;
 
-        public void NewGlowCommandAvail(GlowCommand cmd) {
-            if(NewGlowCmdAvailEvent != null)
-                NewGlowCmdAvailEvent(cmd);//pass it up
-        }
+        public event NewGlowCmdAvail NewGlowCmdAvailEvent;
 
-        private void setPollingBtnClickHandler(object sender, EventArgs args) {
-            for(int i = 0; i < glowCount; i += 1) {
-                DeviceSettings settings = settingsManager.getSettings(i);
-                pollingWindowController.SetBounds(settings.id, settings.x, settings.y, settings.width, settings.height);
-            }
-            pollingWindowController.ShowAll();
-        }
+        public event NewLogMsgAvail NewLogMsgAvailEvent;
 
-        private void UpdatePollingSelection(Dictionary<int, SettingsDelta> PollingAreaChanges) {
-            foreach(KeyValuePair<int, SettingsDelta> KeyValue in PollingAreaChanges) {
-                AnnounceConfigChange(KeyValue.Value);
-            }
-            settingsManager.UpdateBoundingBox();
-        }
+        public event NewToolbarNotif NewToolbarNotifAvailEvent;
 
-        private void OnOffValueChangedHandler(object sender, EventArgs args) {
-            if(sender is bool) {
-                bool on = (bool)sender;
-                if(on) {
-                    try {
-                        SendStartCommand(-1);
-                    } catch(Exception) {
-                        ResendManualColor(-1);
-                    }
-                } else {
-                    NewGlowCmdAvailEvent(new PowerOffCommand(-1));
-                }
-            }
-        }
+        #endregion Public Events
+
+        #region Private Events
+
+        private event EventHandler quitEventHandler;
+
+        #endregion Private Events
+
+        #region Public Methods
+
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
         public void AttachObserver(GlowCommandObserver observer) {
             this.NewGlowCmdAvailEvent += observer.NewGlowCommandAvail;
@@ -235,24 +185,20 @@ namespace Antumbra.Glow.Controller {
             NewConfigurationChangeEvent += observer.ConfigChange;
         }
 
-        private void ShowMessage(int time, string title, string msg, int icon) {
-            if(NewToolbarNotifAvailEvent != null)
-                NewToolbarNotifAvailEvent(time, title, msg, icon);
+        public void augmentBtnClicked(object sender, EventArgs args) {
+            extensionManager.SetInstance(id, ExtensionManager.MODE.AUGMENT);
+            SendStartCommand(id);
         }
 
-        private void Log(string msg) {
-            if(NewLogMsgAvailEvent != null)
-                NewLogMsgAvailEvent("MainWindowController", msg);
-        }
-
-        public void showWindowEventHandler(object sender, EventArgs args) {
-            this.window.Activate();
-            this.window.Show();
-        }
-
-        public void restartEventHandler(object sender, EventArgs args) {
-            this.NewGlowCmdAvailEvent(new StopCommand(-1));
-            SendStartCommand(-1);
+        public void brightnessValueChanged(object sender, EventArgs args) {
+            if(sender is double) {
+                double value = (double)sender;
+                for(int i = 0; i < connectionManager.GlowsFound; i += 1) {
+                    SettingsDelta Delta = new SettingsDelta(i);
+                    Delta.changes[SettingValue.MAXBRIGHTNESS] = value;
+                    AnnounceConfigChange(Delta);
+                }
+            }
         }
 
         public void closeBtnClicked(object sender, EventArgs args) {
@@ -268,14 +214,26 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        public void brightnessValueChanged(object sender, EventArgs args) {
-            if(sender is double) {
-                double value = (double)sender;
-                for(int i = 0; i < connectionManager.GlowsFound; i += 1) {
-                    SettingsDelta Delta = new SettingsDelta(i);
-                    Delta.changes[SettingValue.MAXBRIGHTNESS] = value;
-                    AnnounceConfigChange(Delta);
-                }
+        /// <summary>
+        /// Update UI to match with new config announced
+        /// </summary>
+        /// <param name="config"></param>
+        public void ConfigurationUpdate(Configurable config) {
+            if(config is DeviceSettings && window != null) {//settings changed
+                DeviceSettings settings = (DeviceSettings)config;
+                window.SetCaptureThrottleValue(settings.captureThrottle);
+                window.SetBrightnessValue(Convert.ToInt32(settings.maxBrightness * 100));
+                ResendManualColor(settings.id);
+            }
+        }
+
+        public void ConnectionUpdate(int devCount) {
+            glowCount = devCount;
+        }
+
+        public void Dispose() {
+            foreach(IDisposable disposable in disposables) {
+                disposable.Dispose();
             }
         }
 
@@ -284,9 +242,17 @@ namespace Antumbra.Glow.Controller {
             SendStartCommand(id);
         }
 
-        public void sinBtnClicked(object sender, EventArgs args) {
-            extensionManager.SetInstance(id, ExtensionManager.MODE.SIN);
+        public void mirrorBtnClicked(object sender, EventArgs args) {
+            extensionManager.SetInstance(id, ExtensionManager.MODE.MIRROR);
             SendStartCommand(id);
+        }
+
+        public void mouseDownEvent(object sender, System.Windows.Forms.MouseEventArgs args) {
+            //allows dragging of forms to move them (because of hidden menu bars and window frame)
+            if(args.Button == System.Windows.Forms.MouseButtons.Left) {//drag with left mouse btn
+                ReleaseCapture();
+                SendMessage(this.window.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
 
         public void neonBtnClicked(object sender, EventArgs args) {
@@ -294,19 +260,14 @@ namespace Antumbra.Glow.Controller {
             SendStartCommand(id);
         }
 
-        public void mirrorBtnClicked(object sender, EventArgs args) {
-            extensionManager.SetInstance(id, ExtensionManager.MODE.MIRROR);
-            SendStartCommand(id);
+        public void NewGlowCommandAvail(GlowCommand cmd) {
+            if(NewGlowCmdAvailEvent != null)
+                NewGlowCmdAvailEvent(cmd);//pass it up
         }
 
-        public void augmentBtnClicked(object sender, EventArgs args) {
-            extensionManager.SetInstance(id, ExtensionManager.MODE.AUGMENT);
-            SendStartCommand(id);
-        }
-
-        public void smoothBtnClicked(object sender, EventArgs args) {
-            extensionManager.SetInstance(id, ExtensionManager.MODE.SMOOTH);
-            SendStartCommand(id);
+        public void NewToolbarNotifAvail(int time, string title, string msg, int icon) {
+            if(NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);//pass it up
         }
 
         public void quitBtnClicked(object sender, EventArgs args) {
@@ -320,37 +281,76 @@ namespace Antumbra.Glow.Controller {
                 quitEventHandler(sender, args);
         }
 
-        public void Dispose() {
-            foreach(IDisposable disposable in disposables) {
-                disposable.Dispose();
+        public void ResendManualColor(int id) {
+            preOutputProcessor.manualMode = true;
+            if(whiteBalController.IsOpen()) {
+                NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(new Utility.HslColor(0, 0, .5))));
+            } else {
+                NewGlowCmdAvailEvent(new SoftSendColorCommand(id, Color16BitUtil.FromRGBColor(window.colorWheel.HslColor.ToRgbColor())));
             }
         }
 
-        /// <summary>
-        /// Event handler for session switching. Used for handling locking and unlocking of the system
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e) {
-            switch(e.Reason) {
-                case SessionSwitchReason.SessionLogoff:
-                case SessionSwitchReason.SessionLock:
-                    NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all off
-                    break;
-                case SessionSwitchReason.SessionLogon:
-                case SessionSwitchReason.SessionUnlock:
-                    Thread.Sleep(2500);//wait for system to be ready
-                    SendStartCommand(-1);//start all
-                    break;
+        public void restartEventHandler(object sender, EventArgs args) {
+            this.NewGlowCmdAvailEvent(new StopCommand(-1));
+            SendStartCommand(-1);
+        }
+
+        public void showOutputRate(object sender, EventArgs args) {
+            ShowMessage(2500, "Output Rate(s)", extensionManager.getOutRatesMessage(), 0);
+        }
+
+        public void showWindowEventHandler(object sender, EventArgs args) {
+            this.window.Activate();
+            this.window.Show();
+        }
+
+        public void sinBtnClicked(object sender, EventArgs args) {
+            extensionManager.SetInstance(id, ExtensionManager.MODE.SIN);
+            SendStartCommand(id);
+        }
+
+        public void smoothBtnClicked(object sender, EventArgs args) {
+            extensionManager.SetInstance(id, ExtensionManager.MODE.SMOOTH);
+            SendStartCommand(id);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void AnnounceConfigChange(SettingsDelta delta) {
+            if(NewConfigurationChangeEvent != null) {
+                NewConfigurationChangeEvent(delta);
             }
         }
+
+        private void Log(string msg) {
+            if(NewLogMsgAvailEvent != null)
+                NewLogMsgAvailEvent("MainWindowController", msg);
+        }
+
+        private void OnOffValueChangedHandler(object sender, EventArgs args) {
+            if(sender is bool) {
+                bool on = (bool)sender;
+                if(on) {
+                    try {
+                        SendStartCommand(-1);
+                    } catch(Exception) {
+                        ResendManualColor(-1);
+                    }
+                } else {
+                    NewGlowCmdAvailEvent(new PowerOffCommand(-1));
+                }
+            }
+        }
+
         /// <summary>
         /// Event handler for PowerModeChanged events
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PowerModeChanged(object sender, PowerModeChangedEventArgs e) {
-            // User is putting the system into standby 
+            // User is putting the system into standby
             if(e.Mode == PowerModes.Suspend) {
                 NewGlowCmdAvailEvent(new PowerOffCommand(-1));
             } else if(e.Mode == PowerModes.Resume) {
@@ -370,22 +370,75 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        public void mouseDownEvent(object sender, System.Windows.Forms.MouseEventArgs args) {
-            //allows dragging of forms to move them (because of hidden menu bars and window frame)
-            if(args.Button == System.Windows.Forms.MouseButtons.Left) {//drag with left mouse btn
-                ReleaseCapture();
-                SendMessage(this.window.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+        private void setPollingBtnClickHandler(object sender, EventArgs args) {
+            for(int i = 0; i < glowCount; i += 1) {
+                DeviceSettings settings = settingsManager.getSettings(i);
+                pollingWindowController.SetBounds(settings.id, settings.x, settings.y, settings.width, settings.height);
             }
+            pollingWindowController.ShowAll();
+        }
+
+        private void ShowMessage(int time, string title, string msg, int icon) {
+            if(NewToolbarNotifAvailEvent != null)
+                NewToolbarNotifAvailEvent(time, title, msg, icon);
         }
 
         /// <summary>
-        /// Move form dependencies
+        /// Event handler for session switching. Used for handling locking and unlocking of the system
         /// </summary>
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HT_CAPTION = 0x2;
-        [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e) {
+            switch(e.Reason) {
+                case SessionSwitchReason.SessionLogoff:
+                case SessionSwitchReason.SessionLock:
+                    NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all off
+                    break;
+
+                case SessionSwitchReason.SessionLogon:
+                case SessionSwitchReason.SessionUnlock:
+                    Thread.Sleep(2500);//wait for system to be ready
+                    SendStartCommand(-1);//start all
+                    break;
+            }
+        }
+
+        private void throttleBarValueChanged(object sender, EventArgs args) {
+            if(sender is int) {
+                NewGlowCmdAvailEvent(new StopCommand(-1));
+                int value = (int)sender;
+                for(var i = 0; i < glowCount; i += 1) {
+                    SettingsDelta Delta = new SettingsDelta(i);
+                    Delta.changes[SettingValue.CAPTURETHROTTLE] = value;
+                    AnnounceConfigChange(Delta);
+                }
+            }
+        }
+
+        private void UpdatePollingSelection(Dictionary<int, SettingsDelta> PollingAreaChanges) {
+            foreach(KeyValuePair<int, SettingsDelta> KeyValue in PollingAreaChanges) {
+                AnnounceConfigChange(KeyValue.Value);
+            }
+            settingsManager.UpdateBoundingBox();
+        }
+
+        private void whiteBalanceBtnClicked(object sender, EventArgs args) {
+            if(glowCount == 0) {
+                this.ShowMessage(3000, "No Glows Found",
+                    "White balance cannot be opened because no Glow devices were found.", 2);
+                return;//can't open
+            }
+            preOutputProcessor.manualMode = true;
+            NewGlowCmdAvailEvent(new StopAndSendColorCommand(-1, this.controlColor));
+            window.colorWheel.HslColor = new Utility.HslColor(0, 0, .5);//reset selector to center
+            window.colorWheel.Enabled = false;//disable main color wheel until color balance window closed
+            whiteBalController.Show();
+        }
+
+        private void WhiteBalanceWindowClosingHandler(object sender, System.Windows.Forms.FormClosingEventArgs args) {
+            this.window.colorWheel.Enabled = true;//re-enable main wheel
+        }
+
+        #endregion Private Methods
     }
 }

@@ -1,34 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using Antumbra.Glow.Utility;
+﻿using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Configuration;
+using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.GlowCommands;
 using Antumbra.Glow.Observer.GlowCommands.Commands;
-using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Logging;
-using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Settings;
+using Antumbra.Glow.Utility;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Antumbra.Glow.Controller {
+
     public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable, ConnectionEventObserver,
                                                ConfigurationChangeAnnouncer {
-        public delegate void NewLogMsg(string source, string msg);
-        public event NewLogMsg NewLogMsgEvent;
-        public delegate void PollingAreaUpdated(Dictionary<int, Settings.SettingsDelta> PollingAreaChanges);
-        public event PollingAreaUpdated PollingAreaUpdatedEvent;
-        public delegate void NewGlowCommandAvail(GlowCommand cmd);
-        public event NewGlowCommandAvail NewGlowCommandAvailEvent;
-        public delegate void NewConfigChange(SettingsDelta Delta);
-        public event NewConfigChange NewConfigChangeAvail;
+
+        #region Private Fields
+
+        private Rectangle boundRange;
+
+        private Dictionary<int, SettingsDelta> PollingAreaChanges;
 
         private List<View.pollingAreaSetter> pollingWindows;
-        private Dictionary<int, SettingsDelta> PollingAreaChanges;
-        private Rectangle boundRange;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public PollingAreaWindowController() {
             AttachObserver(LoggerHelper.GetInstance());
@@ -44,17 +42,61 @@ namespace Antumbra.Glow.Controller {
             PollingAreaChanges = new Dictionary<int, Settings.SettingsDelta>();
         }
 
-        public void ShowAll() {
-            for(int i = 0; i < pollingWindows.Count; i += 1) {
-                View.pollingAreaSetter window = pollingWindows[i];
-                if(window.IsDisposed) {
-                    window = new View.pollingAreaSetter(window.BackColor, window.id);
-                    pollingWindows[window.id] = window;
+        #endregion Public Constructors
+
+        #region Public Delegates
+
+        public delegate void NewConfigChange(SettingsDelta Delta);
+
+        public delegate void NewGlowCommandAvail(GlowCommand cmd);
+
+        public delegate void NewLogMsg(string source, string msg);
+
+        public delegate void PollingAreaUpdated(Dictionary<int, Settings.SettingsDelta> PollingAreaChanges);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public event NewConfigChange NewConfigChangeAvail;
+
+        public event NewGlowCommandAvail NewGlowCommandAvailEvent;
+
+        public event NewLogMsg NewLogMsgEvent;
+
+        public event PollingAreaUpdated PollingAreaUpdatedEvent;
+
+        #endregion Public Events
+
+        #region Public Methods
+
+        public void AttachObserver(GlowCommandObserver observer) {
+            NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
+        }
+
+        public void AttachObserver(LogMsgObserver observer) {
+            NewLogMsgEvent += observer.NewLogMsgAvail;
+        }
+
+        public void AttachObserver(ConfigurationChanger observer) {
+            NewConfigChangeAvail += observer.ConfigChange;
+        }
+
+        public void ConnectionUpdate(int devCount) {
+            foreach(View.pollingAreaSetter window in pollingWindows) {
+                window.Dispose();
+            }
+            pollingWindows.Clear();
+            for(int i = 0; i < devCount; i += 1) {
+                pollingWindows.Add(new View.pollingAreaSetter(UniqueColorGenerator.GetInstance().GetUniqueColor(), i));
+            }
+        }
+
+        public void Dispose() {
+            foreach(View.pollingAreaSetter pollingWindow in pollingWindows) {
+                if(!pollingWindow.IsDisposed) {
+                    pollingWindow.Dispose();
                 }
-                window.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
-                window.Show();
-                //Set to unique color to match its window
-                SendCommand(new StopAndSendColorCommand(window.id, Color16BitUtil.FromRGBColor(window.BackColor)));
             }
         }
 
@@ -79,35 +121,53 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        public void ConnectionUpdate(int devCount) {
-            foreach(View.pollingAreaSetter window in pollingWindows) {
-                window.Dispose();
-            }
-            pollingWindows.Clear();
-            for(int i = 0; i < devCount; i += 1) {
-                pollingWindows.Add(new View.pollingAreaSetter(UniqueColorGenerator.GetInstance().GetUniqueColor(), i));
-            }
-        }
-
-        public void AttachObserver(GlowCommandObserver observer) {
-            NewGlowCommandAvailEvent += observer.NewGlowCommandAvail;
-        }
-
-        public void AttachObserver(LogMsgObserver observer) {
-            NewLogMsgEvent += observer.NewLogMsgAvail;
-        }
-
-        public void AttachObserver(ConfigurationChanger observer) {
-            NewConfigChangeAvail += observer.ConfigChange;
-        }
-
-        public void Dispose() {
-            foreach(View.pollingAreaSetter pollingWindow in pollingWindows) {
-                if(!pollingWindow.IsDisposed) {
-                    pollingWindow.Dispose();
+        public void ShowAll() {
+            for(int i = 0; i < pollingWindows.Count; i += 1) {
+                View.pollingAreaSetter window = pollingWindows[i];
+                if(window.IsDisposed) {
+                    window = new View.pollingAreaSetter(window.BackColor, window.id);
+                    pollingWindows[window.id] = window;
                 }
+                window.formClosingEvent += new EventHandler(UpdatePollingSelectionsEvent);
+                window.Show();
+                //Set to unique color to match its window
+                SendCommand(new StopAndSendColorCommand(window.id, Color16BitUtil.FromRGBColor(window.BackColor)));
             }
         }
+
+        #endregion Public Methods
+
+        #region Internal Methods
+
+        /// <summary>
+        /// The MoveWindow function changes the position and dimensions of the specified window. For
+        /// a top-level window, the position and dimensions are relative to the upper-left corner of
+        /// the screen. For a child window, they are relative to the upper-left corner of the parent
+        /// window's client area.
+        /// </summary>
+        /// <param name="hWnd">Handle to the window.</param>
+        /// <param name="X">Specifies the new position of the left side of the window.</param>
+        /// <param name="Y">Specifies the new position of the top of the window.</param>
+        /// <param name="nWidth">Specifies the new width of the window.</param>
+        /// <param name="nHeight">Specifies the new height of the window.</param>
+        /// <param name="bRepaint">
+        /// Specifies whether the window is to be repainted. If this parameter is TRUE, the window
+        /// receives a message. If the parameter is FALSE, no repainting of any kind occurs. This
+        /// applies to the client area, the nonclient area (including the title bar and scroll
+        /// bars), and any part of the parent window uncovered as a result of moving a child window.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero.
+        /// <para>
+        /// If the function fails, the return value is zero. To get extended error information, call GetLastError.
+        /// </para>
+        /// </returns>
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+        #endregion Internal Methods
+
+        #region Private Methods
 
         private bool AllClosed(int excludeId) {
             foreach(var window in pollingWindows) {
@@ -116,6 +176,12 @@ namespace Antumbra.Glow.Controller {
                 }
             }
             return true;
+        }
+
+        private void Log(string msg) {
+            if(NewLogMsgEvent != null) {
+                NewLogMsgEvent("PollingAreaWindowController", msg);
+            }
         }
 
         private void SendCommand(GlowCommand cmd) {
@@ -148,27 +214,6 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
-        private void Log(string msg) {
-            if(NewLogMsgEvent != null) {
-                NewLogMsgEvent("PollingAreaWindowController", msg);
-            }
-        }
-
-        /// <summary>
-        /// The MoveWindow function changes the position and dimensions of the specified window. For a top-level window,
-        /// the position and dimensions are relative to the upper-left corner of the screen. For a child window,
-        /// they are relative to the upper-left corner of the parent window's client area.
-        /// </summary>
-        /// <param name="hWnd">Handle to the window.</param>
-        /// <param name="X">Specifies the new position of the left side of the window.</param>
-        /// <param name="Y">Specifies the new position of the top of the window.</param>
-        /// <param name="nWidth">Specifies the new width of the window.</param>
-        /// <param name="nHeight">Specifies the new height of the window.</param>
-        /// <param name="bRepaint">Specifies whether the window is to be repainted. If this parameter is TRUE, the window receives a message. If the parameter is FALSE, no repainting of any kind occurs. This applies to the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent window uncovered as a result of moving a child window.</param>
-        /// <returns>If the function succeeds, the return value is nonzero.
-        /// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para></returns>
-        [DllImport("user32.dll", SetLastError = true)]
-        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-
+        #endregion Private Methods
     }
 }

@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Drawing;
-using Antumbra.Glow.Settings;
+using System.Windows.Forms;
 
 namespace Antumbra.Glow.View {
+
     public partial class pollingAreaSetter : Form {
-        public event EventHandler formClosingEvent;
-        public int id { get; private set; }
+
+        #region Public Constructors
 
         public pollingAreaSetter(Color BackColor, int id) {
             InitializeComponent();
@@ -21,10 +15,28 @@ namespace Antumbra.Glow.View {
             this.Refresh();
         }
 
+        #endregion Public Constructors
+
+        #region Public Events
+
+        public event EventHandler formClosingEvent;
+
+        #endregion Public Events
+
+        #region Public Properties
+
+        public int id { get; private set; }
+
+        #endregion Public Properties
+
+        #region Private Methods
+
         private void pollingAreaSetter_FormClosing(object sender, FormClosingEventArgs e) {
             if(formClosingEvent != null) {
                 formClosingEvent(sender, e);
             }
         }
+
+        #endregion Private Methods
     }
 }

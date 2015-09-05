@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
 namespace Antumbra.Glow.Utility {
-    public static class HSVRGGConverter {
-        public static double[] RGBToHSV(int r, int g, int b) {
-            int max = Math.Max(r, Math.Max(g, b));
-            int min = Math.Min(r, Math.Min(g, b));
 
-            double[] result = new double[3];
-            result[0] = Color.FromArgb(r, g, b).GetHue();
-            result[1] = (max == 0) ? 0 : 1d - (1d * min / max);
-            result[2] = max / 255d;
-            return result;
-        }
+    public static class HSVRGGConverter {
+
+        #region Public Methods
 
         public static int[] HSVToRGB(double h, double S, double V)//from here to... \/ \/ \/
         {
@@ -35,7 +24,6 @@ namespace Antumbra.Glow.Utility {
                 double qv = V * (1 - S * f);
                 double tv = V * (1 - S * (1 - f));
                 switch(i) {
-
                     // Red is the dominant color
 
                     case 0:
@@ -51,6 +39,7 @@ namespace Antumbra.Glow.Utility {
                         G = V;
                         B = pv;
                         break;
+
                     case 2:
                         R = pv;
                         G = V;
@@ -64,6 +53,7 @@ namespace Antumbra.Glow.Utility {
                         G = qv;
                         B = V;
                         break;
+
                     case 4:
                         R = tv;
                         G = pv;
@@ -78,13 +68,15 @@ namespace Antumbra.Glow.Utility {
                         B = qv;
                         break;
 
-                    // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
+                    // Just in case we overshoot on our math by a little, we put these here. Since
+                    // its a switch it won't slow us down at all to put these here.
 
                     case 6:
                         R = V;
                         G = tv;
                         B = pv;
                         break;
+
                     case -1:
                         R = V;
                         G = pv;
@@ -105,10 +97,29 @@ namespace Antumbra.Glow.Utility {
             return result;
         }
 
+        public static double[] RGBToHSV(int r, int g, int b) {
+            int max = Math.Max(r, Math.Max(g, b));
+            int min = Math.Min(r, Math.Min(g, b));
+
+            double[] result = new double[3];
+            result[0] = Color.FromArgb(r, g, b).GetHue();
+            result[1] = (max == 0) ? 0 : 1d - (1d * min / max);
+            result[2] = max / 255d;
+            return result;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         private static int Clamp(int i) {
             if(i < 0) return 0;
             if(i > 255) return 255;
             return i;
-        }//here is taken from StackOverflow @ https://stackoverflow.com/questions/1335426/is-there-a-built-in-c-net-system-api-for-hsv-to-rgb
+        }
+
+        #endregion Private Methods
+
+        //here is taken from StackOverflow @ https://stackoverflow.com/questions/1335426/is-there-a-built-in-c-net-system-api-for-hsv-to-rgb
     }
 }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Antumbra.Glow.Observer.Colors;
+﻿using Antumbra.Glow.Observer.Colors;
+using System;
 
 namespace Antumbra.Glow.Utility {
+
     public static class Mixer {
+
+        #region Public Methods
+
         public static Color16Bit MixColorPercIn(Color16Bit newColor, Color16Bit prevColor, double newWeight) {
             double prevWeight = 1.00 - newWeight;
             Color16Bit result;
@@ -15,5 +15,7 @@ namespace Antumbra.Glow.Utility {
             result.blue = Convert.ToUInt16(prevColor.blue * prevWeight + newColor.blue * newWeight);
             return result;
         }
+
+        #endregion Public Methods
     }
 }

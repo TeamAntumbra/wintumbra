@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Antumbra.Glow.ExtensionFramework;
+using System;
 using System.Runtime.InteropServices;
-using Antumbra.Glow.ExtensionFramework;
-using Antumbra.Glow.ExtensionFramework.Management;
+using System.Windows.Forms;
 
 namespace Antumbra.Glow.View {
+
     public partial class AntumbraExtSettingsWindow : Form {
-        private GlowExtension ext;
+
+        #region Public Fields
+
+        public const int HT_CAPTION = 0x2;
+
         /// <summary>
         /// Move form dependencies
         /// </summary>
         public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
-        [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private GlowExtension ext;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public AntumbraExtSettingsWindow(GlowExtension ext) {
             this.ext = ext;
             InitializeComponent();
@@ -33,9 +36,19 @@ namespace Antumbra.Glow.View {
             Show();
         }
 
-        private void closeBtn_Click(object sender, EventArgs e) {
-            Close();
-        }
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void AntumbraExtSettingsWindow_MouseDown(object sender, MouseEventArgs e) {
             // Drag form to move
@@ -44,5 +57,11 @@ namespace Antumbra.Glow.View {
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
+
+        private void closeBtn_Click(object sender, EventArgs e) {
+            Close();
+        }
+
+        #endregion Private Methods
     }
 }

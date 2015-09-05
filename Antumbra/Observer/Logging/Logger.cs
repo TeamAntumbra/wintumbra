@@ -1,27 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Antumbra.Glow.Observer.Logging {
+
     /// <summary>
     /// Allows easy logging to a specified file
     /// </summary>
     public static class LoggerHelper {
+
+        #region Private Fields
+
+        private static Logger instance;
+
+        #endregion Private Fields
+
+        #region Public Methods
+
+        public static Logger GetInstance() {
+            if(instance == null) {
+                instance = new Logger("wintumbra.log");
+            }
+            return instance;
+        }
+
+        #endregion Public Methods
+
+        #region Public Classes
+
         public class Logger : LogMsgObserver {
+
+            #region Private Fields
+
             /// <summary>
             /// Sync object
             /// </summary>
             private static readonly object sync = new Object();
+
             /// <summary>
             /// Name of the log file
             /// </summary>
             private string filename;
+
             /// <summary>
             /// Path to the log file
             /// </summary>
             private string path;
+
+            #endregion Private Fields
+
+            #region Public Constructors
 
             /// <summary>
             /// Constructor
@@ -34,6 +61,10 @@ namespace Antumbra.Glow.Observer.Logging {
                     System.IO.Directory.CreateDirectory(path);
                 }
             }
+
+            #endregion Public Constructors
+
+            #region Public Methods
 
             /// <summary>
             /// Log the recieved information
@@ -50,6 +81,10 @@ namespace Antumbra.Glow.Observer.Logging {
                 Log(sb.ToString());
             }
 
+            #endregion Public Methods
+
+            #region Private Methods
+
             /// <summary>
             /// Write the passed lines to the log file
             /// </summary>
@@ -62,15 +97,10 @@ namespace Antumbra.Glow.Observer.Logging {
                     }
                 }
             }
+
+            #endregion Private Methods
         }
 
-        private static Logger instance;
-
-        public static Logger GetInstance() {
-            if(instance == null) {
-                instance = new Logger("wintumbra.log");
-            }
-            return instance;
-        }
+        #endregion Public Classes
     }
 }

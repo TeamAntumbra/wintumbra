@@ -1,98 +1,93 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.Composition;
-using Antumbra.Glow.ExtensionFramework;
+﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
-using Antumbra.Glow.Utility;
 using Antumbra.Glow.Observer.Colors;
-using System.Threading;
-using System.Drawing;
-using System.Windows.Forms;
+using Antumbra.Glow.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Configuration;
+using System.Drawing;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Brightener
-{
+namespace Brightener {
+
     [Export(typeof(GlowExtension))]
-    public class Brightener : GlowFilter
-    {
-        private bool running;
-        private int deviceId;
-        private BrightenerSettings settingsWin;
-        public override string Name
-        {
-            get { return "Brightener"; }
-        }
-        public override Guid id
-        {
-            get { return Guid.Parse("1a271e63-5f7e-43c0-bbb1-7d80d23d8db7"); }
-        }
+    public class Brightener : GlowFilter {
 
-        public override string Author
-        {
+        #region Private Fields
+
+        private int deviceId;
+        private bool running;
+        private BrightenerSettings settingsWin;
+
+        #endregion Private Fields
+
+        #region Public Properties
+
+        public override string Author {
             get { return "Team Antumbra"; }
         }
 
-        public override string Description
-        {
+        public override string Description {
             get { return "Brightens colors using the HSL color model."; }
         }
 
-        public override bool IsDefault
-        {
-            get { return true; }
-        }
-
-        public override int devId
-        {
+        public override int devId {
             get { return deviceId; }
             set { deviceId = value; }
         }
 
-        public override GlowFilter Create()
-        {
+        public override Guid id {
+            get { return Guid.Parse("1a271e63-5f7e-43c0-bbb1-7d80d23d8db7"); }
+        }
+
+        public override bool IsDefault {
+            get { return true; }
+        }
+
+        public override bool IsRunning {
+            get { return this.running; }
+        }
+
+        public override string Name {
+            get { return "Brightener"; }
+        }
+
+        public override Version Version {
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+        }
+
+        public override string Website {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public override GlowFilter Create() {
             return new Brightener();
         }
 
-        public override Color16Bit Filter(Color16Bit origColor)
-        {
+        public override void Dispose() {
+            //
+        }
+
+        public override Color16Bit Filter(Color16Bit origColor) {
             HslColor hsl = new HslColor(Color16BitUtil.ToRGBColor(origColor));
-            if (hsl.L > (1.0 - (double)Properties.Settings.Default.amountToLighten))
+            if(hsl.L > (1.0 - (double)Properties.Settings.Default.amountToLighten))
                 hsl.L = 1.0;
             else
                 hsl.L += (double)Properties.Settings.Default.amountToLighten;
             return Color16BitUtil.FromRGBColor(hsl.ToRgbColor());
         }
 
-        public override bool IsRunning
-        {
-            get { return this.running; }
-        }
-
-        public override bool Start()
-        {
-            this.running = true;
-            return true;
-        }
-
-        public override bool Stop()
-        {
-            if (this.settingsWin != null)
-                this.settingsWin.Dispose();
-            this.running = false;
-            return true;
-        }
-
-        public override Version Version
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
-        }
-
-        public override bool Settings()
-        {
+        public override bool Settings() {
             this.settingsWin = new BrightenerSettings(this);
             this.settingsWin.Show();
             this.settingsWin.percBrightenTxt.Text = Properties.Settings.Default.amountToLighten.ToString();
@@ -101,30 +96,35 @@ namespace Brightener
             return true;
         }
 
-        private void ApplyBtnClick(object sender, EventArgs args)
-        {
+        public override bool Start() {
+            this.running = true;
+            return true;
+        }
+
+        public override bool Stop() {
+            if(this.settingsWin != null)
+                this.settingsWin.Dispose();
+            this.running = false;
+            return true;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void ApplyBtnClick(object sender, EventArgs args) {
             Properties.Settings.Default.Save();
         }
 
-        private void PercentChanged(object sender, EventArgs args)
-        {
+        private void PercentChanged(object sender, EventArgs args) {
             TextBox bx = (TextBox)sender;
             try {
                 Properties.Settings.Default.amountToLighten = double.Parse(bx.Text);
-            }
-            catch (Exception) {
+            } catch(Exception) {
                 //invalid input
             }
         }
 
-        public override string Website
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override void Dispose()
-        {
-            //
-        }
+        #endregion Private Methods
     }
 }

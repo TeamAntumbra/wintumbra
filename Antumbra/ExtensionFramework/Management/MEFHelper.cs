@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Antumbra.Glow.ExtensionFramework.Types;
+using Antumbra.Glow.Observer.Logging;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Collections;
-using System.Drawing;
-using Antumbra.Glow.ExtensionFramework.Types;
-using Antumbra.Glow.Observer.Logging;
 
 namespace Antumbra.Glow.ExtensionFramework.Management {
+
     public class MEFHelper : Loggable {
-        public delegate void NewLogMsg(string source, string msg);
-        public event NewLogMsg NewLogMsgAvail;
+
+        #region Private Fields
 
         private const string EXTENSION_DIR_REL_PATH = "./Extensions/";
+
         private readonly Type[] Types = {
                                             typeof(GlowDriver),
                                             typeof(GlowScreenGrabber),
@@ -23,13 +21,37 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                                             typeof(GlowNotifier)
                                         };
 
-
         private CompositionContainer container;
+
         [ImportMany]
         private List<GlowExtension> FullList;
 
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public MEFHelper() {
             AttachObserver(LoggerHelper.GetInstance());
+        }
+
+        #endregion Public Constructors
+
+        #region Public Delegates
+
+        public delegate void NewLogMsg(string source, string msg);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public event NewLogMsg NewLogMsgAvail;
+
+        #endregion Public Events
+
+        #region Public Methods
+
+        public void AttachObserver(LogMsgObserver observer) {
+            NewLogMsgAvail += observer.NewLogMsgAvail;
         }
 
         public Dictionary<Type, List<GlowExtension>> LoadExtensions() {
@@ -72,14 +94,16 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             return ExtensionBank;
         }
 
-        public void AttachObserver(LogMsgObserver observer) {
-            NewLogMsgAvail += observer.NewLogMsgAvail;
-        }
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void Log(string msg) {
             if(NewLogMsgAvail != null) {
                 NewLogMsgAvail("MEFHelper", msg);
             }
         }
+
+        #endregion Private Methods
     }
 }

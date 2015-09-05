@@ -1,63 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Antumbra.Glow.ExtensionFramework;
+﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
-using Antumbra.Glow.Utility;
+using System;
 using System.ComponentModel.Composition;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Reflection;
 
-namespace SinFade
-{
+namespace SinFade {
+
     [Export(typeof(GlowExtension))]
-    public class SinFade : GlowIndependentDriver
-    {
-        public delegate void NewColorAvail(Color16Bit newCol, int id, long index);
-        public event NewColorAvail NewColorAvailEvent;
-        private Task driver;
-        private bool running;
-        private long index;
+    public class SinFade : GlowIndependentDriver {
+
+        #region Private Fields
+
         private int deviceId;
 
-        public override GlowDriver Create()
-        {
-            return new SinFade();
+        private Task driver;
+
+        private long index;
+
+        private bool running;
+
+        #endregion Private Fields
+
+        #region Public Delegates
+
+        public delegate void NewColorAvail(Color16Bit newCol, int id, long index);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public event NewColorAvail NewColorAvailEvent;
+
+        #endregion Public Events
+
+        #region Public Properties
+
+        public override string Author {
+            get { return "Team Antumbra"; }
         }
 
-        public override int devId
-        {
-            get
-            {
+        public override string Description {
+            get {
+                return "A simple sin fade.";
+            }
+        }
+
+        public override int devId {
+            get {
                 return deviceId;
             }
-            set
-            {
+            set {
                 deviceId = value;
             }
         }
 
-        public override Guid id
-        {
+        public override Guid id {
             get { return Guid.Parse("31cae25b-72c0-4ffc-860b-234fb931bc15"); }
         }
 
-        public override bool IsDefault
-        {
+        public override bool IsDefault {
             get { return false; }
         }
-        
-        public override void AttachColorObserver(AntumbraColorObserver observer)
-        {
+
+        public override bool IsRunning {
+            get { return running; }
+        }
+
+        public override string Name {
+            get { return "Sin Fade"; }
+        }
+
+        public override Version Version {
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+        }
+
+        public override string Website {
+            get { return "https://antumbra.io/docs/extensions/driver/example"; }//TODO
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public override void AttachColorObserver(AntumbraColorObserver observer) {
             NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
         }
 
-        public override bool Start()
-        {
+        public override GlowDriver Create() {
+            return new SinFade();
+        }
+
+        public override void Dispose() {
+            if(driver != null) {
+                driver.Dispose();
+            }
+        }
+
+        public override void RecmmndCoreSettings() {
+            this.stepSleep = 50;
+        }
+
+        public override bool Settings() {
+            return false;
+        }
+
+        public override bool Start() {
             running = true;
             index = long.MinValue;
             driver = new Task(target);
@@ -65,54 +115,14 @@ namespace SinFade
             return true;
         }
 
-        public override bool IsRunning
-        {
-            get { return running; }
-        }
-
-        public override bool Settings()
-        {
-            return false;
-        }
-
-        public override void Dispose()
-        {
-            if (driver != null) {
-                driver.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Target of the independent driver task.
-        /// </summary>
-        private void target()
-        {
-            double i = 0;
-            while (running) {
-                double value = Math.Abs(Math.Sin(i) * UInt16.MaxValue);
-                ushort v = Convert.ToUInt16(value);
-                Color16Bit result;
-                result.red = v;
-                result.green = v;
-                result.blue = v;
-                if(NewColorAvailEvent != null)
-                    NewColorAvailEvent(result, deviceId, index++);
-                if (v == 0)
-                    Thread.Sleep(this.stepSleep * 39);
-                Thread.Sleep(this.stepSleep);
-                i += .03;
-            }
-        }
-
-        public override bool Stop()
-        {
+        public override bool Stop() {
             this.running = false;
-            if (this.driver != null) {
-                if (this.driver.IsCompleted)
+            if(this.driver != null) {
+                if(this.driver.IsCompleted)
                     this.driver.Dispose();
                 else {
                     this.driver.Wait(3000);
-                    if (this.driver.IsCompleted)
+                    if(this.driver.IsCompleted)
                         this.driver.Dispose();
                     else
                         return false;
@@ -121,37 +131,31 @@ namespace SinFade
             return true;
         }
 
-        public override string Name
-        {
-            get { return "Sin Fade"; }
-        }
+        #endregion Public Methods
 
-        public override string Author
-        {
-            get { return "Team Antumbra"; }
-        }
+        #region Private Methods
 
-        public override Version Version
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
-        }
-
-        public override string Description
-        {
-            get
-            {
-                return "A simple sin fade.";
+        /// <summary>
+        /// Target of the independent driver task.
+        /// </summary>
+        private void target() {
+            double i = 0;
+            while(running) {
+                double value = Math.Abs(Math.Sin(i) * UInt16.MaxValue);
+                ushort v = Convert.ToUInt16(value);
+                Color16Bit result;
+                result.red = v;
+                result.green = v;
+                result.blue = v;
+                if(NewColorAvailEvent != null)
+                    NewColorAvailEvent(result, deviceId, index++);
+                if(v == 0)
+                    Thread.Sleep(this.stepSleep * 39);
+                Thread.Sleep(this.stepSleep);
+                i += .03;
             }
         }
 
-        public override string Website
-        {
-            get { return "https://antumbra.io/docs/extensions/driver/example"; }//TODO
-        }
-
-        public override void RecmmndCoreSettings()
-        {
-            this.stepSleep = 50;
-        }
+        #endregion Private Methods
     }
 }
