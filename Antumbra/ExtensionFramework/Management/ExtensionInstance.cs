@@ -103,6 +103,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         /// </summary>
         /// <returns>Did it stop as expected?</returns>
         public bool Stop() {
+            if(!running) {
+                return false;
+            }
+
             try {
                 Log("Stopping...");
                 bool result = true;
