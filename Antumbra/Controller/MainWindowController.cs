@@ -56,7 +56,7 @@ namespace Antumbra.Glow.Controller {
             settingsManager = new SettingsManager();
             extensionManager = new ExtensionManager();
             preOutputProcessor = new PreOutputProcessor();
-            whiteBalController = new WhiteBalanceWindowController(settingsManager);
+            whiteBalController = new WhiteBalanceWindowController(settingsManager, WhiteBalanceWindowClosingHandler);
             pollingWindowController = new PollingAreaWindowController();
             disposables.Add(pollingWindowController);
             // Attach event observers
@@ -99,7 +99,7 @@ namespace Antumbra.Glow.Controller {
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
             this.window.throttleBar_ValueChange += new EventHandler(throttleBarValueChanged);
 
-            extensionManager.Start(-1);
+            SendStartCommand(-1);
         }
 
         public void ConnectionUpdate(int devCount) {

@@ -25,7 +25,7 @@ namespace Antumbra.Glow.View {
 
         private void closeBtn_Click(object sender, EventArgs e) {
             if(closeBtn_ClickEvent != null)
-                closeBtn_ClickEvent(sender, e);
+                closeBtn_ClickEvent(id, EventArgs.Empty);
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e) {

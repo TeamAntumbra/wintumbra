@@ -12,8 +12,11 @@ namespace Antumbra.Glow.Controller {
     public class WhiteBalanceWindowController : ConnectionEventObserver {
         private Dictionary<int, WhiteBalanceWindow> views;
         private SettingsManager settingsManager;
+        private System.Windows.Forms.FormClosingEventHandler closingHandler;
         private Color control;
-        public WhiteBalanceWindowController(SettingsManager settingsManager) {
+        public WhiteBalanceWindowController(SettingsManager settingsManager,
+                                            System.Windows.Forms.FormClosingEventHandler closingHandler) {
+                                                this.closingHandler = closingHandler;
             this.settingsManager = settingsManager;
             views = new Dictionary<int, WhiteBalanceWindow>();
             control = new Utility.HslColor(0, 0, .5).ToRgbColor();
@@ -21,7 +24,7 @@ namespace Antumbra.Glow.Controller {
 
         public bool IsOpen() {
             foreach(WhiteBalanceWindow window in views.Values) {
-                if(window.Visible) {
+                if(!window.IsDisposed) {
                     return true;
                 }
             }
@@ -31,7 +34,7 @@ namespace Antumbra.Glow.Controller {
         public void ConnectionUpdate(int devCount) {
             DisposeAll();
             for(int i = 0; i < devCount; i += 1) {
-                Init(i);
+                Init(i, closingHandler);
             }
         }
 
@@ -43,20 +46,27 @@ namespace Antumbra.Glow.Controller {
             views.Clear();
         }
 
-        private void Init(int id) {
+        private void Init(int id, System.Windows.Forms.FormClosingEventHandler closingHandler) {
             WhiteBalanceWindow view = new WhiteBalanceWindow(id);
+            view.FormClosing += closingHandler;
+            view.closeBtn_ClickEvent += new EventHandler(CloseBtnClicked);
             view.ColorWheelChangedEvent += new WhiteBalanceWindow.ColorWheelChanged(ColorWheelChangedHandler);
-            view.closeBtn_ClickEvent += new EventHandler(closeBtnHandler);
             DeviceSettings settings = settingsManager.getSettings(id);
-            int r = control.R - settings.redBias;
-            r = r < 0 ? 0 : r;
-            int g = control.G - settings.greenBias;
-            g = g < 0 ? 0 : g;
-            int b = control.B - settings.blueBias;
-            b = b < 0 ? 0 : b;
+            int r = control.R + settings.redBias;
+            r = r > Byte.MaxValue ? Byte.MaxValue : r;
+            int g = control.G + settings.greenBias;
+            g = g > Byte.MaxValue ? Byte.MaxValue : g;
+            int b = control.B + settings.blueBias;
+            b = b > Byte.MaxValue ? Byte.MaxValue : b;
             Color newColor = Color.FromArgb(r, g, b);
             view.SetColor(newColor);
             views[id] = view;
+        }
+
+        private void CloseBtnClicked(object sender, EventArgs args) {
+            if(sender != null && sender is int) {
+                views[(int)sender].Close();
+            }
         }
 
         private void ColorWheelChangedHandler(Color newColor, int id) {
@@ -79,15 +89,14 @@ namespace Antumbra.Glow.Controller {
             settingsManager.getSettings(id).ApplyChanges(Delta);
         }
 
-        private void closeBtnHandler(object sender, EventArgs args) {
-            foreach(WhiteBalanceWindow view in views.Values) {
-                view.Close();
-            }
-        }
-
         public void Show() {
-            foreach(WhiteBalanceWindow view in views.Values) {
-                view.Show();
+            foreach(KeyValuePair<int, WhiteBalanceWindow> viewPair in views) {
+                if(viewPair.Value.IsDisposed) {
+                    Init(viewPair.Key, closingHandler);
+                    views[viewPair.Key].Show();
+                } else {
+                    viewPair.Value.Show();
+                }
             }
         }
     }
