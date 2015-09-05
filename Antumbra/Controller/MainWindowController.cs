@@ -340,11 +340,7 @@ namespace Antumbra.Glow.Controller {
             if(sender is bool) {
                 bool on = (bool)sender;
                 if(on) {
-                    try {
-                        SendStartCommand(-1);
-                    } catch(Exception) {
-                        ResendManualColor(-1);
-                    }
+                    SendStartCommand(-1);
                 } else {
                     NewGlowCmdAvailEvent(new PowerOffCommand(-1));
                 }
@@ -367,13 +363,18 @@ namespace Antumbra.Glow.Controller {
         }
 
         private void SendStartCommand(int id) {
-            // Start
-            NewGlowCmdAvailEvent(new StartCommand(id));
-            preOutputProcessor.manualMode = false;
-
             //Force settings to announce themselves
             for(int i = 0; i < glowCount; i += 1) {
                 settingsManager.getSettings(i).Notify();
+            }
+
+            // Start
+            try {
+                NewGlowCmdAvailEvent(new StartCommand(id));
+                preOutputProcessor.manualMode = false;
+            } catch(Exception) {
+                ResendManualColor(id);
+                preOutputProcessor.manualMode = true;
             }
         }
 

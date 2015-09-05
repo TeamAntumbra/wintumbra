@@ -57,11 +57,21 @@ namespace Antumbra.Glow.Settings {
         /// <param name="info"></param>
         /// <param name="cntx"></param>
         public ActiveExtensions(SerializationInfo info, StreamingContext cntx) {
-            DriverGuid = (Guid)info.GetValue("driverGuid", typeof(Guid));
-            GrabberGuid = (Guid)info.GetValue("grabberGuid", typeof(Guid));
-            ProcessorGuids = new List<Guid>((Guid[])info.GetValue("processorGuids", typeof(Guid[])));
-            FilterGuids = new List<Guid>((Guid[])info.GetValue("filterGuids", typeof(Guid[])));
-            NotifierGuids = new List<Guid>((Guid[])info.GetValue("notifierGuids", typeof(Guid[])));
+            try {
+                DriverGuid = (Guid)info.GetValue("driverGuid", typeof(Guid));
+            } catch(Exception) { }
+            try {
+                GrabberGuid = (Guid)info.GetValue("grabberGuid", typeof(Guid));
+            } catch(Exception) { }
+            try {
+                ProcessorGuids = new List<Guid>((Guid[])info.GetValue("processorGuids", typeof(Guid[])));
+            } catch(Exception) { }
+            try {
+                FilterGuids = new List<Guid>((Guid[])info.GetValue("filterGuids", typeof(Guid[])));
+            } catch(Exception) { }
+            try {
+                NotifierGuids = new List<Guid>((Guid[])info.GetValue("notifierGuids", typeof(Guid[])));
+            } catch(Exception) { }
         }
 
         #endregion Public Constructors
@@ -144,8 +154,13 @@ namespace Antumbra.Glow.Settings {
         /// <param name="info"></param>
         /// <param name="cntx"></param>
         public void GetObjectData(SerializationInfo info, StreamingContext cntx) {
-            info.AddValue("driverGuid", ActiveDriver.id);
-            info.AddValue("grabberGuid", ActiveGrabber.id);
+            if(ActiveDriver != null) {
+                info.AddValue("driverGuid", ActiveDriver.id);
+            }
+
+            if(ActiveGrabber != null) {
+                info.AddValue("grabberGuid", ActiveGrabber.id);
+            }
             List<Guid> guids = new List<Guid>();
             foreach(GlowScreenProcessor prcr in ActiveProcessors) {
                 guids.Add(prcr.id);

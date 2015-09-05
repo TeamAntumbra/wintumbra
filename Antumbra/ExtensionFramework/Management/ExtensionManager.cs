@@ -127,63 +127,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 //Create, Load & Init new ExtensionInstances
                 for(int id = 0; id < devCount; id += 1) {
                     ExtensionInstance instance = CreateInstance(id, MODE.LOAD);
-                    try {
-                        instance.Load();
-                        instance.InitActives(Lib);
-                    } catch(System.IO.FileNotFoundException) {
-                        Log("ExtensionInstance (id: " + id + ") loading failed (FileNotFound). Using EMPTY preset.");
-                    } finally {
-                        Instances.Add(instance);
-                    }
+                    Instances.Add(instance);
                 }
             }
-        }
-
-        /// <summary>
-        /// Create an ExtensionInstance for the specified id and mode
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="preset"></param>
-        /// <returns></returns>
-        public ExtensionInstance CreateInstance(int id, MODE preset) {
-            ActiveExtensions actives;
-            switch(preset) {
-                case MODE.HSV:
-                    actives = PresetBuilder.GetHSVFadePreset();
-                    break;
-
-                case MODE.SIN:
-                    actives = PresetBuilder.GetSinFadePreset();
-                    break;
-
-                case MODE.NEON:
-                    actives = PresetBuilder.GetNeonFadePreset();
-                    break;
-
-                case MODE.MIRROR://Both use same extensions, just different settings
-                    actives = PresetBuilder.GetMirrorPreset();
-                    break;
-
-                case MODE.AUGMENT:
-                    actives = PresetBuilder.GetAugmentMirrorPreset();
-                    break;
-
-                case MODE.LOAD:
-                    actives = null;
-                    ExtensionInstance inst = new ExtensionInstance(id, new ActiveExtensions());
-                    inst.Load();
-                    inst.AttachObserver((AntumbraColorObserver)this);
-                    return inst;
-
-                case MODE.EMPTY:
-                default:
-                    actives = new ActiveExtensions();
-                    break;
-            }
-
-            ExtensionInstance instance = new ExtensionInstance(id, actives);
-            instance.AttachObserver((AntumbraColorObserver)this);
-            return instance;
         }
 
         public string getOutRatesMessage() {
@@ -370,6 +316,54 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             if(NewColorAvailEvent != null) {
                 NewColorAvailEvent(newColor, id, Instance.prevIndex);
             }
+        }
+
+        /// <summary>
+        /// Create an ExtensionInstance for the specified id and mode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        private ExtensionInstance CreateInstance(int id, MODE preset) {
+            ActiveExtensions actives;
+            switch(preset) {
+                case MODE.HSV:
+                    actives = PresetBuilder.GetHSVFadePreset();
+                    break;
+
+                case MODE.SIN:
+                    actives = PresetBuilder.GetSinFadePreset();
+                    break;
+
+                case MODE.NEON:
+                    actives = PresetBuilder.GetNeonFadePreset();
+                    break;
+
+                case MODE.MIRROR://Both use same extensions, just different settings
+                    actives = PresetBuilder.GetMirrorPreset();
+                    break;
+
+                case MODE.AUGMENT:
+                    actives = PresetBuilder.GetAugmentMirrorPreset();
+                    break;
+
+                case MODE.LOAD:
+                    actives = null;
+                    ExtensionInstance inst = new ExtensionInstance(id, new ActiveExtensions());
+                    inst.Load();
+                    inst.InitActives(Lib);
+                    inst.AttachObserver((AntumbraColorObserver)this);
+                    return inst;
+
+                case MODE.EMPTY:
+                default:
+                    actives = new ActiveExtensions();
+                    break;
+            }
+
+            ExtensionInstance instance = new ExtensionInstance(id, actives);
+            instance.AttachObserver((AntumbraColorObserver)this);
+            return instance;
         }
 
         #endregion Public Methods

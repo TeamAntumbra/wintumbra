@@ -143,7 +143,7 @@ namespace NeonFade {
                     return;//cancel fade, we've been stopped
                 Color16Bit newColor = Mixer.MixColorPercIn(col2, col1, frac);
                 SendColor(newColor);
-                Thread.Sleep(this.stepSleep);
+                Thread.Sleep(this.stepSleep / 4);
             }
         }
 
