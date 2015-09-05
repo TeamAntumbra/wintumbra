@@ -72,7 +72,9 @@ namespace Antumbra.Glow.View {
         /// <param name="msg"></param>
         /// <param name="icon"></param>
         private void ShowMessage(int time, string title, string msg, ToolTipIcon icon) {
-            this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
+            if(!msg.Trim().Equals("")) {
+                this.notifyIcon.ShowBalloonTip(time, title, msg, icon);
+            }
         }
 
         #endregion Private Methods

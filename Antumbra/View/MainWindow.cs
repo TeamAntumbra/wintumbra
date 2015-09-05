@@ -47,6 +47,8 @@ namespace Antumbra.Glow.View {
 
         public event EventHandler smoothBtn_ClickEvent;
 
+        public event EventHandler speedBar_ValueChange;
+
         public event EventHandler throttleBar_ValueChange;
 
         public event EventHandler whiteBalanceBtn_ClickEvent;
@@ -67,8 +69,10 @@ namespace Antumbra.Glow.View {
             }
         }
 
-        public void SetPollingBtnText(String newText) {
-            this.setPollingSizeBtn.Text = newText;
+        public void SetSpeedValue(int value) {
+            if(speedBar.Value != value) {
+                speedBar.Value = value;
+            }
         }
 
         #endregion Public Methods
@@ -160,6 +164,13 @@ namespace Antumbra.Glow.View {
         private void smoothBtn_Click(object sender, EventArgs e) {
             if(smoothBtn_ClickEvent != null)
                 smoothBtn_ClickEvent(sender, e);
+        }
+
+        private void speedBar_Scroll(object sender, EventArgs e) {
+            if(speedBar_ValueChange != null && sender is TrackBar) {
+                TrackBar bar = (TrackBar)sender;
+                speedBar_ValueChange(bar.Value, EventArgs.Empty);
+            }
         }
 
         private void throttleBar_ValueChanged(object sender, EventArgs e) {

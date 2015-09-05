@@ -108,6 +108,7 @@ namespace Antumbra.Glow.Controller {
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(PowerModeChanged);
             this.window = new MainWindow();
+            this.window.speedBar_ValueChange += new EventHandler(changeSpeed);
             this.window.outputRateBtn_ClickEvent += new EventHandler(showOutputRate);
             this.window.closeBtn_ClickEvent += new EventHandler(closeBtnClicked);
             this.window.colorWheel_ColorChangedEvent += new EventHandler(colorWheelColorChanged);
@@ -117,7 +118,6 @@ namespace Antumbra.Glow.Controller {
             this.window.neonBtn_ClickEvent += new EventHandler(neonBtnClicked);
             this.window.mirrorBtn_ClickEvent += new EventHandler(mirrorBtnClicked);
             this.window.augmentBtn_ClickEvent += new EventHandler(augmentBtnClicked);
-            this.window.smoothBtn_ClickEvent += new EventHandler(smoothBtnClicked);
             this.window.mainWindow_MouseDownEvent += new System.Windows.Forms.MouseEventHandler(mouseDownEvent);
             this.window.quitBtn_ClickEvent += new EventHandler(quitBtnClicked);
             this.quitEventHandler += quitHandler;
@@ -223,6 +223,7 @@ namespace Antumbra.Glow.Controller {
                 DeviceSettings settings = (DeviceSettings)config;
                 window.SetCaptureThrottleValue(settings.captureThrottle);
                 window.SetBrightnessValue(Convert.ToInt32(settings.maxBrightness * 100));
+                window.SetSpeedValue(settings.stepSleep);
                 ResendManualColor(settings.id);
             }
         }
@@ -309,11 +310,6 @@ namespace Antumbra.Glow.Controller {
             SendStartCommand(id);
         }
 
-        public void smoothBtnClicked(object sender, EventArgs args) {
-            extensionManager.SetInstance(id, ExtensionManager.MODE.SMOOTH);
-            SendStartCommand(id);
-        }
-
         #endregion Public Methods
 
         #region Private Methods
@@ -321,6 +317,17 @@ namespace Antumbra.Glow.Controller {
         private void AnnounceConfigChange(SettingsDelta delta) {
             if(NewConfigurationChangeEvent != null) {
                 NewConfigurationChangeEvent(delta);
+            }
+        }
+
+        private void changeSpeed(object sender, EventArgs args) {
+            if(sender is int) {
+                int value = (int)sender;
+                for(int i = 0; i < glowCount; i += 1) {
+                    SettingsDelta Delta = new SettingsDelta(i);
+                    Delta.changes[SettingValue.STEPSLEEP] = value;
+                    AnnounceConfigChange(Delta);
+                }
             }
         }
 

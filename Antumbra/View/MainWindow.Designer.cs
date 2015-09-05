@@ -31,6 +31,10 @@
             this.antumbraLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
             this.fadeTab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.speedBar = new System.Windows.Forms.TrackBar();
+            this.speedLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.neonBtn = new System.Windows.Forms.Button();
             this.sinBtn = new System.Windows.Forms.Button();
@@ -58,6 +62,7 @@
             this.rateLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.fadeTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.mirrorTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.throttleBar)).BeginInit();
             this.manualTab.SuspendLayout();
@@ -122,6 +127,10 @@
             // fadeTab
             // 
             this.fadeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.fadeTab.Controls.Add(this.label3);
+            this.fadeTab.Controls.Add(this.label4);
+            this.fadeTab.Controls.Add(this.speedBar);
+            this.fadeTab.Controls.Add(this.speedLabel);
             this.fadeTab.Controls.Add(this.label1);
             this.fadeTab.Controls.Add(this.neonBtn);
             this.fadeTab.Controls.Add(this.sinBtn);
@@ -133,6 +142,48 @@
             this.fadeTab.Size = new System.Drawing.Size(841, 348);
             this.fadeTab.TabIndex = 2;
             this.fadeTab.Text = "Fade";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label3.Location = new System.Drawing.Point(321, 272);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(14, 20);
+            this.label3.TabIndex = 86;
+            this.label3.Text = "-";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label4.Location = new System.Drawing.Point(524, 272);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(18, 20);
+            this.label4.TabIndex = 85;
+            this.label4.Text = "+";
+            // 
+            // speedBar
+            // 
+            this.speedBar.Location = new System.Drawing.Point(309, 232);
+            this.speedBar.Maximum = 200;
+            this.speedBar.Name = "speedBar";
+            this.speedBar.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.speedBar.Size = new System.Drawing.Size(244, 56);
+            this.speedBar.TabIndex = 84;
+            this.speedBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.speedBar.Scroll += new System.EventHandler(this.speedBar_Scroll);
+            // 
+            // speedLabel
+            // 
+            this.speedLabel.AutoSize = true;
+            this.speedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.speedLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.speedLabel.Location = new System.Drawing.Point(374, 310);
+            this.speedLabel.Name = "speedLabel";
+            this.speedLabel.Size = new System.Drawing.Size(115, 24);
+            this.speedLabel.TabIndex = 87;
+            this.speedLabel.Text = "Fade Speed";
             // 
             // label1
             // 
@@ -456,6 +507,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.fadeTab.ResumeLayout(false);
             this.fadeTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.speedBar)).EndInit();
             this.mirrorTab.ResumeLayout(false);
             this.mirrorTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.throttleBar)).EndInit();
@@ -500,5 +552,9 @@
         private System.Windows.Forms.Label plusLabel2;
         private System.Windows.Forms.Label minusLabel2;
         private System.Windows.Forms.Label rateLabel;
+        private System.Windows.Forms.Label speedLabel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar speedBar;
     }
 }

@@ -139,8 +139,7 @@ namespace HSVFade {
                 if(NewColorAvailEvent != null) {
                     NewColorAvailEvent(Color16BitUtil.FromRGBColor(col.ToRgbColor()), deviceId, index++);
                 }
-                if(stepSleep != 0)
-                    Thread.Sleep(stepSleep);
+                Thread.Sleep(stepSleep);
             }
         }
 

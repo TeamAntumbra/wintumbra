@@ -76,8 +76,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             SIN = 1,
             NEON = 2,
             MIRROR = 3,
-            SMOOTH = 4,
-            AUGMENT = 5
+            AUGMENT = 4,
+            LOAD = 5
         }
 
         #endregion Public Enums
@@ -126,7 +126,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 Instances.Clear();
                 //Create, Load & Init new ExtensionInstances
                 for(int id = 0; id < devCount; id += 1) {
-                    ExtensionInstance instance = CreateInstance(id, MODE.EMPTY);
+                    ExtensionInstance instance = CreateInstance(id, MODE.LOAD);
                     try {
                         instance.Load();
                         instance.InitActives(Lib);
@@ -161,7 +161,6 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     break;
 
                 case MODE.MIRROR://Both use same extensions, just different settings
-                case MODE.SMOOTH:
                     actives = PresetBuilder.GetMirrorPreset();
                     break;
 
@@ -169,11 +168,19 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     actives = PresetBuilder.GetAugmentMirrorPreset();
                     break;
 
+                case MODE.LOAD:
+                    actives = null;
+                    ExtensionInstance inst = new ExtensionInstance(id, new ActiveExtensions());
+                    inst.Load();
+                    inst.AttachObserver((AntumbraColorObserver)this);
+                    return inst;
+
                 case MODE.EMPTY:
                 default:
                     actives = new ActiveExtensions();
                     break;
             }
+
             ExtensionInstance instance = new ExtensionInstance(id, actives);
             instance.AttachObserver((AntumbraColorObserver)this);
             return instance;
@@ -319,6 +326,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 }
                 return;
             }
+
+            Instances[id].InitActives(Lib);
 
             Guid grabber = Instances[id].GetGrabber();
             if(!grabber.Equals(Guid.Empty)) {

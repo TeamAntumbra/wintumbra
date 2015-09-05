@@ -136,10 +136,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     return;
                 }
 
-                bool wasRunning = running;
+                /*bool wasRunning = running;
                 if(wasRunning) {
                     Stop();
-                }
+                }*/
 
                 if(Extensions.ActiveDriver != null) {
                     Extensions.ActiveDriver.stepSleep = settings.stepSleep;
@@ -160,9 +160,9 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     }
                 }
 
-                if(wasRunning) {
+                /*if(wasRunning) {
                     Start();
-                }
+                }*/
             }
         }
 

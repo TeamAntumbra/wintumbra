@@ -1,6 +1,7 @@
 ﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Logging;
 using System;
 using System.ComponentModel.Composition;
 using System.Reflection;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace SinFade {
 
     [Export(typeof(GlowExtension))]
-    public class SinFade : GlowIndependentDriver {
+    public class SinFade : GlowIndependentDriver, Loggable {
 
         #region Private Fields
 
@@ -28,11 +29,15 @@ namespace SinFade {
 
         public delegate void NewColorAvail(Color16Bit newCol, int id, long index);
 
+        public delegate void NewLogMsg(string title, string msg);
+
         #endregion Public Delegates
 
         #region Public Events
 
         public event NewColorAvail NewColorAvailEvent;
+
+        public event NewLogMsg NewLogMsgEvent;
 
         #endregion Public Events
 
@@ -83,10 +88,22 @@ namespace SinFade {
 
         #endregion Public Properties
 
+        #region Public Constructors
+
+        public SinFade() {
+            AttachObserver(LoggerHelper.GetInstance());
+        }
+
+        #endregion Public Constructors
+
         #region Public Methods
 
         public override void AttachColorObserver(AntumbraColorObserver observer) {
             NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+        }
+
+        public void AttachObserver(LogMsgObserver observer) {
+            NewLogMsgEvent += observer.NewLogMsgAvail;
         }
 
         public override GlowDriver Create() {
@@ -95,7 +112,11 @@ namespace SinFade {
 
         public override void Dispose() {
             if(driver != null) {
-                driver.Dispose();
+                try {
+                    driver.Dispose();
+                } catch(InvalidOperationException ex) {
+                    Log(ex.Message + '\n' + ex.StackTrace);
+                }
             }
         }
 
@@ -135,6 +156,12 @@ namespace SinFade {
 
         #region Private Methods
 
+        private void Log(string msg) {
+            if(NewLogMsgEvent != null) {
+                NewLogMsgEvent("SinFade", msg);
+            }
+        }
+
         /// <summary>
         /// Target of the independent driver task.
         /// </summary>
@@ -149,10 +176,8 @@ namespace SinFade {
                 result.blue = v;
                 if(NewColorAvailEvent != null)
                     NewColorAvailEvent(result, deviceId, index++);
-                if(v == 0)
-                    Thread.Sleep(this.stepSleep * 39);
-                Thread.Sleep(this.stepSleep);
-                i += .03;
+                Thread.Sleep(stepSleep / 3);
+                i += .005;
             }
         }
 
