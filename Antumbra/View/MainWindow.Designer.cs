@@ -37,7 +37,6 @@
             this.hsvBtn = new System.Windows.Forms.Button();
             this.mirrorTab = new System.Windows.Forms.TabPage();
             this.setPollingSizeBtn = new System.Windows.Forms.Button();
-            this.smoothBtn = new System.Windows.Forms.Button();
             this.augmentBtn = new System.Windows.Forms.Button();
             this.mirrorBtn = new System.Windows.Forms.Button();
             this.modeDescs = new System.Windows.Forms.Label();
@@ -183,7 +182,6 @@
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
             this.mirrorTab.Controls.Add(this.setPollingSizeBtn);
-            this.mirrorTab.Controls.Add(this.smoothBtn);
             this.mirrorTab.Controls.Add(this.augmentBtn);
             this.mirrorTab.Controls.Add(this.mirrorBtn);
             this.mirrorTab.Controls.Add(this.modeDescs);
@@ -207,23 +205,11 @@
             this.setPollingSizeBtn.UseVisualStyleBackColor = true;
             this.setPollingSizeBtn.Click += new System.EventHandler(this.setPollingSizeBtn_Click);
             // 
-            // smoothBtn
-            // 
-            this.smoothBtn.AutoSize = true;
-            this.smoothBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.smoothBtn.Location = new System.Drawing.Point(693, 44);
-            this.smoothBtn.Name = "smoothBtn";
-            this.smoothBtn.Size = new System.Drawing.Size(87, 36);
-            this.smoothBtn.TabIndex = 2;
-            this.smoothBtn.Text = "Smooth";
-            this.smoothBtn.UseVisualStyleBackColor = true;
-            this.smoothBtn.Click += new System.EventHandler(this.smoothBtn_Click);
-            // 
             // augmentBtn
             // 
             this.augmentBtn.AutoSize = true;
             this.augmentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.augmentBtn.Location = new System.Drawing.Point(362, 44);
+            this.augmentBtn.Location = new System.Drawing.Point(493, 44);
             this.augmentBtn.Name = "augmentBtn";
             this.augmentBtn.Size = new System.Drawing.Size(99, 36);
             this.augmentBtn.TabIndex = 1;
@@ -235,7 +221,7 @@
             // 
             this.mirrorBtn.AutoSize = true;
             this.mirrorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mirrorBtn.Location = new System.Drawing.Point(65, 44);
+            this.mirrorBtn.Location = new System.Drawing.Point(260, 44);
             this.mirrorBtn.Name = "mirrorBtn";
             this.mirrorBtn.Size = new System.Drawing.Size(75, 36);
             this.mirrorBtn.TabIndex = 0;
@@ -247,12 +233,14 @@
             // 
             this.modeDescs.Location = new System.Drawing.Point(44, 97);
             this.modeDescs.Name = "modeDescs";
-            this.modeDescs.Size = new System.Drawing.Size(736, 184);
+            this.modeDescs.Size = new System.Drawing.Size(736, 116);
             this.modeDescs.TabIndex = 4;
-            this.modeDescs.Text = resources.GetString("modeDescs.Text");
-            //
+            this.modeDescs.Text = "Mirror - Base Glow\'s color off of what is on screen. No crazy algorithms, just an" +
+    " average.\r\n\r\nAugment - Like Mirror, but with saturation and brightness boosting." +
+    "";
+            // 
             // outputRateBtn
-            //
+            // 
             this.outputRateBtn.AutoSize = true;
             this.outputRateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.outputRateBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
@@ -268,7 +256,7 @@
             // 
             this.rateDescLabel.AutoSize = true;
             this.rateDescLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.rateDescLabel.Location = new System.Drawing.Point(259, 563);
+            this.rateDescLabel.Location = new System.Drawing.Point(263, 563);
             this.rateDescLabel.Name = "rateDescLabel";
             this.rateDescLabel.Size = new System.Drawing.Size(293, 18);
             this.rateDescLabel.TabIndex = 9;
@@ -330,8 +318,6 @@
             // 
             this.whiteBalanceBtn.AutoSize = true;
             this.whiteBalanceBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.whiteBalanceBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.whiteBalanceBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.whiteBalanceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.whiteBalanceBtn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8F);
             this.whiteBalanceBtn.ForeColor = System.Drawing.Color.WhiteSmoke;
@@ -348,7 +334,7 @@
             this.brightnessLabel.AutoSize = true;
             this.brightnessLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.brightnessLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.brightnessLabel.Location = new System.Drawing.Point(78, 526);
+            this.brightnessLabel.Location = new System.Drawing.Point(92, 526);
             this.brightnessLabel.Name = "brightnessLabel";
             this.brightnessLabel.Size = new System.Drawing.Size(98, 24);
             this.brightnessLabel.TabIndex = 4;
@@ -429,7 +415,7 @@
             this.rateLabel.AutoSize = true;
             this.rateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.rateLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.rateLabel.Location = new System.Drawing.Point(345, 526);
+            this.rateLabel.Location = new System.Drawing.Point(343, 526);
             this.rateLabel.Name = "rateLabel";
             this.rateLabel.Size = new System.Drawing.Size(119, 24);
             this.rateLabel.TabIndex = 83;
@@ -499,7 +485,6 @@
         private System.Windows.Forms.Label plusLabel;
         private System.Windows.Forms.Button setPollingSizeBtn;
         private System.Windows.Forms.Label modeDescs;
-        private System.Windows.Forms.Button smoothBtn;
         private System.Windows.Forms.Button augmentBtn;
         private System.Windows.Forms.Button mirrorBtn;
         private System.Windows.Forms.TabPage manualTab;
