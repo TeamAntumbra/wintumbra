@@ -247,10 +247,8 @@ namespace Antumbra.Glow.Controller {
         }
 
         public void showWindowEventHandler(object sender, EventArgs args) {
-            if(this.window.Visible)
-                this.window.Activate();
-            else
-                this.window.Show();
+            this.window.Activate();
+            this.window.Show();
         }
 
         public void restartEventHandler(object sender, EventArgs args) {
