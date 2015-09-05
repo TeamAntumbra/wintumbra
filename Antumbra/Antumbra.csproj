@@ -138,7 +138,7 @@
     <Compile Include="Controller\ToolbarIconController.cs" />
     <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
     <Compile Include="Observer\Colors\Color16Bit.cs" />
-    <Compile Include="Observer\Bitmaps\FastBitmap.cs" />
+    <Compile Include="Observer\ScreenInfo\FastBitmap.cs" />
     <Compile Include="Observer\Configuration\ConfigurationChanger.cs" />
     <Compile Include="Observer\Configuration\ConfigurationChangeAnnouncer.cs" />
     <Compile Include="Observer\Connection\ConnectionEventObserver.cs" />
@@ -162,8 +162,8 @@
     <Compile Include="ExtensionFramework\Types\GlowScreenGrabber.cs" />
     <Compile Include="ExtensionFramework\Types\GlowScreenProcessor.cs" />
     <Compile Include="ExtensionFramework\Types\Notifiications\Notification.cs" />
-    <Compile Include="Observer\Bitmaps\AntumbraScreenInfoObserver.cs" />
-    <Compile Include="Observer\Bitmaps\AntumbraScreenInfoSource.cs" />
+    <Compile Include="Observer\ScreenInfo\AntumbraScreenInfoObserver.cs" />
+    <Compile Include="Observer\ScreenInfo\AntumbraScreenInfoSource.cs" />
     <Compile Include="Observer\Colors\AntumbraColorObserver.cs" />
     <Compile Include="Observer\Colors\AntumbraColorSource.cs" />
     <Compile Include="Observer\Configuration\Configurable.cs" />

@@ -17,7 +17,7 @@ using System.Threading;
 namespace SlimDXCapture
 {
     [Export(typeof(GlowExtension))]
-    public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraBitmapSource, Loggable, IDisposable
+    public class SlimDXScreenCapture : GlowScreenGrabber, AntumbraScreenInfoSource, Loggable, IDisposable
     {
         public delegate void NewScreenAvail(List<int[,,]> pixels, EventArgs args);
         public event NewScreenAvail NewScreenAvailEvent;

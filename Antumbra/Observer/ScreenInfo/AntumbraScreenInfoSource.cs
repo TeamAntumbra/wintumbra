@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Antumbra.Glow.Observer.ScreenInfo {
-    public interface AntumbraBitmapSource {
+    public interface AntumbraScreenInfoSource {
         void AttachObserver(AntumbraScreenInfoObserver observer);
     }
 }
