@@ -80,7 +80,6 @@ namespace SlimDXCapture
                     Log(ex.Message + '\n' + ex.StackTrace);
                 }
                 result.Add(s);
-              //  Bitmap bm = new Bitmap(Surface.ToStream(s, ImageFileFormat.Bmp));
             }
             return result;
         }
@@ -145,6 +144,7 @@ namespace SlimDXCapture
         private void target() {
             while(this.IsRunning) {
                 lock(sync) {
+                    Thread.Sleep(captureThrottle);
                     List<Surface> surfaces = CaptureScreen();
                     List<int[, ,]> dataArrays = new List<int[, ,]>();
 
