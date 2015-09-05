@@ -28,6 +28,10 @@ namespace Antumbra.Glow.Settings {
         public int id;
         public Dictionary<SettingValue, object> changes = new Dictionary<SettingValue, object>();
 
+        public SettingsDelta(int id) {
+            this.id = id;
+        }
+
         public override string ToString() {
             StringBuilder sb = new StringBuilder("SettingsDelta Changes:\t");
             var i = 0;

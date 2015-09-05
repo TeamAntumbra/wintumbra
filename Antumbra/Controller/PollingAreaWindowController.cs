@@ -11,16 +11,21 @@ using Antumbra.Glow.Observer.GlowCommands.Commands;
 using Antumbra.Glow.Observer.Colors;
 using Antumbra.Glow.Observer.Connection;
 using Antumbra.Glow.Observer.Logging;
+using Antumbra.Glow.Observer.Configuration;
 using Antumbra.Glow.Settings;
 
 namespace Antumbra.Glow.Controller {
-    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable, ConnectionEventObserver {
+    public class PollingAreaWindowController : GlowCommandSender, Loggable, IDisposable, ConnectionEventObserver,
+                                               ConfigurationChangeAnnouncer {
         public delegate void NewLogMsg(string source, string msg);
         public event NewLogMsg NewLogMsgEvent;
         public delegate void PollingAreaUpdated(Dictionary<int, Settings.SettingsDelta> PollingAreaChanges);
         public event PollingAreaUpdated PollingAreaUpdatedEvent;
         public delegate void NewGlowCommandAvail(GlowCommand cmd);
         public event NewGlowCommandAvail NewGlowCommandAvailEvent;
+        public delegate void NewConfigChange(SettingsDelta Delta);
+        public event NewConfigChange NewConfigChangeAvail;
+
         private List<View.pollingAreaSetter> pollingWindows;
         private Dictionary<int, SettingsDelta> PollingAreaChanges;
         private Rectangle boundRange;
@@ -92,6 +97,10 @@ namespace Antumbra.Glow.Controller {
             NewLogMsgEvent += observer.NewLogMsgAvail;
         }
 
+        public void AttachObserver(ConfigurationChanger observer) {
+            NewConfigChangeAvail += observer.ConfigChange;
+        }
+
         public void Dispose() {
             foreach(View.pollingAreaSetter pollingWindow in pollingWindows) {
                 if(!pollingWindow.IsDisposed) {
@@ -127,7 +136,7 @@ namespace Antumbra.Glow.Controller {
                 View.pollingAreaSetter window = (View.pollingAreaSetter)sender;
                 if(PollingAreaUpdatedEvent != null) {
                     Log("Polling window " + window.id + " closed with bounds: " + window.Bounds);
-                    SettingsDelta Delta = new SettingsDelta();
+                    SettingsDelta Delta = new SettingsDelta(window.id);
                     Delta.changes[SettingValue.X] = window.Bounds.X;
                     Delta.changes[SettingValue.Y] = window.Bounds.Y;
                     Delta.changes[SettingValue.WIDTH] = window.Bounds.Width;

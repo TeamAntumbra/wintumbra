@@ -22,7 +22,7 @@ using Microsoft.Win32;
 namespace Antumbra.Glow.Controller {
     public class MainWindowController : Loggable, ToolbarNotificationSource, GlowCommandSender, GlowCommandObserver,
                                         ToolbarNotificationObserver, ConfigurationObserver, ConnectionEventObserver,
-                                        IDisposable {
+                                        IDisposable, ConfigurationChangeAnnouncer {
         public const Int32 VID = 0x16D0;
         public const Int32 PID = 0x0A85;
 
@@ -32,6 +32,9 @@ namespace Antumbra.Glow.Controller {
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewGlowCmdAvail(GlowCommand cmd);
         public event NewGlowCmdAvail NewGlowCmdAvailEvent;
+        public delegate void NewConfigurationChange(SettingsDelta Delta);
+        public event NewConfigurationChange NewConfigurationChangeEvent;
+
         private event EventHandler quitEventHandler;
         private MainWindow window;
         private int glowCount, id;
@@ -55,6 +58,7 @@ namespace Antumbra.Glow.Controller {
             // Create Manager instances
             connectionManager = new ConnectionManager(VID, PID);
             settingsManager = new SettingsManager();
+            AttachObserver((ConfigurationChanger)settingsManager);
             extensionManager = new ExtensionManager();
             preOutputProcessor = new PreOutputProcessor();
             whiteBalController = new WhiteBalanceWindowController(settingsManager, WhiteBalanceWindowClosingHandler);
@@ -71,6 +75,8 @@ namespace Antumbra.Glow.Controller {
             settingsManager.AttachObserver((ConfigurationObserver)extensionManager);
             settingsManager.AttachObserver((ConfigurationObserver)preOutputProcessor);
             settingsManager.AttachObserver((ConfigurationObserver)this);
+            whiteBalController.AttachObserver((ConfigurationChanger)settingsManager);
+            pollingWindowController.AttachObserver((ConfigurationChanger)settingsManager);
             pollingWindowController.PollingAreaUpdatedEvent += new PollingAreaWindowController.PollingAreaUpdated(UpdatePollingSelection);
             // Find devices
             connectionManager.UpdateDeviceConnections();
@@ -133,11 +139,17 @@ namespace Antumbra.Glow.Controller {
             if(sender is int) {
                 NewGlowCmdAvailEvent(new StopCommand(-1));
                 int value = (int)sender;
-                SettingsDelta Delta = new SettingsDelta();
-                Delta.changes[SettingValue.CAPTURETHROTTLE] = value;
                 for(var i = 0; i < glowCount; i += 1) {
-                    settingsManager.getSettings(i).ApplyChanges(Delta);
+                    SettingsDelta Delta = new SettingsDelta(i);
+                    Delta.changes[SettingValue.CAPTURETHROTTLE] = value;
+                    AnnounceConfigChange(Delta);
                 }
+            }
+        }
+
+        private void AnnounceConfigChange(SettingsDelta delta) {
+            if(NewConfigurationChangeEvent != null) {
+                NewConfigurationChangeEvent(delta);
             }
         }
 
@@ -178,7 +190,7 @@ namespace Antumbra.Glow.Controller {
 
         private void UpdatePollingSelection(Dictionary<int, SettingsDelta> PollingAreaChanges) {
             foreach(KeyValuePair<int, SettingsDelta> KeyValue in PollingAreaChanges) {
-                settingsManager.getSettings(KeyValue.Key).ApplyChanges(KeyValue.Value);
+                AnnounceConfigChange(KeyValue.Value);
             }
             settingsManager.UpdateBoundingBox();
         }
@@ -208,6 +220,10 @@ namespace Antumbra.Glow.Controller {
 
         public void AttachObserver(LogMsgObserver observer) {
             this.NewLogMsgAvailEvent += observer.NewLogMsgAvail;
+        }
+
+        public void AttachObserver(ConfigurationChanger observer) {
+            NewConfigurationChangeEvent += observer.ConfigChange;
         }
 
         private void ShowMessage(int time, string title, string msg, int icon) {
@@ -248,10 +264,10 @@ namespace Antumbra.Glow.Controller {
         public void brightnessValueChanged(object sender, EventArgs args) {
             if(sender is double) {
                 double value = (double)sender;
-                SettingsDelta Delta = new SettingsDelta();
-                Delta.changes[SettingValue.MAXBRIGHTNESS] = value;
                 for(int i = 0; i < connectionManager.GlowsFound; i += 1) {
-                    settingsManager.getSettings(i).ApplyChanges(Delta);
+                    SettingsDelta Delta = new SettingsDelta(i);
+                    Delta.changes[SettingValue.MAXBRIGHTNESS] = value;
+                    AnnounceConfigChange(Delta);
                 }
             }
         }

@@ -7,9 +7,13 @@ using System.Drawing;
 using Antumbra.Glow.View;
 using Antumbra.Glow.Settings;
 using Antumbra.Glow.Observer.Connection;
+using Antumbra.Glow.Observer.Configuration;
 
 namespace Antumbra.Glow.Controller {
-    public class WhiteBalanceWindowController : ConnectionEventObserver {
+    public class WhiteBalanceWindowController : ConnectionEventObserver, ConfigurationChangeAnnouncer {
+        public delegate void NewConfigChange(SettingsDelta Delta);
+        public event NewConfigChange NewConfigChangeEvent;
+
         private Dictionary<int, WhiteBalanceWindow> views;
         private SettingsManager settingsManager;
         private System.Windows.Forms.FormClosingEventHandler closingHandler;
@@ -29,6 +33,10 @@ namespace Antumbra.Glow.Controller {
                 }
             }
             return false;
+        }
+
+        public void AttachObserver(ConfigurationChanger observer) {
+            NewConfigChangeEvent += observer.ConfigChange;
         }
 
         public void ConnectionUpdate(int devCount) {
@@ -70,7 +78,7 @@ namespace Antumbra.Glow.Controller {
         }
 
         private void ColorWheelChangedHandler(Color newColor, int id) {
-            SettingsDelta Delta = new SettingsDelta();
+            SettingsDelta Delta = new SettingsDelta(id);
             int red = newColor.R - control.R;
             int green = newColor.G - control.G;
             int blue = newColor.B - control.B;
@@ -86,7 +94,7 @@ namespace Antumbra.Glow.Controller {
                 blue = blue >= 128 ? 127 : blue;
                 Delta.changes[SettingValue.BLUEBIAS] = blue;
             }
-            settingsManager.getSettings(id).ApplyChanges(Delta);
+            AnnounceConfigChange(Delta);
         }
 
         public void Show() {
@@ -97,6 +105,12 @@ namespace Antumbra.Glow.Controller {
                 } else {
                     viewPair.Value.Show();
                 }
+            }
+        }
+
+        private void AnnounceConfigChange(SettingsDelta Delta) {
+            if(NewConfigChangeEvent != null) {
+                NewConfigChangeEvent(Delta);
             }
         }
     }

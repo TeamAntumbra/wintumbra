@@ -11,7 +11,7 @@ namespace Antumbra.Glow.Settings {
     ///       The caveat here is that it cannot save itself
     /// </summary>
     [Serializable()]
-    public class DeviceSettings : Configurable, Loggable, ISerializable, Savable {
+    public class DeviceSettings : Configurable, Loggable, ISerializable, Savable, ConfigurationChanger {
         public const String FILE_NAME_PREFIX = "Dev_Settings_";
 
         public delegate void ConfigurationChange(Configurable settings);
@@ -67,6 +67,10 @@ namespace Antumbra.Glow.Settings {
             weightingEnabled = true;
             newColorWeight = 0.20;
             Notify();
+        }
+
+        public void ConfigChange(SettingsDelta Delta) {
+            ApplyChanges(Delta);
         }
 
         public void Save() {

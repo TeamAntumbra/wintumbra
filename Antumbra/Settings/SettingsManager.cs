@@ -9,7 +9,8 @@ namespace Antumbra.Glow.Settings {
     /// <summary>
     /// Manages DeviceSettings objects and the bounding of all capture zones.
     /// </summary>
-    public class SettingsManager : Loggable, ConnectionEventObserver, ConfigurationObserver, Configurable {
+    public class SettingsManager : Loggable, ConnectionEventObserver, ConfigurationObserver, Configurable,
+                                   ConfigurationChanger {
         public delegate void NewLogMsg(String source, String msg);
         public event NewLogMsg NewLogMsgAvail;
         public delegate void NewConfigUpdate(Configurable config);
@@ -57,15 +58,18 @@ namespace Antumbra.Glow.Settings {
             boundY = minTop;
             boundWidth = maxRight - minLeft;
             boundHeight = maxBot - minTop;
-            SettingsDelta Delta = new SettingsDelta();
-            Delta.changes[SettingValue.BOUNDX] = boundX;
-            Delta.changes[SettingValue.BOUNDY] = boundY;
-            Delta.changes[SettingValue.BOUNDWIDTH] = boundWidth;
-            Delta.changes[SettingValue.BOUNDHEIGHT] = boundHeight;
-            Log("New bounding box calculated.\n" + Delta.ToString());
             foreach(int id in Settings.Keys) {
-                Settings[id].ApplyChanges(Delta);
+                SettingsDelta Delta = new SettingsDelta(id);
+                Delta.changes[SettingValue.BOUNDX] = boundX;
+                Delta.changes[SettingValue.BOUNDY] = boundY;
+                Delta.changes[SettingValue.BOUNDWIDTH] = boundWidth;
+                Delta.changes[SettingValue.BOUNDHEIGHT] = boundHeight;
+                ConfigChange(Delta);
             }
+        }
+
+        public void ConfigChange(SettingsDelta Delta) {
+            getSettings(Delta.id).ConfigChange(Delta);
         }
 
         /// <summary>
