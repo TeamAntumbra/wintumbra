@@ -38,18 +38,26 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             Notifiers.Clear();
 
             Dictionary<Type, List<GlowExtension>> ExtensionBank = MefHelper.LoadExtensions();
+            if(ExtensionBank == null) {
+                throw new Exception("No extensions found. Check logs for more details.");
+            }
+
             Type current = typeof(GlowExtension);
-            Extensions = ExtensionBank[current];
-            current = typeof(GlowDriver);
-            Drivers = ExtensionBank[current].Cast<GlowDriver>().ToList();
-            current = typeof(GlowScreenGrabber);
-            Grabbers = ExtensionBank[current].Cast<GlowScreenGrabber>().ToList();
-            current = typeof(GlowScreenProcessor);
-            Processors = ExtensionBank[current].Cast<GlowScreenProcessor>().ToList();
-            current = typeof(GlowFilter);
-            Filters = ExtensionBank[current].Cast<GlowFilter>().ToList();
-            current = typeof(GlowNotifier);
-            Notifiers = ExtensionBank[current].Cast<GlowNotifier>().ToList();
+            try {
+                Extensions = ExtensionBank[current];
+                current = typeof(GlowDriver);
+                Drivers = ExtensionBank[current].Cast<GlowDriver>().ToList();
+                current = typeof(GlowScreenGrabber);
+                Grabbers = ExtensionBank[current].Cast<GlowScreenGrabber>().ToList();
+                current = typeof(GlowScreenProcessor);
+                Processors = ExtensionBank[current].Cast<GlowScreenProcessor>().ToList();
+                current = typeof(GlowFilter);
+                Filters = ExtensionBank[current].Cast<GlowFilter>().ToList();
+                current = typeof(GlowNotifier);
+                Notifiers = ExtensionBank[current].Cast<GlowNotifier>().ToList();
+            } catch(KeyNotFoundException) {
+                throw new Exception("Exception loading extensions.  Key not found: " + current);
+            }
         }
 
         public GlowDriver LookupDriver(Guid id) {

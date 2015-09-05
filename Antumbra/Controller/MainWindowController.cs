@@ -56,10 +56,15 @@ namespace Antumbra.Glow.Controller {
 
             AttachObserver((LogMsgObserver)(LoggerHelper.GetInstance()));//attach logger
             // Create Manager instances
+            try {
+                extensionManager = new ExtensionManager();
+            } catch(Exception) {
+                throw;
+            }
             connectionManager = new ConnectionManager(VID, PID);
             settingsManager = new SettingsManager();
             AttachObserver((ConfigurationChanger)settingsManager);
-            extensionManager = new ExtensionManager();
+
             preOutputProcessor = new PreOutputProcessor();
             whiteBalController = new WhiteBalanceWindowController(settingsManager, WhiteBalanceWindowClosingHandler);
             pollingWindowController = new PollingAreaWindowController();

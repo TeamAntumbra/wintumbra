@@ -18,21 +18,32 @@ namespace Antumbra.Glow.Controller {
         public event NewToolbarNotif NewToolbarNotifAvailEvent;
         public delegate void NewLogMsgAvail(string source, string msg);
         public event NewLogMsgAvail NewLogMsgAvailEvent;
+
+        public bool failed;
+
         private const string extPath = "./Extensions/";
         private Antumbra.Glow.View.ToolbarIcon toolbarIcon;
+
         public ToolbarIconController() {
             AttachObserver(LoggerHelper.GetInstance());
             toolbarIcon = new Antumbra.Glow.View.ToolbarIcon();
             toolbarIcon.Hide();
             AttachObserver(toolbarIcon);
-            MainWindowController mainController = new MainWindowController(toolbarIcon.ProductVersion, new EventHandler(Quit));
-            mainController.AttachObserver((ToolbarNotificationObserver)this);
+            try {
+                MainWindowController mainController = new MainWindowController(toolbarIcon.ProductVersion, new EventHandler(Quit));
+                mainController.AttachObserver((ToolbarNotificationObserver)this);
 
-            toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
-            toolbarIcon.notifyIcon_DoubleClickEvent += new EventHandler(mainController.restartEventHandler);
-            LogMsg("ToolbarIconController", "Wintumbra starting @ " + DateTime.Now.ToString());
-            NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
-                "application window.", 0);
+                toolbarIcon.notifyIcon_MouseClickEvent += new EventHandler(mainController.showWindowEventHandler);
+                toolbarIcon.notifyIcon_DoubleClickEvent += new EventHandler(mainController.restartEventHandler);
+                LogMsg("ToolbarIconController", "Wintumbra starting @ " + DateTime.Now.ToString());
+                NewToolbarNotifAvail(1000, "Click to Open", "Click the Antumbra logo to open the main " +
+                    "application window.", 0);
+                failed = false;
+            } catch(Exception ex) {
+                NewToolbarNotifAvailEvent(3000, "Exception while starting.", ex.Message, 2);
+                Thread.Sleep(3500);
+                failed = true;
+            }
         }
 
         private void Quit(object sender, EventArgs args) {

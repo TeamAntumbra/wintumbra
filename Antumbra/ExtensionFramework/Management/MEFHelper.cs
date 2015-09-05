@@ -48,23 +48,27 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                 System.IO.Directory.CreateDirectory(EXTENSION_DIR_REL_PATH);
                 catalog = new DirectoryCatalog(EXTENSION_DIR_REL_PATH, "*.glow.dll");
             }
-            container = new CompositionContainer(catalog);
-            container.ComposeParts(this);
-            container.Dispose();
+            try {
+                container = new CompositionContainer(catalog);
+                container.ComposeParts(this);
+                container.Dispose();
+            } catch(Exception ex) {
+                Log(ex.Message + '\n' + ex.StackTrace);
+            }
 
             if(null == FullList) {
-                throw new Exception("Loading extensions failed.  extensions == null");//no plugins loaded
+                Log("Loading extensions failed.  extensions == null");//no plugins loaded
+            } else {
+                Log("Extension Refresh complete.\nThe Following GlowExtensions were found:\n");
+
+                foreach(GlowExtension extension in FullList) {
+                    Type type = extension.GetExtensionType();
+                    Log(type + extension.ToString());
+                    ExtensionBank[type].Add(extension);
+                }
+                ExtensionBank[typeof(GlowExtension)] = FullList;
             }
 
-            Log("Extension Refresh complete.\nThe Following GlowExtensions were found:\n");
-
-            foreach(GlowExtension extension in FullList) {
-                Type type = extension.GetExtensionType();
-                Log(type + extension.ToString());
-                ExtensionBank[type].Add(extension);
-            }
-
-            ExtensionBank[typeof(GlowExtension)] = FullList;
             return ExtensionBank;
         }
 

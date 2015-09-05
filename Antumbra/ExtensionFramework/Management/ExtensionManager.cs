@@ -35,6 +35,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         private ExtensionInstance CaptureInstance;
         private PresetBuilder PresetBuilder;
         private int deviceCount;
+
         /// <summary>
         /// Constructor - Creates a new ExtensionManager
         /// </summary>
@@ -43,10 +44,14 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         public ExtensionManager() {
             deviceCount = 0;
             Lib = new ExtensionLibrary();
-            Lib.Update();
-            PresetBuilder = new Management.PresetBuilder(Lib);
             Instances = new Dictionary<int, ExtensionInstance>();
             CaptureInstance = null;
+            try {
+                Lib.Update();
+                PresetBuilder = new Management.PresetBuilder(Lib);
+            } catch(Exception) {
+                throw;
+            }
         }
 
         /// <summary>

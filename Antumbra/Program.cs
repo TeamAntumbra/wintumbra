@@ -23,12 +23,15 @@ namespace Antumbra.Glow {
             logger.NewLogMsgAvail("Program Class", "Starting initialization of objects...");
             ToolbarIconController controller = new ToolbarIconController();
             try {
-                logger.NewLogMsgAvail("Program Class", "Starting run...");
-                Application.Run();//start independent of form
+                if(!controller.failed) {
+                    logger.NewLogMsgAvail("Program Class", "Starting run...");
+                    Application.Run();//start independent of form
+                }
             } finally {
                 if(controller != null) {
                     controller.Dispose();
                 }
+                Application.Exit();
             }
         }
 
