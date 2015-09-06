@@ -397,6 +397,7 @@ namespace Antumbra.Glow.Controller {
         }
 
         private void setPollingBtnClickHandler(object sender, EventArgs args) {
+            preOutputProcessor.manualMode = true;
             for(int i = 0; i < glowCount; i += 1) {
                 DeviceSettings settings = settingsManager.getSettings(i);
                 pollingWindowController.SetBounds(settings.id, settings.x, settings.y, settings.width, settings.height);
