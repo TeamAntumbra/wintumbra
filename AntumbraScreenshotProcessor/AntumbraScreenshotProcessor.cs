@@ -1,6 +1,7 @@
 ﻿using Antumbra.Glow.ExtensionFramework;
 using Antumbra.Glow.ExtensionFramework.Types;
 using Antumbra.Glow.Observer.Colors;
+using Antumbra.Glow.Observer.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -10,7 +11,7 @@ using System.Reflection;
 namespace AntumbraScreenshotProcessor {
 
     [Export(typeof(GlowExtension))]
-    public class AntumbraScreenshotProcessor : GlowScreenProcessor {
+    public class AntumbraScreenshotProcessor : GlowScreenProcessor, Loggable {
 
         #region Private Fields
 
@@ -56,11 +57,15 @@ namespace AntumbraScreenshotProcessor {
 
         public delegate void NewColorAvail(Color16Bit color, int id, long index);
 
+        public delegate void NewLogMsg(string title, string msg);
+
         #endregion Public Delegates
 
         #region Public Events
 
         public event NewColorAvail NewColorAvailEvent;
+
+        public event NewLogMsg NewLogMsgEvent;
 
         #endregion Public Events
 
@@ -113,8 +118,12 @@ namespace AntumbraScreenshotProcessor {
 
         #region Public Methods
 
+        public void AttachObserver(LogMsgObserver observer) {
+            NewLogMsgEvent += observer.NewLogMsgAvail;
+        }
+
         public override void AttachObserver(AntumbraColorObserver observer) {
-            NewColorAvailEvent += new NewColorAvail(observer.NewColorAvail);
+            NewColorAvailEvent += observer.NewColorAvail;
         }
 
         public override GlowScreenProcessor Create() {
@@ -179,16 +188,24 @@ namespace AntumbraScreenshotProcessor {
                     if(region.X < 0) {
                         region.X += min;
                     }
+                } else if(region.X != 0) {
+                    region.X = 0;
                 }
 
-                for(int x = region.Left / 25; x < region.Right / 25; x += 1) {
+                int xMax = (region.Right - 25) / 25;
+                for(int x = region.Left / 25; x < xMax; x += 1) {
                     for(int y = region.Top / 25; y < region.Bottom / 25; y += 1) {
+                        if(x == xMax) {
+                            break;
+                        }
                         try {
                             r += pixels[screenMappedRegion.Key][x, y, 0];
                             g += pixels[screenMappedRegion.Key][x, y, 1];
                             b += pixels[screenMappedRegion.Key][x, y, 2];
                             size += 1;
                         } catch(Exception e) {
+                            if(NewLogMsgEvent != null)
+                                NewLogMsgEvent("AntumbraScreenshotProcessor", e.Message + '\n' + e.StackTrace);
                             break;
                         }
                     }
