@@ -188,7 +188,7 @@ namespace AntumbraScreenshotProcessor {
                     if(region.X < 0) {
                         region.X += min;
                     }
-                } else if(region.X != 0) {
+                } else if(region.X < 0) {
                     region.X = 0;
                 }
 
