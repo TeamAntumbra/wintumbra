@@ -170,13 +170,15 @@ namespace AntumbraScreenshotProcessor {
 
             foreach(KeyValuePair<int, Rectangle> screenMappedRegion in regions) {
                 Rectangle region = screenMappedRegion.Value;
-                int posX = Math.Abs(region.X);
-                if(posX > min) {
-                    region.X = posX % min;
-                }
+                if(min != 0) {
+                    int posX = Math.Abs(region.X);
+                    if(posX > min) {
+                        region.X = posX % min;
+                    }
 
-                if(region.X < 0) {
-                    region.X += min;
+                    if(region.X < 0) {
+                        region.X += min;
+                    }
                 }
 
                 for(int x = region.Left / 25; x < region.Right / 25; x += 1) {
@@ -186,7 +188,7 @@ namespace AntumbraScreenshotProcessor {
                             g += pixels[screenMappedRegion.Key][x, y, 1];
                             b += pixels[screenMappedRegion.Key][x, y, 2];
                             size += 1;
-                        } catch(IndexOutOfRangeException e) {
+                        } catch(Exception e) {
                             break;
                         }
                     }
