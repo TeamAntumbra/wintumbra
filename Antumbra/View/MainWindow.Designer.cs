@@ -60,6 +60,7 @@
             this.plusLabel2 = new System.Windows.Forms.Label();
             this.minusLabel2 = new System.Windows.Forms.Label();
             this.rateLabel = new System.Windows.Forms.Label();
+            this.resetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.fadeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
@@ -232,6 +233,7 @@
             // mirrorTab
             // 
             this.mirrorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.mirrorTab.Controls.Add(this.resetButton);
             this.mirrorTab.Controls.Add(this.setPollingSizeBtn);
             this.mirrorTab.Controls.Add(this.augmentBtn);
             this.mirrorTab.Controls.Add(this.mirrorBtn);
@@ -472,6 +474,18 @@
             this.rateLabel.TabIndex = 83;
             this.rateLabel.Text = "Capture Rate";
             // 
+            // resetButton
+            // 
+            this.resetButton.AutoSize = true;
+            this.resetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.resetButton.Location = new System.Drawing.Point(408, 301);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(125, 36);
+            this.resetButton.TabIndex = 6;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -556,5 +570,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar speedBar;
+        private System.Windows.Forms.Button resetButton;
     }
 }

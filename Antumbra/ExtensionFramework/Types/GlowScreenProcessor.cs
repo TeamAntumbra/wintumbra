@@ -2,6 +2,7 @@
 using Antumbra.Glow.Observer.ScreenInfo;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Antumbra.Glow.ExtensionFramework.Types {
 
@@ -17,9 +18,11 @@ namespace Antumbra.Glow.ExtensionFramework.Types {
             return typeof(GlowScreenProcessor);
         }
 
+        public abstract Dictionary<int, Rectangle> GetMappings();
+
         public abstract void NewScreenInfoAvail(List<int[, ,]> pixelArrays, EventArgs args);
 
-        public abstract void SetArea(int x, int y, int width, int height);
+        public abstract void SetArea(int x, int y, int width, int height, int id);
 
         #endregion Public Methods
     }

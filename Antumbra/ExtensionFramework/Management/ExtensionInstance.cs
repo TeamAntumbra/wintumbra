@@ -46,6 +46,7 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
             AttachObserver(LoggerHelper.GetInstance());
             Extensions = extensions;
             UpdateExtensionsDevId();
+            Extensions.Ready();
         }
 
         #endregion Public Constructors
@@ -88,16 +89,8 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         #region Public Methods
 
         public void AddScreenProcessorsFromInstance(ExtensionInstance InstanceToMerge) {
-            bool restart = false;
-            if(running) {
-                restart = true;
-                Stop();
-            }
-
-            Extensions.ActiveProcessors.AddRange(InstanceToMerge.Extensions.ActiveProcessors);
-
-            if(restart) {
-                Start();
+            foreach(var mappings in InstanceToMerge.Extensions.ActiveProcessors[0].GetMappings()) {
+                Extensions.ActiveProcessors[0].SetArea(mappings.Value.X, mappings.Value.Y, mappings.Value.Width, mappings.Value.Height, mappings.Key);
             }
         }
 
@@ -136,10 +129,10 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     return;
                 }
 
-                /*bool wasRunning = running;
+                bool wasRunning = running;
                 if(wasRunning) {
                     Stop();
-                }*/
+                }
 
                 if(Extensions.ActiveDriver != null) {
                     Extensions.ActiveDriver.stepSleep = settings.stepSleep;
@@ -156,13 +149,13 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
                 foreach(var process in Extensions.ActiveProcessors) {
                     if(settings.id == process.devId) {
-                        process.SetArea(settings.x, settings.y, settings.width, settings.height);
+                        process.SetArea(settings.x, settings.y, settings.width, settings.height, settings.id);
                     }
                 }
 
-                /*if(wasRunning) {
+                if(wasRunning) {
                     Start();
-                }*/
+                }
             }
         }
 

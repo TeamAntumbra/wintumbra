@@ -100,6 +100,12 @@ namespace Antumbra.Glow.Controller {
             }
         }
 
+        public void Reset() {
+            foreach(var win in pollingWindows) {
+                win.SetBounds(0, 0, 500, 500);
+            }
+        }
+
         public void SetBounds(int id, int x, int y, int width, int height) {
             View.pollingAreaSetter pollingWindow = pollingWindows[id];
             if(pollingWindow.IsDisposed) {

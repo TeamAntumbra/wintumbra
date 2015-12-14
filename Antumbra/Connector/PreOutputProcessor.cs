@@ -94,20 +94,6 @@ namespace Antumbra.Glow.Connector {
                 return;
             }
 
-            if(index == long.MinValue) {
-                OutputIndexes.Remove(id);
-            }
-
-            long prevIndex;
-            if(!OutputIndexes.TryGetValue(id, out prevIndex)) {
-                OutputIndexes[id] = index;
-            } else if(prevIndex >= index) {
-                // Invalid index
-                Log("Color recieved out of order! Color BLOCKED! Target ID: " + id +
-                    " with index " + index + " and last index " + prevIndex);
-                return;
-            }
-
             if(Color16BitUtil.GetAvgBrightness(newCol) < 50) {
                 AnnounceColor(Black, id, index);
             }

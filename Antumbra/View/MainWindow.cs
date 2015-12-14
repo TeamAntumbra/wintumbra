@@ -41,6 +41,8 @@ namespace Antumbra.Glow.View {
 
         public event EventHandler quitBtn_ClickEvent;
 
+        public event EventHandler resetBtn_ClickEvent;
+
         public event EventHandler setPollingBtn_ClickEvent;
 
         public event EventHandler sinBtn_ClickEvent;
@@ -186,5 +188,10 @@ namespace Antumbra.Glow.View {
         }
 
         #endregion Private Methods
+
+        private void resetButton_Click(object sender, EventArgs e) {
+            if(resetBtn_ClickEvent != null)
+                resetBtn_ClickEvent(sender, e);
+        }
     }
 }

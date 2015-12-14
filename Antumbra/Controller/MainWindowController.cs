@@ -139,6 +139,7 @@ namespace Antumbra.Glow.Controller {
             this.window.pwrBtn_ClickEvent += new EventHandler(OnOffValueChangedHandler);
             this.window.whiteBalanceBtn_ClickEvent += new EventHandler(whiteBalanceBtnClicked);
             this.window.throttleBar_ValueChange += new EventHandler(throttleBarValueChanged);
+            this.window.resetBtn_ClickEvent += new EventHandler(ResetButtonClicked);
 
             SendStartCommand(-1);
         }
@@ -379,6 +380,10 @@ namespace Antumbra.Glow.Controller {
                     }
                 }
             }
+        }
+
+        private void ResetButtonClicked(object sender, EventArgs args) {
+            this.pollingWindowController.Reset();
         }
 
         private void SendStartCommand(int id) {

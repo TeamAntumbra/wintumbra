@@ -52,6 +52,7 @@ namespace SlimDXCapture {
                 Device dev = new Device(new Direct3D(), index, DeviceType.Hardware, IntPtr.Zero, CreateFlags.SoftwareVertexProcessing, present_params);
                 dxDevs.Add(dev, screens[index]);
             }
+            Console.WriteLine(dxDevs);
         }
 
         #endregion Public Constructors
@@ -155,6 +156,7 @@ namespace SlimDXCapture {
         public override bool Stop() {
             if(this.driver != null && this.driver.IsAlive)
                 this.driver.Abort();
+            this.Dispose();
             this.running = false;
             return true;
         }
