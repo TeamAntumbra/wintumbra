@@ -7,7 +7,7 @@ using System.ComponentModel.Composition.Hosting;
 
 namespace Antumbra.Glow.ExtensionFramework.Management {
 
-    public class MEFHelper : Loggable {
+    public class MEFHelper : Loggable, IDisposable {
 
         #region Private Fields
 
@@ -49,6 +49,19 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
         #endregion Public Events
 
         #region Public Methods
+
+        public void Dispose()
+        {
+            foreach (var each in FullList)
+            {
+                each.Dispose();
+            }
+
+            if (container != null)
+            {
+                container.Dispose();
+            }
+        }
 
         public void AttachObserver(LogMsgObserver observer) {
             NewLogMsgAvail += observer.NewLogMsgAvail;

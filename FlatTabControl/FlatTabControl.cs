@@ -463,7 +463,7 @@ namespace FlatTabControl {
         }
 
         [Browsable(true)]
-        new public Color myBackColor {
+        public Color myBackColor {
             get { return mBackColor; }
             set { mBackColor = value; this.Invalidate(); }
         }

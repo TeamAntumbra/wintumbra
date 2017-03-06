@@ -1,6 +1,6 @@
 [Setup]
 AppName = "Antumbra"
-AppVersion = 1.0.0.0-RC_3
+AppVersion = 1.0.0
 AppId = "Wintumbra"
 SetupIconFile = Antumbra.ico
 AppPublisher = "Antumbra Technologies Inc."
@@ -15,7 +15,8 @@ DisableProgramGroupPage = auto
 Name: "{commonprograms}\Antumbra"; Filename: "{app}\Antumbra.exe"
 
 [Files]
-Source: "..\deps\wintumbra\dotNetFx45_Full_setup.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: FrameworkIsNotInstalled
+Source: "..\deps\wintumbra\dotNetFx45_Full_setup.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: DotNetFrameworkIsNotInstalled
+Source: "..\deps\wintumbra\DirectX\*"; DestDir: {tmp}; Flags: deleteafterinstall;
 Source: "..\deps\libwdi\*.dll"; DestDir: {app}\DriverInstaller
 Source: "..\deps\win32-libantumbra\glowdrvinst.exe"; DestDir: {app}\DriverInstaller\
 Source: "dependencies\*.dll"; DestDir: {app}\Extensions
@@ -34,11 +35,12 @@ Type: files; Name: "%appdata%\Antumbra\wintumbra.log"
 Type: files; Name: "{app}\Extensions\*.dll"
 
 [Run]
-Filename: "{tmp}\dotNetFx45_Full_setup.exe"; Check: FrameworkIsNotInstalled
+Filename: "{tmp}\dotNetFx45_Full_setup.exe"; Check: DotNetFrameworkIsNotInstalled
+Filename: "{tmp}\DXSETUP.exe";
 Filename: "{app}\DriverInstaller\glowdrvinst.exe"; Parameters: "batch"
 
 [code]
-function FrameworkIsNotInstalled: Boolean;
+function DotNetFrameworkIsNotInstalled: Boolean;
 begin
   Result := not RegKeyExists(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\.NETFramework\policy\v4.5');
 end;
