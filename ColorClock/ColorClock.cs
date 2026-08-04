@@ -126,6 +126,8 @@ namespace ColorClock {
                     driver.Wait(2000);
                     if(driver.IsCompleted)
                         driver.Dispose();
+                    else
+                        return false;
                 }
             }
             return true;
