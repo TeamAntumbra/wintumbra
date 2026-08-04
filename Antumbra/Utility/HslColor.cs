@@ -133,7 +133,7 @@ namespace Antumbra.Glow.Utility {
 
         public int A {
             get { return _alpha; }
-            set { _alpha = Math.Min(0, Math.Max(255, value)); }
+            set { _alpha = Math.Max(0, Math.Min(255, value)); }
         }
 
         public double H {
