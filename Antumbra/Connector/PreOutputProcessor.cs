@@ -77,7 +77,7 @@ namespace Antumbra.Glow.Connector {
                 devSettings.redBias = Convert.ToInt16(settings.redBias << 8);
                 devSettings.greenBias = Convert.ToInt16(settings.greenBias << 8);
                 devSettings.blueBias = Convert.ToInt16(settings.blueBias << 8);
-                var avgBias = (Math.Abs(settings.redBias) + Math.Abs(settings.greenBias) + Math.Abs(settings.blueBias) / 3);
+                var avgBias = (Math.Abs(settings.redBias) + Math.Abs(settings.greenBias) + Math.Abs(settings.blueBias)) / 3;
                 devSettings.whiteBalanceMin = Convert.ToUInt16(avgBias);
                 devSettings.weightingEnabled = settings.weightingEnabled;
                 devSettings.newColorWeight = settings.newColorWeight;
@@ -95,26 +95,26 @@ namespace Antumbra.Glow.Connector {
             }
 
             if(Color16BitUtil.GetAvgBrightness(newCol) < 50) {
-                AnnounceColor(Black, id, index);
-            }
+                newCol = Black;
+            } else {
+                // Either first run or valid index
+                int red = newCol.red;
+                int green = newCol.green;
+                int blue = newCol.blue;
+                // White balance
+                if(Color16BitUtil.GetAvgBrightness(newCol) > settings.whiteBalanceMin) {
+                    red += settings.redBias;
+                    green += settings.greenBias;
+                    blue += settings.blueBias;
+                }
+                newCol = Color16BitUtil.FunnelIntoColor(red, green, blue);
 
-            // Either first run or valid index
-            int red = newCol.red;
-            int green = newCol.green;
-            int blue = newCol.blue;
-            // White balance
-            if(Color16BitUtil.GetAvgBrightness(newCol) > settings.whiteBalanceMin) {
-                red += settings.redBias;
-                green += settings.greenBias;
-                blue += settings.blueBias;
-            }
-            newCol = Color16BitUtil.FunnelIntoColor(red, green, blue);
-
-            // Scale brightness
-            try {
-                newCol = Color16BitUtil.ScaleColor(newCol, settings.MaxBrightness);
-            } catch(ArgumentException ex) {
-                Log(ex.Message + '\n' + ex.StackTrace);
+                // Scale brightness
+                try {
+                    newCol = Color16BitUtil.ScaleColor(newCol, settings.MaxBrightness);
+                } catch(ArgumentException ex) {
+                    Log(ex.Message + '\n' + ex.StackTrace);
+                }
             }
 
             // Add to weighted average

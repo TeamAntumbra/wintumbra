@@ -293,6 +293,7 @@ namespace Antumbra.Glow.Controller {
                 disposable.Dispose();
             }
             this.window.Close();
+            preOutputProcessor.manualMode = true;
             NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all devices off
             connectionManager.Dispose();
             if(quitEventHandler != null)
@@ -359,6 +360,7 @@ namespace Antumbra.Glow.Controller {
                 if(on) {
                     SendStartCommand(-1);
                 } else {
+                    preOutputProcessor.manualMode = true;
                     NewGlowCmdAvailEvent(new PowerOffCommand(-1));
                 }
             }
@@ -374,6 +376,7 @@ namespace Antumbra.Glow.Controller {
                             Thread.Sleep(2500);//wait for system to be ready
                             SendStartCommand(-1);
                         } else {
+                            preOutputProcessor.manualMode = true;
                             NewGlowCmdAvailEvent(new PowerOffCommand(-1));
                             Thread.Sleep(1000);
                         }
@@ -424,6 +427,7 @@ namespace Antumbra.Glow.Controller {
             switch(e.Reason) {
                 case SessionSwitchReason.SessionLogoff:
                 case SessionSwitchReason.SessionLock:
+                    preOutputProcessor.manualMode = true;
                     NewGlowCmdAvailEvent(new PowerOffCommand(-1));//turn all off
                     break;
 
