@@ -31,6 +31,12 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
 
         private FPSCalc FPSCalculator;
 
+        private bool haveAreaSettings;
+
+        private int lastBoundHeight, lastBoundWidth, lastBoundX, lastBoundY;
+
+        private int lastHeight, lastWidth, lastX, lastY;
+
         #endregion Private Fields
 
         #region Public Constructors
@@ -129,8 +135,18 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     return;
                 }
 
+                // Only the capture area/bounds require a Stop/Start to safely take
+                // effect (they mutate state the capture thread reads concurrently).
+                // Restarting on every settings change (e.g. brightness) caused rapid
+                // Stop/Start storms while dragging a slider.
+                bool areaChanged = !haveAreaSettings ||
+                    lastX != settings.x || lastY != settings.y ||
+                    lastWidth != settings.width || lastHeight != settings.height ||
+                    lastBoundX != settings.boundX || lastBoundY != settings.boundY ||
+                    lastBoundWidth != settings.boundWidth || lastBoundHeight != settings.boundHeight;
+
                 bool wasRunning = running;
-                if(wasRunning) {
+                if(wasRunning && areaChanged) {
                     Stop();
                 }
 
@@ -147,13 +163,25 @@ namespace Antumbra.Glow.ExtensionFramework.Management {
                     Extensions.ActiveGrabber.height = settings.boundHeight;
                 }
 
-                foreach(var process in Extensions.ActiveProcessors) {
-                    if(settings.id == process.devId) {
-                        process.SetArea(settings.x, settings.y, settings.width, settings.height, settings.id);
+                if(areaChanged) {
+                    foreach(var process in Extensions.ActiveProcessors) {
+                        if(settings.id == process.devId) {
+                            process.SetArea(settings.x, settings.y, settings.width, settings.height, settings.id);
+                        }
                     }
                 }
 
-                if(wasRunning) {
+                lastX = settings.x;
+                lastY = settings.y;
+                lastWidth = settings.width;
+                lastHeight = settings.height;
+                lastBoundX = settings.boundX;
+                lastBoundY = settings.boundY;
+                lastBoundWidth = settings.boundWidth;
+                lastBoundHeight = settings.boundHeight;
+                haveAreaSettings = true;
+
+                if(wasRunning && areaChanged) {
                     Start();
                 }
             }
